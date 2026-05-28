@@ -1,0 +1,458 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Disease {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  summary     String?
+  description String?
+  icdCode     String?
+  symptoms    String[] @default([])
+  diagnostics String?
+  treatment   String?
+  categoryId  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category   DiseaseCategory?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  procedures DiseaseOnProcedure[]
+  doctors    DoctorOnDisease[]
+  clinics    ClinicOnDisease[]
+  guidelines DiseaseOnClinicalGuideline[]
+  publications PublicationOnDisease[]
+
+  @@index([categoryId])
+  @@index([title])
+}
+
+model Procedure {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  summary     String?
+  description String?
+  categoryId  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category     ProcedureCategory?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  diseases     DiseaseOnProcedure[]
+  doctors      DoctorOnProcedure[]
+  equipment    ProcedureOnEquipment[]
+  publications PublicationOnProcedure[]
+
+  @@index([categoryId])
+  @@index([title])
+}
+
+model Doctor {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  firstName       String
+  lastName        String
+  middleName      String?
+  photoUrl        String?
+  bio             String?
+  career          String?
+  experienceYears Int?
+  region          String?
+  regionId        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  regionEntity Region?             @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  specialties  DoctorOnSpecialty[]
+  clinics      DoctorOnClinic[]
+  diseases     DoctorOnDisease[]
+  procedures   DoctorOnProcedure[]
+  publications Publication[]
+
+  @@index([regionId])
+  @@index([lastName, firstName])
+}
+
+model Clinic {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  description   String?
+  region        String?
+  regionId      String?
+  phone         String?
+  email         String?
+  website       String?
+  address       String?
+  licenseStatus String?
+  omsEnabled    Boolean  @default(false)
+  contractBased Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  regionEntity Region?             @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  specialties  ClinicOnSpecialty[]
+  doctors      DoctorOnClinic[]
+  suppliers    ClinicOnSupplier[]
+  diseases     ClinicOnDisease[]
+
+  @@index([regionId])
+  @@index([title])
+  @@index([omsEnabled, contractBased])
+}
+
+model Supplier {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  website     String?
+  phone       String?
+  email       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  categories SupplierOnEquipmentCategory[]
+  equipment  Equipment[]
+  clinics    ClinicOnSupplier[]
+
+  @@index([title])
+}
+
+model Equipment {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  summary     String?
+  description String?
+  images      String[] @default([])
+  manuals     String[] @default([])
+  categoryId  String?
+  supplierId  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category   EquipmentCategory?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  supplier   Supplier?             @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  procedures ProcedureOnEquipment[]
+
+  @@index([categoryId])
+  @@index([supplierId])
+  @@index([title])
+}
+
+model Publication {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  title           String
+  publicationType String?
+  publishedAt     DateTime?
+  authorName      String?
+  abstract        String?
+  content         String?
+  doctorId        String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  doctor     Doctor?                  @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  diseases   PublicationOnDisease[]
+  procedures PublicationOnProcedure[]
+
+  @@index([doctorId])
+  @@index([publishedAt])
+  @@index([title])
+}
+
+model ClinicalGuideline {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  summary     String?
+  content     String?
+  sourceUrl   String?
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  diseases DiseaseOnClinicalGuideline[]
+
+  @@index([publishedAt])
+  @@index([title])
+}
+
+model Regulation {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  summary       String?
+  content       String?
+  sourceUrl     String?
+  documentType  String?
+  effectiveFrom DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([documentType])
+  @@index([effectiveFrom])
+  @@index([title])
+}
+
+model HistoryEntry {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  summary   String?
+  content   String?
+  period    String?
+  sourceUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([period])
+  @@index([title])
+}
+
+model Innovation {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  summary     String?
+  content     String?
+  sourceUrl   String?
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([publishedAt])
+  @@index([title])
+}
+
+model Specialty {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  doctors DoctorOnSpecialty[]
+  clinics ClinicOnSpecialty[]
+
+  @@index([title])
+}
+
+model DiseaseCategory {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  diseases Disease[]
+
+  @@index([title])
+}
+
+model ProcedureCategory {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  procedures Procedure[]
+
+  @@index([title])
+}
+
+model EquipmentCategory {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  equipment Equipment[]
+  suppliers SupplierOnEquipmentCategory[]
+
+  @@index([title])
+}
+
+model Region {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  doctors Doctor[]
+  clinics Clinic[]
+
+  @@index([title])
+}
+
+model DiseaseOnProcedure {
+  diseaseId   String
+  procedureId String
+  createdAt   DateTime @default(now())
+
+  disease   Disease   @relation(fields: [diseaseId], references: [id], onDelete: Cascade)
+  procedure Procedure @relation(fields: [procedureId], references: [id], onDelete: Cascade)
+
+  @@id([diseaseId, procedureId])
+  @@index([procedureId])
+}
+
+model DoctorOnDisease {
+  doctorId  String
+  diseaseId String
+  createdAt DateTime @default(now())
+
+  doctor  Doctor  @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  disease Disease @relation(fields: [diseaseId], references: [id], onDelete: Cascade)
+
+  @@id([doctorId, diseaseId])
+  @@index([diseaseId])
+}
+
+model DoctorOnProcedure {
+  doctorId    String
+  procedureId String
+  createdAt   DateTime @default(now())
+
+  doctor    Doctor    @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  procedure Procedure @relation(fields: [procedureId], references: [id], onDelete: Cascade)
+
+  @@id([doctorId, procedureId])
+  @@index([procedureId])
+}
+
+model DoctorOnSpecialty {
+  doctorId    String
+  specialtyId String
+  createdAt   DateTime @default(now())
+
+  doctor    Doctor    @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  specialty Specialty @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
+
+  @@id([doctorId, specialtyId])
+  @@index([specialtyId])
+}
+
+model DoctorOnClinic {
+  doctorId  String
+  clinicId  String
+  role      String?
+  createdAt DateTime @default(now())
+
+  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  clinic Clinic @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+
+  @@id([doctorId, clinicId])
+  @@index([clinicId])
+}
+
+model ClinicOnSpecialty {
+  clinicId    String
+  specialtyId String
+  createdAt   DateTime @default(now())
+
+  clinic    Clinic    @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  specialty Specialty @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
+
+  @@id([clinicId, specialtyId])
+  @@index([specialtyId])
+}
+
+model ClinicOnSupplier {
+  clinicId   String
+  supplierId String
+  createdAt  DateTime @default(now())
+
+  clinic   Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  supplier Supplier @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+
+  @@id([clinicId, supplierId])
+  @@index([supplierId])
+}
+
+model SupplierOnEquipmentCategory {
+  supplierId  String
+  categoryId  String
+  createdAt   DateTime @default(now())
+
+  supplier Supplier          @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  category EquipmentCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([supplierId, categoryId])
+  @@index([categoryId])
+}
+
+model ProcedureOnEquipment {
+  procedureId String
+  equipmentId String
+  createdAt   DateTime @default(now())
+
+  procedure Procedure @relation(fields: [procedureId], references: [id], onDelete: Cascade)
+  equipment Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@id([procedureId, equipmentId])
+  @@index([equipmentId])
+}
+
+model PublicationOnDisease {
+  publicationId String
+  diseaseId     String
+  createdAt     DateTime @default(now())
+
+  publication Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  disease     Disease     @relation(fields: [diseaseId], references: [id], onDelete: Cascade)
+
+  @@id([publicationId, diseaseId])
+  @@index([diseaseId])
+}
+
+model PublicationOnProcedure {
+  publicationId String
+  procedureId   String
+  createdAt     DateTime @default(now())
+
+  publication Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  procedure   Procedure   @relation(fields: [procedureId], references: [id], onDelete: Cascade)
+
+  @@id([publicationId, procedureId])
+  @@index([procedureId])
+}
+
+model DiseaseOnClinicalGuideline {
+  diseaseId   String
+  guidelineId String
+  createdAt   DateTime @default(now())
+
+  disease   Disease           @relation(fields: [diseaseId], references: [id], onDelete: Cascade)
+  guideline ClinicalGuideline @relation(fields: [guidelineId], references: [id], onDelete: Cascade)
+
+  @@id([diseaseId, guidelineId])
+  @@index([guidelineId])
+}
+
+model ClinicOnDisease {
+  clinicId  String
+  diseaseId String
+  createdAt DateTime @default(now())
+
+  clinic  Clinic  @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  disease Disease @relation(fields: [diseaseId], references: [id], onDelete: Cascade)
+
+  @@id([clinicId, diseaseId])
+  @@index([diseaseId])
+}
