@@ -6,6 +6,7 @@ import {
   FileCheck,
   FileText,
   FlaskConical,
+  Handshake,
   History,
   Microscope,
   ShieldCheck,
@@ -204,7 +205,6 @@ export const sidebarSections = [
     links: [
       { href: "/diseases", label: "Заболевания", icon: Activity },
       { href: "/procedures", label: "Лечение и коррекция", icon: Syringe },
-      { href: "/guidelines", label: "Клинические рекомендации", icon: ClipboardList },
       { href: "/innovations", label: "Инновации", icon: FlaskConical },
     ],
   },
@@ -213,9 +213,11 @@ export const sidebarSections = [
     icon: Users,
     links: [
       { href: "/doctors", label: "Врачи и специалисты", icon: Stethoscope },
-      { href: "/history", label: "История офтальмологии", icon: History },
+      { href: "/guidelines", label: "Клинические рекомендации", icon: ClipboardList },
       { href: "/publications", label: "Научные работы", icon: BookOpen },
+      { href: "/cooperation", label: "Сотрудничество с врачами", icon: Handshake },
       { href: "/register/doctor", label: "Регистрация врача", icon: UserPlus },
+      { href: "/history", label: "История офтальмологии", icon: History },
     ],
   },
   {
@@ -234,6 +236,7 @@ export const sidebarSections = [
     links: [
       { href: "/suppliers", label: "Каталог поставщиков", icon: Store },
       { href: "/equipment", label: "Оборудование", icon: Microscope },
+      { href: "/register/supplier", label: "Регистрация поставщика", icon: UserPlus },
     ],
   },
 ];

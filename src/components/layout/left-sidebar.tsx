@@ -1,7 +1,9 @@
 "use client";
 
+import { Fragment } from "react";
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { sidebarSections } from "@/lib/content-model";
 import { SidebarSection } from "@/components/layout/sidebar-section";
 
@@ -19,9 +21,12 @@ export function SidebarNavContent() {
         </Link>
       </div>
       <ScrollArea className="min-h-0 flex-1">
-        <div className="space-y-5 p-3">
-          {sidebarSections.map((section) => (
-            <SidebarSection key={section.title} {...section} />
+        <div className="px-3 pb-4">
+          {sidebarSections.map((section, i) => (
+            <Fragment key={section.title}>
+              {i > 0 && <Separator className="my-1" />}
+              <SidebarSection {...section} />
+            </Fragment>
           ))}
         </div>
       </ScrollArea>

@@ -14,7 +14,7 @@ export function SidebarSection({
 }) {
   return (
     <section className="space-y-1">
-      <div className="flex items-center gap-2 px-2.5 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+      <div className="flex items-center gap-2 px-2.5 pt-3 pb-2 text-xs font-semibold uppercase tracking-wide text-foreground">
         <Icon className="h-3.5 w-3.5" />
         <span>{title}</span>
       </div>

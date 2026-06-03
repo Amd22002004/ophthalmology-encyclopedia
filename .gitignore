@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local dev artifacts
+ss-*.png
+take-screenshots.*
+take-clinic-screenshots.*
+*.bundle
+dev-err.txt
+dev-out.txt
+.obsidian/

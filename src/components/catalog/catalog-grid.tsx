@@ -5,6 +5,7 @@ export type CatalogGridItem = {
   href: string;
   title: string;
   description: string;
+  badges?: string[];
 };
 
 export function CatalogGrid({
