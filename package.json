@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
     "prisma:validate": "prisma validate",
-    "db:seed": "dotenv -e .env -- tsx prisma/seed.ts"
+    "db:seed": "dotenv -e .env -- tsx prisma/seed.ts",
+    "create-owner": "dotenv -e .env -- tsx scripts/create-owner.ts"
   },
   "prisma": {
     "seed": "dotenv -e .env -- tsx prisma/seed.ts"
@@ -27,9 +28,12 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.106.2",
+    "@types/bcryptjs": "2.4.6",
+    "bcryptjs": "3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
+    "iron-session": "8.0.4",
     "lucide-react": "^1.16.0",
     "next": "16.2.6",
     "pg": "^8.21.0",

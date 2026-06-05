@@ -456,3 +456,18 @@ model ClinicOnDisease {
   @@id([clinicId, diseaseId])
   @@index([diseaseId])
 }
+
+enum AdminRole {
+  OWNER
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         AdminRole @default(OWNER)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}

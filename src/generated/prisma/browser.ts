@@ -162,3 +162,8 @@ export type DiseaseOnClinicalGuideline = Prisma.DiseaseOnClinicalGuidelineModel
  * 
  */
 export type ClinicOnDisease = Prisma.ClinicOnDiseaseModel
+/**
+ * Model AdminUser
+ * 
+ */
+export type AdminUser = Prisma.AdminUserModel

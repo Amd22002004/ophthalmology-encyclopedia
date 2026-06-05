@@ -412,7 +412,8 @@ export const ModelName = {
   PublicationOnDisease: 'PublicationOnDisease',
   PublicationOnProcedure: 'PublicationOnProcedure',
   DiseaseOnClinicalGuideline: 'DiseaseOnClinicalGuideline',
-  ClinicOnDisease: 'ClinicOnDisease'
+  ClinicOnDisease: 'ClinicOnDisease',
+  AdminUser: 'AdminUser'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -428,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "disease" | "procedure" | "doctor" | "clinic" | "supplier" | "equipment" | "publication" | "clinicalGuideline" | "regulation" | "historyEntry" | "innovation" | "specialty" | "diseaseCategory" | "procedureCategory" | "equipmentCategory" | "region" | "diseaseOnProcedure" | "doctorOnDisease" | "doctorOnProcedure" | "doctorOnSpecialty" | "doctorOnClinic" | "clinicOnSpecialty" | "clinicOnSupplier" | "supplierOnEquipmentCategory" | "procedureOnEquipment" | "publicationOnDisease" | "publicationOnProcedure" | "diseaseOnClinicalGuideline" | "clinicOnDisease"
+    modelProps: "disease" | "procedure" | "doctor" | "clinic" | "supplier" | "equipment" | "publication" | "clinicalGuideline" | "regulation" | "historyEntry" | "innovation" | "specialty" | "diseaseCategory" | "procedureCategory" | "equipmentCategory" | "region" | "diseaseOnProcedure" | "doctorOnDisease" | "doctorOnProcedure" | "doctorOnSpecialty" | "doctorOnClinic" | "clinicOnSpecialty" | "clinicOnSupplier" | "supplierOnEquipmentCategory" | "procedureOnEquipment" | "publicationOnDisease" | "publicationOnProcedure" | "diseaseOnClinicalGuideline" | "clinicOnDisease" | "adminUser"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2578,6 +2579,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AdminUser: {
+      payload: Prisma.$AdminUserPayload<ExtArgs>
+      fields: Prisma.AdminUserFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AdminUserFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AdminUserFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload>
+        }
+        findFirst: {
+          args: Prisma.AdminUserFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AdminUserFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload>
+        }
+        findMany: {
+          args: Prisma.AdminUserFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload>[]
+        }
+        create: {
+          args: Prisma.AdminUserCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload>
+        }
+        createMany: {
+          args: Prisma.AdminUserCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AdminUserCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload>[]
+        }
+        delete: {
+          args: Prisma.AdminUserDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload>
+        }
+        update: {
+          args: Prisma.AdminUserUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload>
+        }
+        deleteMany: {
+          args: Prisma.AdminUserDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AdminUserUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AdminUserUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload>[]
+        }
+        upsert: {
+          args: Prisma.AdminUserUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminUserPayload>
+        }
+        aggregate: {
+          args: Prisma.AdminUserAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAdminUser>
+        }
+        groupBy: {
+          args: Prisma.AdminUserGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminUserGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AdminUserCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminUserCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2977,6 +3052,20 @@ export const ClinicOnDiseaseScalarFieldEnum = {
 export type ClinicOnDiseaseScalarFieldEnum = (typeof ClinicOnDiseaseScalarFieldEnum)[keyof typeof ClinicOnDiseaseScalarFieldEnum]
 
 
+export const AdminUserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  name: 'name',
+  role: 'role',
+  lastLoginAt: 'lastLoginAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdminUserScalarFieldEnum = (typeof AdminUserScalarFieldEnum)[keyof typeof AdminUserScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3053,6 +3142,20 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'AdminRole'
+ */
+export type EnumAdminRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdminRole'>
+    
+
+
+/**
+ * Reference to a field of type 'AdminRole[]'
+ */
+export type ListEnumAdminRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdminRole[]'>
     
 
 
@@ -3208,6 +3311,7 @@ export type GlobalOmitConfig = {
   publicationOnProcedure?: Prisma.PublicationOnProcedureOmit
   diseaseOnClinicalGuideline?: Prisma.DiseaseOnClinicalGuidelineOmit
   clinicOnDisease?: Prisma.ClinicOnDiseaseOmit
+  adminUser?: Prisma.AdminUserOmit
 }
 
 /* Types for Logging */

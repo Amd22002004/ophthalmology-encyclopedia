@@ -79,7 +79,8 @@ export const ModelName = {
   PublicationOnDisease: 'PublicationOnDisease',
   PublicationOnProcedure: 'PublicationOnProcedure',
   DiseaseOnClinicalGuideline: 'DiseaseOnClinicalGuideline',
-  ClinicOnDisease: 'ClinicOnDisease'
+  ClinicOnDisease: 'ClinicOnDisease',
+  AdminUser: 'AdminUser'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -456,6 +457,20 @@ export const ClinicOnDiseaseScalarFieldEnum = {
 } as const
 
 export type ClinicOnDiseaseScalarFieldEnum = (typeof ClinicOnDiseaseScalarFieldEnum)[keyof typeof ClinicOnDiseaseScalarFieldEnum]
+
+
+export const AdminUserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  name: 'name',
+  role: 'role',
+  lastLoginAt: 'lastLoginAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdminUserScalarFieldEnum = (typeof AdminUserScalarFieldEnum)[keyof typeof AdminUserScalarFieldEnum]
 
 
 export const SortOrder = {
