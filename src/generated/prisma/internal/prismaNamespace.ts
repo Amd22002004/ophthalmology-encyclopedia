@@ -413,6 +413,8 @@ export const ModelName = {
   PublicationOnProcedure: 'PublicationOnProcedure',
   DiseaseOnClinicalGuideline: 'DiseaseOnClinicalGuideline',
   ClinicOnDisease: 'ClinicOnDisease',
+  ClinicOnProcedure: 'ClinicOnProcedure',
+  ClinicOnPublication: 'ClinicOnPublication',
   AdminUser: 'AdminUser'
 } as const
 
@@ -429,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "disease" | "procedure" | "doctor" | "clinic" | "supplier" | "equipment" | "publication" | "clinicalGuideline" | "regulation" | "historyEntry" | "innovation" | "specialty" | "diseaseCategory" | "procedureCategory" | "equipmentCategory" | "region" | "diseaseOnProcedure" | "doctorOnDisease" | "doctorOnProcedure" | "doctorOnSpecialty" | "doctorOnClinic" | "clinicOnSpecialty" | "clinicOnSupplier" | "supplierOnEquipmentCategory" | "procedureOnEquipment" | "publicationOnDisease" | "publicationOnProcedure" | "diseaseOnClinicalGuideline" | "clinicOnDisease" | "adminUser"
+    modelProps: "disease" | "procedure" | "doctor" | "clinic" | "supplier" | "equipment" | "publication" | "clinicalGuideline" | "regulation" | "historyEntry" | "innovation" | "specialty" | "diseaseCategory" | "procedureCategory" | "equipmentCategory" | "region" | "diseaseOnProcedure" | "doctorOnDisease" | "doctorOnProcedure" | "doctorOnSpecialty" | "doctorOnClinic" | "clinicOnSpecialty" | "clinicOnSupplier" | "supplierOnEquipmentCategory" | "procedureOnEquipment" | "publicationOnDisease" | "publicationOnProcedure" | "diseaseOnClinicalGuideline" | "clinicOnDisease" | "clinicOnProcedure" | "clinicOnPublication" | "adminUser"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2579,6 +2581,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ClinicOnProcedure: {
+      payload: Prisma.$ClinicOnProcedurePayload<ExtArgs>
+      fields: Prisma.ClinicOnProcedureFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ClinicOnProcedureFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ClinicOnProcedureFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload>
+        }
+        findFirst: {
+          args: Prisma.ClinicOnProcedureFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ClinicOnProcedureFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload>
+        }
+        findMany: {
+          args: Prisma.ClinicOnProcedureFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload>[]
+        }
+        create: {
+          args: Prisma.ClinicOnProcedureCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload>
+        }
+        createMany: {
+          args: Prisma.ClinicOnProcedureCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ClinicOnProcedureCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload>[]
+        }
+        delete: {
+          args: Prisma.ClinicOnProcedureDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload>
+        }
+        update: {
+          args: Prisma.ClinicOnProcedureUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload>
+        }
+        deleteMany: {
+          args: Prisma.ClinicOnProcedureDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ClinicOnProcedureUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ClinicOnProcedureUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload>[]
+        }
+        upsert: {
+          args: Prisma.ClinicOnProcedureUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnProcedurePayload>
+        }
+        aggregate: {
+          args: Prisma.ClinicOnProcedureAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClinicOnProcedure>
+        }
+        groupBy: {
+          args: Prisma.ClinicOnProcedureGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClinicOnProcedureGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ClinicOnProcedureCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClinicOnProcedureCountAggregateOutputType> | number
+        }
+      }
+    }
+    ClinicOnPublication: {
+      payload: Prisma.$ClinicOnPublicationPayload<ExtArgs>
+      fields: Prisma.ClinicOnPublicationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ClinicOnPublicationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ClinicOnPublicationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload>
+        }
+        findFirst: {
+          args: Prisma.ClinicOnPublicationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ClinicOnPublicationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload>
+        }
+        findMany: {
+          args: Prisma.ClinicOnPublicationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload>[]
+        }
+        create: {
+          args: Prisma.ClinicOnPublicationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload>
+        }
+        createMany: {
+          args: Prisma.ClinicOnPublicationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ClinicOnPublicationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload>[]
+        }
+        delete: {
+          args: Prisma.ClinicOnPublicationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload>
+        }
+        update: {
+          args: Prisma.ClinicOnPublicationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload>
+        }
+        deleteMany: {
+          args: Prisma.ClinicOnPublicationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ClinicOnPublicationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ClinicOnPublicationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload>[]
+        }
+        upsert: {
+          args: Prisma.ClinicOnPublicationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnPublicationPayload>
+        }
+        aggregate: {
+          args: Prisma.ClinicOnPublicationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClinicOnPublication>
+        }
+        groupBy: {
+          args: Prisma.ClinicOnPublicationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClinicOnPublicationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ClinicOnPublicationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClinicOnPublicationCountAggregateOutputType> | number
+        }
+      }
+    }
     AdminUser: {
       payload: Prisma.$AdminUserPayload<ExtArgs>
       fields: Prisma.AdminUserFieldRefs
@@ -2747,14 +2897,41 @@ export const ClinicScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
   title: 'title',
+  legalName: 'legalName',
   description: 'description',
+  city: 'city',
   region: 'region',
   regionId: 'regionId',
+  clinicType: 'clinicType',
+  networkName: 'networkName',
+  status: 'status',
+  phones: 'phones',
   phone: 'phone',
   email: 'email',
   website: 'website',
   address: 'address',
+  inn: 'inn',
+  kpp: 'kpp',
+  ogrn: 'ogrn',
+  license: 'license',
   licenseStatus: 'licenseStatus',
+  licenseDate: 'licenseDate',
+  logoUrl: 'logoUrl',
+  coverImageUrl: 'coverImageUrl',
+  facadeImageUrl: 'facadeImageUrl',
+  workingHours: 'workingHours',
+  directorName: 'directorName',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  mapEmbed: 'mapEmbed',
+  appointmentUrl: 'appointmentUrl',
+  vkUrl: 'vkUrl',
+  telegramUrl: 'telegramUrl',
+  youtubeUrl: 'youtubeUrl',
+  foundedYear: 'foundedYear',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
+  seoKeywords: 'seoKeywords',
   omsEnabled: 'omsEnabled',
   contractBased: 'contractBased',
   createdAt: 'createdAt',
@@ -3052,6 +3229,24 @@ export const ClinicOnDiseaseScalarFieldEnum = {
 export type ClinicOnDiseaseScalarFieldEnum = (typeof ClinicOnDiseaseScalarFieldEnum)[keyof typeof ClinicOnDiseaseScalarFieldEnum]
 
 
+export const ClinicOnProcedureScalarFieldEnum = {
+  clinicId: 'clinicId',
+  procedureId: 'procedureId',
+  createdAt: 'createdAt'
+} as const
+
+export type ClinicOnProcedureScalarFieldEnum = (typeof ClinicOnProcedureScalarFieldEnum)[keyof typeof ClinicOnProcedureScalarFieldEnum]
+
+
+export const ClinicOnPublicationScalarFieldEnum = {
+  clinicId: 'clinicId',
+  publicationId: 'publicationId',
+  createdAt: 'createdAt'
+} as const
+
+export type ClinicOnPublicationScalarFieldEnum = (typeof ClinicOnPublicationScalarFieldEnum)[keyof typeof ClinicOnPublicationScalarFieldEnum]
+
+
 export const AdminUserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -3139,6 +3334,20 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -3156,20 +3365,6 @@ export type EnumAdminRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'AdminRole[]'
  */
 export type ListEnumAdminRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdminRole[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -3311,6 +3506,8 @@ export type GlobalOmitConfig = {
   publicationOnProcedure?: Prisma.PublicationOnProcedureOmit
   diseaseOnClinicalGuideline?: Prisma.DiseaseOnClinicalGuidelineOmit
   clinicOnDisease?: Prisma.ClinicOnDiseaseOmit
+  clinicOnProcedure?: Prisma.ClinicOnProcedureOmit
+  clinicOnPublication?: Prisma.ClinicOnPublicationOmit
   adminUser?: Prisma.AdminUserOmit
 }
 

@@ -187,6 +187,16 @@ export type DiseaseOnClinicalGuideline = Prisma.DiseaseOnClinicalGuidelineModel
  */
 export type ClinicOnDisease = Prisma.ClinicOnDiseaseModel
 /**
+ * Model ClinicOnProcedure
+ * 
+ */
+export type ClinicOnProcedure = Prisma.ClinicOnProcedureModel
+/**
+ * Model ClinicOnPublication
+ * 
+ */
+export type ClinicOnPublication = Prisma.ClinicOnPublicationModel
+/**
  * Model AdminUser
  * 
  */

@@ -233,6 +233,7 @@ export type PublicationWhereInput = {
   doctor?: Prisma.XOR<Prisma.DoctorNullableScalarRelationFilter, Prisma.DoctorWhereInput> | null
   diseases?: Prisma.PublicationOnDiseaseListRelationFilter
   procedures?: Prisma.PublicationOnProcedureListRelationFilter
+  clinics?: Prisma.ClinicOnPublicationListRelationFilter
 }
 
 export type PublicationOrderByWithRelationInput = {
@@ -250,6 +251,7 @@ export type PublicationOrderByWithRelationInput = {
   doctor?: Prisma.DoctorOrderByWithRelationInput
   diseases?: Prisma.PublicationOnDiseaseOrderByRelationAggregateInput
   procedures?: Prisma.PublicationOnProcedureOrderByRelationAggregateInput
+  clinics?: Prisma.ClinicOnPublicationOrderByRelationAggregateInput
 }
 
 export type PublicationWhereUniqueInput = Prisma.AtLeast<{
@@ -270,6 +272,7 @@ export type PublicationWhereUniqueInput = Prisma.AtLeast<{
   doctor?: Prisma.XOR<Prisma.DoctorNullableScalarRelationFilter, Prisma.DoctorWhereInput> | null
   diseases?: Prisma.PublicationOnDiseaseListRelationFilter
   procedures?: Prisma.PublicationOnProcedureListRelationFilter
+  clinics?: Prisma.ClinicOnPublicationListRelationFilter
 }, "id" | "slug">
 
 export type PublicationOrderByWithAggregationInput = {
@@ -320,6 +323,7 @@ export type PublicationCreateInput = {
   doctor?: Prisma.DoctorCreateNestedOneWithoutPublicationsInput
   diseases?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutPublicationInput
   procedures?: Prisma.PublicationOnProcedureCreateNestedManyWithoutPublicationInput
+  clinics?: Prisma.ClinicOnPublicationCreateNestedManyWithoutPublicationInput
 }
 
 export type PublicationUncheckedCreateInput = {
@@ -336,6 +340,7 @@ export type PublicationUncheckedCreateInput = {
   updatedAt?: Date | string
   diseases?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutPublicationInput
   procedures?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutPublicationInput
+  clinics?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutPublicationInput
 }
 
 export type PublicationUpdateInput = {
@@ -352,6 +357,7 @@ export type PublicationUpdateInput = {
   doctor?: Prisma.DoctorUpdateOneWithoutPublicationsNestedInput
   diseases?: Prisma.PublicationOnDiseaseUpdateManyWithoutPublicationNestedInput
   procedures?: Prisma.PublicationOnProcedureUpdateManyWithoutPublicationNestedInput
+  clinics?: Prisma.ClinicOnPublicationUpdateManyWithoutPublicationNestedInput
 }
 
 export type PublicationUncheckedUpdateInput = {
@@ -368,6 +374,7 @@ export type PublicationUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   diseases?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutPublicationNestedInput
   procedures?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutPublicationNestedInput
+  clinics?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutPublicationNestedInput
 }
 
 export type PublicationCreateManyInput = {
@@ -510,10 +517,6 @@ export type PublicationUncheckedUpdateManyWithoutDoctorNestedInput = {
   deleteMany?: Prisma.PublicationScalarWhereInput | Prisma.PublicationScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type PublicationCreateNestedOneWithoutDiseasesInput = {
   create?: Prisma.XOR<Prisma.PublicationCreateWithoutDiseasesInput, Prisma.PublicationUncheckedCreateWithoutDiseasesInput>
   connectOrCreate?: Prisma.PublicationCreateOrConnectWithoutDiseasesInput
@@ -542,6 +545,20 @@ export type PublicationUpdateOneRequiredWithoutProceduresNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PublicationUpdateToOneWithWhereWithoutProceduresInput, Prisma.PublicationUpdateWithoutProceduresInput>, Prisma.PublicationUncheckedUpdateWithoutProceduresInput>
 }
 
+export type PublicationCreateNestedOneWithoutClinicsInput = {
+  create?: Prisma.XOR<Prisma.PublicationCreateWithoutClinicsInput, Prisma.PublicationUncheckedCreateWithoutClinicsInput>
+  connectOrCreate?: Prisma.PublicationCreateOrConnectWithoutClinicsInput
+  connect?: Prisma.PublicationWhereUniqueInput
+}
+
+export type PublicationUpdateOneRequiredWithoutClinicsNestedInput = {
+  create?: Prisma.XOR<Prisma.PublicationCreateWithoutClinicsInput, Prisma.PublicationUncheckedCreateWithoutClinicsInput>
+  connectOrCreate?: Prisma.PublicationCreateOrConnectWithoutClinicsInput
+  upsert?: Prisma.PublicationUpsertWithoutClinicsInput
+  connect?: Prisma.PublicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PublicationUpdateToOneWithWhereWithoutClinicsInput, Prisma.PublicationUpdateWithoutClinicsInput>, Prisma.PublicationUncheckedUpdateWithoutClinicsInput>
+}
+
 export type PublicationCreateWithoutDoctorInput = {
   id?: string
   slug: string
@@ -555,6 +572,7 @@ export type PublicationCreateWithoutDoctorInput = {
   updatedAt?: Date | string
   diseases?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutPublicationInput
   procedures?: Prisma.PublicationOnProcedureCreateNestedManyWithoutPublicationInput
+  clinics?: Prisma.ClinicOnPublicationCreateNestedManyWithoutPublicationInput
 }
 
 export type PublicationUncheckedCreateWithoutDoctorInput = {
@@ -570,6 +588,7 @@ export type PublicationUncheckedCreateWithoutDoctorInput = {
   updatedAt?: Date | string
   diseases?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutPublicationInput
   procedures?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutPublicationInput
+  clinics?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutPublicationInput
 }
 
 export type PublicationCreateOrConnectWithoutDoctorInput = {
@@ -628,6 +647,7 @@ export type PublicationCreateWithoutDiseasesInput = {
   updatedAt?: Date | string
   doctor?: Prisma.DoctorCreateNestedOneWithoutPublicationsInput
   procedures?: Prisma.PublicationOnProcedureCreateNestedManyWithoutPublicationInput
+  clinics?: Prisma.ClinicOnPublicationCreateNestedManyWithoutPublicationInput
 }
 
 export type PublicationUncheckedCreateWithoutDiseasesInput = {
@@ -643,6 +663,7 @@ export type PublicationUncheckedCreateWithoutDiseasesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   procedures?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutPublicationInput
+  clinics?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutPublicationInput
 }
 
 export type PublicationCreateOrConnectWithoutDiseasesInput = {
@@ -674,6 +695,7 @@ export type PublicationUpdateWithoutDiseasesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctor?: Prisma.DoctorUpdateOneWithoutPublicationsNestedInput
   procedures?: Prisma.PublicationOnProcedureUpdateManyWithoutPublicationNestedInput
+  clinics?: Prisma.ClinicOnPublicationUpdateManyWithoutPublicationNestedInput
 }
 
 export type PublicationUncheckedUpdateWithoutDiseasesInput = {
@@ -689,6 +711,7 @@ export type PublicationUncheckedUpdateWithoutDiseasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   procedures?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutPublicationNestedInput
+  clinics?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutPublicationNestedInput
 }
 
 export type PublicationCreateWithoutProceduresInput = {
@@ -704,6 +727,7 @@ export type PublicationCreateWithoutProceduresInput = {
   updatedAt?: Date | string
   doctor?: Prisma.DoctorCreateNestedOneWithoutPublicationsInput
   diseases?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutPublicationInput
+  clinics?: Prisma.ClinicOnPublicationCreateNestedManyWithoutPublicationInput
 }
 
 export type PublicationUncheckedCreateWithoutProceduresInput = {
@@ -719,6 +743,7 @@ export type PublicationUncheckedCreateWithoutProceduresInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   diseases?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutPublicationInput
+  clinics?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutPublicationInput
 }
 
 export type PublicationCreateOrConnectWithoutProceduresInput = {
@@ -750,6 +775,7 @@ export type PublicationUpdateWithoutProceduresInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctor?: Prisma.DoctorUpdateOneWithoutPublicationsNestedInput
   diseases?: Prisma.PublicationOnDiseaseUpdateManyWithoutPublicationNestedInput
+  clinics?: Prisma.ClinicOnPublicationUpdateManyWithoutPublicationNestedInput
 }
 
 export type PublicationUncheckedUpdateWithoutProceduresInput = {
@@ -765,6 +791,87 @@ export type PublicationUncheckedUpdateWithoutProceduresInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   diseases?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutPublicationNestedInput
+  clinics?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutPublicationNestedInput
+}
+
+export type PublicationCreateWithoutClinicsInput = {
+  id?: string
+  slug: string
+  title: string
+  publicationType?: string | null
+  publishedAt?: Date | string | null
+  authorName?: string | null
+  abstract?: string | null
+  content?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  doctor?: Prisma.DoctorCreateNestedOneWithoutPublicationsInput
+  diseases?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutPublicationInput
+  procedures?: Prisma.PublicationOnProcedureCreateNestedManyWithoutPublicationInput
+}
+
+export type PublicationUncheckedCreateWithoutClinicsInput = {
+  id?: string
+  slug: string
+  title: string
+  publicationType?: string | null
+  publishedAt?: Date | string | null
+  authorName?: string | null
+  abstract?: string | null
+  content?: string | null
+  doctorId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  diseases?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutPublicationInput
+  procedures?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutPublicationInput
+}
+
+export type PublicationCreateOrConnectWithoutClinicsInput = {
+  where: Prisma.PublicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.PublicationCreateWithoutClinicsInput, Prisma.PublicationUncheckedCreateWithoutClinicsInput>
+}
+
+export type PublicationUpsertWithoutClinicsInput = {
+  update: Prisma.XOR<Prisma.PublicationUpdateWithoutClinicsInput, Prisma.PublicationUncheckedUpdateWithoutClinicsInput>
+  create: Prisma.XOR<Prisma.PublicationCreateWithoutClinicsInput, Prisma.PublicationUncheckedCreateWithoutClinicsInput>
+  where?: Prisma.PublicationWhereInput
+}
+
+export type PublicationUpdateToOneWithWhereWithoutClinicsInput = {
+  where?: Prisma.PublicationWhereInput
+  data: Prisma.XOR<Prisma.PublicationUpdateWithoutClinicsInput, Prisma.PublicationUncheckedUpdateWithoutClinicsInput>
+}
+
+export type PublicationUpdateWithoutClinicsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  publicationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abstract?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  doctor?: Prisma.DoctorUpdateOneWithoutPublicationsNestedInput
+  diseases?: Prisma.PublicationOnDiseaseUpdateManyWithoutPublicationNestedInput
+  procedures?: Prisma.PublicationOnProcedureUpdateManyWithoutPublicationNestedInput
+}
+
+export type PublicationUncheckedUpdateWithoutClinicsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  publicationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abstract?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doctorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  diseases?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutPublicationNestedInput
+  procedures?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutPublicationNestedInput
 }
 
 export type PublicationCreateManyDoctorInput = {
@@ -793,6 +900,7 @@ export type PublicationUpdateWithoutDoctorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   diseases?: Prisma.PublicationOnDiseaseUpdateManyWithoutPublicationNestedInput
   procedures?: Prisma.PublicationOnProcedureUpdateManyWithoutPublicationNestedInput
+  clinics?: Prisma.ClinicOnPublicationUpdateManyWithoutPublicationNestedInput
 }
 
 export type PublicationUncheckedUpdateWithoutDoctorInput = {
@@ -808,6 +916,7 @@ export type PublicationUncheckedUpdateWithoutDoctorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   diseases?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutPublicationNestedInput
   procedures?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutPublicationNestedInput
+  clinics?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutPublicationNestedInput
 }
 
 export type PublicationUncheckedUpdateManyWithoutDoctorInput = {
@@ -831,11 +940,13 @@ export type PublicationUncheckedUpdateManyWithoutDoctorInput = {
 export type PublicationCountOutputType = {
   diseases: number
   procedures: number
+  clinics: number
 }
 
 export type PublicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   diseases?: boolean | PublicationCountOutputTypeCountDiseasesArgs
   procedures?: boolean | PublicationCountOutputTypeCountProceduresArgs
+  clinics?: boolean | PublicationCountOutputTypeCountClinicsArgs
 }
 
 /**
@@ -862,6 +973,13 @@ export type PublicationCountOutputTypeCountProceduresArgs<ExtArgs extends runtim
   where?: Prisma.PublicationOnProcedureWhereInput
 }
 
+/**
+ * PublicationCountOutputType without action
+ */
+export type PublicationCountOutputTypeCountClinicsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClinicOnPublicationWhereInput
+}
+
 
 export type PublicationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -878,6 +996,7 @@ export type PublicationSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   doctor?: boolean | Prisma.Publication$doctorArgs<ExtArgs>
   diseases?: boolean | Prisma.Publication$diseasesArgs<ExtArgs>
   procedures?: boolean | Prisma.Publication$proceduresArgs<ExtArgs>
+  clinics?: boolean | Prisma.Publication$clinicsArgs<ExtArgs>
   _count?: boolean | Prisma.PublicationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["publication"]>
 
@@ -930,6 +1049,7 @@ export type PublicationInclude<ExtArgs extends runtime.Types.Extensions.Internal
   doctor?: boolean | Prisma.Publication$doctorArgs<ExtArgs>
   diseases?: boolean | Prisma.Publication$diseasesArgs<ExtArgs>
   procedures?: boolean | Prisma.Publication$proceduresArgs<ExtArgs>
+  clinics?: boolean | Prisma.Publication$clinicsArgs<ExtArgs>
   _count?: boolean | Prisma.PublicationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PublicationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -945,6 +1065,7 @@ export type $PublicationPayload<ExtArgs extends runtime.Types.Extensions.Interna
     doctor: Prisma.$DoctorPayload<ExtArgs> | null
     diseases: Prisma.$PublicationOnDiseasePayload<ExtArgs>[]
     procedures: Prisma.$PublicationOnProcedurePayload<ExtArgs>[]
+    clinics: Prisma.$ClinicOnPublicationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1355,6 +1476,7 @@ export interface Prisma__PublicationClient<T, Null = never, ExtArgs extends runt
   doctor<T extends Prisma.Publication$doctorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Publication$doctorArgs<ExtArgs>>): Prisma.Prisma__DoctorClient<runtime.Types.Result.GetResult<Prisma.$DoctorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   diseases<T extends Prisma.Publication$diseasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Publication$diseasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicationOnDiseasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   procedures<T extends Prisma.Publication$proceduresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Publication$proceduresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicationOnProcedurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  clinics<T extends Prisma.Publication$clinicsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Publication$clinicsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicOnPublicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1860,6 +1982,30 @@ export type Publication$proceduresArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.PublicationOnProcedureScalarFieldEnum | Prisma.PublicationOnProcedureScalarFieldEnum[]
+}
+
+/**
+ * Publication.clinics
+ */
+export type Publication$clinicsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClinicOnPublication
+   */
+  select?: Prisma.ClinicOnPublicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClinicOnPublication
+   */
+  omit?: Prisma.ClinicOnPublicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicOnPublicationInclude<ExtArgs> | null
+  where?: Prisma.ClinicOnPublicationWhereInput
+  orderBy?: Prisma.ClinicOnPublicationOrderByWithRelationInput | Prisma.ClinicOnPublicationOrderByWithRelationInput[]
+  cursor?: Prisma.ClinicOnPublicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClinicOnPublicationScalarFieldEnum | Prisma.ClinicOnPublicationScalarFieldEnum[]
 }
 
 /**

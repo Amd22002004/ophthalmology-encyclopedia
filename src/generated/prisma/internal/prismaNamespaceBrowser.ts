@@ -80,6 +80,8 @@ export const ModelName = {
   PublicationOnProcedure: 'PublicationOnProcedure',
   DiseaseOnClinicalGuideline: 'DiseaseOnClinicalGuideline',
   ClinicOnDisease: 'ClinicOnDisease',
+  ClinicOnProcedure: 'ClinicOnProcedure',
+  ClinicOnPublication: 'ClinicOnPublication',
   AdminUser: 'AdminUser'
 } as const
 
@@ -154,14 +156,41 @@ export const ClinicScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
   title: 'title',
+  legalName: 'legalName',
   description: 'description',
+  city: 'city',
   region: 'region',
   regionId: 'regionId',
+  clinicType: 'clinicType',
+  networkName: 'networkName',
+  status: 'status',
+  phones: 'phones',
   phone: 'phone',
   email: 'email',
   website: 'website',
   address: 'address',
+  inn: 'inn',
+  kpp: 'kpp',
+  ogrn: 'ogrn',
+  license: 'license',
   licenseStatus: 'licenseStatus',
+  licenseDate: 'licenseDate',
+  logoUrl: 'logoUrl',
+  coverImageUrl: 'coverImageUrl',
+  facadeImageUrl: 'facadeImageUrl',
+  workingHours: 'workingHours',
+  directorName: 'directorName',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  mapEmbed: 'mapEmbed',
+  appointmentUrl: 'appointmentUrl',
+  vkUrl: 'vkUrl',
+  telegramUrl: 'telegramUrl',
+  youtubeUrl: 'youtubeUrl',
+  foundedYear: 'foundedYear',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
+  seoKeywords: 'seoKeywords',
   omsEnabled: 'omsEnabled',
   contractBased: 'contractBased',
   createdAt: 'createdAt',
@@ -457,6 +486,24 @@ export const ClinicOnDiseaseScalarFieldEnum = {
 } as const
 
 export type ClinicOnDiseaseScalarFieldEnum = (typeof ClinicOnDiseaseScalarFieldEnum)[keyof typeof ClinicOnDiseaseScalarFieldEnum]
+
+
+export const ClinicOnProcedureScalarFieldEnum = {
+  clinicId: 'clinicId',
+  procedureId: 'procedureId',
+  createdAt: 'createdAt'
+} as const
+
+export type ClinicOnProcedureScalarFieldEnum = (typeof ClinicOnProcedureScalarFieldEnum)[keyof typeof ClinicOnProcedureScalarFieldEnum]
+
+
+export const ClinicOnPublicationScalarFieldEnum = {
+  clinicId: 'clinicId',
+  publicationId: 'publicationId',
+  createdAt: 'createdAt'
+} as const
+
+export type ClinicOnPublicationScalarFieldEnum = (typeof ClinicOnPublicationScalarFieldEnum)[keyof typeof ClinicOnPublicationScalarFieldEnum]
 
 
 export const AdminUserScalarFieldEnum = {

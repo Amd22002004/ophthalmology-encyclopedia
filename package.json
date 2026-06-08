@@ -11,7 +11,8 @@
     "prisma:generate": "prisma generate",
     "prisma:validate": "prisma validate",
     "db:seed": "dotenv -e .env -- tsx prisma/seed.ts",
-    "create-owner": "dotenv -e .env -- tsx scripts/create-owner.ts"
+    "create-owner": "dotenv -e .env -- tsx scripts/create-owner.ts",
+    "clinic:report": "dotenv -e .env -- tsx scripts/clinic-completeness-report.ts"
   },
   "prisma": {
     "seed": "dotenv -e .env -- tsx prisma/seed.ts"

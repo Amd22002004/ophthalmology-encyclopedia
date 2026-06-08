@@ -20,22 +20,62 @@ export type ClinicModel = runtime.Types.Result.DefaultSelection<Prisma.$ClinicPa
 
 export type AggregateClinic = {
   _count: ClinicCountAggregateOutputType | null
+  _avg: ClinicAvgAggregateOutputType | null
+  _sum: ClinicSumAggregateOutputType | null
   _min: ClinicMinAggregateOutputType | null
   _max: ClinicMaxAggregateOutputType | null
+}
+
+export type ClinicAvgAggregateOutputType = {
+  latitude: number | null
+  longitude: number | null
+  foundedYear: number | null
+}
+
+export type ClinicSumAggregateOutputType = {
+  latitude: number | null
+  longitude: number | null
+  foundedYear: number | null
 }
 
 export type ClinicMinAggregateOutputType = {
   id: string | null
   slug: string | null
   title: string | null
+  legalName: string | null
   description: string | null
+  city: string | null
   region: string | null
   regionId: string | null
+  clinicType: string | null
+  networkName: string | null
+  status: string | null
   phone: string | null
   email: string | null
   website: string | null
   address: string | null
+  inn: string | null
+  kpp: string | null
+  ogrn: string | null
+  license: string | null
   licenseStatus: string | null
+  licenseDate: Date | null
+  logoUrl: string | null
+  coverImageUrl: string | null
+  facadeImageUrl: string | null
+  workingHours: string | null
+  directorName: string | null
+  latitude: number | null
+  longitude: number | null
+  mapEmbed: string | null
+  appointmentUrl: string | null
+  vkUrl: string | null
+  telegramUrl: string | null
+  youtubeUrl: string | null
+  foundedYear: number | null
+  seoTitle: string | null
+  seoDescription: string | null
+  seoKeywords: string | null
   omsEnabled: boolean | null
   contractBased: boolean | null
   createdAt: Date | null
@@ -46,14 +86,40 @@ export type ClinicMaxAggregateOutputType = {
   id: string | null
   slug: string | null
   title: string | null
+  legalName: string | null
   description: string | null
+  city: string | null
   region: string | null
   regionId: string | null
+  clinicType: string | null
+  networkName: string | null
+  status: string | null
   phone: string | null
   email: string | null
   website: string | null
   address: string | null
+  inn: string | null
+  kpp: string | null
+  ogrn: string | null
+  license: string | null
   licenseStatus: string | null
+  licenseDate: Date | null
+  logoUrl: string | null
+  coverImageUrl: string | null
+  facadeImageUrl: string | null
+  workingHours: string | null
+  directorName: string | null
+  latitude: number | null
+  longitude: number | null
+  mapEmbed: string | null
+  appointmentUrl: string | null
+  vkUrl: string | null
+  telegramUrl: string | null
+  youtubeUrl: string | null
+  foundedYear: number | null
+  seoTitle: string | null
+  seoDescription: string | null
+  seoKeywords: string | null
   omsEnabled: boolean | null
   contractBased: boolean | null
   createdAt: Date | null
@@ -64,14 +130,41 @@ export type ClinicCountAggregateOutputType = {
   id: number
   slug: number
   title: number
+  legalName: number
   description: number
+  city: number
   region: number
   regionId: number
+  clinicType: number
+  networkName: number
+  status: number
+  phones: number
   phone: number
   email: number
   website: number
   address: number
+  inn: number
+  kpp: number
+  ogrn: number
+  license: number
   licenseStatus: number
+  licenseDate: number
+  logoUrl: number
+  coverImageUrl: number
+  facadeImageUrl: number
+  workingHours: number
+  directorName: number
+  latitude: number
+  longitude: number
+  mapEmbed: number
+  appointmentUrl: number
+  vkUrl: number
+  telegramUrl: number
+  youtubeUrl: number
+  foundedYear: number
+  seoTitle: number
+  seoDescription: number
+  seoKeywords: number
   omsEnabled: number
   contractBased: number
   createdAt: number
@@ -80,18 +173,56 @@ export type ClinicCountAggregateOutputType = {
 }
 
 
+export type ClinicAvgAggregateInputType = {
+  latitude?: true
+  longitude?: true
+  foundedYear?: true
+}
+
+export type ClinicSumAggregateInputType = {
+  latitude?: true
+  longitude?: true
+  foundedYear?: true
+}
+
 export type ClinicMinAggregateInputType = {
   id?: true
   slug?: true
   title?: true
+  legalName?: true
   description?: true
+  city?: true
   region?: true
   regionId?: true
+  clinicType?: true
+  networkName?: true
+  status?: true
   phone?: true
   email?: true
   website?: true
   address?: true
+  inn?: true
+  kpp?: true
+  ogrn?: true
+  license?: true
   licenseStatus?: true
+  licenseDate?: true
+  logoUrl?: true
+  coverImageUrl?: true
+  facadeImageUrl?: true
+  workingHours?: true
+  directorName?: true
+  latitude?: true
+  longitude?: true
+  mapEmbed?: true
+  appointmentUrl?: true
+  vkUrl?: true
+  telegramUrl?: true
+  youtubeUrl?: true
+  foundedYear?: true
+  seoTitle?: true
+  seoDescription?: true
+  seoKeywords?: true
   omsEnabled?: true
   contractBased?: true
   createdAt?: true
@@ -102,14 +233,40 @@ export type ClinicMaxAggregateInputType = {
   id?: true
   slug?: true
   title?: true
+  legalName?: true
   description?: true
+  city?: true
   region?: true
   regionId?: true
+  clinicType?: true
+  networkName?: true
+  status?: true
   phone?: true
   email?: true
   website?: true
   address?: true
+  inn?: true
+  kpp?: true
+  ogrn?: true
+  license?: true
   licenseStatus?: true
+  licenseDate?: true
+  logoUrl?: true
+  coverImageUrl?: true
+  facadeImageUrl?: true
+  workingHours?: true
+  directorName?: true
+  latitude?: true
+  longitude?: true
+  mapEmbed?: true
+  appointmentUrl?: true
+  vkUrl?: true
+  telegramUrl?: true
+  youtubeUrl?: true
+  foundedYear?: true
+  seoTitle?: true
+  seoDescription?: true
+  seoKeywords?: true
   omsEnabled?: true
   contractBased?: true
   createdAt?: true
@@ -120,14 +277,41 @@ export type ClinicCountAggregateInputType = {
   id?: true
   slug?: true
   title?: true
+  legalName?: true
   description?: true
+  city?: true
   region?: true
   regionId?: true
+  clinicType?: true
+  networkName?: true
+  status?: true
+  phones?: true
   phone?: true
   email?: true
   website?: true
   address?: true
+  inn?: true
+  kpp?: true
+  ogrn?: true
+  license?: true
   licenseStatus?: true
+  licenseDate?: true
+  logoUrl?: true
+  coverImageUrl?: true
+  facadeImageUrl?: true
+  workingHours?: true
+  directorName?: true
+  latitude?: true
+  longitude?: true
+  mapEmbed?: true
+  appointmentUrl?: true
+  vkUrl?: true
+  telegramUrl?: true
+  youtubeUrl?: true
+  foundedYear?: true
+  seoTitle?: true
+  seoDescription?: true
+  seoKeywords?: true
   omsEnabled?: true
   contractBased?: true
   createdAt?: true
@@ -173,6 +357,18 @@ export type ClinicAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ClinicAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ClinicSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ClinicMinAggregateInputType
@@ -203,6 +399,8 @@ export type ClinicGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: ClinicCountAggregateInputType | true
+  _avg?: ClinicAvgAggregateInputType
+  _sum?: ClinicSumAggregateInputType
   _min?: ClinicMinAggregateInputType
   _max?: ClinicMaxAggregateInputType
 }
@@ -211,19 +409,48 @@ export type ClinicGroupByOutputType = {
   id: string
   slug: string
   title: string
+  legalName: string | null
   description: string | null
+  city: string | null
   region: string | null
   regionId: string | null
+  clinicType: string | null
+  networkName: string | null
+  status: string
+  phones: string[]
   phone: string | null
   email: string | null
   website: string | null
   address: string | null
+  inn: string | null
+  kpp: string | null
+  ogrn: string | null
+  license: string | null
   licenseStatus: string | null
+  licenseDate: Date | null
+  logoUrl: string | null
+  coverImageUrl: string | null
+  facadeImageUrl: string | null
+  workingHours: string | null
+  directorName: string | null
+  latitude: number | null
+  longitude: number | null
+  mapEmbed: string | null
+  appointmentUrl: string | null
+  vkUrl: string | null
+  telegramUrl: string | null
+  youtubeUrl: string | null
+  foundedYear: number | null
+  seoTitle: string | null
+  seoDescription: string | null
+  seoKeywords: string | null
   omsEnabled: boolean
   contractBased: boolean
   createdAt: Date
   updatedAt: Date
   _count: ClinicCountAggregateOutputType | null
+  _avg: ClinicAvgAggregateOutputType | null
+  _sum: ClinicSumAggregateOutputType | null
   _min: ClinicMinAggregateOutputType | null
   _max: ClinicMaxAggregateOutputType | null
 }
@@ -250,14 +477,41 @@ export type ClinicWhereInput = {
   id?: Prisma.StringFilter<"Clinic"> | string
   slug?: Prisma.StringFilter<"Clinic"> | string
   title?: Prisma.StringFilter<"Clinic"> | string
+  legalName?: Prisma.StringNullableFilter<"Clinic"> | string | null
   description?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  city?: Prisma.StringNullableFilter<"Clinic"> | string | null
   region?: Prisma.StringNullableFilter<"Clinic"> | string | null
   regionId?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  clinicType?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  networkName?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  status?: Prisma.StringFilter<"Clinic"> | string
+  phones?: Prisma.StringNullableListFilter<"Clinic">
   phone?: Prisma.StringNullableFilter<"Clinic"> | string | null
   email?: Prisma.StringNullableFilter<"Clinic"> | string | null
   website?: Prisma.StringNullableFilter<"Clinic"> | string | null
   address?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  inn?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  kpp?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  ogrn?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  license?: Prisma.StringNullableFilter<"Clinic"> | string | null
   licenseStatus?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  licenseDate?: Prisma.DateTimeNullableFilter<"Clinic"> | Date | string | null
+  logoUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  coverImageUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  facadeImageUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  workingHours?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  directorName?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Clinic"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Clinic"> | number | null
+  mapEmbed?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  appointmentUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  vkUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  telegramUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  youtubeUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  foundedYear?: Prisma.IntNullableFilter<"Clinic"> | number | null
+  seoTitle?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  seoDescription?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  seoKeywords?: Prisma.StringNullableFilter<"Clinic"> | string | null
   omsEnabled?: Prisma.BoolFilter<"Clinic"> | boolean
   contractBased?: Prisma.BoolFilter<"Clinic"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
@@ -267,20 +521,49 @@ export type ClinicWhereInput = {
   doctors?: Prisma.DoctorOnClinicListRelationFilter
   suppliers?: Prisma.ClinicOnSupplierListRelationFilter
   diseases?: Prisma.ClinicOnDiseaseListRelationFilter
+  procedures?: Prisma.ClinicOnProcedureListRelationFilter
+  publications?: Prisma.ClinicOnPublicationListRelationFilter
 }
 
 export type ClinicOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  legalName?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
   region?: Prisma.SortOrderInput | Prisma.SortOrder
   regionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  clinicType?: Prisma.SortOrderInput | Prisma.SortOrder
+  networkName?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  phones?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  inn?: Prisma.SortOrderInput | Prisma.SortOrder
+  kpp?: Prisma.SortOrderInput | Prisma.SortOrder
+  ogrn?: Prisma.SortOrderInput | Prisma.SortOrder
+  license?: Prisma.SortOrderInput | Prisma.SortOrder
   licenseStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  licenseDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  coverImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  facadeImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  workingHours?: Prisma.SortOrderInput | Prisma.SortOrder
+  directorName?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  mapEmbed?: Prisma.SortOrderInput | Prisma.SortOrder
+  appointmentUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  vkUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  telegramUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  youtubeUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  foundedYear?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoDescription?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoKeywords?: Prisma.SortOrderInput | Prisma.SortOrder
   omsEnabled?: Prisma.SortOrder
   contractBased?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -290,6 +573,8 @@ export type ClinicOrderByWithRelationInput = {
   doctors?: Prisma.DoctorOnClinicOrderByRelationAggregateInput
   suppliers?: Prisma.ClinicOnSupplierOrderByRelationAggregateInput
   diseases?: Prisma.ClinicOnDiseaseOrderByRelationAggregateInput
+  procedures?: Prisma.ClinicOnProcedureOrderByRelationAggregateInput
+  publications?: Prisma.ClinicOnPublicationOrderByRelationAggregateInput
 }
 
 export type ClinicWhereUniqueInput = Prisma.AtLeast<{
@@ -299,14 +584,41 @@ export type ClinicWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ClinicWhereInput[]
   NOT?: Prisma.ClinicWhereInput | Prisma.ClinicWhereInput[]
   title?: Prisma.StringFilter<"Clinic"> | string
+  legalName?: Prisma.StringNullableFilter<"Clinic"> | string | null
   description?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  city?: Prisma.StringNullableFilter<"Clinic"> | string | null
   region?: Prisma.StringNullableFilter<"Clinic"> | string | null
   regionId?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  clinicType?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  networkName?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  status?: Prisma.StringFilter<"Clinic"> | string
+  phones?: Prisma.StringNullableListFilter<"Clinic">
   phone?: Prisma.StringNullableFilter<"Clinic"> | string | null
   email?: Prisma.StringNullableFilter<"Clinic"> | string | null
   website?: Prisma.StringNullableFilter<"Clinic"> | string | null
   address?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  inn?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  kpp?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  ogrn?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  license?: Prisma.StringNullableFilter<"Clinic"> | string | null
   licenseStatus?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  licenseDate?: Prisma.DateTimeNullableFilter<"Clinic"> | Date | string | null
+  logoUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  coverImageUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  facadeImageUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  workingHours?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  directorName?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Clinic"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Clinic"> | number | null
+  mapEmbed?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  appointmentUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  vkUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  telegramUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  youtubeUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  foundedYear?: Prisma.IntNullableFilter<"Clinic"> | number | null
+  seoTitle?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  seoDescription?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  seoKeywords?: Prisma.StringNullableFilter<"Clinic"> | string | null
   omsEnabled?: Prisma.BoolFilter<"Clinic"> | boolean
   contractBased?: Prisma.BoolFilter<"Clinic"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
@@ -316,27 +628,58 @@ export type ClinicWhereUniqueInput = Prisma.AtLeast<{
   doctors?: Prisma.DoctorOnClinicListRelationFilter
   suppliers?: Prisma.ClinicOnSupplierListRelationFilter
   diseases?: Prisma.ClinicOnDiseaseListRelationFilter
+  procedures?: Prisma.ClinicOnProcedureListRelationFilter
+  publications?: Prisma.ClinicOnPublicationListRelationFilter
 }, "id" | "slug">
 
 export type ClinicOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  legalName?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
   region?: Prisma.SortOrderInput | Prisma.SortOrder
   regionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  clinicType?: Prisma.SortOrderInput | Prisma.SortOrder
+  networkName?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  phones?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  inn?: Prisma.SortOrderInput | Prisma.SortOrder
+  kpp?: Prisma.SortOrderInput | Prisma.SortOrder
+  ogrn?: Prisma.SortOrderInput | Prisma.SortOrder
+  license?: Prisma.SortOrderInput | Prisma.SortOrder
   licenseStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  licenseDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  coverImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  facadeImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  workingHours?: Prisma.SortOrderInput | Prisma.SortOrder
+  directorName?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  mapEmbed?: Prisma.SortOrderInput | Prisma.SortOrder
+  appointmentUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  vkUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  telegramUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  youtubeUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  foundedYear?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoDescription?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoKeywords?: Prisma.SortOrderInput | Prisma.SortOrder
   omsEnabled?: Prisma.SortOrder
   contractBased?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ClinicCountOrderByAggregateInput
+  _avg?: Prisma.ClinicAvgOrderByAggregateInput
   _max?: Prisma.ClinicMaxOrderByAggregateInput
   _min?: Prisma.ClinicMinOrderByAggregateInput
+  _sum?: Prisma.ClinicSumOrderByAggregateInput
 }
 
 export type ClinicScalarWhereWithAggregatesInput = {
@@ -346,14 +689,41 @@ export type ClinicScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Clinic"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Clinic"> | string
   title?: Prisma.StringWithAggregatesFilter<"Clinic"> | string
+  legalName?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  city?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   region?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   regionId?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  clinicType?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  networkName?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  status?: Prisma.StringWithAggregatesFilter<"Clinic"> | string
+  phones?: Prisma.StringNullableListFilter<"Clinic">
   phone?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   email?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   website?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   address?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  inn?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  kpp?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  ogrn?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  license?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   licenseStatus?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  licenseDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Clinic"> | Date | string | null
+  logoUrl?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  coverImageUrl?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  facadeImageUrl?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  workingHours?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  directorName?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  latitude?: Prisma.FloatNullableWithAggregatesFilter<"Clinic"> | number | null
+  longitude?: Prisma.FloatNullableWithAggregatesFilter<"Clinic"> | number | null
+  mapEmbed?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  appointmentUrl?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  vkUrl?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  telegramUrl?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  youtubeUrl?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  foundedYear?: Prisma.IntNullableWithAggregatesFilter<"Clinic"> | number | null
+  seoTitle?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  seoDescription?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  seoKeywords?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   omsEnabled?: Prisma.BoolWithAggregatesFilter<"Clinic"> | boolean
   contractBased?: Prisma.BoolWithAggregatesFilter<"Clinic"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Clinic"> | Date | string
@@ -364,13 +734,40 @@ export type ClinicCreateInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -380,20 +777,49 @@ export type ClinicCreateInput = {
   doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
   suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
   diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
   regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -402,19 +828,48 @@ export type ClinicUncheckedCreateInput = {
   doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
   suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
   diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -424,20 +879,49 @@ export type ClinicUpdateInput = {
   doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
   suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
   diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -446,20 +930,49 @@ export type ClinicUncheckedUpdateInput = {
   doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
   suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
   diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateManyInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
   regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -470,13 +983,40 @@ export type ClinicUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -487,14 +1027,41 @@ export type ClinicUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -505,32 +1072,91 @@ export type ClinicCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  legalName?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   region?: Prisma.SortOrder
   regionId?: Prisma.SortOrder
+  clinicType?: Prisma.SortOrder
+  networkName?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  phones?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrder
   website?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  inn?: Prisma.SortOrder
+  kpp?: Prisma.SortOrder
+  ogrn?: Prisma.SortOrder
+  license?: Prisma.SortOrder
   licenseStatus?: Prisma.SortOrder
+  licenseDate?: Prisma.SortOrder
+  logoUrl?: Prisma.SortOrder
+  coverImageUrl?: Prisma.SortOrder
+  facadeImageUrl?: Prisma.SortOrder
+  workingHours?: Prisma.SortOrder
+  directorName?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  mapEmbed?: Prisma.SortOrder
+  appointmentUrl?: Prisma.SortOrder
+  vkUrl?: Prisma.SortOrder
+  telegramUrl?: Prisma.SortOrder
+  youtubeUrl?: Prisma.SortOrder
+  foundedYear?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
+  seoKeywords?: Prisma.SortOrder
   omsEnabled?: Prisma.SortOrder
   contractBased?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
+export type ClinicAvgOrderByAggregateInput = {
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  foundedYear?: Prisma.SortOrder
+}
+
 export type ClinicMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  legalName?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   region?: Prisma.SortOrder
   regionId?: Prisma.SortOrder
+  clinicType?: Prisma.SortOrder
+  networkName?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrder
   website?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  inn?: Prisma.SortOrder
+  kpp?: Prisma.SortOrder
+  ogrn?: Prisma.SortOrder
+  license?: Prisma.SortOrder
   licenseStatus?: Prisma.SortOrder
+  licenseDate?: Prisma.SortOrder
+  logoUrl?: Prisma.SortOrder
+  coverImageUrl?: Prisma.SortOrder
+  facadeImageUrl?: Prisma.SortOrder
+  workingHours?: Prisma.SortOrder
+  directorName?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  mapEmbed?: Prisma.SortOrder
+  appointmentUrl?: Prisma.SortOrder
+  vkUrl?: Prisma.SortOrder
+  telegramUrl?: Prisma.SortOrder
+  youtubeUrl?: Prisma.SortOrder
+  foundedYear?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
+  seoKeywords?: Prisma.SortOrder
   omsEnabled?: Prisma.SortOrder
   contractBased?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -541,18 +1167,50 @@ export type ClinicMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  legalName?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   region?: Prisma.SortOrder
   regionId?: Prisma.SortOrder
+  clinicType?: Prisma.SortOrder
+  networkName?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrder
   website?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  inn?: Prisma.SortOrder
+  kpp?: Prisma.SortOrder
+  ogrn?: Prisma.SortOrder
+  license?: Prisma.SortOrder
   licenseStatus?: Prisma.SortOrder
+  licenseDate?: Prisma.SortOrder
+  logoUrl?: Prisma.SortOrder
+  coverImageUrl?: Prisma.SortOrder
+  facadeImageUrl?: Prisma.SortOrder
+  workingHours?: Prisma.SortOrder
+  directorName?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  mapEmbed?: Prisma.SortOrder
+  appointmentUrl?: Prisma.SortOrder
+  vkUrl?: Prisma.SortOrder
+  telegramUrl?: Prisma.SortOrder
+  youtubeUrl?: Prisma.SortOrder
+  foundedYear?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
+  seoKeywords?: Prisma.SortOrder
   omsEnabled?: Prisma.SortOrder
   contractBased?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ClinicSumOrderByAggregateInput = {
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  foundedYear?: Prisma.SortOrder
 }
 
 export type ClinicListRelationFilter = {
@@ -568,6 +1226,27 @@ export type ClinicOrderByRelationAggregateInput = {
 export type ClinicScalarRelationFilter = {
   is?: Prisma.ClinicWhereInput
   isNot?: Prisma.ClinicWhereInput
+}
+
+export type ClinicCreatephonesInput = {
+  set: string[]
+}
+
+export type ClinicUpdatephonesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type BoolFieldUpdateOperationsInput = {
@@ -672,17 +1351,72 @@ export type ClinicUpdateOneRequiredWithoutDiseasesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ClinicUpdateToOneWithWhereWithoutDiseasesInput, Prisma.ClinicUpdateWithoutDiseasesInput>, Prisma.ClinicUncheckedUpdateWithoutDiseasesInput>
 }
 
+export type ClinicCreateNestedOneWithoutProceduresInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutProceduresInput, Prisma.ClinicUncheckedCreateWithoutProceduresInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutProceduresInput
+  connect?: Prisma.ClinicWhereUniqueInput
+}
+
+export type ClinicUpdateOneRequiredWithoutProceduresNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutProceduresInput, Prisma.ClinicUncheckedCreateWithoutProceduresInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutProceduresInput
+  upsert?: Prisma.ClinicUpsertWithoutProceduresInput
+  connect?: Prisma.ClinicWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClinicUpdateToOneWithWhereWithoutProceduresInput, Prisma.ClinicUpdateWithoutProceduresInput>, Prisma.ClinicUncheckedUpdateWithoutProceduresInput>
+}
+
+export type ClinicCreateNestedOneWithoutPublicationsInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutPublicationsInput, Prisma.ClinicUncheckedCreateWithoutPublicationsInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutPublicationsInput
+  connect?: Prisma.ClinicWhereUniqueInput
+}
+
+export type ClinicUpdateOneRequiredWithoutPublicationsNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutPublicationsInput, Prisma.ClinicUncheckedCreateWithoutPublicationsInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutPublicationsInput
+  upsert?: Prisma.ClinicUpsertWithoutPublicationsInput
+  connect?: Prisma.ClinicWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClinicUpdateToOneWithWhereWithoutPublicationsInput, Prisma.ClinicUpdateWithoutPublicationsInput>, Prisma.ClinicUncheckedUpdateWithoutPublicationsInput>
+}
+
 export type ClinicCreateWithoutRegionEntityInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -691,19 +1425,48 @@ export type ClinicCreateWithoutRegionEntityInput = {
   doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
   suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
   diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutRegionEntityInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -712,6 +1475,8 @@ export type ClinicUncheckedCreateWithoutRegionEntityInput = {
   doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
   suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
   diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutRegionEntityInput = {
@@ -747,14 +1512,41 @@ export type ClinicScalarWhereInput = {
   id?: Prisma.StringFilter<"Clinic"> | string
   slug?: Prisma.StringFilter<"Clinic"> | string
   title?: Prisma.StringFilter<"Clinic"> | string
+  legalName?: Prisma.StringNullableFilter<"Clinic"> | string | null
   description?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  city?: Prisma.StringNullableFilter<"Clinic"> | string | null
   region?: Prisma.StringNullableFilter<"Clinic"> | string | null
   regionId?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  clinicType?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  networkName?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  status?: Prisma.StringFilter<"Clinic"> | string
+  phones?: Prisma.StringNullableListFilter<"Clinic">
   phone?: Prisma.StringNullableFilter<"Clinic"> | string | null
   email?: Prisma.StringNullableFilter<"Clinic"> | string | null
   website?: Prisma.StringNullableFilter<"Clinic"> | string | null
   address?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  inn?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  kpp?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  ogrn?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  license?: Prisma.StringNullableFilter<"Clinic"> | string | null
   licenseStatus?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  licenseDate?: Prisma.DateTimeNullableFilter<"Clinic"> | Date | string | null
+  logoUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  coverImageUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  facadeImageUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  workingHours?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  directorName?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Clinic"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Clinic"> | number | null
+  mapEmbed?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  appointmentUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  vkUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  telegramUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  youtubeUrl?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  foundedYear?: Prisma.IntNullableFilter<"Clinic"> | number | null
+  seoTitle?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  seoDescription?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  seoKeywords?: Prisma.StringNullableFilter<"Clinic"> | string | null
   omsEnabled?: Prisma.BoolFilter<"Clinic"> | boolean
   contractBased?: Prisma.BoolFilter<"Clinic"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
@@ -765,13 +1557,40 @@ export type ClinicCreateWithoutDoctorsInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -780,20 +1599,49 @@ export type ClinicCreateWithoutDoctorsInput = {
   specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
   suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
   diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutDoctorsInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
   regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -801,6 +1649,8 @@ export type ClinicUncheckedCreateWithoutDoctorsInput = {
   specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
   suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
   diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutDoctorsInput = {
@@ -823,13 +1673,40 @@ export type ClinicUpdateWithoutDoctorsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -838,20 +1715,49 @@ export type ClinicUpdateWithoutDoctorsInput = {
   specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
   suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
   diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutDoctorsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -859,19 +1765,48 @@ export type ClinicUncheckedUpdateWithoutDoctorsInput = {
   specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
   suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
   diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateWithoutSpecialtiesInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -880,20 +1815,49 @@ export type ClinicCreateWithoutSpecialtiesInput = {
   doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
   suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
   diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutSpecialtiesInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
   regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -901,6 +1865,8 @@ export type ClinicUncheckedCreateWithoutSpecialtiesInput = {
   doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
   suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
   diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutSpecialtiesInput = {
@@ -923,13 +1889,40 @@ export type ClinicUpdateWithoutSpecialtiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -938,20 +1931,49 @@ export type ClinicUpdateWithoutSpecialtiesInput = {
   doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
   suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
   diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutSpecialtiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -959,19 +1981,48 @@ export type ClinicUncheckedUpdateWithoutSpecialtiesInput = {
   doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
   suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
   diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateWithoutSuppliersInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -980,20 +2031,49 @@ export type ClinicCreateWithoutSuppliersInput = {
   specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
   doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
   diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutSuppliersInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
   regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -1001,6 +2081,8 @@ export type ClinicUncheckedCreateWithoutSuppliersInput = {
   specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
   doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
   diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutSuppliersInput = {
@@ -1023,13 +2105,40 @@ export type ClinicUpdateWithoutSuppliersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1038,20 +2147,49 @@ export type ClinicUpdateWithoutSuppliersInput = {
   specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
   doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
   diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutSuppliersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1059,19 +2197,48 @@ export type ClinicUncheckedUpdateWithoutSuppliersInput = {
   specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
   doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
   diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateWithoutDiseasesInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -1080,20 +2247,49 @@ export type ClinicCreateWithoutDiseasesInput = {
   specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
   doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
   suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutDiseasesInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
   regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -1101,6 +2297,8 @@ export type ClinicUncheckedCreateWithoutDiseasesInput = {
   specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
   doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
   suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutDiseasesInput = {
@@ -1123,13 +2321,40 @@ export type ClinicUpdateWithoutDiseasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1138,20 +2363,49 @@ export type ClinicUpdateWithoutDiseasesInput = {
   specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
   doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
   suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutDiseasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1159,19 +2413,480 @@ export type ClinicUncheckedUpdateWithoutDiseasesInput = {
   specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
   doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
   suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicCreateWithoutProceduresInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
+  specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicUncheckedCreateWithoutProceduresInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicCreateOrConnectWithoutProceduresInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutProceduresInput, Prisma.ClinicUncheckedCreateWithoutProceduresInput>
+}
+
+export type ClinicUpsertWithoutProceduresInput = {
+  update: Prisma.XOR<Prisma.ClinicUpdateWithoutProceduresInput, Prisma.ClinicUncheckedUpdateWithoutProceduresInput>
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutProceduresInput, Prisma.ClinicUncheckedCreateWithoutProceduresInput>
+  where?: Prisma.ClinicWhereInput
+}
+
+export type ClinicUpdateToOneWithWhereWithoutProceduresInput = {
+  where?: Prisma.ClinicWhereInput
+  data: Prisma.XOR<Prisma.ClinicUpdateWithoutProceduresInput, Prisma.ClinicUncheckedUpdateWithoutProceduresInput>
+}
+
+export type ClinicUpdateWithoutProceduresInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
+  specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicUncheckedUpdateWithoutProceduresInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicCreateWithoutPublicationsInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
+  specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicUncheckedCreateWithoutPublicationsInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicCreateOrConnectWithoutPublicationsInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutPublicationsInput, Prisma.ClinicUncheckedCreateWithoutPublicationsInput>
+}
+
+export type ClinicUpsertWithoutPublicationsInput = {
+  update: Prisma.XOR<Prisma.ClinicUpdateWithoutPublicationsInput, Prisma.ClinicUncheckedUpdateWithoutPublicationsInput>
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutPublicationsInput, Prisma.ClinicUncheckedCreateWithoutPublicationsInput>
+  where?: Prisma.ClinicWhereInput
+}
+
+export type ClinicUpdateToOneWithWhereWithoutPublicationsInput = {
+  where?: Prisma.ClinicWhereInput
+  data: Prisma.XOR<Prisma.ClinicUpdateWithoutPublicationsInput, Prisma.ClinicUncheckedUpdateWithoutPublicationsInput>
+}
+
+export type ClinicUpdateWithoutPublicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
+  specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicUncheckedUpdateWithoutPublicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateManyRegionEntityInput = {
   id?: string
   slug: string
   title: string
+  legalName?: string | null
   description?: string | null
+  city?: string | null
   region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
   phone?: string | null
   email?: string | null
   website?: string | null
   address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
   licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: Date | string
@@ -1182,13 +2897,40 @@ export type ClinicUpdateWithoutRegionEntityInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1197,19 +2939,48 @@ export type ClinicUpdateWithoutRegionEntityInput = {
   doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
   suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
   diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutRegionEntityInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1218,19 +2989,48 @@ export type ClinicUncheckedUpdateWithoutRegionEntityInput = {
   doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
   suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
   diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateManyWithoutRegionEntityInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1247,6 +3047,8 @@ export type ClinicCountOutputType = {
   doctors: number
   suppliers: number
   diseases: number
+  procedures: number
+  publications: number
 }
 
 export type ClinicCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1254,6 +3056,8 @@ export type ClinicCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   doctors?: boolean | ClinicCountOutputTypeCountDoctorsArgs
   suppliers?: boolean | ClinicCountOutputTypeCountSuppliersArgs
   diseases?: boolean | ClinicCountOutputTypeCountDiseasesArgs
+  procedures?: boolean | ClinicCountOutputTypeCountProceduresArgs
+  publications?: boolean | ClinicCountOutputTypeCountPublicationsArgs
 }
 
 /**
@@ -1294,19 +3098,60 @@ export type ClinicCountOutputTypeCountDiseasesArgs<ExtArgs extends runtime.Types
   where?: Prisma.ClinicOnDiseaseWhereInput
 }
 
+/**
+ * ClinicCountOutputType without action
+ */
+export type ClinicCountOutputTypeCountProceduresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClinicOnProcedureWhereInput
+}
+
+/**
+ * ClinicCountOutputType without action
+ */
+export type ClinicCountOutputTypeCountPublicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClinicOnPublicationWhereInput
+}
+
 
 export type ClinicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   slug?: boolean
   title?: boolean
+  legalName?: boolean
   description?: boolean
+  city?: boolean
   region?: boolean
   regionId?: boolean
+  clinicType?: boolean
+  networkName?: boolean
+  status?: boolean
+  phones?: boolean
   phone?: boolean
   email?: boolean
   website?: boolean
   address?: boolean
+  inn?: boolean
+  kpp?: boolean
+  ogrn?: boolean
+  license?: boolean
   licenseStatus?: boolean
+  licenseDate?: boolean
+  logoUrl?: boolean
+  coverImageUrl?: boolean
+  facadeImageUrl?: boolean
+  workingHours?: boolean
+  directorName?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  mapEmbed?: boolean
+  appointmentUrl?: boolean
+  vkUrl?: boolean
+  telegramUrl?: boolean
+  youtubeUrl?: boolean
+  foundedYear?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
+  seoKeywords?: boolean
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: boolean
@@ -1316,6 +3161,8 @@ export type ClinicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   doctors?: boolean | Prisma.Clinic$doctorsArgs<ExtArgs>
   suppliers?: boolean | Prisma.Clinic$suppliersArgs<ExtArgs>
   diseases?: boolean | Prisma.Clinic$diseasesArgs<ExtArgs>
+  procedures?: boolean | Prisma.Clinic$proceduresArgs<ExtArgs>
+  publications?: boolean | Prisma.Clinic$publicationsArgs<ExtArgs>
   _count?: boolean | Prisma.ClinicCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["clinic"]>
 
@@ -1323,14 +3170,41 @@ export type ClinicSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   slug?: boolean
   title?: boolean
+  legalName?: boolean
   description?: boolean
+  city?: boolean
   region?: boolean
   regionId?: boolean
+  clinicType?: boolean
+  networkName?: boolean
+  status?: boolean
+  phones?: boolean
   phone?: boolean
   email?: boolean
   website?: boolean
   address?: boolean
+  inn?: boolean
+  kpp?: boolean
+  ogrn?: boolean
+  license?: boolean
   licenseStatus?: boolean
+  licenseDate?: boolean
+  logoUrl?: boolean
+  coverImageUrl?: boolean
+  facadeImageUrl?: boolean
+  workingHours?: boolean
+  directorName?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  mapEmbed?: boolean
+  appointmentUrl?: boolean
+  vkUrl?: boolean
+  telegramUrl?: boolean
+  youtubeUrl?: boolean
+  foundedYear?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
+  seoKeywords?: boolean
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: boolean
@@ -1342,14 +3216,41 @@ export type ClinicSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   slug?: boolean
   title?: boolean
+  legalName?: boolean
   description?: boolean
+  city?: boolean
   region?: boolean
   regionId?: boolean
+  clinicType?: boolean
+  networkName?: boolean
+  status?: boolean
+  phones?: boolean
   phone?: boolean
   email?: boolean
   website?: boolean
   address?: boolean
+  inn?: boolean
+  kpp?: boolean
+  ogrn?: boolean
+  license?: boolean
   licenseStatus?: boolean
+  licenseDate?: boolean
+  logoUrl?: boolean
+  coverImageUrl?: boolean
+  facadeImageUrl?: boolean
+  workingHours?: boolean
+  directorName?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  mapEmbed?: boolean
+  appointmentUrl?: boolean
+  vkUrl?: boolean
+  telegramUrl?: boolean
+  youtubeUrl?: boolean
+  foundedYear?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
+  seoKeywords?: boolean
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: boolean
@@ -1361,27 +3262,56 @@ export type ClinicSelectScalar = {
   id?: boolean
   slug?: boolean
   title?: boolean
+  legalName?: boolean
   description?: boolean
+  city?: boolean
   region?: boolean
   regionId?: boolean
+  clinicType?: boolean
+  networkName?: boolean
+  status?: boolean
+  phones?: boolean
   phone?: boolean
   email?: boolean
   website?: boolean
   address?: boolean
+  inn?: boolean
+  kpp?: boolean
+  ogrn?: boolean
+  license?: boolean
   licenseStatus?: boolean
+  licenseDate?: boolean
+  logoUrl?: boolean
+  coverImageUrl?: boolean
+  facadeImageUrl?: boolean
+  workingHours?: boolean
+  directorName?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  mapEmbed?: boolean
+  appointmentUrl?: boolean
+  vkUrl?: boolean
+  telegramUrl?: boolean
+  youtubeUrl?: boolean
+  foundedYear?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
+  seoKeywords?: boolean
   omsEnabled?: boolean
   contractBased?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ClinicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "description" | "region" | "regionId" | "phone" | "email" | "website" | "address" | "licenseStatus" | "omsEnabled" | "contractBased" | "createdAt" | "updatedAt", ExtArgs["result"]["clinic"]>
+export type ClinicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "legalName" | "description" | "city" | "region" | "regionId" | "clinicType" | "networkName" | "status" | "phones" | "phone" | "email" | "website" | "address" | "inn" | "kpp" | "ogrn" | "license" | "licenseStatus" | "licenseDate" | "logoUrl" | "coverImageUrl" | "facadeImageUrl" | "workingHours" | "directorName" | "latitude" | "longitude" | "mapEmbed" | "appointmentUrl" | "vkUrl" | "telegramUrl" | "youtubeUrl" | "foundedYear" | "seoTitle" | "seoDescription" | "seoKeywords" | "omsEnabled" | "contractBased" | "createdAt" | "updatedAt", ExtArgs["result"]["clinic"]>
 export type ClinicInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   regionEntity?: boolean | Prisma.Clinic$regionEntityArgs<ExtArgs>
   specialties?: boolean | Prisma.Clinic$specialtiesArgs<ExtArgs>
   doctors?: boolean | Prisma.Clinic$doctorsArgs<ExtArgs>
   suppliers?: boolean | Prisma.Clinic$suppliersArgs<ExtArgs>
   diseases?: boolean | Prisma.Clinic$diseasesArgs<ExtArgs>
+  procedures?: boolean | Prisma.Clinic$proceduresArgs<ExtArgs>
+  publications?: boolean | Prisma.Clinic$publicationsArgs<ExtArgs>
   _count?: boolean | Prisma.ClinicCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ClinicIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1399,19 +3329,48 @@ export type $ClinicPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     doctors: Prisma.$DoctorOnClinicPayload<ExtArgs>[]
     suppliers: Prisma.$ClinicOnSupplierPayload<ExtArgs>[]
     diseases: Prisma.$ClinicOnDiseasePayload<ExtArgs>[]
+    procedures: Prisma.$ClinicOnProcedurePayload<ExtArgs>[]
+    publications: Prisma.$ClinicOnPublicationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     slug: string
     title: string
+    legalName: string | null
     description: string | null
+    city: string | null
     region: string | null
     regionId: string | null
+    clinicType: string | null
+    networkName: string | null
+    status: string
+    phones: string[]
     phone: string | null
     email: string | null
     website: string | null
     address: string | null
+    inn: string | null
+    kpp: string | null
+    ogrn: string | null
+    license: string | null
     licenseStatus: string | null
+    licenseDate: Date | null
+    logoUrl: string | null
+    coverImageUrl: string | null
+    facadeImageUrl: string | null
+    workingHours: string | null
+    directorName: string | null
+    latitude: number | null
+    longitude: number | null
+    mapEmbed: string | null
+    appointmentUrl: string | null
+    vkUrl: string | null
+    telegramUrl: string | null
+    youtubeUrl: string | null
+    foundedYear: number | null
+    seoTitle: string | null
+    seoDescription: string | null
+    seoKeywords: string | null
     omsEnabled: boolean
     contractBased: boolean
     createdAt: Date
@@ -1815,6 +3774,8 @@ export interface Prisma__ClinicClient<T, Null = never, ExtArgs extends runtime.T
   doctors<T extends Prisma.Clinic$doctorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$doctorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DoctorOnClinicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   suppliers<T extends Prisma.Clinic$suppliersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$suppliersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicOnSupplierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   diseases<T extends Prisma.Clinic$diseasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$diseasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicOnDiseasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  procedures<T extends Prisma.Clinic$proceduresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$proceduresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicOnProcedurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  publications<T extends Prisma.Clinic$publicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$publicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicOnPublicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1847,14 +3808,41 @@ export interface ClinicFieldRefs {
   readonly id: Prisma.FieldRef<"Clinic", 'String'>
   readonly slug: Prisma.FieldRef<"Clinic", 'String'>
   readonly title: Prisma.FieldRef<"Clinic", 'String'>
+  readonly legalName: Prisma.FieldRef<"Clinic", 'String'>
   readonly description: Prisma.FieldRef<"Clinic", 'String'>
+  readonly city: Prisma.FieldRef<"Clinic", 'String'>
   readonly region: Prisma.FieldRef<"Clinic", 'String'>
   readonly regionId: Prisma.FieldRef<"Clinic", 'String'>
+  readonly clinicType: Prisma.FieldRef<"Clinic", 'String'>
+  readonly networkName: Prisma.FieldRef<"Clinic", 'String'>
+  readonly status: Prisma.FieldRef<"Clinic", 'String'>
+  readonly phones: Prisma.FieldRef<"Clinic", 'String[]'>
   readonly phone: Prisma.FieldRef<"Clinic", 'String'>
   readonly email: Prisma.FieldRef<"Clinic", 'String'>
   readonly website: Prisma.FieldRef<"Clinic", 'String'>
   readonly address: Prisma.FieldRef<"Clinic", 'String'>
+  readonly inn: Prisma.FieldRef<"Clinic", 'String'>
+  readonly kpp: Prisma.FieldRef<"Clinic", 'String'>
+  readonly ogrn: Prisma.FieldRef<"Clinic", 'String'>
+  readonly license: Prisma.FieldRef<"Clinic", 'String'>
   readonly licenseStatus: Prisma.FieldRef<"Clinic", 'String'>
+  readonly licenseDate: Prisma.FieldRef<"Clinic", 'DateTime'>
+  readonly logoUrl: Prisma.FieldRef<"Clinic", 'String'>
+  readonly coverImageUrl: Prisma.FieldRef<"Clinic", 'String'>
+  readonly facadeImageUrl: Prisma.FieldRef<"Clinic", 'String'>
+  readonly workingHours: Prisma.FieldRef<"Clinic", 'String'>
+  readonly directorName: Prisma.FieldRef<"Clinic", 'String'>
+  readonly latitude: Prisma.FieldRef<"Clinic", 'Float'>
+  readonly longitude: Prisma.FieldRef<"Clinic", 'Float'>
+  readonly mapEmbed: Prisma.FieldRef<"Clinic", 'String'>
+  readonly appointmentUrl: Prisma.FieldRef<"Clinic", 'String'>
+  readonly vkUrl: Prisma.FieldRef<"Clinic", 'String'>
+  readonly telegramUrl: Prisma.FieldRef<"Clinic", 'String'>
+  readonly youtubeUrl: Prisma.FieldRef<"Clinic", 'String'>
+  readonly foundedYear: Prisma.FieldRef<"Clinic", 'Int'>
+  readonly seoTitle: Prisma.FieldRef<"Clinic", 'String'>
+  readonly seoDescription: Prisma.FieldRef<"Clinic", 'String'>
+  readonly seoKeywords: Prisma.FieldRef<"Clinic", 'String'>
   readonly omsEnabled: Prisma.FieldRef<"Clinic", 'Boolean'>
   readonly contractBased: Prisma.FieldRef<"Clinic", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Clinic", 'DateTime'>
@@ -2372,6 +4360,54 @@ export type Clinic$diseasesArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ClinicOnDiseaseScalarFieldEnum | Prisma.ClinicOnDiseaseScalarFieldEnum[]
+}
+
+/**
+ * Clinic.procedures
+ */
+export type Clinic$proceduresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClinicOnProcedure
+   */
+  select?: Prisma.ClinicOnProcedureSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClinicOnProcedure
+   */
+  omit?: Prisma.ClinicOnProcedureOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicOnProcedureInclude<ExtArgs> | null
+  where?: Prisma.ClinicOnProcedureWhereInput
+  orderBy?: Prisma.ClinicOnProcedureOrderByWithRelationInput | Prisma.ClinicOnProcedureOrderByWithRelationInput[]
+  cursor?: Prisma.ClinicOnProcedureWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClinicOnProcedureScalarFieldEnum | Prisma.ClinicOnProcedureScalarFieldEnum[]
+}
+
+/**
+ * Clinic.publications
+ */
+export type Clinic$publicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClinicOnPublication
+   */
+  select?: Prisma.ClinicOnPublicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClinicOnPublication
+   */
+  omit?: Prisma.ClinicOnPublicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicOnPublicationInclude<ExtArgs> | null
+  where?: Prisma.ClinicOnPublicationWhereInput
+  orderBy?: Prisma.ClinicOnPublicationOrderByWithRelationInput | Prisma.ClinicOnPublicationOrderByWithRelationInput[]
+  cursor?: Prisma.ClinicOnPublicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClinicOnPublicationScalarFieldEnum | Prisma.ClinicOnPublicationScalarFieldEnum[]
 }
 
 /**

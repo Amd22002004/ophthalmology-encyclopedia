@@ -47,6 +47,7 @@ model Procedure {
   doctors      DoctorOnProcedure[]
   equipment    ProcedureOnEquipment[]
   publications PublicationOnProcedure[]
+  clinics      ClinicOnProcedure[]
 
   @@index([categoryId])
   @@index([title])
@@ -82,14 +83,41 @@ model Clinic {
   id            String   @id @default(cuid())
   slug          String   @unique
   title         String
+  legalName     String?
   description   String?
+  city          String?
   region        String?
   regionId      String?
+  clinicType    String?
+  networkName   String?
+  status        String   @default("active")
+  phones        String[] @default([])
   phone         String?
   email         String?
   website       String?
   address       String?
+  inn           String?
+  kpp           String?
+  ogrn          String?
+  license       String?
   licenseStatus String?
+  licenseDate   DateTime?
+  logoUrl       String?
+  coverImageUrl String?
+  facadeImageUrl String?
+  workingHours  String?
+  directorName  String?
+  latitude      Float?
+  longitude     Float?
+  mapEmbed      String?
+  appointmentUrl String?
+  vkUrl         String?
+  telegramUrl   String?
+  youtubeUrl    String?
+  foundedYear   Int?
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String?
   omsEnabled    Boolean  @default(false)
   contractBased Boolean  @default(false)
   createdAt     DateTime @default(now())
@@ -100,9 +128,12 @@ model Clinic {
   doctors      DoctorOnClinic[]
   suppliers    ClinicOnSupplier[]
   diseases     ClinicOnDisease[]
+  procedures   ClinicOnProcedure[]
+  publications ClinicOnPublication[]
 
   @@index([regionId])
   @@index([title])
+  @@index([status])
   @@index([omsEnabled, contractBased])
 }
 
@@ -162,6 +193,7 @@ model Publication {
   doctor     Doctor?                  @relation(fields: [doctorId], references: [id], onDelete: SetNull)
   diseases   PublicationOnDisease[]
   procedures PublicationOnProcedure[]
+  clinics    ClinicOnPublication[]
 
   @@index([doctorId])
   @@index([publishedAt])
@@ -455,6 +487,30 @@ model ClinicOnDisease {
 
   @@id([clinicId, diseaseId])
   @@index([diseaseId])
+}
+
+model ClinicOnProcedure {
+  clinicId    String
+  procedureId String
+  createdAt   DateTime @default(now())
+
+  clinic    Clinic    @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  procedure Procedure @relation(fields: [procedureId], references: [id], onDelete: Cascade)
+
+  @@id([clinicId, procedureId])
+  @@index([procedureId])
+}
+
+model ClinicOnPublication {
+  clinicId      String
+  publicationId String
+  createdAt     DateTime @default(now())
+
+  clinic      Clinic      @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  publication Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+
+  @@id([clinicId, publicationId])
+  @@index([publicationId])
 }
 
 enum AdminRole {
