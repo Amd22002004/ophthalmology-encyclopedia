@@ -3,7 +3,7 @@ import { EntityHeader } from "@/components/entity/entity-header";
 import { SchemaOrg } from "@/components/seo/schema-org";
 import { ClinicsFilteredGrid } from "@/components/catalog/clinics-filtered-grid";
 import { getCatalogConfig } from "@/lib/content-model";
-import { CLINICS } from "@/lib/clinics-data";
+import { getClinicsCatalog } from "@/lib/loaders";
 import { absoluteUrl, breadcrumbJsonLd, createCatalogMetadata } from "@/lib/seo";
 
 const config = getCatalogConfig("clinics");
@@ -11,7 +11,8 @@ const config = getCatalogConfig("clinics");
 export const revalidate = 3600;
 export const metadata = createCatalogMetadata(config);
 
-export default function ClinicsPage() {
+export default async function ClinicsPage() {
+  const clinics = await getClinicsCatalog();
   return (
     <div className="space-y-5">
       <Breadcrumbs items={[{ label: config.title }]} />
@@ -20,7 +21,7 @@ export default function ClinicsPage() {
         eyebrow={config.eyebrow}
         title={config.title}
       />
-      <ClinicsFilteredGrid clinics={CLINICS} />
+      <ClinicsFilteredGrid clinics={clinics} />
       <SchemaOrg
         data={breadcrumbJsonLd([
           { href: "/", label: "Главная" },

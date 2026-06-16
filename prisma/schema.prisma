@@ -60,6 +60,11 @@ model Doctor {
   lastName        String
   middleName      String?
   photoUrl        String?
+  position        String?  // Публичная должность / специализация (для UI-заголовка)
+  category        String?  // Группа специализации (для фильтрации)
+  credo           String?  // Краткое резюме: ключевые операции и направления
+  prodoctorovUrl  String?  // Ссылка на профиль на prodoctorov.ru
+  siteUrl         String?  // Ссылка на профиль на официальном сайте клиники
   bio             String?
   career          String?
   experienceYears Int?
@@ -120,6 +125,8 @@ model Clinic {
   seoKeywords    String?
   omsEnabled    Boolean  @default(false)
   contractBased Boolean  @default(false)
+  specializationTags String[] @default([])
+  // Tech Debt: Migrate specializationTags (String[]) to Specialization model + ClinicOnSpecialization relation (Этап 2)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

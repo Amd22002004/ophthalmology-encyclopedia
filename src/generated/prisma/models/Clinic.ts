@@ -167,6 +167,7 @@ export type ClinicCountAggregateOutputType = {
   seoKeywords: number
   omsEnabled: number
   contractBased: number
+  specializationTags: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -314,6 +315,7 @@ export type ClinicCountAggregateInputType = {
   seoKeywords?: true
   omsEnabled?: true
   contractBased?: true
+  specializationTags?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -446,6 +448,7 @@ export type ClinicGroupByOutputType = {
   seoKeywords: string | null
   omsEnabled: boolean
   contractBased: boolean
+  specializationTags: string[]
   createdAt: Date
   updatedAt: Date
   _count: ClinicCountAggregateOutputType | null
@@ -514,6 +517,7 @@ export type ClinicWhereInput = {
   seoKeywords?: Prisma.StringNullableFilter<"Clinic"> | string | null
   omsEnabled?: Prisma.BoolFilter<"Clinic"> | boolean
   contractBased?: Prisma.BoolFilter<"Clinic"> | boolean
+  specializationTags?: Prisma.StringNullableListFilter<"Clinic">
   createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
   regionEntity?: Prisma.XOR<Prisma.RegionNullableScalarRelationFilter, Prisma.RegionWhereInput> | null
@@ -566,6 +570,7 @@ export type ClinicOrderByWithRelationInput = {
   seoKeywords?: Prisma.SortOrderInput | Prisma.SortOrder
   omsEnabled?: Prisma.SortOrder
   contractBased?: Prisma.SortOrder
+  specializationTags?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   regionEntity?: Prisma.RegionOrderByWithRelationInput
@@ -621,6 +626,7 @@ export type ClinicWhereUniqueInput = Prisma.AtLeast<{
   seoKeywords?: Prisma.StringNullableFilter<"Clinic"> | string | null
   omsEnabled?: Prisma.BoolFilter<"Clinic"> | boolean
   contractBased?: Prisma.BoolFilter<"Clinic"> | boolean
+  specializationTags?: Prisma.StringNullableListFilter<"Clinic">
   createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
   regionEntity?: Prisma.XOR<Prisma.RegionNullableScalarRelationFilter, Prisma.RegionWhereInput> | null
@@ -673,6 +679,7 @@ export type ClinicOrderByWithAggregationInput = {
   seoKeywords?: Prisma.SortOrderInput | Prisma.SortOrder
   omsEnabled?: Prisma.SortOrder
   contractBased?: Prisma.SortOrder
+  specializationTags?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ClinicCountOrderByAggregateInput
@@ -726,6 +733,7 @@ export type ClinicScalarWhereWithAggregatesInput = {
   seoKeywords?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   omsEnabled?: Prisma.BoolWithAggregatesFilter<"Clinic"> | boolean
   contractBased?: Prisma.BoolWithAggregatesFilter<"Clinic"> | boolean
+  specializationTags?: Prisma.StringNullableListFilter<"Clinic">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Clinic"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Clinic"> | Date | string
 }
@@ -770,6 +778,7 @@ export type ClinicCreateInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
@@ -822,6 +831,7 @@ export type ClinicUncheckedCreateInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
@@ -872,6 +882,7 @@ export type ClinicUpdateInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
@@ -924,6 +935,7 @@ export type ClinicUncheckedUpdateInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
@@ -975,6 +987,7 @@ export type ClinicCreateManyInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1019,6 +1032,7 @@ export type ClinicUpdateManyMutationInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1064,6 +1078,7 @@ export type ClinicUncheckedUpdateManyInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1109,6 +1124,7 @@ export type ClinicCountOrderByAggregateInput = {
   seoKeywords?: Prisma.SortOrder
   omsEnabled?: Prisma.SortOrder
   contractBased?: Prisma.SortOrder
+  specializationTags?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1232,6 +1248,10 @@ export type ClinicCreatephonesInput = {
   set: string[]
 }
 
+export type ClinicCreatespecializationTagsInput = {
+  set: string[]
+}
+
 export type ClinicUpdatephonesInput = {
   set?: string[]
   push?: string | string[]
@@ -1251,6 +1271,11 @@ export type NullableFloatFieldUpdateOperationsInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type ClinicUpdatespecializationTagsInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type ClinicCreateNestedManyWithoutRegionEntityInput = {
@@ -1419,6 +1444,7 @@ export type ClinicCreateWithoutRegionEntityInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
@@ -1469,6 +1495,7 @@ export type ClinicUncheckedCreateWithoutRegionEntityInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
@@ -1549,6 +1576,7 @@ export type ClinicScalarWhereInput = {
   seoKeywords?: Prisma.StringNullableFilter<"Clinic"> | string | null
   omsEnabled?: Prisma.BoolFilter<"Clinic"> | boolean
   contractBased?: Prisma.BoolFilter<"Clinic"> | boolean
+  specializationTags?: Prisma.StringNullableListFilter<"Clinic">
   createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
 }
@@ -1593,6 +1621,7 @@ export type ClinicCreateWithoutDoctorsInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
@@ -1644,6 +1673,7 @@ export type ClinicUncheckedCreateWithoutDoctorsInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
@@ -1709,6 +1739,7 @@ export type ClinicUpdateWithoutDoctorsInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
@@ -1760,6 +1791,7 @@ export type ClinicUncheckedUpdateWithoutDoctorsInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
@@ -1809,6 +1841,7 @@ export type ClinicCreateWithoutSpecialtiesInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
@@ -1860,6 +1893,7 @@ export type ClinicUncheckedCreateWithoutSpecialtiesInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
@@ -1925,6 +1959,7 @@ export type ClinicUpdateWithoutSpecialtiesInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
@@ -1976,6 +2011,7 @@ export type ClinicUncheckedUpdateWithoutSpecialtiesInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
@@ -2025,6 +2061,7 @@ export type ClinicCreateWithoutSuppliersInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
@@ -2076,6 +2113,7 @@ export type ClinicUncheckedCreateWithoutSuppliersInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
@@ -2141,6 +2179,7 @@ export type ClinicUpdateWithoutSuppliersInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
@@ -2192,6 +2231,7 @@ export type ClinicUncheckedUpdateWithoutSuppliersInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
@@ -2241,6 +2281,7 @@ export type ClinicCreateWithoutDiseasesInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
@@ -2292,6 +2333,7 @@ export type ClinicUncheckedCreateWithoutDiseasesInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
@@ -2357,6 +2399,7 @@ export type ClinicUpdateWithoutDiseasesInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
@@ -2408,6 +2451,7 @@ export type ClinicUncheckedUpdateWithoutDiseasesInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
@@ -2457,6 +2501,7 @@ export type ClinicCreateWithoutProceduresInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
@@ -2508,6 +2553,7 @@ export type ClinicUncheckedCreateWithoutProceduresInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
@@ -2573,6 +2619,7 @@ export type ClinicUpdateWithoutProceduresInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
@@ -2624,6 +2671,7 @@ export type ClinicUncheckedUpdateWithoutProceduresInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
@@ -2673,6 +2721,7 @@ export type ClinicCreateWithoutPublicationsInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
@@ -2724,6 +2773,7 @@ export type ClinicUncheckedCreateWithoutPublicationsInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
@@ -2789,6 +2839,7 @@ export type ClinicUpdateWithoutPublicationsInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
@@ -2840,6 +2891,7 @@ export type ClinicUncheckedUpdateWithoutPublicationsInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
@@ -2889,6 +2941,7 @@ export type ClinicCreateManyRegionEntityInput = {
   seoKeywords?: string | null
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2933,6 +2986,7 @@ export type ClinicUpdateWithoutRegionEntityInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
@@ -2983,6 +3037,7 @@ export type ClinicUncheckedUpdateWithoutRegionEntityInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
@@ -3033,6 +3088,7 @@ export type ClinicUncheckedUpdateManyWithoutRegionEntityInput = {
   seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -3154,6 +3210,7 @@ export type ClinicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   seoKeywords?: boolean
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   regionEntity?: boolean | Prisma.Clinic$regionEntityArgs<ExtArgs>
@@ -3207,6 +3264,7 @@ export type ClinicSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   seoKeywords?: boolean
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   regionEntity?: boolean | Prisma.Clinic$regionEntityArgs<ExtArgs>
@@ -3253,6 +3311,7 @@ export type ClinicSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   seoKeywords?: boolean
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   regionEntity?: boolean | Prisma.Clinic$regionEntityArgs<ExtArgs>
@@ -3299,11 +3358,12 @@ export type ClinicSelectScalar = {
   seoKeywords?: boolean
   omsEnabled?: boolean
   contractBased?: boolean
+  specializationTags?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ClinicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "legalName" | "description" | "city" | "region" | "regionId" | "clinicType" | "networkName" | "status" | "phones" | "phone" | "email" | "website" | "address" | "inn" | "kpp" | "ogrn" | "license" | "licenseStatus" | "licenseDate" | "logoUrl" | "coverImageUrl" | "facadeImageUrl" | "workingHours" | "directorName" | "latitude" | "longitude" | "mapEmbed" | "appointmentUrl" | "vkUrl" | "telegramUrl" | "youtubeUrl" | "foundedYear" | "seoTitle" | "seoDescription" | "seoKeywords" | "omsEnabled" | "contractBased" | "createdAt" | "updatedAt", ExtArgs["result"]["clinic"]>
+export type ClinicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "legalName" | "description" | "city" | "region" | "regionId" | "clinicType" | "networkName" | "status" | "phones" | "phone" | "email" | "website" | "address" | "inn" | "kpp" | "ogrn" | "license" | "licenseStatus" | "licenseDate" | "logoUrl" | "coverImageUrl" | "facadeImageUrl" | "workingHours" | "directorName" | "latitude" | "longitude" | "mapEmbed" | "appointmentUrl" | "vkUrl" | "telegramUrl" | "youtubeUrl" | "foundedYear" | "seoTitle" | "seoDescription" | "seoKeywords" | "omsEnabled" | "contractBased" | "specializationTags" | "createdAt" | "updatedAt", ExtArgs["result"]["clinic"]>
 export type ClinicInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   regionEntity?: boolean | Prisma.Clinic$regionEntityArgs<ExtArgs>
   specialties?: boolean | Prisma.Clinic$specialtiesArgs<ExtArgs>
@@ -3373,6 +3433,7 @@ export type $ClinicPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     seoKeywords: string | null
     omsEnabled: boolean
     contractBased: boolean
+    specializationTags: string[]
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["clinic"]>
@@ -3845,6 +3906,7 @@ export interface ClinicFieldRefs {
   readonly seoKeywords: Prisma.FieldRef<"Clinic", 'String'>
   readonly omsEnabled: Prisma.FieldRef<"Clinic", 'Boolean'>
   readonly contractBased: Prisma.FieldRef<"Clinic", 'Boolean'>
+  readonly specializationTags: Prisma.FieldRef<"Clinic", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"Clinic", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Clinic", 'DateTime'>
 }

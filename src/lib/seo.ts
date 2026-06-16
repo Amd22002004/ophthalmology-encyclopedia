@@ -76,3 +76,82 @@ export function breadcrumbJsonLd(items: { href: string; label: string }[]) {
     })),
   };
 }
+
+export function faqPageJsonLd(items: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+export function clinicJsonLd(clinic: {
+  slug: string;
+  title: string;
+  legalName: string | null;
+  description: string | null;
+  address: string | null;
+  city: string | null;
+  region: string | null;
+  phones: string[];
+  email: string | null;
+  website: string | null;
+  logoUrl: string | null;
+  coverImageUrl: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  vkUrl: string | null;
+  telegramUrl: string | null;
+  youtubeUrl: string | null;
+  foundedYear: number | null;
+}) {
+  const url = absoluteUrl(`/clinics/${clinic.slug}`);
+
+  const sameAs = [clinic.website, clinic.vkUrl, clinic.telegramUrl, clinic.youtubeUrl].filter(
+    (value): value is string => Boolean(value),
+  );
+
+  const address =
+    clinic.address || clinic.city || clinic.region
+      ? {
+          "@type": "PostalAddress",
+          ...(clinic.address ? { streetAddress: clinic.address } : {}),
+          ...(clinic.city ? { addressLocality: clinic.city } : {}),
+          ...(clinic.region ? { addressRegion: clinic.region } : {}),
+          addressCountry: "RU",
+        }
+      : undefined;
+
+  const geo =
+    clinic.latitude != null && clinic.longitude != null
+      ? { "@type": "GeoCoordinates", latitude: clinic.latitude, longitude: clinic.longitude }
+      : undefined;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": ["MedicalOrganization", "MedicalClinic", "LocalBusiness"],
+    "@id": `${url}#organization`,
+    name: clinic.title,
+    ...(clinic.legalName && clinic.legalName !== clinic.title
+      ? { legalName: clinic.legalName }
+      : {}),
+    url,
+    ...(clinic.description ? { description: clinic.description } : {}),
+    ...(clinic.logoUrl ? { logo: absoluteUrl(clinic.logoUrl) } : {}),
+    ...(clinic.coverImageUrl ? { image: absoluteUrl(clinic.coverImageUrl) } : {}),
+    ...(address ? { address } : {}),
+    ...(geo ? { geo } : {}),
+    ...(clinic.phones.length > 0 ? { telephone: clinic.phones[0] } : {}),
+    ...(clinic.email ? { email: clinic.email } : {}),
+    ...(sameAs.length > 0 ? { sameAs } : {}),
+    ...(clinic.foundedYear ? { foundingDate: String(clinic.foundedYear) } : {}),
+    medicalSpecialty: "Ophthalmologic",
+  };
+}

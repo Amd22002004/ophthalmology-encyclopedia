@@ -2881,6 +2881,11 @@ export const DoctorScalarFieldEnum = {
   lastName: 'lastName',
   middleName: 'middleName',
   photoUrl: 'photoUrl',
+  position: 'position',
+  category: 'category',
+  credo: 'credo',
+  prodoctorovUrl: 'prodoctorovUrl',
+  siteUrl: 'siteUrl',
   bio: 'bio',
   career: 'career',
   experienceYears: 'experienceYears',
@@ -2934,6 +2939,7 @@ export const ClinicScalarFieldEnum = {
   seoKeywords: 'seoKeywords',
   omsEnabled: 'omsEnabled',
   contractBased: 'contractBased',
+  specializationTags: 'specializationTags',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

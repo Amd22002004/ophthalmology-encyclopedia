@@ -134,6 +134,11 @@ export async function updateClinicAction(
       seoDescription: str(formData, "seoDescription"),
       seoKeywords: str(formData, "seoKeywords"),
 
+      specializationTags: String(formData.get("specializationTags") ?? "")
+        .split(",")
+        .map((t) => t.trim())
+        .filter((t) => t.length > 0),
+
       ...(logoUrl ? { logoUrl } : {}),
       ...(coverImageUrl ? { coverImageUrl } : {}),
       ...(facadeImageUrl ? { facadeImageUrl } : {}),

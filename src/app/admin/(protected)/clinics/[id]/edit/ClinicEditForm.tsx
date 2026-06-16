@@ -319,6 +319,13 @@ export default function ClinicEditForm({ clinic }: { clinic: Clinic }) {
             defaultValue={clinic.description ?? ""}
             rows={5}
           />
+          <TextAreaField
+            label="Специализации (через запятую)"
+            name="specializationTags"
+            defaultValue={clinic.specializationTags?.join(", ") ?? ""}
+            rows={3}
+            placeholder="Лазерная коррекция, Лечение катаракты, Диагностика"
+          />
         </TabsContent>
 
         {/* Контакты */}

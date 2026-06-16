@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ClinicCard } from "@/components/entity/clinic-card";
 import { Button } from "@/components/ui/button";
-import type { StaticClinic } from "@/lib/clinics-data";
+import type { ClinicCardData } from "@/lib/loaders";
 
 type FilterKey =
   | "all"
@@ -26,7 +26,7 @@ const FILTERS: { key: FilterKey; label: string }[] = [
   { key: "yanao", label: "ЯНАО" },
 ];
 
-function matches(c: StaticClinic, key: FilterKey): boolean {
+function matches(c: ClinicCardData, key: FilterKey): boolean {
   switch (key) {
     case "all":      return true;
     case "oms":      return c.omsEnabled;
@@ -34,12 +34,12 @@ function matches(c: StaticClinic, key: FilterKey): boolean {
     case "centres":  return c.clinicType === "centre";
     case "cabinets": return c.clinicType === "cabinet";
     case "tyumen":   return c.region === "Тюменская область";
-    case "hmao":     return c.region.includes("ХМАО");
+    case "hmao":     return c.region?.includes("ХМАО") ?? false;
     case "yanao":    return c.region === "ЯНАО";
   }
 }
 
-export function ClinicsFilteredGrid({ clinics }: { clinics: StaticClinic[] }) {
+export function ClinicsFilteredGrid({ clinics }: { clinics: ClinicCardData[] }) {
   const [active, setActive] = useState<FilterKey>("all");
   const filtered = clinics.filter((c) => matches(c, active));
 

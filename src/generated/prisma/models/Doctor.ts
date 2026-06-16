@@ -41,6 +41,11 @@ export type DoctorMinAggregateOutputType = {
   lastName: string | null
   middleName: string | null
   photoUrl: string | null
+  position: string | null
+  category: string | null
+  credo: string | null
+  prodoctorovUrl: string | null
+  siteUrl: string | null
   bio: string | null
   career: string | null
   experienceYears: number | null
@@ -57,6 +62,11 @@ export type DoctorMaxAggregateOutputType = {
   lastName: string | null
   middleName: string | null
   photoUrl: string | null
+  position: string | null
+  category: string | null
+  credo: string | null
+  prodoctorovUrl: string | null
+  siteUrl: string | null
   bio: string | null
   career: string | null
   experienceYears: number | null
@@ -73,6 +83,11 @@ export type DoctorCountAggregateOutputType = {
   lastName: number
   middleName: number
   photoUrl: number
+  position: number
+  category: number
+  credo: number
+  prodoctorovUrl: number
+  siteUrl: number
   bio: number
   career: number
   experienceYears: number
@@ -99,6 +114,11 @@ export type DoctorMinAggregateInputType = {
   lastName?: true
   middleName?: true
   photoUrl?: true
+  position?: true
+  category?: true
+  credo?: true
+  prodoctorovUrl?: true
+  siteUrl?: true
   bio?: true
   career?: true
   experienceYears?: true
@@ -115,6 +135,11 @@ export type DoctorMaxAggregateInputType = {
   lastName?: true
   middleName?: true
   photoUrl?: true
+  position?: true
+  category?: true
+  credo?: true
+  prodoctorovUrl?: true
+  siteUrl?: true
   bio?: true
   career?: true
   experienceYears?: true
@@ -131,6 +156,11 @@ export type DoctorCountAggregateInputType = {
   lastName?: true
   middleName?: true
   photoUrl?: true
+  position?: true
+  category?: true
+  credo?: true
+  prodoctorovUrl?: true
+  siteUrl?: true
   bio?: true
   career?: true
   experienceYears?: true
@@ -234,6 +264,11 @@ export type DoctorGroupByOutputType = {
   lastName: string
   middleName: string | null
   photoUrl: string | null
+  position: string | null
+  category: string | null
+  credo: string | null
+  prodoctorovUrl: string | null
+  siteUrl: string | null
   bio: string | null
   career: string | null
   experienceYears: number | null
@@ -273,6 +308,11 @@ export type DoctorWhereInput = {
   lastName?: Prisma.StringFilter<"Doctor"> | string
   middleName?: Prisma.StringNullableFilter<"Doctor"> | string | null
   photoUrl?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  position?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  category?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  credo?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  prodoctorovUrl?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  siteUrl?: Prisma.StringNullableFilter<"Doctor"> | string | null
   bio?: Prisma.StringNullableFilter<"Doctor"> | string | null
   career?: Prisma.StringNullableFilter<"Doctor"> | string | null
   experienceYears?: Prisma.IntNullableFilter<"Doctor"> | number | null
@@ -295,6 +335,11 @@ export type DoctorOrderByWithRelationInput = {
   lastName?: Prisma.SortOrder
   middleName?: Prisma.SortOrderInput | Prisma.SortOrder
   photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  position?: Prisma.SortOrderInput | Prisma.SortOrder
+  category?: Prisma.SortOrderInput | Prisma.SortOrder
+  credo?: Prisma.SortOrderInput | Prisma.SortOrder
+  prodoctorovUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  siteUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   career?: Prisma.SortOrderInput | Prisma.SortOrder
   experienceYears?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -320,6 +365,11 @@ export type DoctorWhereUniqueInput = Prisma.AtLeast<{
   lastName?: Prisma.StringFilter<"Doctor"> | string
   middleName?: Prisma.StringNullableFilter<"Doctor"> | string | null
   photoUrl?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  position?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  category?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  credo?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  prodoctorovUrl?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  siteUrl?: Prisma.StringNullableFilter<"Doctor"> | string | null
   bio?: Prisma.StringNullableFilter<"Doctor"> | string | null
   career?: Prisma.StringNullableFilter<"Doctor"> | string | null
   experienceYears?: Prisma.IntNullableFilter<"Doctor"> | number | null
@@ -342,6 +392,11 @@ export type DoctorOrderByWithAggregationInput = {
   lastName?: Prisma.SortOrder
   middleName?: Prisma.SortOrderInput | Prisma.SortOrder
   photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  position?: Prisma.SortOrderInput | Prisma.SortOrder
+  category?: Prisma.SortOrderInput | Prisma.SortOrder
+  credo?: Prisma.SortOrderInput | Prisma.SortOrder
+  prodoctorovUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  siteUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   career?: Prisma.SortOrderInput | Prisma.SortOrder
   experienceYears?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -366,6 +421,11 @@ export type DoctorScalarWhereWithAggregatesInput = {
   lastName?: Prisma.StringWithAggregatesFilter<"Doctor"> | string
   middleName?: Prisma.StringNullableWithAggregatesFilter<"Doctor"> | string | null
   photoUrl?: Prisma.StringNullableWithAggregatesFilter<"Doctor"> | string | null
+  position?: Prisma.StringNullableWithAggregatesFilter<"Doctor"> | string | null
+  category?: Prisma.StringNullableWithAggregatesFilter<"Doctor"> | string | null
+  credo?: Prisma.StringNullableWithAggregatesFilter<"Doctor"> | string | null
+  prodoctorovUrl?: Prisma.StringNullableWithAggregatesFilter<"Doctor"> | string | null
+  siteUrl?: Prisma.StringNullableWithAggregatesFilter<"Doctor"> | string | null
   bio?: Prisma.StringNullableWithAggregatesFilter<"Doctor"> | string | null
   career?: Prisma.StringNullableWithAggregatesFilter<"Doctor"> | string | null
   experienceYears?: Prisma.IntNullableWithAggregatesFilter<"Doctor"> | number | null
@@ -382,6 +442,11 @@ export type DoctorCreateInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -403,6 +468,11 @@ export type DoctorUncheckedCreateInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -424,6 +494,11 @@ export type DoctorUpdateInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -445,6 +520,11 @@ export type DoctorUncheckedUpdateInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -466,6 +546,11 @@ export type DoctorCreateManyInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -482,6 +567,11 @@ export type DoctorUpdateManyMutationInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -497,6 +587,11 @@ export type DoctorUncheckedUpdateManyInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -513,6 +608,11 @@ export type DoctorCountOrderByAggregateInput = {
   lastName?: Prisma.SortOrder
   middleName?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
+  position?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  credo?: Prisma.SortOrder
+  prodoctorovUrl?: Prisma.SortOrder
+  siteUrl?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   career?: Prisma.SortOrder
   experienceYears?: Prisma.SortOrder
@@ -533,6 +633,11 @@ export type DoctorMaxOrderByAggregateInput = {
   lastName?: Prisma.SortOrder
   middleName?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
+  position?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  credo?: Prisma.SortOrder
+  prodoctorovUrl?: Prisma.SortOrder
+  siteUrl?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   career?: Prisma.SortOrder
   experienceYears?: Prisma.SortOrder
@@ -549,6 +654,11 @@ export type DoctorMinOrderByAggregateInput = {
   lastName?: Prisma.SortOrder
   middleName?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
+  position?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  credo?: Prisma.SortOrder
+  prodoctorovUrl?: Prisma.SortOrder
+  siteUrl?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   career?: Prisma.SortOrder
   experienceYears?: Prisma.SortOrder
@@ -711,6 +821,11 @@ export type DoctorCreateWithoutPublicationsInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -731,6 +846,11 @@ export type DoctorUncheckedCreateWithoutPublicationsInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -767,6 +887,11 @@ export type DoctorUpdateWithoutPublicationsInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -787,6 +912,11 @@ export type DoctorUncheckedUpdateWithoutPublicationsInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -807,6 +937,11 @@ export type DoctorCreateWithoutRegionEntityInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -827,6 +962,11 @@ export type DoctorUncheckedCreateWithoutRegionEntityInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -876,6 +1016,11 @@ export type DoctorScalarWhereInput = {
   lastName?: Prisma.StringFilter<"Doctor"> | string
   middleName?: Prisma.StringNullableFilter<"Doctor"> | string | null
   photoUrl?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  position?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  category?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  credo?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  prodoctorovUrl?: Prisma.StringNullableFilter<"Doctor"> | string | null
+  siteUrl?: Prisma.StringNullableFilter<"Doctor"> | string | null
   bio?: Prisma.StringNullableFilter<"Doctor"> | string | null
   career?: Prisma.StringNullableFilter<"Doctor"> | string | null
   experienceYears?: Prisma.IntNullableFilter<"Doctor"> | number | null
@@ -892,6 +1037,11 @@ export type DoctorCreateWithoutDiseasesInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -912,6 +1062,11 @@ export type DoctorUncheckedCreateWithoutDiseasesInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -948,6 +1103,11 @@ export type DoctorUpdateWithoutDiseasesInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -968,6 +1128,11 @@ export type DoctorUncheckedUpdateWithoutDiseasesInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -988,6 +1153,11 @@ export type DoctorCreateWithoutProceduresInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -1008,6 +1178,11 @@ export type DoctorUncheckedCreateWithoutProceduresInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -1044,6 +1219,11 @@ export type DoctorUpdateWithoutProceduresInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1064,6 +1244,11 @@ export type DoctorUncheckedUpdateWithoutProceduresInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1084,6 +1269,11 @@ export type DoctorCreateWithoutSpecialtiesInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -1104,6 +1294,11 @@ export type DoctorUncheckedCreateWithoutSpecialtiesInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -1140,6 +1335,11 @@ export type DoctorUpdateWithoutSpecialtiesInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1160,6 +1360,11 @@ export type DoctorUncheckedUpdateWithoutSpecialtiesInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1180,6 +1385,11 @@ export type DoctorCreateWithoutClinicsInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -1200,6 +1410,11 @@ export type DoctorUncheckedCreateWithoutClinicsInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -1236,6 +1451,11 @@ export type DoctorUpdateWithoutClinicsInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1256,6 +1476,11 @@ export type DoctorUncheckedUpdateWithoutClinicsInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1276,6 +1501,11 @@ export type DoctorCreateManyRegionEntityInput = {
   lastName: string
   middleName?: string | null
   photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
   bio?: string | null
   career?: string | null
   experienceYears?: number | null
@@ -1291,6 +1521,11 @@ export type DoctorUpdateWithoutRegionEntityInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1311,6 +1546,11 @@ export type DoctorUncheckedUpdateWithoutRegionEntityInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1331,6 +1571,11 @@ export type DoctorUncheckedUpdateManyWithoutRegionEntityInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1413,6 +1658,11 @@ export type DoctorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   lastName?: boolean
   middleName?: boolean
   photoUrl?: boolean
+  position?: boolean
+  category?: boolean
+  credo?: boolean
+  prodoctorovUrl?: boolean
+  siteUrl?: boolean
   bio?: boolean
   career?: boolean
   experienceYears?: boolean
@@ -1436,6 +1686,11 @@ export type DoctorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   lastName?: boolean
   middleName?: boolean
   photoUrl?: boolean
+  position?: boolean
+  category?: boolean
+  credo?: boolean
+  prodoctorovUrl?: boolean
+  siteUrl?: boolean
   bio?: boolean
   career?: boolean
   experienceYears?: boolean
@@ -1453,6 +1708,11 @@ export type DoctorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   lastName?: boolean
   middleName?: boolean
   photoUrl?: boolean
+  position?: boolean
+  category?: boolean
+  credo?: boolean
+  prodoctorovUrl?: boolean
+  siteUrl?: boolean
   bio?: boolean
   career?: boolean
   experienceYears?: boolean
@@ -1470,6 +1730,11 @@ export type DoctorSelectScalar = {
   lastName?: boolean
   middleName?: boolean
   photoUrl?: boolean
+  position?: boolean
+  category?: boolean
+  credo?: boolean
+  prodoctorovUrl?: boolean
+  siteUrl?: boolean
   bio?: boolean
   career?: boolean
   experienceYears?: boolean
@@ -1479,7 +1744,7 @@ export type DoctorSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DoctorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "firstName" | "lastName" | "middleName" | "photoUrl" | "bio" | "career" | "experienceYears" | "region" | "regionId" | "createdAt" | "updatedAt", ExtArgs["result"]["doctor"]>
+export type DoctorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "firstName" | "lastName" | "middleName" | "photoUrl" | "position" | "category" | "credo" | "prodoctorovUrl" | "siteUrl" | "bio" | "career" | "experienceYears" | "region" | "regionId" | "createdAt" | "updatedAt", ExtArgs["result"]["doctor"]>
 export type DoctorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   regionEntity?: boolean | Prisma.Doctor$regionEntityArgs<ExtArgs>
   specialties?: boolean | Prisma.Doctor$specialtiesArgs<ExtArgs>
@@ -1513,6 +1778,11 @@ export type $DoctorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     lastName: string
     middleName: string | null
     photoUrl: string | null
+    position: string | null
+    category: string | null
+    credo: string | null
+    prodoctorovUrl: string | null
+    siteUrl: string | null
     bio: string | null
     career: string | null
     experienceYears: number | null
@@ -1955,6 +2225,11 @@ export interface DoctorFieldRefs {
   readonly lastName: Prisma.FieldRef<"Doctor", 'String'>
   readonly middleName: Prisma.FieldRef<"Doctor", 'String'>
   readonly photoUrl: Prisma.FieldRef<"Doctor", 'String'>
+  readonly position: Prisma.FieldRef<"Doctor", 'String'>
+  readonly category: Prisma.FieldRef<"Doctor", 'String'>
+  readonly credo: Prisma.FieldRef<"Doctor", 'String'>
+  readonly prodoctorovUrl: Prisma.FieldRef<"Doctor", 'String'>
+  readonly siteUrl: Prisma.FieldRef<"Doctor", 'String'>
   readonly bio: Prisma.FieldRef<"Doctor", 'String'>
   readonly career: Prisma.FieldRef<"Doctor", 'String'>
   readonly experienceYears: Prisma.FieldRef<"Doctor", 'Int'>

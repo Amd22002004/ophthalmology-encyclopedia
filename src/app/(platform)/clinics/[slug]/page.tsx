@@ -1,30 +1,43 @@
 import { notFound } from "next/navigation";
-import { ClinicStaticTemplate } from "@/components/templates/clinic-static-template";
-import { getClinicBySlug, getAllClinicSlugs } from "@/lib/clinics-data";
-import { createPageMetadata } from "@/lib/seo";
+import { ClinicDbTemplate } from "@/components/templates/clinic-db-template";
+import { getClinic } from "@/lib/loaders";
+import { absoluteUrl, createPageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const dynamic = "force-static";
-
-export function generateStaticParams() {
-  return getAllClinicSlugs().map((slug) => ({ slug }));
-}
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const clinic = getClinicBySlug(slug);
+  const clinic = await getClinic(slug);
   if (!clinic) return {};
-  return createPageMetadata({
-    title: clinic.title,
-    description: `${clinic.clinicType === "centre" ? "Центр микрохирургии глаза" : "Офтальмологическая организация"} в ${clinic.city}`,
-    path: `/clinics/${slug}`,
-  });
+
+  const title = clinic.seoTitle || clinic.title;
+  const description =
+    clinic.seoDescription ||
+    (clinic.city
+      ? `Офтальмологическая клиника в ${clinic.city}${clinic.region ? `, ${clinic.region}` : ""}`
+      : "Офтальмологическая организация");
+
+  const metadata = createPageMetadata({ title, description, path: `/clinics/${slug}` });
+
+  if (clinic.seoKeywords) {
+    metadata.keywords = clinic.seoKeywords;
+  }
+
+  const image = clinic.coverImageUrl ?? clinic.logoUrl;
+  if (image) {
+    const imageUrl = absoluteUrl(image);
+    metadata.openGraph = { ...metadata.openGraph, images: [{ url: imageUrl }] };
+    metadata.twitter = { ...metadata.twitter, card: "summary_large_image", images: [imageUrl] };
+  }
+
+  return metadata;
 }
 
 export default async function ClinicPage({ params }: Props) {
   const { slug } = await params;
-  const clinic = getClinicBySlug(slug);
+  const clinic = await getClinic(slug);
   if (!clinic) notFound();
-  return <ClinicStaticTemplate data={clinic} />;
+  return <ClinicDbTemplate data={clinic} />;
 }

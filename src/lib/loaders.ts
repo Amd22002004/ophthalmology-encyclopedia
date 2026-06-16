@@ -122,6 +122,18 @@ export async function getProcedure(slug: string) {
 
 // ─── Doctors ──────────────────────────────────────────────────────────────────
 
+// Расширенный тип для каталога врачей с фото
+export type DoctorCatalogItem = {
+  slug: string;
+  fullName: string;
+  position: string | null;
+  category: string | null;
+  photoUrl: string | null;
+  experienceYears: number | null;
+  specialties: string[];
+  cities: string[];
+};
+
 export async function getDoctors(opts?: {
   take?: number;
   skip?: number;
@@ -148,6 +160,47 @@ export async function getDoctors(opts?: {
   }));
 }
 
+export async function getDoctorsCatalog(opts?: {
+  take?: number;
+  skip?: number;
+}): Promise<DoctorCatalogItem[]> {
+  const db = getPrisma();
+  if (!db) return [];
+  const rows = await db.doctor.findMany({
+    select: {
+      slug: true,
+      firstName: true,
+      lastName: true,
+      middleName: true,
+      photoUrl: true,
+      position: true,
+      category: true,
+      experienceYears: true,
+      specialties: {
+        take: 3,
+        include: { specialty: { select: { title: true } } },
+      },
+      clinics: {
+        take: 5,
+        include: { clinic: { select: { city: true } } },
+      },
+    },
+    orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+    take: opts?.take ?? 100,
+    skip: opts?.skip ?? 0,
+  });
+  return rows.map((r) => ({
+    slug: r.slug,
+    fullName: doctorFullName(r),
+    position: r.position,
+    category: r.category,
+    photoUrl: r.photoUrl,
+    experienceYears: r.experienceYears,
+    specialties: r.specialties.map((s) => s.specialty.title),
+    cities: [...new Set(r.clinics.map((c) => c.clinic.city).filter(Boolean) as string[])],
+  }));
+}
+
 export async function getDoctor(slug: string) {
   const db = getPrisma();
   if (!db) return null;
@@ -159,8 +212,12 @@ export async function getDoctor(slug: string) {
         include: { specialty: { select: { slug: true, title: true } } },
       },
       clinics: {
-        take: 6,
-        include: { clinic: { select: { slug: true, title: true } } },
+        take: 10,
+        include: {
+          clinic: {
+            select: { slug: true, title: true, city: true, region: true, phones: true, website: true, networkName: true },
+          },
+        },
       },
       diseases: {
         take: 6,
@@ -180,6 +237,54 @@ export async function getDoctor(slug: string) {
 
 // ─── Clinics ──────────────────────────────────────────────────────────────────
 
+export type ClinicCardData = {
+  slug: string;
+  title: string;
+  legalName: string | null;
+  city: string | null;
+  region: string | null;
+  clinicType: string | null;
+  networkName: string | null;
+  status: string;
+  omsEnabled: boolean;
+  phones: string[];
+  email: string | null;
+  website: string | null;
+  address: string | null;
+  inn: string | null;
+  license: string | null;
+  logoUrl: string | null;
+  specializationTags: string[];
+};
+
+export async function getClinicsCatalog(): Promise<ClinicCardData[]> {
+  const db = getPrisma();
+  if (!db) return [];
+  return db.clinic.findMany({
+    where: { status: "active" },
+    select: {
+      slug: true,
+      title: true,
+      legalName: true,
+      city: true,
+      region: true,
+      clinicType: true,
+      networkName: true,
+      status: true,
+      omsEnabled: true,
+      phones: true,
+      email: true,
+      website: true,
+      address: true,
+      inn: true,
+      license: true,
+      logoUrl: true,
+      specializationTags: true,
+    },
+    orderBy: { title: "asc" },
+  });
+}
+
 export async function getClinics(opts?: {
   omsEnabled?: boolean;
   contractBased?: boolean;
@@ -190,10 +295,11 @@ export async function getClinics(opts?: {
   if (!db) return [];
   const rows = await db.clinic.findMany({
     where: {
+      status: "active",
       ...(opts?.omsEnabled != null ? { omsEnabled: opts.omsEnabled } : {}),
       ...(opts?.contractBased != null ? { contractBased: opts.contractBased } : {}),
     },
-    select: { slug: true, title: true, description: true, region: true },
+    select: { slug: true, title: true, description: true, region: true, city: true },
     orderBy: { title: "asc" },
     take: opts?.take ?? 100,
     skip: opts?.skip ?? 0,
@@ -201,7 +307,7 @@ export async function getClinics(opts?: {
   return rows.map((r) => ({
     href: `/clinics/${r.slug}`,
     title: r.title,
-    description: r.region ?? r.description ?? "",
+    description: r.city ? `${r.city} · ${r.region ?? ""}` : (r.region ?? r.description ?? ""),
   }));
 }
 
@@ -216,12 +322,43 @@ export async function getClinic(slug: string) {
         include: { specialty: { select: { slug: true, title: true } } },
       },
       doctors: {
-        take: 10,
-        include: { doctor: { select: { slug: true, firstName: true, lastName: true } } },
+        take: 12,
+        include: {
+          doctor: {
+            select: {
+              slug: true,
+              firstName: true,
+              lastName: true,
+              middleName: true,
+              photoUrl: true,
+              experienceYears: true,
+              position: true,
+              category: true,
+            },
+          },
+        },
+      },
+      procedures: {
+        take: 12,
+        include: { procedure: { select: { slug: true, title: true, summary: true } } },
+      },
+      diseases: {
+        take: 12,
+        include: { disease: { select: { slug: true, title: true, summary: true } } },
+      },
+      publications: {
+        take: 6,
+        include: {
+          publication: {
+            select: { slug: true, title: true, abstract: true, publishedAt: true },
+          },
+        },
       },
     },
   });
 }
+
+export type ClinicDbDetail = NonNullable<Awaited<ReturnType<typeof getClinic>>>;
 
 // ─── Suppliers ────────────────────────────────────────────────────────────────
 
