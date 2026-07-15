@@ -1,36 +1,248 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Офтальмологическая энциклопедия
 
-## Getting Started
+> Профессиональный справочник по офтальмологии, построенный как **граф знаний**,
+> а не как каталог страниц.
 
-First, run the development server:
+[![Data Model](https://img.shields.io/badge/Data%20Model-Frozen%20v1-0f766e)](./docs/architecture/CHANGELOG.md)
+[![Next.js](https://img.shields.io/badge/Next.js-16.2-black)](https://nextjs.org)
+[![Prisma](https://img.shields.io/badge/Prisma-7.8-2D3748)](https://prisma.io)
+[![Docs](https://img.shields.io/badge/docs-architecture-blue)](./docs/architecture/overview.md)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Что это
+
+Энциклопедия связывает врачей, клиники, заболевания, процедуры, оборудование и научные
+работы в единую сеть достоверных связей. Каждая сущность — узел графа со своей страницей,
+и от любой из них можно дойти до любой смежной.
+
+### Чем отличается от обычного медицинского сайта
+
+Типовой каталог клиник хранит информацию **плоско**: у клиники есть текстовое поле
+«оборудование», у врача — строка «специализация». Такие данные нельзя связать, проверить
+или переиспользовать.
+
+Здесь два принципа определяют всё:
+
+**🔹 Entity First** — значимая единица знания является **сущностью**, а не полем.
+
+| Плоский подход | Entity First |
+|---|---|
+| У врача текстовое поле «диссертация» | `ScientificWork` — сущность со своей страницей `/publications/[slug]` |
+| У клиники строка «есть VisuMax» | `Equipment` — сущность, связанная с клиниками, врачами, процедурами и заболеваниями |
+| Характеристики прибора в описании | `EquipmentSpec` — структурированные строки `группа/параметр/значение` |
+
+**🔹 Graph Knowledge** — ценность не в отдельных страницах, а в связях между ними.
+Все связи **двусторонние**: если страница врача ссылается на аппарат, страница аппарата
+показывает врача.
+
+### Главное правило: связи должны быть достоверными
+
+> Пустой раздел честнее правдоподобной выдумки.
+
+Проект различает похожие, но **разные** утверждения:
+
+- «врач работает по направлению *Катаракта*» — `DoctorOnDisease`;
+- «работа **исследует** *Кератоконус*» — `ScientificWorkOnDisease`.
+
+Если вывести второе из первого «по цепочке через врача», диссертация про кросслинкинг
+попадёт на страницу «Катаракта» — это медицинская дезинформация. Поэтому такие связи
+только прямые. Подробности и реальный пример —
+[`graph-model.md`](./docs/architecture/graph-model.md) §4.2.
+
+---
+
+## Основные возможности
+
+| Раздел | Что реализовано |
+|---|---|
+| **Врачи** | Каталог, страница врача, научная деятельность, связи с клиниками и энциклопедией |
+| **Клиники** | Каталог с фильтрами, страница, блоки врачей и оборудования, юр. данные и лицензии |
+| **Заболевания** | Каталог, страница, МКБ-10, перелинковка с процедурами, врачами, оборудованием |
+| **Процедуры** | Каталог, страница, связи с заболеваниями, врачами и оборудованием |
+| **Оборудование** | Страница с ТХ, галереей, документами; связи с клиниками, врачами, процедурами |
+| **Научные работы** | Диссертации и исследования как полноценные сущности энциклопедии |
+| **Каталог публикаций** | `/publications` строится из научных работ **автоматически** |
+| **Поставщики** | Раздел и связи с клиниками и категориями оборудования |
+| **Справочники** | Специальности, регионы, категории заболеваний / процедур / оборудования |
+
+Дополнительно: клинические рекомендации, нормативные документы, история офтальмологии,
+инновации, поиск, админ-панель (MVP).
+
+**SEO:** canonical, OpenGraph, Schema.org (`Physician`, `MedicalOrganization`,
+`MedicalCondition`, `MedicalProcedure`, `MedicalDevice`, `ScholarlyArticle`),
+sitemap, индексируемые заголовки, двусторонняя перелинковка.
+
+---
+
+## Архитектура
+
+Обзор. Полная карта связей — [`graph-model.md`](./docs/architecture/graph-model.md).
+
+```
+                        ┌────────┐
+                        │ Region │
+                        └───┬────┘
+                    ┌───────┴───────┐
+                    ▼               ▼
+      Specialty ─ ┌────────┐   ┌────────┐ ─ Supplier
+                  │ Doctor │───│ Clinic │
+                  └───┬────┘   └───┬────┘
+          ┌───────────┼─────┬──────┴──────┐
+          ▼           ▼     ▼             ▼
+     ┌─────────┐ ┌─────────┐ ┌───────────┐ ┌─────────────┐
+     │ Disease │─│Procedure│─│ Equipment │ │ Publication │
+     └────┬────┘ └────┬────┘ └─────┬─────┘ └─────────────┘
+          │           │            │
+          │           │      ┌─────┴─────────┐
+          │           │      │ EquipmentSpec │
+          │           │      └───────────────┘
+          └─────┬─────┘
+                ▼
+       ┌────────────────┐  автор   ┌────────┐
+       │ ScientificWork │──────────│ Doctor │
+       └────────────────┘          └────────┘
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Три типа связей** — различие принципиально:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Тип | Пример | Смысл |
+|---|---|---|
+| **Прямая** | `ScientificWork → Disease` | Физически в БД (join-таблица) |
+| **Вычисляемая** | `ScientificWork → Clinics` | Через автора — истинно по построению («клиники автора») |
+| **Намеренно отсутствует** | `Equipment → ScientificWork` | Архитектурное решение, не недоработка |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Масштабируемость доказана:** 8 разнотипных аппаратов (лазеры, ОКТ, биометры,
+микроскопы, витреосистемы) добавляются **только данными**, без изменения схемы —
+благодаря `EquipmentCategory` + `EquipmentSpec`.
 
-## Learn More
+**Стек:** Next.js 16 (App Router) · React 19 · Prisma 7 · PostgreSQL · Tailwind CSS 4 · TypeScript
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Структура проекта
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+├── prisma/
+│   ├── schema.prisma          🔒 Модель данных (заморожена, v1)
+│   └── seed.ts                Наполнение БД (идемпотентно)
+├── src/
+│   ├── app/
+│   │   ├── (platform)/        Публичные разделы: /doctors, /clinics, /diseases,
+│   │   │                      /procedures, /equipment, /publications, /suppliers …
+│   │   └── admin/             Админ-панель (авторизация, редактор клиник)
+│   ├── components/
+│   │   ├── templates/         Шаблоны страниц сущностей
+│   │   ├── entity/            Переиспользуемые блоки сущностей
+│   │   ├── catalog/           Каталоги и фильтры
+│   │   ├── layout/            Навигация, хлебные крошки
+│   │   ├── search/            Поиск
+│   │   ├── seo/               Schema.org
+│   │   └── ui/                Базовые UI-примитивы
+│   ├── lib/
+│   │   ├── loaders.ts         Все запросы к БД (единая точка)
+│   │   ├── seo.ts             Метаданные, canonical, JSON-LD
+│   │   └── content-model.ts   Конфигурация каталогов и навигации
+│   └── generated/prisma/      Сгенерированный Prisma Client (в репозитории)
+├── public/
+│   ├── doctors/               Фото врачей и PDF научных работ
+│   └── equipment/             Фото и документация оборудования
+├── docs/architecture/         📘 Архитектурная документация — источник истины
+└── scripts/                   Служебные скрипты (create-owner, отчёты)
+```
 
-## Deploy on Vercel
+**Ассеты только локальные.** Внешние URL для изображений и документов не используются.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Документация
+
+📘 **[`docs/architecture/`](./docs/architecture/)** — источник истины наравне с
+`prisma/schema.prisma`. Читать до изменения кода.
+
+| Документ | О чём |
+|---|---|
+| [`overview.md`](./docs/architecture/overview.md) | Как устроена архитектура, все сущности, правила расширения |
+| [`graph-model.md`](./docs/architecture/graph-model.md) | **Главный.** Полная карта связей: прямые, вычисляемые, намеренно отсутствующие |
+| [`design-principles.md`](./docs/architecture/design-principles.md) | 10 принципов проекта |
+| [`ROADMAP.md`](./docs/architecture/ROADMAP.md) | Что сделано, что в работе, что дальше |
+| [`CHANGELOG.md`](./docs/architecture/CHANGELOG.md) | Журнал архитектурных решений |
+| [`doctors.md`](./docs/architecture/doctors.md) · [`clinics.md`](./docs/architecture/clinics.md) · [`diseases.md`](./docs/architecture/diseases.md) · [`procedures.md`](./docs/architecture/procedures.md) | Модели сущностей |
+| [`equipment.md`](./docs/architecture/equipment.md) | 🔒 `Equipment` + `EquipmentSpec` (заморожена) |
+| [`publications.md`](./docs/architecture/publications.md) | `ScientificWork` vs `Publication` |
+
+**Для контрибьюторов:** [`CONTRIBUTING.md`](./.github/CONTRIBUTING.md) ·
+[`ARCHITECTURE.md`](./.github/ARCHITECTURE.md)
+
+---
+
+## Быстрый старт
+
+```bash
+# 1. Зависимости
+npm install
+
+# 2. Окружение
+cp .env.example .env
+# указать DATABASE_URL (PostgreSQL)
+
+# 3. База данных
+npx prisma generate
+npx prisma db push
+npm run db:seed        # идемпотентно: повторный прогон не создаёт дублей
+
+# 4. Запуск
+npm run dev            # http://localhost:3000
+```
+
+### Команды
+
+| Команда | Назначение |
+|---|---|
+| `npm run dev` | Дев-сервер |
+| `npm run build` | Продакшн-сборка |
+| `npm run typecheck` | Проверка типов |
+| `npm run lint` | ESLint |
+| `npm run db:seed` | Наполнение БД |
+| `npm run create-owner` | Создать владельца админ-панели |
+| `npm run clinic:report` | Отчёт о полноте данных клиник |
+
+---
+
+## Статус проекта
+
+### 🔒 Data Model Frozen v1
+
+**Модель данных зафиксирована 2026-07-15 и считается стабильной.**
+
+Это значит: архитектура признана достаточной для наполнения, и дальнейшее развитие
+идёт **данными, а не изменением схемы**.
+
+| ✅ Разрешено без архитектурного решения | ❌ Требует архитектурного решения |
+|---|---|
+| Добавлять записи любых сущностей | Менять поля существующих моделей |
+| Добавлять связи между сущностями | Создавать новые сущности |
+| Добавлять характеристики, фото, PDF | Создавать альтернативные модели для покрытой области |
+| Менять UI, не трогая модель | Менять семантику существующих связей |
+
+**Особо заморожены:** `Equipment` (+ `EquipmentSpec`), `ScientificWork`,
+Graph Knowledge Model.
+
+**Зачем заморозка.** Схема, растущая под каждый новый объект, перестаёт быть
+архитектурой. Заморозка — это утверждение: *модель уже покрывает предметную область*.
+Если для новой задачи требуется менять схему — это сигнал, что задачу поняли неправильно
+**либо** нашли реальную архитектурную ошибку. Оба случая разбираются отдельно, а не
+«дополняются по-тихому».
+
+Изменения схемы, если они обоснованы, должны быть **аддитивными**
+(`ADD COLUMN` nullable / `CREATE TABLE` / `CREATE INDEX`) — никаких
+`DROP` / `ALTER COLUMN` / `RENAME`.
+
+Подробнее: [`CHANGELOG.md`](./docs/architecture/CHANGELOG.md) ·
+[`equipment.md`](./docs/architecture/equipment.md)
+
+---
+
+## Лицензия
+
+Проприетарный проект. Все права защищены.
