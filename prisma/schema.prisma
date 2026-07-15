@@ -79,9 +79,40 @@ model Doctor {
   diseases     DoctorOnDisease[]
   procedures   DoctorOnProcedure[]
   publications Publication[]
+  scientificWorks ScientificWork[]
 
   @@index([regionId])
   @@index([lastName, firstName])
+}
+
+/// Научная работа врача: диссертация, автореферат, статья, патент,
+/// методические рекомендации, монография. Полный текст в БД не хранится —
+/// только структурированные данные; сам документ отдаётся файлом (pdfUrl).
+model ScientificWork {
+  id               String   @id @default(cuid())
+  doctorId         String
+  type             String   // Тип работы: «Кандидатская диссертация», «Патент», ...
+  title            String
+  degree           String?  // Учёная степень, напр. «Кандидат медицинских наук»
+  speciality       String?  // Специальность ВАК, напр. «14.01.07 — глазные болезни»
+  year             Int?     // Год защиты / публикации
+  organization     String?  // Место защиты
+  supervisor       String?  // Научный руководитель
+  summary          String?  // Краткое описание простым языком (3–5 предложений)
+  novelty          String[] @default([]) // Научная новизна
+  practicalValue   String[] @default([]) // Практическая значимость
+  results          String[] @default([]) // Основные результаты
+  publicationCount Int?     // Число публикаций по теме работы
+  pdfUrl           String?  // Полный текст (PDF)
+  abstractUrl      String?  // Автореферат (PDF)
+  sortOrder        Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@unique([doctorId, title])
+  @@index([doctorId, sortOrder])
 }
 
 model Clinic {

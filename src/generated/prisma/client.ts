@@ -57,6 +57,13 @@ export type Procedure = Prisma.ProcedureModel
  */
 export type Doctor = Prisma.DoctorModel
 /**
+ * Model ScientificWork
+ * Научная работа врача: диссертация, автореферат, статья, патент,
+ * методические рекомендации, монография. Полный текст в БД не хранится —
+ * только структурированные данные; сам документ отдаётся файлом (pdfUrl).
+ */
+export type ScientificWork = Prisma.ScientificWorkModel
+/**
  * Model Clinic
  * 
  */

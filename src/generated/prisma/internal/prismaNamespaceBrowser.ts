@@ -54,6 +54,7 @@ export const ModelName = {
   Disease: 'Disease',
   Procedure: 'Procedure',
   Doctor: 'Doctor',
+  ScientificWork: 'ScientificWork',
   Clinic: 'Clinic',
   Supplier: 'Supplier',
   Equipment: 'Equipment',
@@ -155,6 +156,31 @@ export const DoctorScalarFieldEnum = {
 } as const
 
 export type DoctorScalarFieldEnum = (typeof DoctorScalarFieldEnum)[keyof typeof DoctorScalarFieldEnum]
+
+
+export const ScientificWorkScalarFieldEnum = {
+  id: 'id',
+  doctorId: 'doctorId',
+  type: 'type',
+  title: 'title',
+  degree: 'degree',
+  speciality: 'speciality',
+  year: 'year',
+  organization: 'organization',
+  supervisor: 'supervisor',
+  summary: 'summary',
+  novelty: 'novelty',
+  practicalValue: 'practicalValue',
+  results: 'results',
+  publicationCount: 'publicationCount',
+  pdfUrl: 'pdfUrl',
+  abstractUrl: 'abstractUrl',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScientificWorkScalarFieldEnum = (typeof ScientificWorkScalarFieldEnum)[keyof typeof ScientificWorkScalarFieldEnum]
 
 
 export const ClinicScalarFieldEnum = {

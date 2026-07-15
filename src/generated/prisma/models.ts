@@ -11,6 +11,7 @@
 export type * from './models/Disease'
 export type * from './models/Procedure'
 export type * from './models/Doctor'
+export type * from './models/ScientificWork'
 export type * from './models/Clinic'
 export type * from './models/Supplier'
 export type * from './models/Equipment'

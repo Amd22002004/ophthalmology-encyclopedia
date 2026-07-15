@@ -387,6 +387,7 @@ export const ModelName = {
   Disease: 'Disease',
   Procedure: 'Procedure',
   Doctor: 'Doctor',
+  ScientificWork: 'ScientificWork',
   Clinic: 'Clinic',
   Supplier: 'Supplier',
   Equipment: 'Equipment',
@@ -431,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "disease" | "procedure" | "doctor" | "clinic" | "supplier" | "equipment" | "publication" | "clinicalGuideline" | "regulation" | "historyEntry" | "innovation" | "specialty" | "diseaseCategory" | "procedureCategory" | "equipmentCategory" | "region" | "diseaseOnProcedure" | "doctorOnDisease" | "doctorOnProcedure" | "doctorOnSpecialty" | "doctorOnClinic" | "clinicOnSpecialty" | "clinicOnSupplier" | "supplierOnEquipmentCategory" | "procedureOnEquipment" | "publicationOnDisease" | "publicationOnProcedure" | "diseaseOnClinicalGuideline" | "clinicOnDisease" | "clinicOnProcedure" | "clinicOnPublication" | "adminUser"
+    modelProps: "disease" | "procedure" | "doctor" | "scientificWork" | "clinic" | "supplier" | "equipment" | "publication" | "clinicalGuideline" | "regulation" | "historyEntry" | "innovation" | "specialty" | "diseaseCategory" | "procedureCategory" | "equipmentCategory" | "region" | "diseaseOnProcedure" | "doctorOnDisease" | "doctorOnProcedure" | "doctorOnSpecialty" | "doctorOnClinic" | "clinicOnSpecialty" | "clinicOnSupplier" | "supplierOnEquipmentCategory" | "procedureOnEquipment" | "publicationOnDisease" | "publicationOnProcedure" | "diseaseOnClinicalGuideline" | "clinicOnDisease" | "clinicOnProcedure" | "clinicOnPublication" | "adminUser"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -654,6 +655,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.DoctorCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.DoctorCountAggregateOutputType> | number
+        }
+      }
+    }
+    ScientificWork: {
+      payload: Prisma.$ScientificWorkPayload<ExtArgs>
+      fields: Prisma.ScientificWorkFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScientificWorkFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScientificWorkFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload>
+        }
+        findFirst: {
+          args: Prisma.ScientificWorkFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScientificWorkFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload>
+        }
+        findMany: {
+          args: Prisma.ScientificWorkFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload>[]
+        }
+        create: {
+          args: Prisma.ScientificWorkCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload>
+        }
+        createMany: {
+          args: Prisma.ScientificWorkCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScientificWorkCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload>[]
+        }
+        delete: {
+          args: Prisma.ScientificWorkDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload>
+        }
+        update: {
+          args: Prisma.ScientificWorkUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload>
+        }
+        deleteMany: {
+          args: Prisma.ScientificWorkDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScientificWorkUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScientificWorkUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload>[]
+        }
+        upsert: {
+          args: Prisma.ScientificWorkUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkPayload>
+        }
+        aggregate: {
+          args: Prisma.ScientificWorkAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScientificWork>
+        }
+        groupBy: {
+          args: Prisma.ScientificWorkGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScientificWorkGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScientificWorkCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScientificWorkCountAggregateOutputType> | number
         }
       }
     }
@@ -2898,6 +2973,31 @@ export const DoctorScalarFieldEnum = {
 export type DoctorScalarFieldEnum = (typeof DoctorScalarFieldEnum)[keyof typeof DoctorScalarFieldEnum]
 
 
+export const ScientificWorkScalarFieldEnum = {
+  id: 'id',
+  doctorId: 'doctorId',
+  type: 'type',
+  title: 'title',
+  degree: 'degree',
+  speciality: 'speciality',
+  year: 'year',
+  organization: 'organization',
+  supervisor: 'supervisor',
+  summary: 'summary',
+  novelty: 'novelty',
+  practicalValue: 'practicalValue',
+  results: 'results',
+  publicationCount: 'publicationCount',
+  pdfUrl: 'pdfUrl',
+  abstractUrl: 'abstractUrl',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScientificWorkScalarFieldEnum = (typeof ScientificWorkScalarFieldEnum)[keyof typeof ScientificWorkScalarFieldEnum]
+
+
 export const ClinicScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
@@ -3486,6 +3586,7 @@ export type GlobalOmitConfig = {
   disease?: Prisma.DiseaseOmit
   procedure?: Prisma.ProcedureOmit
   doctor?: Prisma.DoctorOmit
+  scientificWork?: Prisma.ScientificWorkOmit
   clinic?: Prisma.ClinicOmit
   supplier?: Prisma.SupplierOmit
   equipment?: Prisma.EquipmentOmit

@@ -64,6 +64,41 @@ function EncyclopediaPill({ href, title }: { href: string; title: string }) {
   );
 }
 
+/** Маркированный подраздел научной работы. Пустой список не рендерится. */
+function WorkList({ title, items }: { title: string; items: string[] }) {
+  if (items.length === 0) return null;
+  return (
+    <div>
+      <h5 className="mb-[6px] text-[12.5px] font-bold text-foreground">{title}</h5>
+      <ul className="space-y-[5px]">
+        {items.map((item) => (
+          <li
+            className="relative pl-[14px] text-[13px] leading-relaxed text-foreground/80 before:absolute before:left-0 before:top-[7px] before:h-[4px] before:w-[4px] before:rounded-full before:bg-primary/60"
+            key={item}
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/** Ссылка на оригинальный документ (PDF) научной работы. */
+function DocLink({ href, label }: { href: string; label: string }) {
+  return (
+    <a
+      className="inline-flex items-center gap-[6px] rounded-[8px] border border-[#d8e3e1] bg-background px-[10px] py-[6px] text-[12.5px] font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+      href={href}
+      rel="noopener"
+      target="_blank"
+    >
+      <span aria-hidden>📄</span>
+      {label} <span className="font-normal text-muted-foreground">(PDF)</span>
+    </a>
+  );
+}
+
 export function DoctorTemplate({ data }: { data: DoctorDetail }) {
   const fullName = doctorFullName(data);
   const shortName = doctorShortName(data);
@@ -203,6 +238,85 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                     {data.credo.startsWith("«") ? data.credo : `«${data.credo}»`}
                   </p>
                 )}
+              </Section>
+            )}
+
+            {/* Научная деятельность: Doctor → ScientificWork.
+                Только структурированные данные; полный текст работы не хранится —
+                оригиналы отдаются PDF-файлами. Пустые разделы не рендерятся. */}
+            {data.scientificWorks.length > 0 && (
+              <Section title="Научная деятельность">
+                <div className="space-y-[22px]">
+                  {data.scientificWorks.map((w) => (
+                    <article className="space-y-[10px]" key={w.id}>
+                      <header>
+                        {/* Тип, степень и название — единый заголовок работы,
+                            чтобы все они индексировались (требование SEO из ТЗ). */}
+                        <h4>
+                          <span className="block text-[11px] font-bold uppercase tracking-[0.08em] text-primary">
+                            {w.type}
+                          </span>
+                          {w.degree && (
+                            <span className="mt-1 block text-[12.5px] font-semibold text-foreground">
+                              {w.degree}
+                            </span>
+                          )}
+                          <span className="mt-1 block text-[15px] font-bold leading-snug text-foreground">
+                            {w.title}
+                          </span>
+                        </h4>
+                        {(w.year != null || w.speciality) && (
+                          <p className="mt-1.5 text-[12.5px] text-muted-foreground">
+                            {[w.year, w.speciality].filter(Boolean).join(" · ")}
+                          </p>
+                        )}
+                        {w.organization && (
+                          <p className="text-[12.5px] text-muted-foreground">{w.organization}</p>
+                        )}
+                        {w.supervisor && (
+                          <p className="mt-1 text-[12.5px] text-muted-foreground">
+                            Научный руководитель: {w.supervisor}
+                          </p>
+                        )}
+                      </header>
+
+                      {w.summary && (
+                        <p className="text-[13.5px] leading-relaxed text-foreground/80">
+                          {w.summary}
+                        </p>
+                      )}
+
+                      <WorkList items={w.novelty} title="Научная новизна" />
+                      <WorkList items={w.practicalValue} title="Практическая значимость" />
+                      <WorkList items={w.results} title="Основные результаты" />
+
+                      {w.publicationCount != null && w.publicationCount > 0 && (
+                        <div>
+                          <h5 className="mb-[6px] text-[12.5px] font-bold text-foreground">
+                            Публикации
+                          </h5>
+                          <p className="text-[13px] text-foreground/80">
+                            Публикаций по теме работы: {w.publicationCount}
+                          </p>
+                        </div>
+                      )}
+
+                      {(w.abstractUrl || w.pdfUrl) && (
+                        <div>
+                          <h5 className="mb-[6px] text-[12.5px] font-bold text-foreground">
+                            Документы
+                          </h5>
+                          <div className="flex flex-wrap gap-[8px]">
+                            {w.abstractUrl && (
+                              <DocLink href={w.abstractUrl} label="Автореферат" />
+                            )}
+                            {w.pdfUrl && <DocLink href={w.pdfUrl} label="Диссертация" />}
+                          </div>
+                        </div>
+                      )}
+                    </article>
+                  ))}
+                </div>
               </Section>
             )}
 

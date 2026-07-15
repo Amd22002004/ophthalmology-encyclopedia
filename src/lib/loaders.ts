@@ -231,6 +231,9 @@ export async function getDoctor(slug: string) {
         take: 4,
         select: { slug: true, title: true, publishedAt: true },
       },
+      scientificWorks: {
+        orderBy: [{ sortOrder: "asc" }, { year: "desc" }],
+      },
     },
   });
 }

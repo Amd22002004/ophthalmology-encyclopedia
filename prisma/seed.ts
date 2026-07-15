@@ -426,6 +426,68 @@ type DoctorSeed = {
   procedureSlugs: string[];
 };
 
+/**
+ * Научные работы врачей.
+ * Источник: data/doctors/<slug>/ (автореферат, диссертация).
+ * В БД попадают ТОЛЬКО структурированные данные — полный текст не хранится,
+ * сами документы отдаются файлами из public/doctors/<slug>/.
+ * Разделы, отсутствующие в документе, остаются пустыми (не выдумываются).
+ */
+type ScientificWorkSeed = {
+  doctorSlug: string;
+  type: string;
+  title: string;
+  degree?: string;
+  speciality?: string;
+  year?: number;
+  organization?: string;
+  supervisor?: string;
+  summary?: string;
+  novelty?: string[];
+  practicalValue?: string[];
+  results?: string[];
+  publicationCount?: number;
+  pdfUrl?: string;
+  abstractUrl?: string;
+  sortOrder?: number;
+};
+
+const SCIENTIFIC_WORKS: ScientificWorkSeed[] = [
+  {
+    doctorSlug: "ostroverhov-aleksandr-ivanovich",
+    type: "Кандидатская диссертация",
+    title: "Экспресс кросслинкинг при кератэктазиях",
+    degree: "Кандидат медицинских наук",
+    speciality: "14.01.07 — глазные болезни",
+    year: 2023,
+    organization:
+      "Кыргызско-Российский Славянский университет им. Б. Н. Ельцина; Кыргызская государственная медицинская академия им. И. К. Ахунбаева (Бишкек)",
+    supervisor:
+      "Джумагулов Олжобай Джумакадырович, доктор медицинских наук, профессор",
+    summary:
+      "Работа посвящена усовершенствованному методу укрепления роговицы — экспресс кросслинкингу — для лечения кератэктазий, при которых роговица истончается и деформируется, а зрение прогрессивно падает. Стандартный кросслинкинг требует снятия эпителия роговицы и не применяется при её толщине менее 400 мкм, из-за чего часть пациентов оставалась без лечения. Автор предложил вводить кислородно-рибофлавиновую смесь внутрь роговицы инъекционно, сохраняя собственный эпителий, и сократить время ультрафиолетового облучения. Метод впервые позволил безопасно лечить тонкие роговицы, снизил число осложнений и сократил сроки восстановления. Для пациентов это означает возможность остановить прогрессирование кератоконуса без деэпителизации и долгой реабилитации.",
+    novelty: [
+      "Впервые в эксперименте доказаны эффективность и безопасность методики кросслинкинга роговицы с интрастромальным введением кислородно-рибофлавиновой смеси, в результате которой произошло ожидаемое увеличение прочностных свойств роговицы.",
+      "Впервые в клинической практике применена методика кросслинкинга роговицы с интрастромальным введением кислородно-рибофлавиновой смеси и укорочением времени воздействия ультрафиолета в лечении больных с кератэктазиями с толщиной роговицы менее 400 мкм.",
+    ],
+    practicalValue: [
+      "Методика даёт возможность избегать осложнений, связанных с деэпителизацией, и применять процедуру на тонких роговицах (свидетельство на рационализаторское предложение, выданное Кыргызпатентом, № 856 от 15.03.2018).",
+      "Усовершенствованная методика позволяет получить высокие функциональные результаты: увеличение остроты зрения и стабилизацию процесса в раннем и позднем послеоперационном периоде.",
+      "Методика внедрена в лечебно-диагностический процесс (акт внедрения от 18.01.2023) и в учебный процесс студентов и клинических ординаторов Кыргызско-Российского Славянского университета им. Б. Н. Ельцина (акт внедрения от 21.12.2023).",
+    ],
+    results: [
+      "Применение методики сократило сроки реабилитации и увеличило остроту зрения в 46,0% случаев.",
+      "Толщина роговицы увеличилась на 35,2 мкм, преломляющая сила роговицы снизилась на 4,17 D, фактор резистентности повысился в 1,72 раза.",
+      "Стойкая ремиссия заболевания достигнута в 95,6% случаев.",
+      "В эксперименте (25 кроликов) и клиническом исследовании (34 пациента, 53 глаза) подтверждены сохранность эндотелия роговицы и отсутствие повышения внутриглазного давления.",
+    ],
+    publicationCount: 6,
+    abstractUrl: "/doctors/ostroverhov-aleksandr-ivanovich/avtoreferat.pdf",
+    pdfUrl: "/doctors/ostroverhov-aleksandr-ivanovich/dissertaciya.pdf",
+    sortOrder: 1,
+  },
+];
+
 const DOCTORS: DoctorSeed[] = [
   {
     slug: "kunitskiy-konstantin-vladislavovich",
@@ -878,6 +940,42 @@ async function main() {
   if (doctorCount !== 9) {
     console.warn(`⚠ Expected 9 doctors, got ${doctorCount}`);
   }
+
+  // ─── Scientific works ───────────────────────────────────────────────────────
+  console.log("Seeding scientific works...");
+
+  for (const w of SCIENTIFIC_WORKS) {
+    const doctor = await db.doctor.findUnique({ where: { slug: w.doctorSlug } });
+    if (!doctor) {
+      console.warn(`⚠ Doctor not found: ${w.doctorSlug} for work "${w.title}"`);
+      continue;
+    }
+    const data = {
+      type: w.type,
+      degree: w.degree ?? null,
+      speciality: w.speciality ?? null,
+      year: w.year ?? null,
+      organization: w.organization ?? null,
+      supervisor: w.supervisor ?? null,
+      summary: w.summary ?? null,
+      novelty: w.novelty ?? [],
+      practicalValue: w.practicalValue ?? [],
+      results: w.results ?? [],
+      publicationCount: w.publicationCount ?? null,
+      pdfUrl: w.pdfUrl ?? null,
+      abstractUrl: w.abstractUrl ?? null,
+      sortOrder: w.sortOrder ?? 0,
+    };
+    await db.scientificWork.upsert({
+      where: { doctorId_title: { doctorId: doctor.id, title: w.title } },
+      create: { doctorId: doctor.id, title: w.title, ...data },
+      update: data,
+    });
+    console.log(`  ✓ ${w.type}: «${w.title}» → ${doctor.lastName} ${doctor.firstName}`);
+  }
+
+  const workCount = await db.scientificWork.count();
+  console.log(`✓ Scientific works total: ${workCount}`);
 
   console.log("Seed complete.");
 }
