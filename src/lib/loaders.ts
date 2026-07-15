@@ -70,6 +70,20 @@ export async function getDisease(slug: string) {
       equipment: {
         include: { equipment: { select: { slug: true, title: true, manufacturer: true } } },
       },
+      // Заболевание → Научные работы (прямая связь по теме работы)
+      scientificWorks: {
+        include: {
+          work: {
+            select: {
+              slug: true,
+              title: true,
+              type: true,
+              year: true,
+              doctor: { select: { slug: true, firstName: true, lastName: true, middleName: true } },
+            },
+          },
+        },
+      },
     },
   });
 }
@@ -118,6 +132,20 @@ export async function getProcedure(slug: string) {
       equipment: {
         take: 4,
         include: { equipment: { select: { slug: true, title: true } } },
+      },
+      // Процедура → Научные работы (прямая связь по теме работы)
+      scientificWorks: {
+        include: {
+          work: {
+            select: {
+              slug: true,
+              title: true,
+              type: true,
+              year: true,
+              doctor: { select: { slug: true, firstName: true, lastName: true, middleName: true } },
+            },
+          },
+        },
       },
     },
   });
@@ -347,6 +375,12 @@ export async function getClinic(slug: string) {
               experienceYears: true,
               position: true,
               category: true,
+              // Клиника → Научные работы: через врачей, работающих в клинике
+              scientificWorks: {
+                where: { slug: { not: null } },
+                select: { slug: true, title: true, type: true, year: true },
+                orderBy: { year: "desc" },
+              },
             },
           },
         },
@@ -488,6 +522,84 @@ export async function getEquipmentItem(slug: string) {
 }
 
 // ─── Publications ─────────────────────────────────────────────────────────────
+
+// ─── Scientific works (каталог /publications) ─────────────────────────────────
+
+/**
+ * Единый элемент каталога научных публикаций.
+ * `kind` разделяет типы контента: сейчас наполняется только научными работами
+ * (ScientificWork), но структура готова принять редакционные статьи (Publication)
+ * в тот же каталог, не смешивая их семантику.
+ */
+export type PublicationCatalogItem = {
+  kind: "scientific" | "editorial";
+  slug: string;
+  type: string;
+  title: string;
+  authorName: string;
+  authorSlug: string | null;
+  year: number | null;
+  organization: string | null;
+  diseases: { slug: string; title: string }[];
+  procedures: { slug: string; title: string }[];
+};
+
+/** Каталог /publications. Новая работа врача попадает сюда автоматически. */
+export async function getPublicationsCatalog(): Promise<PublicationCatalogItem[]> {
+  const db = getPrisma();
+  if (!db) return [];
+  const works = await db.scientificWork.findMany({
+    where: { slug: { not: null } },
+    orderBy: [{ year: "desc" }, { sortOrder: "asc" }],
+    include: {
+      doctor: { select: { slug: true, firstName: true, lastName: true, middleName: true } },
+      diseases: { include: { disease: { select: { slug: true, title: true } } } },
+      procedures: { include: { procedure: { select: { slug: true, title: true } } } },
+    },
+  });
+  return works.map((w) => ({
+    kind: "scientific" as const,
+    slug: w.slug as string,
+    type: w.type,
+    title: w.title,
+    authorName: doctorFullName(w.doctor),
+    authorSlug: w.doctor.slug,
+    year: w.year,
+    organization: w.organization,
+    diseases: w.diseases.map((r) => r.disease),
+    procedures: w.procedures.map((r) => r.procedure),
+  }));
+}
+
+/** Детальная страница /publications/[slug] для научной работы. */
+export async function getScientificWork(slug: string) {
+  const db = getPrisma();
+  if (!db) return null;
+  return db.scientificWork.findUnique({
+    where: { slug },
+    include: {
+      doctor: {
+        select: {
+          slug: true,
+          firstName: true,
+          lastName: true,
+          middleName: true,
+          photoUrl: true,
+          position: true,
+          category: true,
+          // Клиники автора: работа привязана к клиникам через врача (без отдельной таблицы)
+          clinics: {
+            include: { clinic: { select: { slug: true, title: true, city: true } } },
+          },
+        },
+      },
+      diseases: { include: { disease: { select: { slug: true, title: true, summary: true } } } },
+      procedures: { include: { procedure: { select: { slug: true, title: true, summary: true } } } },
+    },
+  });
+}
+
+export type ScientificWorkDetail = NonNullable<Awaited<ReturnType<typeof getScientificWork>>>;
 
 export async function getPublications(opts?: {
   take?: number;
@@ -697,7 +809,9 @@ export async function getEntityCounts() {
   if (!db) {
     return { diseases: 0, procedures: 0, doctors: 0, clinics: 0, suppliers: 0, equipment: 0, publications: 0 };
   }
-  const [diseases, procedures, doctors, clinics, suppliers, equipment, publications] =
+  // Раздел /publications наполняется научными работами (ScientificWork) и, в перспективе,
+  // редакционными материалами (Publication). Счётчик = сумма обоих типов контента.
+  const [diseases, procedures, doctors, clinics, suppliers, equipment, editorial, scientific] =
     await Promise.all([
       db.disease.count(),
       db.procedure.count(),
@@ -706,6 +820,15 @@ export async function getEntityCounts() {
       db.supplier.count(),
       db.equipment.count(),
       db.publication.count(),
+      db.scientificWork.count({ where: { slug: { not: null } } }),
     ]);
-  return { diseases, procedures, doctors, clinics, suppliers, equipment, publications };
+  return {
+    diseases,
+    procedures,
+    doctors,
+    clinics,
+    suppliers,
+    equipment,
+    publications: editorial + scientific,
+  };
 }

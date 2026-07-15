@@ -388,6 +388,8 @@ export const ModelName = {
   Procedure: 'Procedure',
   Doctor: 'Doctor',
   ScientificWork: 'ScientificWork',
+  ScientificWorkOnDisease: 'ScientificWorkOnDisease',
+  ScientificWorkOnProcedure: 'ScientificWorkOnProcedure',
   Clinic: 'Clinic',
   Supplier: 'Supplier',
   Equipment: 'Equipment',
@@ -436,7 +438,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "disease" | "procedure" | "doctor" | "scientificWork" | "clinic" | "supplier" | "equipment" | "equipmentSpec" | "publication" | "clinicalGuideline" | "regulation" | "historyEntry" | "innovation" | "specialty" | "diseaseCategory" | "procedureCategory" | "equipmentCategory" | "region" | "diseaseOnProcedure" | "doctorOnDisease" | "doctorOnProcedure" | "doctorOnSpecialty" | "doctorOnClinic" | "clinicOnSpecialty" | "clinicOnSupplier" | "supplierOnEquipmentCategory" | "procedureOnEquipment" | "clinicOnEquipment" | "doctorOnEquipment" | "diseaseOnEquipment" | "publicationOnDisease" | "publicationOnProcedure" | "diseaseOnClinicalGuideline" | "clinicOnDisease" | "clinicOnProcedure" | "clinicOnPublication" | "adminUser"
+    modelProps: "disease" | "procedure" | "doctor" | "scientificWork" | "scientificWorkOnDisease" | "scientificWorkOnProcedure" | "clinic" | "supplier" | "equipment" | "equipmentSpec" | "publication" | "clinicalGuideline" | "regulation" | "historyEntry" | "innovation" | "specialty" | "diseaseCategory" | "procedureCategory" | "equipmentCategory" | "region" | "diseaseOnProcedure" | "doctorOnDisease" | "doctorOnProcedure" | "doctorOnSpecialty" | "doctorOnClinic" | "clinicOnSpecialty" | "clinicOnSupplier" | "supplierOnEquipmentCategory" | "procedureOnEquipment" | "clinicOnEquipment" | "doctorOnEquipment" | "diseaseOnEquipment" | "publicationOnDisease" | "publicationOnProcedure" | "diseaseOnClinicalGuideline" | "clinicOnDisease" | "clinicOnProcedure" | "clinicOnPublication" | "adminUser"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -733,6 +735,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ScientificWorkCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ScientificWorkCountAggregateOutputType> | number
+        }
+      }
+    }
+    ScientificWorkOnDisease: {
+      payload: Prisma.$ScientificWorkOnDiseasePayload<ExtArgs>
+      fields: Prisma.ScientificWorkOnDiseaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScientificWorkOnDiseaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScientificWorkOnDiseaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload>
+        }
+        findFirst: {
+          args: Prisma.ScientificWorkOnDiseaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScientificWorkOnDiseaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload>
+        }
+        findMany: {
+          args: Prisma.ScientificWorkOnDiseaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload>[]
+        }
+        create: {
+          args: Prisma.ScientificWorkOnDiseaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload>
+        }
+        createMany: {
+          args: Prisma.ScientificWorkOnDiseaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScientificWorkOnDiseaseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload>[]
+        }
+        delete: {
+          args: Prisma.ScientificWorkOnDiseaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload>
+        }
+        update: {
+          args: Prisma.ScientificWorkOnDiseaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload>
+        }
+        deleteMany: {
+          args: Prisma.ScientificWorkOnDiseaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScientificWorkOnDiseaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScientificWorkOnDiseaseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload>[]
+        }
+        upsert: {
+          args: Prisma.ScientificWorkOnDiseaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnDiseasePayload>
+        }
+        aggregate: {
+          args: Prisma.ScientificWorkOnDiseaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScientificWorkOnDisease>
+        }
+        groupBy: {
+          args: Prisma.ScientificWorkOnDiseaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScientificWorkOnDiseaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScientificWorkOnDiseaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScientificWorkOnDiseaseCountAggregateOutputType> | number
+        }
+      }
+    }
+    ScientificWorkOnProcedure: {
+      payload: Prisma.$ScientificWorkOnProcedurePayload<ExtArgs>
+      fields: Prisma.ScientificWorkOnProcedureFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScientificWorkOnProcedureFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScientificWorkOnProcedureFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload>
+        }
+        findFirst: {
+          args: Prisma.ScientificWorkOnProcedureFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScientificWorkOnProcedureFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload>
+        }
+        findMany: {
+          args: Prisma.ScientificWorkOnProcedureFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload>[]
+        }
+        create: {
+          args: Prisma.ScientificWorkOnProcedureCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload>
+        }
+        createMany: {
+          args: Prisma.ScientificWorkOnProcedureCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScientificWorkOnProcedureCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload>[]
+        }
+        delete: {
+          args: Prisma.ScientificWorkOnProcedureDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload>
+        }
+        update: {
+          args: Prisma.ScientificWorkOnProcedureUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload>
+        }
+        deleteMany: {
+          args: Prisma.ScientificWorkOnProcedureDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScientificWorkOnProcedureUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScientificWorkOnProcedureUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload>[]
+        }
+        upsert: {
+          args: Prisma.ScientificWorkOnProcedureUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScientificWorkOnProcedurePayload>
+        }
+        aggregate: {
+          args: Prisma.ScientificWorkOnProcedureAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScientificWorkOnProcedure>
+        }
+        groupBy: {
+          args: Prisma.ScientificWorkOnProcedureGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScientificWorkOnProcedureGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScientificWorkOnProcedureCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScientificWorkOnProcedureCountAggregateOutputType> | number
         }
       }
     }
@@ -3275,6 +3425,7 @@ export type DoctorScalarFieldEnum = (typeof DoctorScalarFieldEnum)[keyof typeof 
 
 export const ScientificWorkScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   doctorId: 'doctorId',
   type: 'type',
   title: 'title',
@@ -3296,6 +3447,24 @@ export const ScientificWorkScalarFieldEnum = {
 } as const
 
 export type ScientificWorkScalarFieldEnum = (typeof ScientificWorkScalarFieldEnum)[keyof typeof ScientificWorkScalarFieldEnum]
+
+
+export const ScientificWorkOnDiseaseScalarFieldEnum = {
+  workId: 'workId',
+  diseaseId: 'diseaseId',
+  createdAt: 'createdAt'
+} as const
+
+export type ScientificWorkOnDiseaseScalarFieldEnum = (typeof ScientificWorkOnDiseaseScalarFieldEnum)[keyof typeof ScientificWorkOnDiseaseScalarFieldEnum]
+
+
+export const ScientificWorkOnProcedureScalarFieldEnum = {
+  workId: 'workId',
+  procedureId: 'procedureId',
+  createdAt: 'createdAt'
+} as const
+
+export type ScientificWorkOnProcedureScalarFieldEnum = (typeof ScientificWorkOnProcedureScalarFieldEnum)[keyof typeof ScientificWorkOnProcedureScalarFieldEnum]
 
 
 export const ClinicScalarFieldEnum = {
@@ -3935,6 +4104,8 @@ export type GlobalOmitConfig = {
   procedure?: Prisma.ProcedureOmit
   doctor?: Prisma.DoctorOmit
   scientificWork?: Prisma.ScientificWorkOmit
+  scientificWorkOnDisease?: Prisma.ScientificWorkOnDiseaseOmit
+  scientificWorkOnProcedure?: Prisma.ScientificWorkOnProcedureOmit
   clinic?: Prisma.ClinicOmit
   supplier?: Prisma.SupplierOmit
   equipment?: Prisma.EquipmentOmit

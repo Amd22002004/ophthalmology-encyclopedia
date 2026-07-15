@@ -64,6 +64,17 @@ export type Doctor = Prisma.DoctorModel
  */
 export type ScientificWork = Prisma.ScientificWorkModel
 /**
+ * Model ScientificWorkOnDisease
+ * Заболевание, которое РЕАЛЬНО исследуется в научной работе.
+ * Прямая связь, а не через врача: направления автора ≠ тема его работы.
+ */
+export type ScientificWorkOnDisease = Prisma.ScientificWorkOnDiseaseModel
+/**
+ * Model ScientificWorkOnProcedure
+ * Процедура/методика, которая РЕАЛЬНО исследуется в научной работе.
+ */
+export type ScientificWorkOnProcedure = Prisma.ScientificWorkOnProcedureModel
+/**
  * Model Clinic
  * 
  */

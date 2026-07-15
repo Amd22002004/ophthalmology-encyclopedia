@@ -137,6 +137,24 @@ export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
     meta: r.publication.abstract ?? undefined,
   }));
 
+  // Клиника → Научные работы: собираем работы врачей клиники.
+  // Дедупликация по slug — один врач может числиться в нескольких клиниках,
+  // а у клиники может быть несколько врачей с работами.
+  const scientificWorks = Array.from(
+    new Map(
+      data.doctors.flatMap((r) =>
+        r.doctor.scientificWorks.map((w) => [
+          w.slug,
+          {
+            href: `/publications/${w.slug}`,
+            title: w.title,
+            meta: [w.type, doctorInitialsName(r.doctor), w.year].filter(Boolean).join(" · "),
+          },
+        ]),
+      ),
+    ).values(),
+  );
+
   const map = mapHref(data);
   const licenseDateLabel = formatLicenseDate(data.licenseDate);
   const faqItems = buildFaqItems(data);
@@ -402,6 +420,11 @@ export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
                 ))}
               </div>
             </EntityBlock>
+          )}
+
+          {/* Клиника → Научные работы: работы врачей, работающих в этой клинике */}
+          {scientificWorks.length > 0 && (
+            <RelatedBlock empty="" items={scientificWorks} title="Научные работы врачей клиники" />
           )}
 
           {procedures.length > 0 && <RelatedBlock empty="" items={procedures} title="Процедуры" />}

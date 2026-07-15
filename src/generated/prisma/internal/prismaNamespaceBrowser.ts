@@ -55,6 +55,8 @@ export const ModelName = {
   Procedure: 'Procedure',
   Doctor: 'Doctor',
   ScientificWork: 'ScientificWork',
+  ScientificWorkOnDisease: 'ScientificWorkOnDisease',
+  ScientificWorkOnProcedure: 'ScientificWorkOnProcedure',
   Clinic: 'Clinic',
   Supplier: 'Supplier',
   Equipment: 'Equipment',
@@ -164,6 +166,7 @@ export type DoctorScalarFieldEnum = (typeof DoctorScalarFieldEnum)[keyof typeof 
 
 export const ScientificWorkScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   doctorId: 'doctorId',
   type: 'type',
   title: 'title',
@@ -185,6 +188,24 @@ export const ScientificWorkScalarFieldEnum = {
 } as const
 
 export type ScientificWorkScalarFieldEnum = (typeof ScientificWorkScalarFieldEnum)[keyof typeof ScientificWorkScalarFieldEnum]
+
+
+export const ScientificWorkOnDiseaseScalarFieldEnum = {
+  workId: 'workId',
+  diseaseId: 'diseaseId',
+  createdAt: 'createdAt'
+} as const
+
+export type ScientificWorkOnDiseaseScalarFieldEnum = (typeof ScientificWorkOnDiseaseScalarFieldEnum)[keyof typeof ScientificWorkOnDiseaseScalarFieldEnum]
+
+
+export const ScientificWorkOnProcedureScalarFieldEnum = {
+  workId: 'workId',
+  procedureId: 'procedureId',
+  createdAt: 'createdAt'
+} as const
+
+export type ScientificWorkOnProcedureScalarFieldEnum = (typeof ScientificWorkOnProcedureScalarFieldEnum)[keyof typeof ScientificWorkOnProcedureScalarFieldEnum]
 
 
 export const ClinicScalarFieldEnum = {

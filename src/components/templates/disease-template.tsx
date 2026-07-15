@@ -34,6 +34,14 @@ export function DiseaseTemplate({ data }: { data: DiseaseDetail }) {
     title: r.equipment.title,
     meta: r.equipment.manufacturer ?? undefined,
   }));
+  // Заболевание → Научные работы (прямая связь: работа реально исследует это заболевание)
+  const scientificWorks = data.scientificWorks
+    .filter((r) => r.work.slug)
+    .map((r) => ({
+      href: `/publications/${r.work.slug}`,
+      title: r.work.title,
+      meta: [r.work.type, doctorFullName(r.work.doctor), r.work.year].filter(Boolean).join(" · "),
+    }));
 
   return (
     <TemplateShell
@@ -85,6 +93,9 @@ export function DiseaseTemplate({ data }: { data: DiseaseDetail }) {
             items={procedures}
             title="Процедуры"
           />
+          {scientificWorks.length > 0 && (
+            <RelatedBlock empty="" items={scientificWorks} title="Научные работы" />
+          )}
           {equipment.length > 0 && (
             <RelatedBlock empty="" items={equipment} title="Оборудование" />
           )}

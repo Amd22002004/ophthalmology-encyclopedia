@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { PublicationTemplate } from "@/components/templates/publication-template";
-import { getPublication } from "@/lib/loaders";
+import { ScientificWorkTemplate } from "@/components/templates/scientific-work-template";
+import { getPublication, getScientificWork } from "@/lib/loaders";
 import { createPageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -9,6 +10,16 @@ export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
+
+  const work = await getScientificWork(slug);
+  if (work) {
+    return createPageMetadata({
+      title: work.title,
+      description: work.summary?.slice(0, 160) ?? work.title,
+      path: `/publications/${slug}`,
+    });
+  }
+
   const pub = await getPublication(slug);
   if (!pub) return {};
   return createPageMetadata({
@@ -20,6 +31,12 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function PublicationPage({ params }: Props) {
   const { slug } = await params;
+
+  // Научные работы (ScientificWork) — основной тип контента раздела.
+  const work = await getScientificWork(slug);
+  if (work) return <ScientificWorkTemplate data={work} />;
+
+  // Редакционные материалы (Publication) — второй тип, живёт на том же маршруте.
   const pub = await getPublication(slug);
   if (!pub) notFound();
   return <PublicationTemplate data={pub} />;

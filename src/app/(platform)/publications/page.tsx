@@ -1,6 +1,6 @@
-import { CatalogLayout } from "@/components/catalog/catalog-layout";
+import { PublicationsCatalog } from "@/components/templates/publications-catalog";
 import { getCatalogConfig } from "@/lib/content-model";
-import { getPublications } from "@/lib/loaders";
+import { getPublicationsCatalog } from "@/lib/loaders";
 import { createCatalogMetadata } from "@/lib/seo";
 
 const config = getCatalogConfig("publications");
@@ -9,6 +9,30 @@ export const revalidate = 3600;
 export const metadata = createCatalogMetadata(config);
 
 export default async function PublicationsPage() {
-  const items = await getPublications();
-  return <CatalogLayout config={config} items={items} />;
+  // Каталог строится напрямую из ScientificWork: новая работа врача появляется здесь
+  // автоматически, без дополнительного кода.
+  const items = await getPublicationsCatalog();
+
+  return (
+    <div className="space-y-8">
+      <div className="space-y-2">
+        <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+          {config.eyebrow}
+        </p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          {config.title}
+        </h1>
+        <p className="max-w-2xl text-base text-muted-foreground">{config.description}</p>
+      </div>
+
+      {items.length === 0 ? (
+        <div className="space-y-2 rounded-xl border bg-card p-10 text-center">
+          <p className="text-lg font-semibold text-foreground">{config.emptyTitle}</p>
+          <p className="text-sm text-muted-foreground">{config.emptyDescription}</p>
+        </div>
+      ) : (
+        <PublicationsCatalog items={items} />
+      )}
+    </div>
+  );
 }

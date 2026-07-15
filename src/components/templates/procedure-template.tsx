@@ -21,6 +21,14 @@ export function ProcedureTemplate({ data }: { data: ProcedureDetail }) {
     href: `/equipment/${r.equipment.slug}`,
     title: r.equipment.title,
   }));
+  // Процедура → Научные работы (прямая связь: работа реально исследует эту методику)
+  const scientificWorks = data.scientificWorks
+    .filter((r) => r.work.slug)
+    .map((r) => ({
+      href: `/publications/${r.work.slug}`,
+      title: r.work.title,
+      meta: [r.work.type, doctorFullName(r.work.doctor), r.work.year].filter(Boolean).join(" · "),
+    }));
 
   return (
     <TemplateShell
@@ -47,6 +55,9 @@ export function ProcedureTemplate({ data }: { data: ProcedureDetail }) {
             items={doctors}
             title="Врачи"
           />
+          {scientificWorks.length > 0 && (
+            <RelatedBlock empty="" items={scientificWorks} title="Научные работы" />
+          )}
           <RelatedBlock
             empty="Используемое оборудование будет связано при наполнении раздела."
             items={equipment}

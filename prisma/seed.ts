@@ -544,8 +544,14 @@ const EQUIPMENT: EquipmentSeed[] = [
  */
 type ScientificWorkSeed = {
   doctorSlug: string;
+  /** Стабильный slug страницы /publications/[slug]. Задаётся явно, чтобы URL не менялся при правке заголовка. */
+  slug: string;
   type: string;
   title: string;
+  /** Заболевания, РЕАЛЬНО исследуемые в работе (не направления автора). */
+  diseaseSlugs?: string[];
+  /** Процедуры/методики, РЕАЛЬНО исследуемые в работе. */
+  procedureSlugs?: string[];
   degree?: string;
   speciality?: string;
   year?: number;
@@ -564,8 +570,13 @@ type ScientificWorkSeed = {
 const SCIENTIFIC_WORKS: ScientificWorkSeed[] = [
   {
     doctorSlug: "ostroverhov-aleksandr-ivanovich",
+    slug: "ekspress-krosslinking-pri-keratektaziyah",
     type: "Кандидатская диссертация",
     title: "Экспресс кросслинкинг при кератэктазиях",
+    // Строго тема работы. Направления автора (косоглазие, катаракта, птоз) сюда НЕ входят —
+    // это дало бы ложные медицинские связи.
+    diseaseSlugs: ["keratokonus"],
+    procedureSlugs: ["krosslinking"],
     degree: "Кандидат медицинских наук",
     speciality: "14.01.07 — глазные болезни",
     year: 2023,
@@ -1166,6 +1177,7 @@ async function main() {
       continue;
     }
     const data = {
+      slug: w.slug,
       type: w.type,
       degree: w.degree ?? null,
       speciality: w.speciality ?? null,
@@ -1181,12 +1193,41 @@ async function main() {
       abstractUrl: w.abstractUrl ?? null,
       sortOrder: w.sortOrder ?? 0,
     };
-    await db.scientificWork.upsert({
+    const work = await db.scientificWork.upsert({
       where: { doctorId_title: { doctorId: doctor.id, title: w.title } },
       create: { doctorId: doctor.id, title: w.title, ...data },
       update: data,
     });
-    console.log(`  ✓ ${w.type}: «${w.title}» → ${doctor.lastName} ${doctor.firstName}`);
+
+    // Связи по ТЕМЕ работы (прямые, не через врача)
+    for (const s of w.diseaseSlugs ?? []) {
+      const disease = await db.disease.findUnique({ where: { slug: s } });
+      if (!disease) {
+        console.warn(`⚠ Disease not found: ${s} for work "${w.title}"`);
+        continue;
+      }
+      await db.scientificWorkOnDisease.upsert({
+        where: { workId_diseaseId: { workId: work.id, diseaseId: disease.id } },
+        create: { workId: work.id, diseaseId: disease.id },
+        update: {},
+      });
+    }
+    for (const s of w.procedureSlugs ?? []) {
+      const procedure = await db.procedure.findUnique({ where: { slug: s } });
+      if (!procedure) {
+        console.warn(`⚠ Procedure not found: ${s} for work "${w.title}"`);
+        continue;
+      }
+      await db.scientificWorkOnProcedure.upsert({
+        where: { workId_procedureId: { workId: work.id, procedureId: procedure.id } },
+        create: { workId: work.id, procedureId: procedure.id },
+        update: {},
+      });
+    }
+
+    console.log(
+      `  ✓ ${w.type}: «${w.title}» → ${doctor.lastName} ${doctor.firstName} (/${w.slug}, ${w.diseaseSlugs?.length ?? 0} diseases, ${w.procedureSlugs?.length ?? 0} procedures)`,
+    );
   }
 
   const workCount = await db.scientificWork.count();

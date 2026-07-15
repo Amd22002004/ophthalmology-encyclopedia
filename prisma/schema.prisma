@@ -28,6 +28,7 @@ model Disease {
   guidelines DiseaseOnClinicalGuideline[]
   publications PublicationOnDisease[]
   equipment  DiseaseOnEquipment[]
+  scientificWorks ScientificWorkOnDisease[]
 
   @@index([categoryId])
   @@index([title])
@@ -49,6 +50,7 @@ model Procedure {
   equipment    ProcedureOnEquipment[]
   publications PublicationOnProcedure[]
   clinics      ClinicOnProcedure[]
+  scientificWorks ScientificWorkOnProcedure[]
 
   @@index([categoryId])
   @@index([title])
@@ -92,6 +94,11 @@ model Doctor {
 /// только структурированные данные; сам документ отдаётся файлом (pdfUrl).
 model ScientificWork {
   id               String   @id @default(cuid())
+  /// Человекочитаемый идентификатор для страницы /publications/[slug].
+  /// Nullable намеренно: добавление NOT NULL-колонки к непустой таблице потребовало бы
+  /// деструктивной миграции. Значение всегда проставляется seed'ом; каталог
+  /// показывает только работы со slug.
+  slug             String?  @unique
   doctorId         String
   type             String   // Тип работы: «Кандидатская диссертация», «Патент», ...
   title            String
@@ -111,10 +118,40 @@ model ScientificWork {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  doctor    Doctor                      @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  diseases  ScientificWorkOnDisease[]
+  procedures ScientificWorkOnProcedure[]
 
   @@unique([doctorId, title])
   @@index([doctorId, sortOrder])
+  @@index([year])
+}
+
+/// Заболевание, которое РЕАЛЬНО исследуется в научной работе.
+/// Прямая связь, а не через врача: направления автора ≠ тема его работы.
+model ScientificWorkOnDisease {
+  workId    String
+  diseaseId String
+  createdAt DateTime @default(now())
+
+  work    ScientificWork @relation(fields: [workId], references: [id], onDelete: Cascade)
+  disease Disease        @relation(fields: [diseaseId], references: [id], onDelete: Cascade)
+
+  @@id([workId, diseaseId])
+  @@index([diseaseId])
+}
+
+/// Процедура/методика, которая РЕАЛЬНО исследуется в научной работе.
+model ScientificWorkOnProcedure {
+  workId      String
+  procedureId String
+  createdAt   DateTime @default(now())
+
+  work      ScientificWork @relation(fields: [workId], references: [id], onDelete: Cascade)
+  procedure Procedure      @relation(fields: [procedureId], references: [id], onDelete: Cascade)
+
+  @@id([workId, procedureId])
+  @@index([procedureId])
 }
 
 model Clinic {

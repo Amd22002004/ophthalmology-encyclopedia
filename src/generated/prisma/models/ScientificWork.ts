@@ -42,6 +42,7 @@ export type ScientificWorkSumAggregateOutputType = {
 
 export type ScientificWorkMinAggregateOutputType = {
   id: string | null
+  slug: string | null
   doctorId: string | null
   type: string | null
   title: string | null
@@ -61,6 +62,7 @@ export type ScientificWorkMinAggregateOutputType = {
 
 export type ScientificWorkMaxAggregateOutputType = {
   id: string | null
+  slug: string | null
   doctorId: string | null
   type: string | null
   title: string | null
@@ -80,6 +82,7 @@ export type ScientificWorkMaxAggregateOutputType = {
 
 export type ScientificWorkCountAggregateOutputType = {
   id: number
+  slug: number
   doctorId: number
   type: number
   title: number
@@ -116,6 +119,7 @@ export type ScientificWorkSumAggregateInputType = {
 
 export type ScientificWorkMinAggregateInputType = {
   id?: true
+  slug?: true
   doctorId?: true
   type?: true
   title?: true
@@ -135,6 +139,7 @@ export type ScientificWorkMinAggregateInputType = {
 
 export type ScientificWorkMaxAggregateInputType = {
   id?: true
+  slug?: true
   doctorId?: true
   type?: true
   title?: true
@@ -154,6 +159,7 @@ export type ScientificWorkMaxAggregateInputType = {
 
 export type ScientificWorkCountAggregateInputType = {
   id?: true
+  slug?: true
   doctorId?: true
   type?: true
   title?: true
@@ -263,6 +269,7 @@ export type ScientificWorkGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 
 export type ScientificWorkGroupByOutputType = {
   id: string
+  slug: string | null
   doctorId: string
   type: string
   title: string
@@ -308,6 +315,7 @@ export type ScientificWorkWhereInput = {
   OR?: Prisma.ScientificWorkWhereInput[]
   NOT?: Prisma.ScientificWorkWhereInput | Prisma.ScientificWorkWhereInput[]
   id?: Prisma.StringFilter<"ScientificWork"> | string
+  slug?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   doctorId?: Prisma.StringFilter<"ScientificWork"> | string
   type?: Prisma.StringFilter<"ScientificWork"> | string
   title?: Prisma.StringFilter<"ScientificWork"> | string
@@ -327,10 +335,13 @@ export type ScientificWorkWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
   doctor?: Prisma.XOR<Prisma.DoctorScalarRelationFilter, Prisma.DoctorWhereInput>
+  diseases?: Prisma.ScientificWorkOnDiseaseListRelationFilter
+  procedures?: Prisma.ScientificWorkOnProcedureListRelationFilter
 }
 
 export type ScientificWorkOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrderInput | Prisma.SortOrder
   doctorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -350,10 +361,13 @@ export type ScientificWorkOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   doctor?: Prisma.DoctorOrderByWithRelationInput
+  diseases?: Prisma.ScientificWorkOnDiseaseOrderByRelationAggregateInput
+  procedures?: Prisma.ScientificWorkOnProcedureOrderByRelationAggregateInput
 }
 
 export type ScientificWorkWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  slug?: string
   doctorId_title?: Prisma.ScientificWorkDoctorIdTitleCompoundUniqueInput
   AND?: Prisma.ScientificWorkWhereInput | Prisma.ScientificWorkWhereInput[]
   OR?: Prisma.ScientificWorkWhereInput[]
@@ -377,10 +391,13 @@ export type ScientificWorkWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
   doctor?: Prisma.XOR<Prisma.DoctorScalarRelationFilter, Prisma.DoctorWhereInput>
-}, "id" | "doctorId_title">
+  diseases?: Prisma.ScientificWorkOnDiseaseListRelationFilter
+  procedures?: Prisma.ScientificWorkOnProcedureListRelationFilter
+}, "id" | "slug" | "doctorId_title">
 
 export type ScientificWorkOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrderInput | Prisma.SortOrder
   doctorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -411,6 +428,7 @@ export type ScientificWorkScalarWhereWithAggregatesInput = {
   OR?: Prisma.ScientificWorkScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ScientificWorkScalarWhereWithAggregatesInput | Prisma.ScientificWorkScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ScientificWork"> | string
+  slug?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
   doctorId?: Prisma.StringWithAggregatesFilter<"ScientificWork"> | string
   type?: Prisma.StringWithAggregatesFilter<"ScientificWork"> | string
   title?: Prisma.StringWithAggregatesFilter<"ScientificWork"> | string
@@ -433,6 +451,7 @@ export type ScientificWorkScalarWhereWithAggregatesInput = {
 
 export type ScientificWorkCreateInput = {
   id?: string
+  slug?: string | null
   type: string
   title: string
   degree?: string | null
@@ -451,10 +470,13 @@ export type ScientificWorkCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   doctor: Prisma.DoctorCreateNestedOneWithoutScientificWorksInput
+  diseases?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutWorkInput
+  procedures?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkUncheckedCreateInput = {
   id?: string
+  slug?: string | null
   doctorId: string
   type: string
   title: string
@@ -473,10 +495,13 @@ export type ScientificWorkUncheckedCreateInput = {
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  diseases?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutWorkInput
+  procedures?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -495,10 +520,13 @@ export type ScientificWorkUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctor?: Prisma.DoctorUpdateOneRequiredWithoutScientificWorksNestedInput
+  diseases?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutWorkNestedInput
+  procedures?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   doctorId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -517,10 +545,13 @@ export type ScientificWorkUncheckedUpdateInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  diseases?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutWorkNestedInput
+  procedures?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkCreateManyInput = {
   id?: string
+  slug?: string | null
   doctorId: string
   type: string
   title: string
@@ -543,6 +574,7 @@ export type ScientificWorkCreateManyInput = {
 
 export type ScientificWorkUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -564,6 +596,7 @@ export type ScientificWorkUpdateManyMutationInput = {
 
 export type ScientificWorkUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   doctorId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -601,6 +634,7 @@ export type ScientificWorkDoctorIdTitleCompoundUniqueInput = {
 
 export type ScientificWorkCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   doctorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -629,6 +663,7 @@ export type ScientificWorkAvgOrderByAggregateInput = {
 
 export type ScientificWorkMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   doctorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -648,6 +683,7 @@ export type ScientificWorkMaxOrderByAggregateInput = {
 
 export type ScientificWorkMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   doctorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -669,6 +705,11 @@ export type ScientificWorkSumOrderByAggregateInput = {
   year?: Prisma.SortOrder
   publicationCount?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+}
+
+export type ScientificWorkScalarRelationFilter = {
+  is?: Prisma.ScientificWorkWhereInput
+  isNot?: Prisma.ScientificWorkWhereInput
 }
 
 export type ScientificWorkCreateNestedManyWithoutDoctorInput = {
@@ -748,8 +789,37 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type ScientificWorkCreateNestedOneWithoutDiseasesInput = {
+  create?: Prisma.XOR<Prisma.ScientificWorkCreateWithoutDiseasesInput, Prisma.ScientificWorkUncheckedCreateWithoutDiseasesInput>
+  connectOrCreate?: Prisma.ScientificWorkCreateOrConnectWithoutDiseasesInput
+  connect?: Prisma.ScientificWorkWhereUniqueInput
+}
+
+export type ScientificWorkUpdateOneRequiredWithoutDiseasesNestedInput = {
+  create?: Prisma.XOR<Prisma.ScientificWorkCreateWithoutDiseasesInput, Prisma.ScientificWorkUncheckedCreateWithoutDiseasesInput>
+  connectOrCreate?: Prisma.ScientificWorkCreateOrConnectWithoutDiseasesInput
+  upsert?: Prisma.ScientificWorkUpsertWithoutDiseasesInput
+  connect?: Prisma.ScientificWorkWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ScientificWorkUpdateToOneWithWhereWithoutDiseasesInput, Prisma.ScientificWorkUpdateWithoutDiseasesInput>, Prisma.ScientificWorkUncheckedUpdateWithoutDiseasesInput>
+}
+
+export type ScientificWorkCreateNestedOneWithoutProceduresInput = {
+  create?: Prisma.XOR<Prisma.ScientificWorkCreateWithoutProceduresInput, Prisma.ScientificWorkUncheckedCreateWithoutProceduresInput>
+  connectOrCreate?: Prisma.ScientificWorkCreateOrConnectWithoutProceduresInput
+  connect?: Prisma.ScientificWorkWhereUniqueInput
+}
+
+export type ScientificWorkUpdateOneRequiredWithoutProceduresNestedInput = {
+  create?: Prisma.XOR<Prisma.ScientificWorkCreateWithoutProceduresInput, Prisma.ScientificWorkUncheckedCreateWithoutProceduresInput>
+  connectOrCreate?: Prisma.ScientificWorkCreateOrConnectWithoutProceduresInput
+  upsert?: Prisma.ScientificWorkUpsertWithoutProceduresInput
+  connect?: Prisma.ScientificWorkWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ScientificWorkUpdateToOneWithWhereWithoutProceduresInput, Prisma.ScientificWorkUpdateWithoutProceduresInput>, Prisma.ScientificWorkUncheckedUpdateWithoutProceduresInput>
+}
+
 export type ScientificWorkCreateWithoutDoctorInput = {
   id?: string
+  slug?: string | null
   type: string
   title: string
   degree?: string | null
@@ -767,10 +837,13 @@ export type ScientificWorkCreateWithoutDoctorInput = {
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  diseases?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutWorkInput
+  procedures?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkUncheckedCreateWithoutDoctorInput = {
   id?: string
+  slug?: string | null
   type: string
   title: string
   degree?: string | null
@@ -788,6 +861,8 @@ export type ScientificWorkUncheckedCreateWithoutDoctorInput = {
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  diseases?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutWorkInput
+  procedures?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkCreateOrConnectWithoutDoctorInput = {
@@ -821,6 +896,7 @@ export type ScientificWorkScalarWhereInput = {
   OR?: Prisma.ScientificWorkScalarWhereInput[]
   NOT?: Prisma.ScientificWorkScalarWhereInput | Prisma.ScientificWorkScalarWhereInput[]
   id?: Prisma.StringFilter<"ScientificWork"> | string
+  slug?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   doctorId?: Prisma.StringFilter<"ScientificWork"> | string
   type?: Prisma.StringFilter<"ScientificWork"> | string
   title?: Prisma.StringFilter<"ScientificWork"> | string
@@ -841,8 +917,233 @@ export type ScientificWorkScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
 }
 
+export type ScientificWorkCreateWithoutDiseasesInput = {
+  id?: string
+  slug?: string | null
+  type: string
+  title: string
+  degree?: string | null
+  speciality?: string | null
+  year?: number | null
+  organization?: string | null
+  supervisor?: string | null
+  summary?: string | null
+  novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  publicationCount?: number | null
+  pdfUrl?: string | null
+  abstractUrl?: string | null
+  sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  doctor: Prisma.DoctorCreateNestedOneWithoutScientificWorksInput
+  procedures?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutWorkInput
+}
+
+export type ScientificWorkUncheckedCreateWithoutDiseasesInput = {
+  id?: string
+  slug?: string | null
+  doctorId: string
+  type: string
+  title: string
+  degree?: string | null
+  speciality?: string | null
+  year?: number | null
+  organization?: string | null
+  supervisor?: string | null
+  summary?: string | null
+  novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  publicationCount?: number | null
+  pdfUrl?: string | null
+  abstractUrl?: string | null
+  sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  procedures?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutWorkInput
+}
+
+export type ScientificWorkCreateOrConnectWithoutDiseasesInput = {
+  where: Prisma.ScientificWorkWhereUniqueInput
+  create: Prisma.XOR<Prisma.ScientificWorkCreateWithoutDiseasesInput, Prisma.ScientificWorkUncheckedCreateWithoutDiseasesInput>
+}
+
+export type ScientificWorkUpsertWithoutDiseasesInput = {
+  update: Prisma.XOR<Prisma.ScientificWorkUpdateWithoutDiseasesInput, Prisma.ScientificWorkUncheckedUpdateWithoutDiseasesInput>
+  create: Prisma.XOR<Prisma.ScientificWorkCreateWithoutDiseasesInput, Prisma.ScientificWorkUncheckedCreateWithoutDiseasesInput>
+  where?: Prisma.ScientificWorkWhereInput
+}
+
+export type ScientificWorkUpdateToOneWithWhereWithoutDiseasesInput = {
+  where?: Prisma.ScientificWorkWhereInput
+  data: Prisma.XOR<Prisma.ScientificWorkUpdateWithoutDiseasesInput, Prisma.ScientificWorkUncheckedUpdateWithoutDiseasesInput>
+}
+
+export type ScientificWorkUpdateWithoutDiseasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  organization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supervisor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  doctor?: Prisma.DoctorUpdateOneRequiredWithoutScientificWorksNestedInput
+  procedures?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutWorkNestedInput
+}
+
+export type ScientificWorkUncheckedUpdateWithoutDiseasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doctorId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  organization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supervisor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  procedures?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutWorkNestedInput
+}
+
+export type ScientificWorkCreateWithoutProceduresInput = {
+  id?: string
+  slug?: string | null
+  type: string
+  title: string
+  degree?: string | null
+  speciality?: string | null
+  year?: number | null
+  organization?: string | null
+  supervisor?: string | null
+  summary?: string | null
+  novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  publicationCount?: number | null
+  pdfUrl?: string | null
+  abstractUrl?: string | null
+  sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  doctor: Prisma.DoctorCreateNestedOneWithoutScientificWorksInput
+  diseases?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutWorkInput
+}
+
+export type ScientificWorkUncheckedCreateWithoutProceduresInput = {
+  id?: string
+  slug?: string | null
+  doctorId: string
+  type: string
+  title: string
+  degree?: string | null
+  speciality?: string | null
+  year?: number | null
+  organization?: string | null
+  supervisor?: string | null
+  summary?: string | null
+  novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  publicationCount?: number | null
+  pdfUrl?: string | null
+  abstractUrl?: string | null
+  sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  diseases?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutWorkInput
+}
+
+export type ScientificWorkCreateOrConnectWithoutProceduresInput = {
+  where: Prisma.ScientificWorkWhereUniqueInput
+  create: Prisma.XOR<Prisma.ScientificWorkCreateWithoutProceduresInput, Prisma.ScientificWorkUncheckedCreateWithoutProceduresInput>
+}
+
+export type ScientificWorkUpsertWithoutProceduresInput = {
+  update: Prisma.XOR<Prisma.ScientificWorkUpdateWithoutProceduresInput, Prisma.ScientificWorkUncheckedUpdateWithoutProceduresInput>
+  create: Prisma.XOR<Prisma.ScientificWorkCreateWithoutProceduresInput, Prisma.ScientificWorkUncheckedCreateWithoutProceduresInput>
+  where?: Prisma.ScientificWorkWhereInput
+}
+
+export type ScientificWorkUpdateToOneWithWhereWithoutProceduresInput = {
+  where?: Prisma.ScientificWorkWhereInput
+  data: Prisma.XOR<Prisma.ScientificWorkUpdateWithoutProceduresInput, Prisma.ScientificWorkUncheckedUpdateWithoutProceduresInput>
+}
+
+export type ScientificWorkUpdateWithoutProceduresInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  organization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supervisor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  doctor?: Prisma.DoctorUpdateOneRequiredWithoutScientificWorksNestedInput
+  diseases?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutWorkNestedInput
+}
+
+export type ScientificWorkUncheckedUpdateWithoutProceduresInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doctorId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  organization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supervisor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  diseases?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutWorkNestedInput
+}
+
 export type ScientificWorkCreateManyDoctorInput = {
   id?: string
+  slug?: string | null
   type: string
   title: string
   degree?: string | null
@@ -864,6 +1165,7 @@ export type ScientificWorkCreateManyDoctorInput = {
 
 export type ScientificWorkUpdateWithoutDoctorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -881,10 +1183,13 @@ export type ScientificWorkUpdateWithoutDoctorInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  diseases?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutWorkNestedInput
+  procedures?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkUncheckedUpdateWithoutDoctorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -902,10 +1207,13 @@ export type ScientificWorkUncheckedUpdateWithoutDoctorInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  diseases?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutWorkNestedInput
+  procedures?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkUncheckedUpdateManyWithoutDoctorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -926,9 +1234,48 @@ export type ScientificWorkUncheckedUpdateManyWithoutDoctorInput = {
 }
 
 
+/**
+ * Count Type ScientificWorkCountOutputType
+ */
+
+export type ScientificWorkCountOutputType = {
+  diseases: number
+  procedures: number
+}
+
+export type ScientificWorkCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  diseases?: boolean | ScientificWorkCountOutputTypeCountDiseasesArgs
+  procedures?: boolean | ScientificWorkCountOutputTypeCountProceduresArgs
+}
+
+/**
+ * ScientificWorkCountOutputType without action
+ */
+export type ScientificWorkCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScientificWorkCountOutputType
+   */
+  select?: Prisma.ScientificWorkCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ScientificWorkCountOutputType without action
+ */
+export type ScientificWorkCountOutputTypeCountDiseasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScientificWorkOnDiseaseWhereInput
+}
+
+/**
+ * ScientificWorkCountOutputType without action
+ */
+export type ScientificWorkCountOutputTypeCountProceduresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScientificWorkOnProcedureWhereInput
+}
+
 
 export type ScientificWorkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   doctorId?: boolean
   type?: boolean
   title?: boolean
@@ -948,10 +1295,14 @@ export type ScientificWorkSelect<ExtArgs extends runtime.Types.Extensions.Intern
   createdAt?: boolean
   updatedAt?: boolean
   doctor?: boolean | Prisma.DoctorDefaultArgs<ExtArgs>
+  diseases?: boolean | Prisma.ScientificWork$diseasesArgs<ExtArgs>
+  procedures?: boolean | Prisma.ScientificWork$proceduresArgs<ExtArgs>
+  _count?: boolean | Prisma.ScientificWorkCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scientificWork"]>
 
 export type ScientificWorkSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   doctorId?: boolean
   type?: boolean
   title?: boolean
@@ -975,6 +1326,7 @@ export type ScientificWorkSelectCreateManyAndReturn<ExtArgs extends runtime.Type
 
 export type ScientificWorkSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   doctorId?: boolean
   type?: boolean
   title?: boolean
@@ -998,6 +1350,7 @@ export type ScientificWorkSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
 
 export type ScientificWorkSelectScalar = {
   id?: boolean
+  slug?: boolean
   doctorId?: boolean
   type?: boolean
   title?: boolean
@@ -1018,9 +1371,12 @@ export type ScientificWorkSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ScientificWorkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "doctorId" | "type" | "title" | "degree" | "speciality" | "year" | "organization" | "supervisor" | "summary" | "novelty" | "practicalValue" | "results" | "publicationCount" | "pdfUrl" | "abstractUrl" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["scientificWork"]>
+export type ScientificWorkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "doctorId" | "type" | "title" | "degree" | "speciality" | "year" | "organization" | "supervisor" | "summary" | "novelty" | "practicalValue" | "results" | "publicationCount" | "pdfUrl" | "abstractUrl" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["scientificWork"]>
 export type ScientificWorkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   doctor?: boolean | Prisma.DoctorDefaultArgs<ExtArgs>
+  diseases?: boolean | Prisma.ScientificWork$diseasesArgs<ExtArgs>
+  procedures?: boolean | Prisma.ScientificWork$proceduresArgs<ExtArgs>
+  _count?: boolean | Prisma.ScientificWorkCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ScientificWorkIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   doctor?: boolean | Prisma.DoctorDefaultArgs<ExtArgs>
@@ -1033,9 +1389,18 @@ export type $ScientificWorkPayload<ExtArgs extends runtime.Types.Extensions.Inte
   name: "ScientificWork"
   objects: {
     doctor: Prisma.$DoctorPayload<ExtArgs>
+    diseases: Prisma.$ScientificWorkOnDiseasePayload<ExtArgs>[]
+    procedures: Prisma.$ScientificWorkOnProcedurePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    /**
+     * Человекочитаемый идентификатор для страницы /publications/[slug].
+     * Nullable намеренно: добавление NOT NULL-колонки к непустой таблице потребовало бы
+     * деструктивной миграции. Значение всегда проставляется seed'ом; каталог
+     * показывает только работы со slug.
+     */
+    slug: string | null
     doctorId: string
     type: string
     title: string
@@ -1449,6 +1814,8 @@ readonly fields: ScientificWorkFieldRefs;
 export interface Prisma__ScientificWorkClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   doctor<T extends Prisma.DoctorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DoctorDefaultArgs<ExtArgs>>): Prisma.Prisma__DoctorClient<runtime.Types.Result.GetResult<Prisma.$DoctorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  diseases<T extends Prisma.ScientificWork$diseasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ScientificWork$diseasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScientificWorkOnDiseasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  procedures<T extends Prisma.ScientificWork$proceduresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ScientificWork$proceduresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScientificWorkOnProcedurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1479,6 +1846,7 @@ export interface Prisma__ScientificWorkClient<T, Null = never, ExtArgs extends r
  */
 export interface ScientificWorkFieldRefs {
   readonly id: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly slug: Prisma.FieldRef<"ScientificWork", 'String'>
   readonly doctorId: Prisma.FieldRef<"ScientificWork", 'String'>
   readonly type: Prisma.FieldRef<"ScientificWork", 'String'>
   readonly title: Prisma.FieldRef<"ScientificWork", 'String'>
@@ -1895,6 +2263,54 @@ export type ScientificWorkDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many ScientificWorks to delete.
    */
   limit?: number
+}
+
+/**
+ * ScientificWork.diseases
+ */
+export type ScientificWork$diseasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScientificWorkOnDisease
+   */
+  select?: Prisma.ScientificWorkOnDiseaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScientificWorkOnDisease
+   */
+  omit?: Prisma.ScientificWorkOnDiseaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScientificWorkOnDiseaseInclude<ExtArgs> | null
+  where?: Prisma.ScientificWorkOnDiseaseWhereInput
+  orderBy?: Prisma.ScientificWorkOnDiseaseOrderByWithRelationInput | Prisma.ScientificWorkOnDiseaseOrderByWithRelationInput[]
+  cursor?: Prisma.ScientificWorkOnDiseaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScientificWorkOnDiseaseScalarFieldEnum | Prisma.ScientificWorkOnDiseaseScalarFieldEnum[]
+}
+
+/**
+ * ScientificWork.procedures
+ */
+export type ScientificWork$proceduresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScientificWorkOnProcedure
+   */
+  select?: Prisma.ScientificWorkOnProcedureSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScientificWorkOnProcedure
+   */
+  omit?: Prisma.ScientificWorkOnProcedureOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScientificWorkOnProcedureInclude<ExtArgs> | null
+  where?: Prisma.ScientificWorkOnProcedureWhereInput
+  orderBy?: Prisma.ScientificWorkOnProcedureOrderByWithRelationInput | Prisma.ScientificWorkOnProcedureOrderByWithRelationInput[]
+  cursor?: Prisma.ScientificWorkOnProcedureWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScientificWorkOnProcedureScalarFieldEnum | Prisma.ScientificWorkOnProcedureScalarFieldEnum[]
 }
 
 /**
