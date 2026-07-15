@@ -1,4 +1,4 @@
-import { UserRound } from "lucide-react";
+import { BookOpen, Check, ExternalLink, FileText, GraduationCap, Lightbulb, UserRound } from "lucide-react";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { SchemaOrg } from "@/components/seo/schema-org";
@@ -64,39 +64,127 @@ function EncyclopediaPill({ href, title }: { href: string; title: string }) {
   );
 }
 
-/** Маркированный подраздел научной работы. Пустой список не рендерится. */
-function WorkList({ title, items }: { title: string; items: string[] }) {
-  if (items.length === 0) return null;
+/* ── Научная деятельность: вспомогательные компоненты ── */
+
+/** Labeled-поле в информационном блоке (label сверху, value снизу). */
+function InfoField({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div>
-      <h5 className="mb-[6px] text-[12.5px] font-bold text-foreground">{title}</h5>
-      <ul className="space-y-[5px]">
-        {items.map((item) => (
-          <li
-            className="relative pl-[14px] text-[13px] leading-relaxed text-foreground/80 before:absolute before:left-0 before:top-[7px] before:h-[4px] before:w-[4px] before:rounded-full before:bg-primary/60"
-            key={item}
-          >
-            {item}
-          </li>
-        ))}
-      </ul>
+    <div className="space-y-[3px]">
+      <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+        {label}
+      </p>
+      <div className="text-[13.5px] leading-relaxed text-foreground">{children}</div>
     </div>
   );
 }
 
-/** Ссылка на оригинальный документ (PDF) научной работы. */
-function DocLink({ href, label }: { href: string; label: string }) {
+/** Карточка научной новизны. */
+function NoveltyCard({ text }: { text: string }) {
+  return (
+    <div className="flex gap-[10px] rounded-[11px] border border-[#d8e3e1] bg-gradient-to-br from-[#e6f4f5]/60 to-[#f0faf8]/40 p-[13px_14px] shadow-[0_1px_3px_rgba(15,33,31,0.04)]">
+      <span
+        aria-hidden
+        className="mt-[1px] flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-primary/15"
+      >
+        <Check className="h-[13px] w-[13px] text-primary" />
+      </span>
+      <p className="text-[13px] leading-relaxed text-foreground/85">{text}</p>
+    </div>
+  );
+}
+
+/** Карточка практической значимости. */
+function PracticalCard({ text }: { text: string }) {
+  return (
+    <div className="flex gap-[10px] rounded-[11px] border border-[#d8e3e1] bg-gradient-to-br from-[#fff8eb]/50 to-[#fffdf5]/30 p-[13px_14px] shadow-[0_1px_3px_rgba(15,33,31,0.04)]">
+      <span
+        aria-hidden
+        className="mt-[1px] flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-[#f59e0b]/15"
+      >
+        <Lightbulb className="h-[13px] w-[13px] text-[#d97706]" />
+      </span>
+      <p className="text-[13px] leading-relaxed text-foreground/85">{text}</p>
+    </div>
+  );
+}
+
+/** Карточка документа PDF (автореферат / диссертация / любой тип). */
+function DocCard({ href, title, description }: { href: string; title: string; description?: string }) {
   return (
     <a
-      className="inline-flex items-center gap-[6px] rounded-[8px] border border-[#d8e3e1] bg-background px-[10px] py-[6px] text-[12.5px] font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+      className="group flex flex-1 items-start gap-[12px] rounded-[11px] border border-[#d8e3e1] bg-card p-[14px_16px] shadow-[0_1px_3px_rgba(15,33,31,0.04)] transition-all duration-200 hover:border-primary/50 hover:bg-primary/[0.03] hover:shadow-[0_2px_10px_rgba(15,118,110,0.1)]"
       href={href}
       rel="noopener"
       target="_blank"
     >
-      <span aria-hidden>📄</span>
-      {label} <span className="font-normal text-muted-foreground">(PDF)</span>
+      <span
+        aria-hidden
+        className="mt-[1px] flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[8px] bg-primary/10 transition-colors group-hover:bg-primary/20"
+      >
+        <FileText className="h-[17px] w-[17px] text-primary" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[13.5px] font-semibold text-foreground transition-colors group-hover:text-primary">
+          {title}
+        </span>
+        {description && (
+          <span className="mt-[2px] block text-[11.5px] text-muted-foreground">
+            {description}
+          </span>
+        )}
+        <span className="mt-[4px] inline-flex items-center gap-[4px] text-[12px] font-medium text-primary/80 transition-colors group-hover:text-primary">
+          Посмотреть
+          <ExternalLink className="h-[11px] w-[11px] transition-transform duration-200 group-hover:translate-x-[2px]" />
+        </span>
+      </span>
     </a>
   );
+}
+
+/**
+ * Разбивает summary на абзацы по ~2 предложения для удобочитаемости.
+ * Предложения разделяются по точке + пробел + заглавная буква.
+ */
+function splitIntoParagraphs(text: string): string[] {
+  const sentences = text.match(/[^.!?]+[.!?]+/g) ?? [text];
+  const paragraphs: string[] = [];
+  for (let i = 0; i < sentences.length; i += 2) {
+    paragraphs.push(
+      sentences
+        .slice(i, i + 2)
+        .map((s) => s.trim())
+        .join(" "),
+    );
+  }
+  return paragraphs;
+}
+
+
+
+/**
+ * Парсит строку supervisor: "ФИО, степень, звание" → {name, titles[]}
+ */
+function parseSupervisor(raw: string): { name: string; titles: string[] } {
+  const parts = raw.split(",").map((s) => s.trim());
+  return { name: parts[0], titles: parts.slice(1) };
+}
+
+/**
+ * Разделяет organization на строки по ";".
+ * Последнюю часть в скобках (город) выделяет отдельно.
+ */
+function parseOrganization(raw: string): { lines: string[]; city: string | null } {
+  const cityMatch = raw.match(/\(([^)]+)\)\s*$/);
+  const city = cityMatch ? cityMatch[1] : null;
+  const clean = city ? raw.replace(/\s*\([^)]+\)\s*$/, "") : raw;
+  const lines = clean.split(";").map((s) => s.trim()).filter(Boolean);
+  return { lines, city };
 }
 
 export function DoctorTemplate({ data }: { data: DoctorDetail }) {
@@ -245,79 +333,184 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                 Только структурированные данные; полный текст работы не хранится —
                 оригиналы отдаются PDF-файлами. Пустые разделы не рендерятся. */}
             {data.scientificWorks.length > 0 && (
-              <Section title="Научная деятельность">
-                <div className="space-y-[22px]">
-                  {data.scientificWorks.map((w) => (
-                    <article className="space-y-[10px]" key={w.id}>
-                      <header>
-                        {/* Тип, степень и название — единый заголовок работы,
-                            чтобы все они индексировались (требование SEO из ТЗ). */}
-                        <h4>
-                          <span className="block text-[11px] font-bold uppercase tracking-[0.08em] text-primary">
-                            {w.type}
+              <section className="overflow-hidden rounded-[13px] border border-[#d8e3e1] bg-card shadow-[0_1px_2px_rgba(15,33,31,0.04),0_4px_14px_rgba(15,33,31,0.05)]">
+                {/* Gradient top accent */}
+                <div className="h-[3px] bg-gradient-to-r from-primary via-primary/70 to-primary/30" />
+
+                <div className="p-[20px_18px]">
+                  {data.scientificWorks.map((w) => {
+                    const supervisor = w.supervisor ? parseSupervisor(w.supervisor) : null;
+                    const org = w.organization ? parseOrganization(w.organization) : null;
+                    const summaryParagraphs = w.summary ? splitIntoParagraphs(w.summary) : [];
+
+
+
+                    return (
+                      <article className="space-y-[20px]" key={w.id}>
+                        {/* ── Бейдж + заголовок ── */}
+                        <header>
+                          <span className="inline-flex items-center gap-[6px] rounded-[7px] bg-primary/10 px-[10px] py-[4px] text-[11px] font-bold uppercase tracking-[0.08em] text-primary">
+                            <GraduationCap className="h-[14px] w-[14px]" /> Научная деятельность
                           </span>
-                          {w.degree && (
-                            <span className="mt-1 block text-[12.5px] font-semibold text-foreground">
-                              {w.degree}
+                          <h4 className="mt-[10px]">
+                            <span className="block text-[17px] font-bold leading-snug tracking-[-0.01em] text-foreground">
+                              {w.type}
                             </span>
-                          )}
-                          <span className="mt-1 block text-[15px] font-bold leading-snug text-foreground">
-                            {w.title}
-                          </span>
-                        </h4>
-                        {(w.year != null || w.speciality) && (
-                          <p className="mt-1.5 text-[12.5px] text-muted-foreground">
-                            {[w.year, w.speciality].filter(Boolean).join(" · ")}
-                          </p>
-                        )}
-                        {w.organization && (
-                          <p className="text-[12.5px] text-muted-foreground">{w.organization}</p>
-                        )}
-                        {w.supervisor && (
-                          <p className="mt-1 text-[12.5px] text-muted-foreground">
-                            Научный руководитель: {w.supervisor}
-                          </p>
-                        )}
-                      </header>
+                          </h4>
+                        </header>
 
-                      {w.summary && (
-                        <p className="text-[13.5px] leading-relaxed text-foreground/80">
-                          {w.summary}
-                        </p>
-                      )}
-
-                      <WorkList items={w.novelty} title="Научная новизна" />
-                      <WorkList items={w.practicalValue} title="Практическая значимость" />
-                      <WorkList items={w.results} title="Основные результаты" />
-
-                      {w.publicationCount != null && w.publicationCount > 0 && (
-                        <div>
-                          <h5 className="mb-[6px] text-[12.5px] font-bold text-foreground">
-                            Публикации
-                          </h5>
-                          <p className="text-[13px] text-foreground/80">
-                            Публикаций по теме работы: {w.publicationCount}
-                          </p>
-                        </div>
-                      )}
-
-                      {(w.abstractUrl || w.pdfUrl) && (
-                        <div>
-                          <h5 className="mb-[6px] text-[12.5px] font-bold text-foreground">
-                            Документы
-                          </h5>
-                          <div className="flex flex-wrap gap-[8px]">
-                            {w.abstractUrl && (
-                              <DocLink href={w.abstractUrl} label="Автореферат" />
+                        {/* ── Информационный блок ── */}
+                        <div className="grid gap-[16px] rounded-[11px] border border-[#e8efed] bg-[#fafcfb] p-[16px] sm:grid-cols-2">
+                          {/* Автор */}
+                          <InfoField label="Автор">
+                            <p className="font-semibold">{fullName}</p>
+                            {w.degree && (
+                              <p className="text-[12.5px] text-muted-foreground">{w.degree}</p>
                             )}
-                            {w.pdfUrl && <DocLink href={w.pdfUrl} label="Диссертация" />}
-                          </div>
+                          </InfoField>
+
+                          {/* Тема исследования */}
+                          <InfoField label="Тема исследования">
+                            <p className="font-semibold">«{w.title}»</p>
+                          </InfoField>
+
+                          {/* Место защиты */}
+                          {org && (
+                            <InfoField label="Место защиты">
+                              {org.lines.map((line) => (
+                                <p key={line}>{line}</p>
+                              ))}
+                              {org.city && (
+                                <p className="font-medium text-foreground/70">{org.city}</p>
+                              )}
+                              {w.year != null && (
+                                <p className="font-medium text-foreground/70">{w.year} год</p>
+                              )}
+                            </InfoField>
+                          )}
+
+                          {/* Научный руководитель */}
+                          {supervisor && (
+                            <InfoField label="Научный руководитель">
+                              <p className="font-semibold">{supervisor.name}</p>
+                              {supervisor.titles.map((t) => (
+                                <p className="text-[12.5px] text-muted-foreground" key={t}>
+                                  {t}
+                                </p>
+                              ))}
+                            </InfoField>
+                          )}
+
+                          {/* Специальность */}
+                          {w.speciality && (
+                            <InfoField label="Специальность ВАК">
+                              <p>{w.speciality}</p>
+                            </InfoField>
+                          )}
+
+                          {/* Публикации */}
+                          {w.publicationCount != null && w.publicationCount > 0 && (
+                            <InfoField label="Публикации по теме">
+                              <p className="font-semibold">{w.publicationCount} публикаций</p>
+                            </InfoField>
+                          )}
                         </div>
-                      )}
-                    </article>
-                  ))}
+
+                        {/* ── Аннотация ── */}
+                        {summaryParagraphs.length > 0 && (
+                          <div className="rounded-[11px] border-l-[3px] border-primary bg-primary/[0.04] p-[16px_18px]">
+                            <h5 className="mb-[10px] text-[12px] font-bold uppercase tracking-[0.06em] text-primary">
+                              Аннотация
+                            </h5>
+                            <div className="space-y-[10px]">
+                              {summaryParagraphs.map((para, i) => (
+                                <p
+                                  className="text-[13.5px] leading-[1.7] text-foreground/85"
+                                  key={i}
+                                >
+                                  {para}
+                                </p>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* ── Научная новизна ── */}
+                        {w.novelty.length > 0 && (
+                          <div>
+                            <h5 className="mb-[10px] text-[12.5px] font-bold text-foreground">
+                              Научная новизна
+                            </h5>
+                            <div className="space-y-[8px]">
+                              {w.novelty.map((item) => (
+                                <NoveltyCard key={item} text={item} />
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* ── Практическая значимость ── */}
+                        {w.practicalValue.length > 0 && (
+                          <div>
+                            <h5 className="mb-[10px] text-[12.5px] font-bold text-foreground">
+                              Практическая значимость
+                            </h5>
+                            <div className="space-y-[8px]">
+                              {w.practicalValue.map((item) => (
+                                <PracticalCard key={item} text={item} />
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* ── Основные результаты ── */}
+                        {w.results.length > 0 && (
+                          <div>
+                            <h5 className="mb-[10px] text-[12.5px] font-bold text-foreground">
+                              Основные результаты
+                            </h5>
+                            <div className="space-y-[6px]">
+                              {w.results.map((r) => (
+                                <p
+                                  className="relative pl-[14px] text-[13px] leading-relaxed text-foreground/80 before:absolute before:left-0 before:top-[7px] before:h-[4px] before:w-[4px] before:rounded-full before:bg-primary/60"
+                                  key={r}
+                                >
+                                  {r}
+                                </p>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* ── Документы исследования ── */}
+                        {(w.abstractUrl || w.pdfUrl) && (
+                          <div className="rounded-[11px] border border-[#e8efed] bg-[#fafcfb] p-[16px]">
+                            <h5 className="mb-[12px] flex items-center gap-[6px] text-[12.5px] font-bold text-foreground">
+                              <BookOpen className="h-[14px] w-[14px] text-muted-foreground" /> Документы исследования
+                            </h5>
+                            <div className="grid gap-[10px] sm:grid-cols-2">
+                              {w.abstractUrl && (
+                                <DocCard
+                                  description="PDF · Краткое изложение диссертации"
+                                  href={w.abstractUrl}
+                                  title="Автореферат"
+                                />
+                              )}
+                              {w.pdfUrl && (
+                                <DocCard
+                                  description="PDF · Полный текст научной работы"
+                                  href={w.pdfUrl}
+                                  title="Диссертация"
+                                />
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </article>
+                    );
+                  })}
                 </div>
-              </Section>
+              </section>
             )}
 
             {/* Основные направления: Врач → Заболевания */}
