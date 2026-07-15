@@ -391,6 +391,7 @@ export const ModelName = {
   Clinic: 'Clinic',
   Supplier: 'Supplier',
   Equipment: 'Equipment',
+  EquipmentSpec: 'EquipmentSpec',
   Publication: 'Publication',
   ClinicalGuideline: 'ClinicalGuideline',
   Regulation: 'Regulation',
@@ -410,6 +411,9 @@ export const ModelName = {
   ClinicOnSupplier: 'ClinicOnSupplier',
   SupplierOnEquipmentCategory: 'SupplierOnEquipmentCategory',
   ProcedureOnEquipment: 'ProcedureOnEquipment',
+  ClinicOnEquipment: 'ClinicOnEquipment',
+  DoctorOnEquipment: 'DoctorOnEquipment',
+  DiseaseOnEquipment: 'DiseaseOnEquipment',
   PublicationOnDisease: 'PublicationOnDisease',
   PublicationOnProcedure: 'PublicationOnProcedure',
   DiseaseOnClinicalGuideline: 'DiseaseOnClinicalGuideline',
@@ -432,7 +436,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "disease" | "procedure" | "doctor" | "scientificWork" | "clinic" | "supplier" | "equipment" | "publication" | "clinicalGuideline" | "regulation" | "historyEntry" | "innovation" | "specialty" | "diseaseCategory" | "procedureCategory" | "equipmentCategory" | "region" | "diseaseOnProcedure" | "doctorOnDisease" | "doctorOnProcedure" | "doctorOnSpecialty" | "doctorOnClinic" | "clinicOnSpecialty" | "clinicOnSupplier" | "supplierOnEquipmentCategory" | "procedureOnEquipment" | "publicationOnDisease" | "publicationOnProcedure" | "diseaseOnClinicalGuideline" | "clinicOnDisease" | "clinicOnProcedure" | "clinicOnPublication" | "adminUser"
+    modelProps: "disease" | "procedure" | "doctor" | "scientificWork" | "clinic" | "supplier" | "equipment" | "equipmentSpec" | "publication" | "clinicalGuideline" | "regulation" | "historyEntry" | "innovation" | "specialty" | "diseaseCategory" | "procedureCategory" | "equipmentCategory" | "region" | "diseaseOnProcedure" | "doctorOnDisease" | "doctorOnProcedure" | "doctorOnSpecialty" | "doctorOnClinic" | "clinicOnSpecialty" | "clinicOnSupplier" | "supplierOnEquipmentCategory" | "procedureOnEquipment" | "clinicOnEquipment" | "doctorOnEquipment" | "diseaseOnEquipment" | "publicationOnDisease" | "publicationOnProcedure" | "diseaseOnClinicalGuideline" | "clinicOnDisease" | "clinicOnProcedure" | "clinicOnPublication" | "adminUser"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -951,6 +955,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.EquipmentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.EquipmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    EquipmentSpec: {
+      payload: Prisma.$EquipmentSpecPayload<ExtArgs>
+      fields: Prisma.EquipmentSpecFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EquipmentSpecFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EquipmentSpecFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload>
+        }
+        findFirst: {
+          args: Prisma.EquipmentSpecFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EquipmentSpecFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload>
+        }
+        findMany: {
+          args: Prisma.EquipmentSpecFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload>[]
+        }
+        create: {
+          args: Prisma.EquipmentSpecCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload>
+        }
+        createMany: {
+          args: Prisma.EquipmentSpecCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EquipmentSpecCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload>[]
+        }
+        delete: {
+          args: Prisma.EquipmentSpecDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload>
+        }
+        update: {
+          args: Prisma.EquipmentSpecUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload>
+        }
+        deleteMany: {
+          args: Prisma.EquipmentSpecDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EquipmentSpecUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EquipmentSpecUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload>[]
+        }
+        upsert: {
+          args: Prisma.EquipmentSpecUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EquipmentSpecPayload>
+        }
+        aggregate: {
+          args: Prisma.EquipmentSpecAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEquipmentSpec>
+        }
+        groupBy: {
+          args: Prisma.EquipmentSpecGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EquipmentSpecGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EquipmentSpecCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EquipmentSpecCountAggregateOutputType> | number
         }
       }
     }
@@ -2360,6 +2438,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ClinicOnEquipment: {
+      payload: Prisma.$ClinicOnEquipmentPayload<ExtArgs>
+      fields: Prisma.ClinicOnEquipmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ClinicOnEquipmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ClinicOnEquipmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload>
+        }
+        findFirst: {
+          args: Prisma.ClinicOnEquipmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ClinicOnEquipmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload>
+        }
+        findMany: {
+          args: Prisma.ClinicOnEquipmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload>[]
+        }
+        create: {
+          args: Prisma.ClinicOnEquipmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload>
+        }
+        createMany: {
+          args: Prisma.ClinicOnEquipmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ClinicOnEquipmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload>[]
+        }
+        delete: {
+          args: Prisma.ClinicOnEquipmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload>
+        }
+        update: {
+          args: Prisma.ClinicOnEquipmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ClinicOnEquipmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ClinicOnEquipmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ClinicOnEquipmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.ClinicOnEquipmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicOnEquipmentPayload>
+        }
+        aggregate: {
+          args: Prisma.ClinicOnEquipmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClinicOnEquipment>
+        }
+        groupBy: {
+          args: Prisma.ClinicOnEquipmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClinicOnEquipmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ClinicOnEquipmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClinicOnEquipmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    DoctorOnEquipment: {
+      payload: Prisma.$DoctorOnEquipmentPayload<ExtArgs>
+      fields: Prisma.DoctorOnEquipmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DoctorOnEquipmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DoctorOnEquipmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload>
+        }
+        findFirst: {
+          args: Prisma.DoctorOnEquipmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DoctorOnEquipmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload>
+        }
+        findMany: {
+          args: Prisma.DoctorOnEquipmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload>[]
+        }
+        create: {
+          args: Prisma.DoctorOnEquipmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload>
+        }
+        createMany: {
+          args: Prisma.DoctorOnEquipmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DoctorOnEquipmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload>[]
+        }
+        delete: {
+          args: Prisma.DoctorOnEquipmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload>
+        }
+        update: {
+          args: Prisma.DoctorOnEquipmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.DoctorOnEquipmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DoctorOnEquipmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DoctorOnEquipmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.DoctorOnEquipmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DoctorOnEquipmentPayload>
+        }
+        aggregate: {
+          args: Prisma.DoctorOnEquipmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDoctorOnEquipment>
+        }
+        groupBy: {
+          args: Prisma.DoctorOnEquipmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DoctorOnEquipmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DoctorOnEquipmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DoctorOnEquipmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    DiseaseOnEquipment: {
+      payload: Prisma.$DiseaseOnEquipmentPayload<ExtArgs>
+      fields: Prisma.DiseaseOnEquipmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DiseaseOnEquipmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DiseaseOnEquipmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload>
+        }
+        findFirst: {
+          args: Prisma.DiseaseOnEquipmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DiseaseOnEquipmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload>
+        }
+        findMany: {
+          args: Prisma.DiseaseOnEquipmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload>[]
+        }
+        create: {
+          args: Prisma.DiseaseOnEquipmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload>
+        }
+        createMany: {
+          args: Prisma.DiseaseOnEquipmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DiseaseOnEquipmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload>[]
+        }
+        delete: {
+          args: Prisma.DiseaseOnEquipmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload>
+        }
+        update: {
+          args: Prisma.DiseaseOnEquipmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.DiseaseOnEquipmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DiseaseOnEquipmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DiseaseOnEquipmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.DiseaseOnEquipmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DiseaseOnEquipmentPayload>
+        }
+        aggregate: {
+          args: Prisma.DiseaseOnEquipmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDiseaseOnEquipment>
+        }
+        groupBy: {
+          args: Prisma.DiseaseOnEquipmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DiseaseOnEquipmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DiseaseOnEquipmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DiseaseOnEquipmentCountAggregateOutputType> | number
+        }
+      }
+    }
     PublicationOnDisease: {
       payload: Prisma.$PublicationOnDiseasePayload<ExtArgs>
       fields: Prisma.PublicationOnDiseaseFieldRefs
@@ -3068,6 +3368,13 @@ export const EquipmentScalarFieldEnum = {
   title: 'title',
   summary: 'summary',
   description: 'description',
+  manufacturer: 'manufacturer',
+  country: 'country',
+  year: 'year',
+  principle: 'principle',
+  advantages: 'advantages',
+  indications: 'indications',
+  limitations: 'limitations',
   images: 'images',
   manuals: 'manuals',
   categoryId: 'categoryId',
@@ -3077,6 +3384,20 @@ export const EquipmentScalarFieldEnum = {
 } as const
 
 export type EquipmentScalarFieldEnum = (typeof EquipmentScalarFieldEnum)[keyof typeof EquipmentScalarFieldEnum]
+
+
+export const EquipmentSpecScalarFieldEnum = {
+  id: 'id',
+  equipmentId: 'equipmentId',
+  group: 'group',
+  label: 'label',
+  value: 'value',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EquipmentSpecScalarFieldEnum = (typeof EquipmentSpecScalarFieldEnum)[keyof typeof EquipmentSpecScalarFieldEnum]
 
 
 export const PublicationScalarFieldEnum = {
@@ -3297,6 +3618,33 @@ export const ProcedureOnEquipmentScalarFieldEnum = {
 } as const
 
 export type ProcedureOnEquipmentScalarFieldEnum = (typeof ProcedureOnEquipmentScalarFieldEnum)[keyof typeof ProcedureOnEquipmentScalarFieldEnum]
+
+
+export const ClinicOnEquipmentScalarFieldEnum = {
+  clinicId: 'clinicId',
+  equipmentId: 'equipmentId',
+  createdAt: 'createdAt'
+} as const
+
+export type ClinicOnEquipmentScalarFieldEnum = (typeof ClinicOnEquipmentScalarFieldEnum)[keyof typeof ClinicOnEquipmentScalarFieldEnum]
+
+
+export const DoctorOnEquipmentScalarFieldEnum = {
+  doctorId: 'doctorId',
+  equipmentId: 'equipmentId',
+  createdAt: 'createdAt'
+} as const
+
+export type DoctorOnEquipmentScalarFieldEnum = (typeof DoctorOnEquipmentScalarFieldEnum)[keyof typeof DoctorOnEquipmentScalarFieldEnum]
+
+
+export const DiseaseOnEquipmentScalarFieldEnum = {
+  diseaseId: 'diseaseId',
+  equipmentId: 'equipmentId',
+  createdAt: 'createdAt'
+} as const
+
+export type DiseaseOnEquipmentScalarFieldEnum = (typeof DiseaseOnEquipmentScalarFieldEnum)[keyof typeof DiseaseOnEquipmentScalarFieldEnum]
 
 
 export const PublicationOnDiseaseScalarFieldEnum = {
@@ -3590,6 +3938,7 @@ export type GlobalOmitConfig = {
   clinic?: Prisma.ClinicOmit
   supplier?: Prisma.SupplierOmit
   equipment?: Prisma.EquipmentOmit
+  equipmentSpec?: Prisma.EquipmentSpecOmit
   publication?: Prisma.PublicationOmit
   clinicalGuideline?: Prisma.ClinicalGuidelineOmit
   regulation?: Prisma.RegulationOmit
@@ -3609,6 +3958,9 @@ export type GlobalOmitConfig = {
   clinicOnSupplier?: Prisma.ClinicOnSupplierOmit
   supplierOnEquipmentCategory?: Prisma.SupplierOnEquipmentCategoryOmit
   procedureOnEquipment?: Prisma.ProcedureOnEquipmentOmit
+  clinicOnEquipment?: Prisma.ClinicOnEquipmentOmit
+  doctorOnEquipment?: Prisma.DoctorOnEquipmentOmit
+  diseaseOnEquipment?: Prisma.DiseaseOnEquipmentOmit
   publicationOnDisease?: Prisma.PublicationOnDiseaseOmit
   publicationOnProcedure?: Prisma.PublicationOnProcedureOmit
   diseaseOnClinicalGuideline?: Prisma.DiseaseOnClinicalGuidelineOmit

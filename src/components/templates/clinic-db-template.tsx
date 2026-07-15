@@ -361,6 +361,49 @@ export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
             </EntityBlock>
           )}
 
+          {/* Оборудование клиники: Clinic → Equipment */}
+          {data.equipment.length > 0 && (
+            <EntityBlock title={`Оборудование клиники · ${data.equipment.length}`}>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {data.equipment.map((r) => (
+                  <div
+                    className="flex items-center gap-3 rounded-lg border bg-background p-3"
+                    key={r.equipment.slug}
+                  >
+                    {r.equipment.images[0] ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        alt={r.equipment.title}
+                        className="h-14 w-20 shrink-0 rounded-md border object-cover"
+                        decoding="async"
+                        loading="lazy"
+                        src={r.equipment.images[0]}
+                      />
+                    ) : null}
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold leading-snug text-foreground">
+                        {r.equipment.title}
+                      </p>
+                      {(r.equipment.manufacturer || r.equipment.country) && (
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          {[r.equipment.manufacturer, r.equipment.country]
+                            .filter(Boolean)
+                            .join(" · ")}
+                        </p>
+                      )}
+                      <Link
+                        className="mt-1 inline-flex text-xs font-semibold text-primary hover:text-primary/80"
+                        href={`/equipment/${r.equipment.slug}`}
+                      >
+                        Подробнее →
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </EntityBlock>
+          )}
+
           {procedures.length > 0 && <RelatedBlock empty="" items={procedures} title="Процедуры" />}
           {diseases.length > 0 && <RelatedBlock empty="" items={diseases} title="Заболевания" />}
           {publications.length > 0 && <RelatedBlock empty="" items={publications} title="Публикации" />}

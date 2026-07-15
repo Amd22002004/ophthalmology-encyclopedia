@@ -27,6 +27,7 @@ model Disease {
   clinics    ClinicOnDisease[]
   guidelines DiseaseOnClinicalGuideline[]
   publications PublicationOnDisease[]
+  equipment  DiseaseOnEquipment[]
 
   @@index([categoryId])
   @@index([title])
@@ -80,6 +81,7 @@ model Doctor {
   procedures   DoctorOnProcedure[]
   publications Publication[]
   scientificWorks ScientificWork[]
+  equipment    DoctorOnEquipment[]
 
   @@index([regionId])
   @@index([lastName, firstName])
@@ -168,6 +170,7 @@ model Clinic {
   diseases     ClinicOnDisease[]
   procedures   ClinicOnProcedure[]
   publications ClinicOnPublication[]
+  equipment    ClinicOnEquipment[]
 
   @@index([regionId])
   @@index([title])
@@ -194,25 +197,54 @@ model Supplier {
 }
 
 model Equipment {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  summary     String?
-  description String?
-  images      String[] @default([])
-  manuals     String[] @default([])
-  categoryId  String?
-  supplierId  String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  summary      String?
+  description  String?
+  manufacturer String?  // Производитель, напр. «Carl Zeiss Meditec AG»
+  country      String?  // Страна производства, напр. «Германия»
+  year         Int?     // Год появления модели (если достоверно известен)
+  principle    String?  // Принцип работы
+  advantages   String[] @default([]) // Преимущества
+  indications  String[] @default([]) // Показания
+  limitations  String[] @default([]) // Ограничения / противопоказания
+  images       String[] @default([])
+  manuals      String[] @default([])
+  categoryId   String?
+  supplierId   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  category   EquipmentCategory?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  supplier   Supplier?             @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  category   EquipmentCategory?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  supplier   Supplier?              @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  specs      EquipmentSpec[]
   procedures ProcedureOnEquipment[]
+  clinics    ClinicOnEquipment[]
+  doctors    DoctorOnEquipment[]
+  diseases   DiseaseOnEquipment[]
 
   @@index([categoryId])
   @@index([supplierId])
   @@index([title])
+}
+
+/// Строка таблицы технических характеристик оборудования.
+/// Хранится структурно (группа/параметр/значение), а не текстом.
+model EquipmentSpec {
+  id          String   @id @default(cuid())
+  equipmentId String
+  group       String?  // Группа, напр. «Оптические данные»
+  label       String   // Параметр, напр. «Длина волны»
+  value       String   // Значение, напр. «1043 нм»
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  equipment Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@unique([equipmentId, label])
+  @@index([equipmentId, sortOrder])
 }
 
 model Publication {
@@ -476,6 +508,45 @@ model ProcedureOnEquipment {
   equipment Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
 
   @@id([procedureId, equipmentId])
+  @@index([equipmentId])
+}
+
+/// Оборудование, установленное в клинике.
+model ClinicOnEquipment {
+  clinicId    String
+  equipmentId String
+  createdAt   DateTime @default(now())
+
+  clinic    Clinic    @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  equipment Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@id([clinicId, equipmentId])
+  @@index([equipmentId])
+}
+
+/// Врач, работающий на данном оборудовании.
+model DoctorOnEquipment {
+  doctorId    String
+  equipmentId String
+  createdAt   DateTime @default(now())
+
+  doctor    Doctor    @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  equipment Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@id([doctorId, equipmentId])
+  @@index([equipmentId])
+}
+
+/// Заболевание, при котором применяется данное оборудование.
+model DiseaseOnEquipment {
+  diseaseId   String
+  equipmentId String
+  createdAt   DateTime @default(now())
+
+  disease   Disease   @relation(fields: [diseaseId], references: [id], onDelete: Cascade)
+  equipment Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@id([diseaseId, equipmentId])
   @@index([equipmentId])
 }
 

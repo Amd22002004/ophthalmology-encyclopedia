@@ -58,6 +58,7 @@ export const ModelName = {
   Clinic: 'Clinic',
   Supplier: 'Supplier',
   Equipment: 'Equipment',
+  EquipmentSpec: 'EquipmentSpec',
   Publication: 'Publication',
   ClinicalGuideline: 'ClinicalGuideline',
   Regulation: 'Regulation',
@@ -77,6 +78,9 @@ export const ModelName = {
   ClinicOnSupplier: 'ClinicOnSupplier',
   SupplierOnEquipmentCategory: 'SupplierOnEquipmentCategory',
   ProcedureOnEquipment: 'ProcedureOnEquipment',
+  ClinicOnEquipment: 'ClinicOnEquipment',
+  DoctorOnEquipment: 'DoctorOnEquipment',
+  DiseaseOnEquipment: 'DiseaseOnEquipment',
   PublicationOnDisease: 'PublicationOnDisease',
   PublicationOnProcedure: 'PublicationOnProcedure',
   DiseaseOnClinicalGuideline: 'DiseaseOnClinicalGuideline',
@@ -253,6 +257,13 @@ export const EquipmentScalarFieldEnum = {
   title: 'title',
   summary: 'summary',
   description: 'description',
+  manufacturer: 'manufacturer',
+  country: 'country',
+  year: 'year',
+  principle: 'principle',
+  advantages: 'advantages',
+  indications: 'indications',
+  limitations: 'limitations',
   images: 'images',
   manuals: 'manuals',
   categoryId: 'categoryId',
@@ -262,6 +273,20 @@ export const EquipmentScalarFieldEnum = {
 } as const
 
 export type EquipmentScalarFieldEnum = (typeof EquipmentScalarFieldEnum)[keyof typeof EquipmentScalarFieldEnum]
+
+
+export const EquipmentSpecScalarFieldEnum = {
+  id: 'id',
+  equipmentId: 'equipmentId',
+  group: 'group',
+  label: 'label',
+  value: 'value',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EquipmentSpecScalarFieldEnum = (typeof EquipmentSpecScalarFieldEnum)[keyof typeof EquipmentSpecScalarFieldEnum]
 
 
 export const PublicationScalarFieldEnum = {
@@ -482,6 +507,33 @@ export const ProcedureOnEquipmentScalarFieldEnum = {
 } as const
 
 export type ProcedureOnEquipmentScalarFieldEnum = (typeof ProcedureOnEquipmentScalarFieldEnum)[keyof typeof ProcedureOnEquipmentScalarFieldEnum]
+
+
+export const ClinicOnEquipmentScalarFieldEnum = {
+  clinicId: 'clinicId',
+  equipmentId: 'equipmentId',
+  createdAt: 'createdAt'
+} as const
+
+export type ClinicOnEquipmentScalarFieldEnum = (typeof ClinicOnEquipmentScalarFieldEnum)[keyof typeof ClinicOnEquipmentScalarFieldEnum]
+
+
+export const DoctorOnEquipmentScalarFieldEnum = {
+  doctorId: 'doctorId',
+  equipmentId: 'equipmentId',
+  createdAt: 'createdAt'
+} as const
+
+export type DoctorOnEquipmentScalarFieldEnum = (typeof DoctorOnEquipmentScalarFieldEnum)[keyof typeof DoctorOnEquipmentScalarFieldEnum]
+
+
+export const DiseaseOnEquipmentScalarFieldEnum = {
+  diseaseId: 'diseaseId',
+  equipmentId: 'equipmentId',
+  createdAt: 'createdAt'
+} as const
+
+export type DiseaseOnEquipmentScalarFieldEnum = (typeof DiseaseOnEquipmentScalarFieldEnum)[keyof typeof DiseaseOnEquipmentScalarFieldEnum]
 
 
 export const PublicationOnDiseaseScalarFieldEnum = {

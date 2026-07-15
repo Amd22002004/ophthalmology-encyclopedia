@@ -55,6 +55,12 @@ export type Supplier = Prisma.SupplierModel
  */
 export type Equipment = Prisma.EquipmentModel
 /**
+ * Model EquipmentSpec
+ * Строка таблицы технических характеристик оборудования.
+ * Хранится структурно (группа/параметр/значение), а не текстом.
+ */
+export type EquipmentSpec = Prisma.EquipmentSpecModel
+/**
  * Model Publication
  * 
  */
@@ -149,6 +155,21 @@ export type SupplierOnEquipmentCategory = Prisma.SupplierOnEquipmentCategoryMode
  * 
  */
 export type ProcedureOnEquipment = Prisma.ProcedureOnEquipmentModel
+/**
+ * Model ClinicOnEquipment
+ * Оборудование, установленное в клинике.
+ */
+export type ClinicOnEquipment = Prisma.ClinicOnEquipmentModel
+/**
+ * Model DoctorOnEquipment
+ * Врач, работающий на данном оборудовании.
+ */
+export type DoctorOnEquipment = Prisma.DoctorOnEquipmentModel
+/**
+ * Model DiseaseOnEquipment
+ * Заболевание, при котором применяется данное оборудование.
+ */
+export type DiseaseOnEquipment = Prisma.DiseaseOnEquipmentModel
 /**
  * Model PublicationOnDisease
  * 

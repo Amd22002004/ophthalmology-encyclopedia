@@ -427,6 +427,115 @@ type DoctorSeed = {
 };
 
 /**
+ * Оборудование энциклопедии.
+ * Источники (см. отчёт):
+ *  - Официальная брошюра ZEISS VISUMAX 800 (en-INT_34_010_0027VI, CZ-VII/2024)
+ *    из data/equipment/ZEISS VisuMax 800/ — технические характеристики и применения;
+ *  - zeiss.com/visumax800 — сверка;
+ *  - mhglaz.ru/smile-pro — применение в клинике «Визус-1» (Тюмень) и врачи.
+ * PDF в БД не хранится — только ссылка на файл в public/.
+ * Поля без достоверного источника оставлены пустыми (напр. год появления).
+ */
+type EquipmentSpecSeed = { group?: string; label: string; value: string };
+
+type EquipmentSeed = {
+  slug: string;
+  title: string;
+  categoryTitle: string;
+  manufacturer?: string;
+  country?: string;
+  year?: number;
+  summary?: string;
+  description?: string;
+  principle?: string;
+  advantages?: string[];
+  indications?: string[];
+  limitations?: string[];
+  images?: string[];
+  manuals?: string[];
+  specs?: EquipmentSpecSeed[];
+  clinicIds?: string[];
+  procedureSlugs?: string[];
+  diseaseSlugs?: string[];
+  doctorSlugs?: string[];
+};
+
+const EQUIPMENT: EquipmentSeed[] = [
+  {
+    slug: "zeiss-visumax-800",
+    title: "ZEISS VisuMax 800",
+    categoryTitle: "Лазерные системы",
+    manufacturer: "Carl Zeiss Meditec AG",
+    country: "Германия",
+    // year: не указан ни в брошюре (CZ-VII/2024 — версия издания), ни на zeiss.com → оставлено пустым
+    summary:
+      "Фемтосекундная лазерная платформа ZEISS для рефракционной хирургии: извлечение лентикулы SMILE pro, формирование лоскута для Фемто-LASIK, тоннели для интрастромальных сегментов и кератопластика.",
+    description:
+      "ZEISS VisuMax 800 — фемтосекундная лазерная платформа компании Carl Zeiss Meditec (Йена, Германия) для рефракционной и роговичной хирургии. По сравнению с предыдущими поколениями сокращено время работы лазера и увеличена скорость реза: частота повторения импульсов 2 МГц в сочетании с высокопроизводительной сканирующей системой позволяет сформировать лентикулу менее чем за 10 секунд, а лоскут — примерно за 5 секунд. Более высокая скорость означает и меньшее время вакуумной фиксации глаза. Платформа оснащена интеллектуальными ассистирующими системами CentraLign (центрация по центру зрачка и вертексу уже на этапе докинга) и OcuLign (автоматический пересчёт рисунка вмешательства с учётом циклоторсии), а также интегрированным хирургическим микроскопом OPMI с оптикой ZEISS. Устройство подключается к цифровому контуру ZEISS (Refractive Workplace, FORUM, VISULYZE) для планирования вмешательства и анализа результатов.",
+    principle:
+      "Фемтосекундный лазер с длиной волны 1043 нм и длительностью импульса 220–580 фс фокусируется внутри стромы роговицы, где за счёт фотодеструкции формирует заданный рисунок реза, не повреждая вышележащие слои. При SMILE pro внутри роговицы вырезается тонкая линза — лентикула, которую хирург извлекает через микродоступ; при Фемто-LASIK лазер формирует роговичный лоскут. Частота повторения импульсов 2 МГц обеспечивает высокую скорость реза и, соответственно, короткое время вакуумной фиксации.",
+    advantages: [
+      "Частота повторения импульсов 2 МГц: формирование лентикулы менее чем за 10 секунд, лоскута — около 5 секунд (данные ZEISS).",
+      "Более высокая скорость реза сокращает время вакуумной фиксации глаза и снижает стресс для пациента и хирурга.",
+      "Ассистирующая система CentraLign: компьютерная центрация по центру зрачка и вертексу уже на этапе докинга, без смещения рисунка после присасывания.",
+      "Ассистирующая система OcuLign: автоматический пересчёт рисунка вмешательства с учётом циклоторсии по статичному изображению радужки.",
+      "Интегрированный хирургический микроскоп OPMI с оптикой ZEISS: 5 ступеней увеличения, щелевое освещение, цифровая видеокамера.",
+      "Ультразвуковые датчики и камеры верхнего, бокового и терапевтического обзора; трекинг высоты для стабильности вакуума.",
+      "Цифровая интеграция с ZEISS Refractive Workplace, FORUM и VISULYZE: удалённое планирование и анализ результатов с построением номограмм.",
+      "Одна платформа для нескольких вмешательств: SMILE pro, лоскут для Фемто-LASIK, тоннели для ИРС, кератопластика, CIRCLE для докоррекции.",
+    ],
+    indications: [
+      "Миопия — извлечение лентикулы по технологии SMILE pro (ZEISS).",
+      "Астигматизм — извлечение лентикулы по технологии SMILE pro (ZEISS).",
+      "Гиперметропия — извлечение лентикулы по технологии SMILE pro (по международной брошюре ZEISS; в энциклопедии страница гиперметропии пока отсутствует).",
+      "Формирование роговичного лоскута для Фемто-LASIK с настраиваемыми диаметром, толщиной, положением ножки и углом бокового реза.",
+      "Формирование роговичных тоннелей для имплантации интрастромальных сегментов (сегменты 90–270°).",
+      "Кератопластика: сквозная (PKP) и передняя послойная (ALK) — опция Keratoplasty.",
+      "Докоррекция после SMILE / SMILE pro: опция CIRCLE преобразует ранее сформированный кэп в лоскут.",
+    ],
+    limitations: [
+      "Условия эксплуатации: температура +18…+25 °C, влажность 30–70 %.",
+      "Масса устройства 520 кг; минимальная нагрузка на пол 2,5 кН/м² — требуется подготовленное помещение.",
+      "Объём одобренных показаний и доступность опций различаются по странам (примечание ZEISS в брошюре).",
+      "Медицинские противопоказания к вмешательству определяются врачом по результатам диагностики и в брошюре производителя не приводятся.",
+    ],
+    images: [
+      "/equipment/zeiss-visumax-800/visumax-800-device.jpg",
+      "/equipment/zeiss-visumax-800/visumax-800-operating-room.jpg",
+      "/equipment/zeiss-visumax-800/visumax-800-laser-arm.jpg",
+      "/equipment/zeiss-visumax-800/visumax-800-surgery.jpg",
+    ],
+    manuals: ["/equipment/zeiss-visumax-800/zeiss-visumax-800-brochure-en.pdf"],
+    specs: [
+      { group: "Общие", label: "Тип лазера", value: "Фемтосекундный лазер" },
+      { group: "Общие", label: "Доступные вмешательства", value: "Лоскут (Flap), SMILE pro, CIRCLE, ИРС (ICR), кератопластика" },
+      { group: "Общие", label: "Цифровые ассистирующие системы", value: "Центрация CentraLign, выравнивание по циклоторсии OcuLign, импорт номограмм VISULYZE" },
+      { group: "Оптические данные", label: "Максимальная частота повторения импульсов", value: "2 МГц" },
+      { group: "Оптические данные", label: "Длина волны", value: "1043 нм" },
+      { group: "Оптические данные", label: "Длительность импульса", value: "220–580 фс" },
+      { group: "Хирургический микроскоп", label: "Увеличение", value: "0,7×" },
+      { group: "Хирургический микроскоп", label: "Коэффициенты смены увеличения", value: "0,4 / 0,6 / 1,0 / 1,6 / 2,5" },
+      { group: "Хирургический микроскоп", label: "Увеличение окуляра", value: "12,5× (10×)" },
+      { group: "Хирургический микроскоп", label: "Фильтры", value: "Синий, барьерный (жёлтый)" },
+      { group: "Хирургический микроскоп", label: "Щелевое освещение", value: "Ширина щели ≤ 0,3 мм / 0,7 мм; высота щели 11,0 мм" },
+      { group: "Условия эксплуатации", label: "Температура", value: "+18 °C…+25 °C" },
+      { group: "Условия эксплуатации", label: "Влажность", value: "30 %…70 %" },
+      { group: "Габариты и масса", label: "Масса устройства", value: "520 кг" },
+      { group: "Габариты и масса", label: "Минимальная нагрузка на пол", value: "2,5 кН/м²" },
+      { group: "Габариты и масса", label: "Площадь основания (отдельно стоящее)", value: "Д × Ш: 1710 мм × 925 мм" },
+    ],
+    // Клиника: подтверждено сайтом mhglaz.ru/smile-pro (Визус-1, Тюмень)
+    clinicIds: ["C01"],
+    // Процедуры: подтверждено таблицей «Available treatment options» брошюры ZEISS
+    procedureSlugs: ["smile-pro", "femto-lasik", "implantatsiya-rogovichnykh-segmentov"],
+    // Заболевания: SMILE pro — миопия и астигматизм (брошюра ZEISS + zeiss.com)
+    diseaseSlugs: ["miopiya", "astigmatizm"],
+    // Врачи: сайт клиники прямо указывает «Работает на VisuMax 800» только для Куницкого
+    doctorSlugs: ["kunitskiy-konstantin-vladislavovich"],
+  },
+];
+
+/**
  * Научные работы врачей.
  * Источник: data/doctors/<slug>/ (автореферат, диссертация).
  * В БД попадают ТОЛЬКО структурированные данные — полный текст не хранится,
@@ -940,6 +1049,112 @@ async function main() {
   if (doctorCount !== 9) {
     console.warn(`⚠ Expected 9 doctors, got ${doctorCount}`);
   }
+
+  // ─── Equipment ──────────────────────────────────────────────────────────────
+  console.log("Seeding equipment...");
+
+  for (const e of EQUIPMENT) {
+    const category = await db.equipmentCategory.findUnique({
+      where: { slug: slug(e.categoryTitle) },
+    });
+    if (!category) {
+      console.warn(`⚠ Equipment category not found: ${e.categoryTitle} for ${e.slug}`);
+    }
+    const data = {
+      title: e.title,
+      categoryId: category?.id ?? null,
+      manufacturer: e.manufacturer ?? null,
+      country: e.country ?? null,
+      year: e.year ?? null,
+      summary: e.summary ?? null,
+      description: e.description ?? null,
+      principle: e.principle ?? null,
+      advantages: e.advantages ?? [],
+      indications: e.indications ?? [],
+      limitations: e.limitations ?? [],
+      images: e.images ?? [],
+      manuals: e.manuals ?? [],
+    };
+    const equipment = await db.equipment.upsert({
+      where: { slug: e.slug },
+      create: { slug: e.slug, ...data },
+      update: data,
+    });
+
+    // Технические характеристики
+    for (const [i, s] of (e.specs ?? []).entries()) {
+      const specData = { group: s.group ?? null, value: s.value, sortOrder: i };
+      await db.equipmentSpec.upsert({
+        where: { equipmentId_label: { equipmentId: equipment.id, label: s.label } },
+        create: { equipmentId: equipment.id, label: s.label, ...specData },
+        update: specData,
+      });
+    }
+
+    // Связи: клиники
+    for (const clinicId of e.clinicIds ?? []) {
+      const clinicSlug = CLINIC_SLUG_MAP[clinicId];
+      const clinic = clinicSlug
+        ? await db.clinic.findUnique({ where: { slug: clinicSlug } })
+        : null;
+      if (!clinic) {
+        console.warn(`⚠ Clinic not found: ${clinicId} for equipment ${e.slug}`);
+        continue;
+      }
+      await db.clinicOnEquipment.upsert({
+        where: { clinicId_equipmentId: { clinicId: clinic.id, equipmentId: equipment.id } },
+        create: { clinicId: clinic.id, equipmentId: equipment.id },
+        update: {},
+      });
+    }
+
+    // Связи: процедуры
+    for (const s of e.procedureSlugs ?? []) {
+      const procedure = await db.procedure.findUnique({ where: { slug: s } });
+      if (!procedure) {
+        console.warn(`⚠ Procedure not found: ${s} for equipment ${e.slug}`);
+        continue;
+      }
+      await db.procedureOnEquipment.upsert({
+        where: { procedureId_equipmentId: { procedureId: procedure.id, equipmentId: equipment.id } },
+        create: { procedureId: procedure.id, equipmentId: equipment.id },
+        update: {},
+      });
+    }
+
+    // Связи: заболевания
+    for (const s of e.diseaseSlugs ?? []) {
+      const disease = await db.disease.findUnique({ where: { slug: s } });
+      if (!disease) {
+        console.warn(`⚠ Disease not found: ${s} for equipment ${e.slug}`);
+        continue;
+      }
+      await db.diseaseOnEquipment.upsert({
+        where: { diseaseId_equipmentId: { diseaseId: disease.id, equipmentId: equipment.id } },
+        create: { diseaseId: disease.id, equipmentId: equipment.id },
+        update: {},
+      });
+    }
+
+    // Связи: врачи
+    for (const s of e.doctorSlugs ?? []) {
+      const doctor = await db.doctor.findUnique({ where: { slug: s } });
+      if (!doctor) {
+        console.warn(`⚠ Doctor not found: ${s} for equipment ${e.slug}`);
+        continue;
+      }
+      await db.doctorOnEquipment.upsert({
+        where: { doctorId_equipmentId: { doctorId: doctor.id, equipmentId: equipment.id } },
+        create: { doctorId: doctor.id, equipmentId: equipment.id },
+        update: {},
+      });
+    }
+
+    console.log(
+      `  ✓ ${e.title} (${e.specs?.length ?? 0} specs, ${e.clinicIds?.length ?? 0} clinics, ${e.procedureSlugs?.length ?? 0} procedures, ${e.diseaseSlugs?.length ?? 0} diseases, ${e.doctorSlugs?.length ?? 0} doctors)`,
+    );
+  }
+  console.log(`✓ Equipment total: ${await db.equipment.count()}`);
 
   // ─── Scientific works ───────────────────────────────────────────────────────
   console.log("Seeding scientific works...");

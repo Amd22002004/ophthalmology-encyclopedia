@@ -67,6 +67,9 @@ export async function getDisease(slug: string) {
         take: 4,
         include: { publication: { select: { slug: true, title: true } } },
       },
+      equipment: {
+        include: { equipment: { select: { slug: true, title: true, manufacturer: true } } },
+      },
     },
   });
 }
@@ -234,6 +237,13 @@ export async function getDoctor(slug: string) {
       scientificWorks: {
         orderBy: [{ sortOrder: "asc" }, { year: "desc" }],
       },
+      equipment: {
+        include: {
+          equipment: {
+            select: { slug: true, title: true, manufacturer: true, images: true },
+          },
+        },
+      },
     },
   });
 }
@@ -357,6 +367,13 @@ export async function getClinic(slug: string) {
           },
         },
       },
+      equipment: {
+        include: {
+          equipment: {
+            select: { slug: true, title: true, manufacturer: true, country: true, images: true },
+          },
+        },
+      },
     },
   });
 }
@@ -437,9 +454,34 @@ export async function getEquipmentItem(slug: string) {
     include: {
       category: { select: { slug: true, title: true } },
       supplier: { select: { slug: true, title: true } },
+      specs: { orderBy: { sortOrder: "asc" } },
       procedures: {
-        take: 6,
-        include: { procedure: { select: { slug: true, title: true } } },
+        include: { procedure: { select: { slug: true, title: true, summary: true } } },
+      },
+      clinics: {
+        include: {
+          clinic: {
+            select: { slug: true, title: true, city: true, networkName: true, logoUrl: true },
+          },
+        },
+      },
+      diseases: {
+        include: { disease: { select: { slug: true, title: true, summary: true } } },
+      },
+      doctors: {
+        include: {
+          doctor: {
+            select: {
+              slug: true,
+              firstName: true,
+              lastName: true,
+              middleName: true,
+              photoUrl: true,
+              position: true,
+              category: true,
+            },
+          },
+        },
       },
     },
   });

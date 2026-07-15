@@ -20,8 +20,18 @@ export type EquipmentModel = runtime.Types.Result.DefaultSelection<Prisma.$Equip
 
 export type AggregateEquipment = {
   _count: EquipmentCountAggregateOutputType | null
+  _avg: EquipmentAvgAggregateOutputType | null
+  _sum: EquipmentSumAggregateOutputType | null
   _min: EquipmentMinAggregateOutputType | null
   _max: EquipmentMaxAggregateOutputType | null
+}
+
+export type EquipmentAvgAggregateOutputType = {
+  year: number | null
+}
+
+export type EquipmentSumAggregateOutputType = {
+  year: number | null
 }
 
 export type EquipmentMinAggregateOutputType = {
@@ -30,6 +40,10 @@ export type EquipmentMinAggregateOutputType = {
   title: string | null
   summary: string | null
   description: string | null
+  manufacturer: string | null
+  country: string | null
+  year: number | null
+  principle: string | null
   categoryId: string | null
   supplierId: string | null
   createdAt: Date | null
@@ -42,6 +56,10 @@ export type EquipmentMaxAggregateOutputType = {
   title: string | null
   summary: string | null
   description: string | null
+  manufacturer: string | null
+  country: string | null
+  year: number | null
+  principle: string | null
   categoryId: string | null
   supplierId: string | null
   createdAt: Date | null
@@ -54,6 +72,13 @@ export type EquipmentCountAggregateOutputType = {
   title: number
   summary: number
   description: number
+  manufacturer: number
+  country: number
+  year: number
+  principle: number
+  advantages: number
+  indications: number
+  limitations: number
   images: number
   manuals: number
   categoryId: number
@@ -64,12 +89,24 @@ export type EquipmentCountAggregateOutputType = {
 }
 
 
+export type EquipmentAvgAggregateInputType = {
+  year?: true
+}
+
+export type EquipmentSumAggregateInputType = {
+  year?: true
+}
+
 export type EquipmentMinAggregateInputType = {
   id?: true
   slug?: true
   title?: true
   summary?: true
   description?: true
+  manufacturer?: true
+  country?: true
+  year?: true
+  principle?: true
   categoryId?: true
   supplierId?: true
   createdAt?: true
@@ -82,6 +119,10 @@ export type EquipmentMaxAggregateInputType = {
   title?: true
   summary?: true
   description?: true
+  manufacturer?: true
+  country?: true
+  year?: true
+  principle?: true
   categoryId?: true
   supplierId?: true
   createdAt?: true
@@ -94,6 +135,13 @@ export type EquipmentCountAggregateInputType = {
   title?: true
   summary?: true
   description?: true
+  manufacturer?: true
+  country?: true
+  year?: true
+  principle?: true
+  advantages?: true
+  indications?: true
+  limitations?: true
   images?: true
   manuals?: true
   categoryId?: true
@@ -141,6 +189,18 @@ export type EquipmentAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: EquipmentAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: EquipmentSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: EquipmentMinAggregateInputType
@@ -171,6 +231,8 @@ export type EquipmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: EquipmentCountAggregateInputType | true
+  _avg?: EquipmentAvgAggregateInputType
+  _sum?: EquipmentSumAggregateInputType
   _min?: EquipmentMinAggregateInputType
   _max?: EquipmentMaxAggregateInputType
 }
@@ -181,6 +243,13 @@ export type EquipmentGroupByOutputType = {
   title: string
   summary: string | null
   description: string | null
+  manufacturer: string | null
+  country: string | null
+  year: number | null
+  principle: string | null
+  advantages: string[]
+  indications: string[]
+  limitations: string[]
   images: string[]
   manuals: string[]
   categoryId: string | null
@@ -188,6 +257,8 @@ export type EquipmentGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   _count: EquipmentCountAggregateOutputType | null
+  _avg: EquipmentAvgAggregateOutputType | null
+  _sum: EquipmentSumAggregateOutputType | null
   _min: EquipmentMinAggregateOutputType | null
   _max: EquipmentMaxAggregateOutputType | null
 }
@@ -216,6 +287,13 @@ export type EquipmentWhereInput = {
   title?: Prisma.StringFilter<"Equipment"> | string
   summary?: Prisma.StringNullableFilter<"Equipment"> | string | null
   description?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  manufacturer?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  country?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  year?: Prisma.IntNullableFilter<"Equipment"> | number | null
+  principle?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  advantages?: Prisma.StringNullableListFilter<"Equipment">
+  indications?: Prisma.StringNullableListFilter<"Equipment">
+  limitations?: Prisma.StringNullableListFilter<"Equipment">
   images?: Prisma.StringNullableListFilter<"Equipment">
   manuals?: Prisma.StringNullableListFilter<"Equipment">
   categoryId?: Prisma.StringNullableFilter<"Equipment"> | string | null
@@ -224,7 +302,11 @@ export type EquipmentWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Equipment"> | Date | string
   category?: Prisma.XOR<Prisma.EquipmentCategoryNullableScalarRelationFilter, Prisma.EquipmentCategoryWhereInput> | null
   supplier?: Prisma.XOR<Prisma.SupplierNullableScalarRelationFilter, Prisma.SupplierWhereInput> | null
+  specs?: Prisma.EquipmentSpecListRelationFilter
   procedures?: Prisma.ProcedureOnEquipmentListRelationFilter
+  clinics?: Prisma.ClinicOnEquipmentListRelationFilter
+  doctors?: Prisma.DoctorOnEquipmentListRelationFilter
+  diseases?: Prisma.DiseaseOnEquipmentListRelationFilter
 }
 
 export type EquipmentOrderByWithRelationInput = {
@@ -233,6 +315,13 @@ export type EquipmentOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  manufacturer?: Prisma.SortOrderInput | Prisma.SortOrder
+  country?: Prisma.SortOrderInput | Prisma.SortOrder
+  year?: Prisma.SortOrderInput | Prisma.SortOrder
+  principle?: Prisma.SortOrderInput | Prisma.SortOrder
+  advantages?: Prisma.SortOrder
+  indications?: Prisma.SortOrder
+  limitations?: Prisma.SortOrder
   images?: Prisma.SortOrder
   manuals?: Prisma.SortOrder
   categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -241,7 +330,11 @@ export type EquipmentOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   category?: Prisma.EquipmentCategoryOrderByWithRelationInput
   supplier?: Prisma.SupplierOrderByWithRelationInput
+  specs?: Prisma.EquipmentSpecOrderByRelationAggregateInput
   procedures?: Prisma.ProcedureOnEquipmentOrderByRelationAggregateInput
+  clinics?: Prisma.ClinicOnEquipmentOrderByRelationAggregateInput
+  doctors?: Prisma.DoctorOnEquipmentOrderByRelationAggregateInput
+  diseases?: Prisma.DiseaseOnEquipmentOrderByRelationAggregateInput
 }
 
 export type EquipmentWhereUniqueInput = Prisma.AtLeast<{
@@ -253,6 +346,13 @@ export type EquipmentWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Equipment"> | string
   summary?: Prisma.StringNullableFilter<"Equipment"> | string | null
   description?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  manufacturer?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  country?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  year?: Prisma.IntNullableFilter<"Equipment"> | number | null
+  principle?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  advantages?: Prisma.StringNullableListFilter<"Equipment">
+  indications?: Prisma.StringNullableListFilter<"Equipment">
+  limitations?: Prisma.StringNullableListFilter<"Equipment">
   images?: Prisma.StringNullableListFilter<"Equipment">
   manuals?: Prisma.StringNullableListFilter<"Equipment">
   categoryId?: Prisma.StringNullableFilter<"Equipment"> | string | null
@@ -261,7 +361,11 @@ export type EquipmentWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Equipment"> | Date | string
   category?: Prisma.XOR<Prisma.EquipmentCategoryNullableScalarRelationFilter, Prisma.EquipmentCategoryWhereInput> | null
   supplier?: Prisma.XOR<Prisma.SupplierNullableScalarRelationFilter, Prisma.SupplierWhereInput> | null
+  specs?: Prisma.EquipmentSpecListRelationFilter
   procedures?: Prisma.ProcedureOnEquipmentListRelationFilter
+  clinics?: Prisma.ClinicOnEquipmentListRelationFilter
+  doctors?: Prisma.DoctorOnEquipmentListRelationFilter
+  diseases?: Prisma.DiseaseOnEquipmentListRelationFilter
 }, "id" | "slug">
 
 export type EquipmentOrderByWithAggregationInput = {
@@ -270,6 +374,13 @@ export type EquipmentOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  manufacturer?: Prisma.SortOrderInput | Prisma.SortOrder
+  country?: Prisma.SortOrderInput | Prisma.SortOrder
+  year?: Prisma.SortOrderInput | Prisma.SortOrder
+  principle?: Prisma.SortOrderInput | Prisma.SortOrder
+  advantages?: Prisma.SortOrder
+  indications?: Prisma.SortOrder
+  limitations?: Prisma.SortOrder
   images?: Prisma.SortOrder
   manuals?: Prisma.SortOrder
   categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -277,8 +388,10 @@ export type EquipmentOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.EquipmentCountOrderByAggregateInput
+  _avg?: Prisma.EquipmentAvgOrderByAggregateInput
   _max?: Prisma.EquipmentMaxOrderByAggregateInput
   _min?: Prisma.EquipmentMinOrderByAggregateInput
+  _sum?: Prisma.EquipmentSumOrderByAggregateInput
 }
 
 export type EquipmentScalarWhereWithAggregatesInput = {
@@ -290,6 +403,13 @@ export type EquipmentScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Equipment"> | string
   summary?: Prisma.StringNullableWithAggregatesFilter<"Equipment"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Equipment"> | string | null
+  manufacturer?: Prisma.StringNullableWithAggregatesFilter<"Equipment"> | string | null
+  country?: Prisma.StringNullableWithAggregatesFilter<"Equipment"> | string | null
+  year?: Prisma.IntNullableWithAggregatesFilter<"Equipment"> | number | null
+  principle?: Prisma.StringNullableWithAggregatesFilter<"Equipment"> | string | null
+  advantages?: Prisma.StringNullableListFilter<"Equipment">
+  indications?: Prisma.StringNullableListFilter<"Equipment">
+  limitations?: Prisma.StringNullableListFilter<"Equipment">
   images?: Prisma.StringNullableListFilter<"Equipment">
   manuals?: Prisma.StringNullableListFilter<"Equipment">
   categoryId?: Prisma.StringNullableWithAggregatesFilter<"Equipment"> | string | null
@@ -304,13 +424,24 @@ export type EquipmentCreateInput = {
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   category?: Prisma.EquipmentCategoryCreateNestedOneWithoutEquipmentInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutEquipmentInput
+  specs?: Prisma.EquipmentSpecCreateNestedManyWithoutEquipmentInput
   procedures?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentUncheckedCreateInput = {
@@ -319,13 +450,24 @@ export type EquipmentUncheckedCreateInput = {
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   categoryId?: string | null
   supplierId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  specs?: Prisma.EquipmentSpecUncheckedCreateNestedManyWithoutEquipmentInput
   procedures?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentUpdateInput = {
@@ -334,13 +476,24 @@ export type EquipmentUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.EquipmentCategoryUpdateOneWithoutEquipmentNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutEquipmentNestedInput
+  specs?: Prisma.EquipmentSpecUpdateManyWithoutEquipmentNestedInput
   procedures?: Prisma.ProcedureOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateInput = {
@@ -349,13 +502,24 @@ export type EquipmentUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supplierId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specs?: Prisma.EquipmentSpecUncheckedUpdateManyWithoutEquipmentNestedInput
   procedures?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentCreateManyInput = {
@@ -364,6 +528,13 @@ export type EquipmentCreateManyInput = {
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   categoryId?: string | null
@@ -378,6 +549,13 @@ export type EquipmentUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -390,6 +568,13 @@ export type EquipmentUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -414,6 +599,13 @@ export type EquipmentCountOrderByAggregateInput = {
   title?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  manufacturer?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  year?: Prisma.SortOrder
+  principle?: Prisma.SortOrder
+  advantages?: Prisma.SortOrder
+  indications?: Prisma.SortOrder
+  limitations?: Prisma.SortOrder
   images?: Prisma.SortOrder
   manuals?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
@@ -422,12 +614,20 @@ export type EquipmentCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type EquipmentAvgOrderByAggregateInput = {
+  year?: Prisma.SortOrder
+}
+
 export type EquipmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  manufacturer?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  year?: Prisma.SortOrder
+  principle?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   supplierId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -440,10 +640,18 @@ export type EquipmentMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  manufacturer?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  year?: Prisma.SortOrder
+  principle?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   supplierId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type EquipmentSumOrderByAggregateInput = {
+  year?: Prisma.SortOrder
 }
 
 export type EquipmentScalarRelationFilter = {
@@ -493,12 +701,39 @@ export type EquipmentUncheckedUpdateManyWithoutSupplierNestedInput = {
   deleteMany?: Prisma.EquipmentScalarWhereInput | Prisma.EquipmentScalarWhereInput[]
 }
 
+export type EquipmentCreateadvantagesInput = {
+  set: string[]
+}
+
+export type EquipmentCreateindicationsInput = {
+  set: string[]
+}
+
+export type EquipmentCreatelimitationsInput = {
+  set: string[]
+}
+
 export type EquipmentCreateimagesInput = {
   set: string[]
 }
 
 export type EquipmentCreatemanualsInput = {
   set: string[]
+}
+
+export type EquipmentUpdateadvantagesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type EquipmentUpdateindicationsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type EquipmentUpdatelimitationsInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type EquipmentUpdateimagesInput = {
@@ -509,6 +744,20 @@ export type EquipmentUpdateimagesInput = {
 export type EquipmentUpdatemanualsInput = {
   set?: string[]
   push?: string | string[]
+}
+
+export type EquipmentCreateNestedOneWithoutSpecsInput = {
+  create?: Prisma.XOR<Prisma.EquipmentCreateWithoutSpecsInput, Prisma.EquipmentUncheckedCreateWithoutSpecsInput>
+  connectOrCreate?: Prisma.EquipmentCreateOrConnectWithoutSpecsInput
+  connect?: Prisma.EquipmentWhereUniqueInput
+}
+
+export type EquipmentUpdateOneRequiredWithoutSpecsNestedInput = {
+  create?: Prisma.XOR<Prisma.EquipmentCreateWithoutSpecsInput, Prisma.EquipmentUncheckedCreateWithoutSpecsInput>
+  connectOrCreate?: Prisma.EquipmentCreateOrConnectWithoutSpecsInput
+  upsert?: Prisma.EquipmentUpsertWithoutSpecsInput
+  connect?: Prisma.EquipmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EquipmentUpdateToOneWithWhereWithoutSpecsInput, Prisma.EquipmentUpdateWithoutSpecsInput>, Prisma.EquipmentUncheckedUpdateWithoutSpecsInput>
 }
 
 export type EquipmentCreateNestedManyWithoutCategoryInput = {
@@ -567,18 +816,71 @@ export type EquipmentUpdateOneRequiredWithoutProceduresNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EquipmentUpdateToOneWithWhereWithoutProceduresInput, Prisma.EquipmentUpdateWithoutProceduresInput>, Prisma.EquipmentUncheckedUpdateWithoutProceduresInput>
 }
 
+export type EquipmentCreateNestedOneWithoutClinicsInput = {
+  create?: Prisma.XOR<Prisma.EquipmentCreateWithoutClinicsInput, Prisma.EquipmentUncheckedCreateWithoutClinicsInput>
+  connectOrCreate?: Prisma.EquipmentCreateOrConnectWithoutClinicsInput
+  connect?: Prisma.EquipmentWhereUniqueInput
+}
+
+export type EquipmentUpdateOneRequiredWithoutClinicsNestedInput = {
+  create?: Prisma.XOR<Prisma.EquipmentCreateWithoutClinicsInput, Prisma.EquipmentUncheckedCreateWithoutClinicsInput>
+  connectOrCreate?: Prisma.EquipmentCreateOrConnectWithoutClinicsInput
+  upsert?: Prisma.EquipmentUpsertWithoutClinicsInput
+  connect?: Prisma.EquipmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EquipmentUpdateToOneWithWhereWithoutClinicsInput, Prisma.EquipmentUpdateWithoutClinicsInput>, Prisma.EquipmentUncheckedUpdateWithoutClinicsInput>
+}
+
+export type EquipmentCreateNestedOneWithoutDoctorsInput = {
+  create?: Prisma.XOR<Prisma.EquipmentCreateWithoutDoctorsInput, Prisma.EquipmentUncheckedCreateWithoutDoctorsInput>
+  connectOrCreate?: Prisma.EquipmentCreateOrConnectWithoutDoctorsInput
+  connect?: Prisma.EquipmentWhereUniqueInput
+}
+
+export type EquipmentUpdateOneRequiredWithoutDoctorsNestedInput = {
+  create?: Prisma.XOR<Prisma.EquipmentCreateWithoutDoctorsInput, Prisma.EquipmentUncheckedCreateWithoutDoctorsInput>
+  connectOrCreate?: Prisma.EquipmentCreateOrConnectWithoutDoctorsInput
+  upsert?: Prisma.EquipmentUpsertWithoutDoctorsInput
+  connect?: Prisma.EquipmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EquipmentUpdateToOneWithWhereWithoutDoctorsInput, Prisma.EquipmentUpdateWithoutDoctorsInput>, Prisma.EquipmentUncheckedUpdateWithoutDoctorsInput>
+}
+
+export type EquipmentCreateNestedOneWithoutDiseasesInput = {
+  create?: Prisma.XOR<Prisma.EquipmentCreateWithoutDiseasesInput, Prisma.EquipmentUncheckedCreateWithoutDiseasesInput>
+  connectOrCreate?: Prisma.EquipmentCreateOrConnectWithoutDiseasesInput
+  connect?: Prisma.EquipmentWhereUniqueInput
+}
+
+export type EquipmentUpdateOneRequiredWithoutDiseasesNestedInput = {
+  create?: Prisma.XOR<Prisma.EquipmentCreateWithoutDiseasesInput, Prisma.EquipmentUncheckedCreateWithoutDiseasesInput>
+  connectOrCreate?: Prisma.EquipmentCreateOrConnectWithoutDiseasesInput
+  upsert?: Prisma.EquipmentUpsertWithoutDiseasesInput
+  connect?: Prisma.EquipmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EquipmentUpdateToOneWithWhereWithoutDiseasesInput, Prisma.EquipmentUpdateWithoutDiseasesInput>, Prisma.EquipmentUncheckedUpdateWithoutDiseasesInput>
+}
+
 export type EquipmentCreateWithoutSupplierInput = {
   id?: string
   slug: string
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   category?: Prisma.EquipmentCategoryCreateNestedOneWithoutEquipmentInput
+  specs?: Prisma.EquipmentSpecCreateNestedManyWithoutEquipmentInput
   procedures?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentUncheckedCreateWithoutSupplierInput = {
@@ -587,12 +889,23 @@ export type EquipmentUncheckedCreateWithoutSupplierInput = {
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  specs?: Prisma.EquipmentSpecUncheckedCreateNestedManyWithoutEquipmentInput
   procedures?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentCreateOrConnectWithoutSupplierInput = {
@@ -630,6 +943,13 @@ export type EquipmentScalarWhereInput = {
   title?: Prisma.StringFilter<"Equipment"> | string
   summary?: Prisma.StringNullableFilter<"Equipment"> | string | null
   description?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  manufacturer?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  country?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  year?: Prisma.IntNullableFilter<"Equipment"> | number | null
+  principle?: Prisma.StringNullableFilter<"Equipment"> | string | null
+  advantages?: Prisma.StringNullableListFilter<"Equipment">
+  indications?: Prisma.StringNullableListFilter<"Equipment">
+  limitations?: Prisma.StringNullableListFilter<"Equipment">
   images?: Prisma.StringNullableListFilter<"Equipment">
   manuals?: Prisma.StringNullableListFilter<"Equipment">
   categoryId?: Prisma.StringNullableFilter<"Equipment"> | string | null
@@ -638,18 +958,145 @@ export type EquipmentScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Equipment"> | Date | string
 }
 
+export type EquipmentCreateWithoutSpecsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
+  images?: Prisma.EquipmentCreateimagesInput | string[]
+  manuals?: Prisma.EquipmentCreatemanualsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  category?: Prisma.EquipmentCategoryCreateNestedOneWithoutEquipmentInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutEquipmentInput
+  procedures?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutEquipmentInput
+}
+
+export type EquipmentUncheckedCreateWithoutSpecsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
+  images?: Prisma.EquipmentCreateimagesInput | string[]
+  manuals?: Prisma.EquipmentCreatemanualsInput | string[]
+  categoryId?: string | null
+  supplierId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  procedures?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+}
+
+export type EquipmentCreateOrConnectWithoutSpecsInput = {
+  where: Prisma.EquipmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.EquipmentCreateWithoutSpecsInput, Prisma.EquipmentUncheckedCreateWithoutSpecsInput>
+}
+
+export type EquipmentUpsertWithoutSpecsInput = {
+  update: Prisma.XOR<Prisma.EquipmentUpdateWithoutSpecsInput, Prisma.EquipmentUncheckedUpdateWithoutSpecsInput>
+  create: Prisma.XOR<Prisma.EquipmentCreateWithoutSpecsInput, Prisma.EquipmentUncheckedCreateWithoutSpecsInput>
+  where?: Prisma.EquipmentWhereInput
+}
+
+export type EquipmentUpdateToOneWithWhereWithoutSpecsInput = {
+  where?: Prisma.EquipmentWhereInput
+  data: Prisma.XOR<Prisma.EquipmentUpdateWithoutSpecsInput, Prisma.EquipmentUncheckedUpdateWithoutSpecsInput>
+}
+
+export type EquipmentUpdateWithoutSpecsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
+  images?: Prisma.EquipmentUpdateimagesInput | string[]
+  manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.EquipmentCategoryUpdateOneWithoutEquipmentNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutEquipmentNestedInput
+  procedures?: Prisma.ProcedureOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUpdateManyWithoutEquipmentNestedInput
+}
+
+export type EquipmentUncheckedUpdateWithoutSpecsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
+  images?: Prisma.EquipmentUpdateimagesInput | string[]
+  manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplierId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  procedures?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+}
+
 export type EquipmentCreateWithoutCategoryInput = {
   id?: string
   slug: string
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   supplier?: Prisma.SupplierCreateNestedOneWithoutEquipmentInput
+  specs?: Prisma.EquipmentSpecCreateNestedManyWithoutEquipmentInput
   procedures?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentUncheckedCreateWithoutCategoryInput = {
@@ -658,12 +1105,23 @@ export type EquipmentUncheckedCreateWithoutCategoryInput = {
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   supplierId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  specs?: Prisma.EquipmentSpecUncheckedCreateNestedManyWithoutEquipmentInput
   procedures?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentCreateOrConnectWithoutCategoryInput = {
@@ -698,12 +1156,23 @@ export type EquipmentCreateWithoutProceduresInput = {
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   category?: Prisma.EquipmentCategoryCreateNestedOneWithoutEquipmentInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutEquipmentInput
+  specs?: Prisma.EquipmentSpecCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentUncheckedCreateWithoutProceduresInput = {
@@ -712,12 +1181,23 @@ export type EquipmentUncheckedCreateWithoutProceduresInput = {
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   categoryId?: string | null
   supplierId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  specs?: Prisma.EquipmentSpecUncheckedCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentCreateOrConnectWithoutProceduresInput = {
@@ -742,12 +1222,23 @@ export type EquipmentUpdateWithoutProceduresInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.EquipmentCategoryUpdateOneWithoutEquipmentNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutEquipmentNestedInput
+  specs?: Prisma.EquipmentSpecUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateWithoutProceduresInput = {
@@ -756,12 +1247,371 @@ export type EquipmentUncheckedUpdateWithoutProceduresInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supplierId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specs?: Prisma.EquipmentSpecUncheckedUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+}
+
+export type EquipmentCreateWithoutClinicsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
+  images?: Prisma.EquipmentCreateimagesInput | string[]
+  manuals?: Prisma.EquipmentCreatemanualsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  category?: Prisma.EquipmentCategoryCreateNestedOneWithoutEquipmentInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutEquipmentInput
+  specs?: Prisma.EquipmentSpecCreateNestedManyWithoutEquipmentInput
+  procedures?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutEquipmentInput
+}
+
+export type EquipmentUncheckedCreateWithoutClinicsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
+  images?: Prisma.EquipmentCreateimagesInput | string[]
+  manuals?: Prisma.EquipmentCreatemanualsInput | string[]
+  categoryId?: string | null
+  supplierId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specs?: Prisma.EquipmentSpecUncheckedCreateNestedManyWithoutEquipmentInput
+  procedures?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+}
+
+export type EquipmentCreateOrConnectWithoutClinicsInput = {
+  where: Prisma.EquipmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.EquipmentCreateWithoutClinicsInput, Prisma.EquipmentUncheckedCreateWithoutClinicsInput>
+}
+
+export type EquipmentUpsertWithoutClinicsInput = {
+  update: Prisma.XOR<Prisma.EquipmentUpdateWithoutClinicsInput, Prisma.EquipmentUncheckedUpdateWithoutClinicsInput>
+  create: Prisma.XOR<Prisma.EquipmentCreateWithoutClinicsInput, Prisma.EquipmentUncheckedCreateWithoutClinicsInput>
+  where?: Prisma.EquipmentWhereInput
+}
+
+export type EquipmentUpdateToOneWithWhereWithoutClinicsInput = {
+  where?: Prisma.EquipmentWhereInput
+  data: Prisma.XOR<Prisma.EquipmentUpdateWithoutClinicsInput, Prisma.EquipmentUncheckedUpdateWithoutClinicsInput>
+}
+
+export type EquipmentUpdateWithoutClinicsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
+  images?: Prisma.EquipmentUpdateimagesInput | string[]
+  manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.EquipmentCategoryUpdateOneWithoutEquipmentNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutEquipmentNestedInput
+  specs?: Prisma.EquipmentSpecUpdateManyWithoutEquipmentNestedInput
+  procedures?: Prisma.ProcedureOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUpdateManyWithoutEquipmentNestedInput
+}
+
+export type EquipmentUncheckedUpdateWithoutClinicsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
+  images?: Prisma.EquipmentUpdateimagesInput | string[]
+  manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplierId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specs?: Prisma.EquipmentSpecUncheckedUpdateManyWithoutEquipmentNestedInput
+  procedures?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+}
+
+export type EquipmentCreateWithoutDoctorsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
+  images?: Prisma.EquipmentCreateimagesInput | string[]
+  manuals?: Prisma.EquipmentCreatemanualsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  category?: Prisma.EquipmentCategoryCreateNestedOneWithoutEquipmentInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutEquipmentInput
+  specs?: Prisma.EquipmentSpecCreateNestedManyWithoutEquipmentInput
+  procedures?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutEquipmentInput
+}
+
+export type EquipmentUncheckedCreateWithoutDoctorsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
+  images?: Prisma.EquipmentCreateimagesInput | string[]
+  manuals?: Prisma.EquipmentCreatemanualsInput | string[]
+  categoryId?: string | null
+  supplierId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specs?: Prisma.EquipmentSpecUncheckedCreateNestedManyWithoutEquipmentInput
+  procedures?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+}
+
+export type EquipmentCreateOrConnectWithoutDoctorsInput = {
+  where: Prisma.EquipmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.EquipmentCreateWithoutDoctorsInput, Prisma.EquipmentUncheckedCreateWithoutDoctorsInput>
+}
+
+export type EquipmentUpsertWithoutDoctorsInput = {
+  update: Prisma.XOR<Prisma.EquipmentUpdateWithoutDoctorsInput, Prisma.EquipmentUncheckedUpdateWithoutDoctorsInput>
+  create: Prisma.XOR<Prisma.EquipmentCreateWithoutDoctorsInput, Prisma.EquipmentUncheckedCreateWithoutDoctorsInput>
+  where?: Prisma.EquipmentWhereInput
+}
+
+export type EquipmentUpdateToOneWithWhereWithoutDoctorsInput = {
+  where?: Prisma.EquipmentWhereInput
+  data: Prisma.XOR<Prisma.EquipmentUpdateWithoutDoctorsInput, Prisma.EquipmentUncheckedUpdateWithoutDoctorsInput>
+}
+
+export type EquipmentUpdateWithoutDoctorsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
+  images?: Prisma.EquipmentUpdateimagesInput | string[]
+  manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.EquipmentCategoryUpdateOneWithoutEquipmentNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutEquipmentNestedInput
+  specs?: Prisma.EquipmentSpecUpdateManyWithoutEquipmentNestedInput
+  procedures?: Prisma.ProcedureOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUpdateManyWithoutEquipmentNestedInput
+}
+
+export type EquipmentUncheckedUpdateWithoutDoctorsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
+  images?: Prisma.EquipmentUpdateimagesInput | string[]
+  manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplierId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specs?: Prisma.EquipmentSpecUncheckedUpdateManyWithoutEquipmentNestedInput
+  procedures?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+}
+
+export type EquipmentCreateWithoutDiseasesInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
+  images?: Prisma.EquipmentCreateimagesInput | string[]
+  manuals?: Prisma.EquipmentCreatemanualsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  category?: Prisma.EquipmentCategoryCreateNestedOneWithoutEquipmentInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutEquipmentInput
+  specs?: Prisma.EquipmentSpecCreateNestedManyWithoutEquipmentInput
+  procedures?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutEquipmentInput
+}
+
+export type EquipmentUncheckedCreateWithoutDiseasesInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
+  images?: Prisma.EquipmentCreateimagesInput | string[]
+  manuals?: Prisma.EquipmentCreatemanualsInput | string[]
+  categoryId?: string | null
+  supplierId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specs?: Prisma.EquipmentSpecUncheckedCreateNestedManyWithoutEquipmentInput
+  procedures?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutEquipmentInput
+}
+
+export type EquipmentCreateOrConnectWithoutDiseasesInput = {
+  where: Prisma.EquipmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.EquipmentCreateWithoutDiseasesInput, Prisma.EquipmentUncheckedCreateWithoutDiseasesInput>
+}
+
+export type EquipmentUpsertWithoutDiseasesInput = {
+  update: Prisma.XOR<Prisma.EquipmentUpdateWithoutDiseasesInput, Prisma.EquipmentUncheckedUpdateWithoutDiseasesInput>
+  create: Prisma.XOR<Prisma.EquipmentCreateWithoutDiseasesInput, Prisma.EquipmentUncheckedCreateWithoutDiseasesInput>
+  where?: Prisma.EquipmentWhereInput
+}
+
+export type EquipmentUpdateToOneWithWhereWithoutDiseasesInput = {
+  where?: Prisma.EquipmentWhereInput
+  data: Prisma.XOR<Prisma.EquipmentUpdateWithoutDiseasesInput, Prisma.EquipmentUncheckedUpdateWithoutDiseasesInput>
+}
+
+export type EquipmentUpdateWithoutDiseasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
+  images?: Prisma.EquipmentUpdateimagesInput | string[]
+  manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.EquipmentCategoryUpdateOneWithoutEquipmentNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutEquipmentNestedInput
+  specs?: Prisma.EquipmentSpecUpdateManyWithoutEquipmentNestedInput
+  procedures?: Prisma.ProcedureOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUpdateManyWithoutEquipmentNestedInput
+}
+
+export type EquipmentUncheckedUpdateWithoutDiseasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
+  images?: Prisma.EquipmentUpdateimagesInput | string[]
+  manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplierId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specs?: Prisma.EquipmentSpecUncheckedUpdateManyWithoutEquipmentNestedInput
+  procedures?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentCreateManySupplierInput = {
@@ -770,6 +1620,13 @@ export type EquipmentCreateManySupplierInput = {
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   categoryId?: string | null
@@ -783,12 +1640,23 @@ export type EquipmentUpdateWithoutSupplierInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.EquipmentCategoryUpdateOneWithoutEquipmentNestedInput
+  specs?: Prisma.EquipmentSpecUpdateManyWithoutEquipmentNestedInput
   procedures?: Prisma.ProcedureOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateWithoutSupplierInput = {
@@ -797,12 +1665,23 @@ export type EquipmentUncheckedUpdateWithoutSupplierInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specs?: Prisma.EquipmentSpecUncheckedUpdateManyWithoutEquipmentNestedInput
   procedures?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateManyWithoutSupplierInput = {
@@ -811,6 +1690,13 @@ export type EquipmentUncheckedUpdateManyWithoutSupplierInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -824,6 +1710,13 @@ export type EquipmentCreateManyCategoryInput = {
   title: string
   summary?: string | null
   description?: string | null
+  manufacturer?: string | null
+  country?: string | null
+  year?: number | null
+  principle?: string | null
+  advantages?: Prisma.EquipmentCreateadvantagesInput | string[]
+  indications?: Prisma.EquipmentCreateindicationsInput | string[]
+  limitations?: Prisma.EquipmentCreatelimitationsInput | string[]
   images?: Prisma.EquipmentCreateimagesInput | string[]
   manuals?: Prisma.EquipmentCreatemanualsInput | string[]
   supplierId?: string | null
@@ -837,12 +1730,23 @@ export type EquipmentUpdateWithoutCategoryInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   supplier?: Prisma.SupplierUpdateOneWithoutEquipmentNestedInput
+  specs?: Prisma.EquipmentSpecUpdateManyWithoutEquipmentNestedInput
   procedures?: Prisma.ProcedureOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateWithoutCategoryInput = {
@@ -851,12 +1755,23 @@ export type EquipmentUncheckedUpdateWithoutCategoryInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   supplierId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specs?: Prisma.EquipmentSpecUncheckedUpdateManyWithoutEquipmentNestedInput
   procedures?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  clinics?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  doctors?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
+  diseases?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateManyWithoutCategoryInput = {
@@ -865,6 +1780,13 @@ export type EquipmentUncheckedUpdateManyWithoutCategoryInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manufacturer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  principle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advantages?: Prisma.EquipmentUpdateadvantagesInput | string[]
+  indications?: Prisma.EquipmentUpdateindicationsInput | string[]
+  limitations?: Prisma.EquipmentUpdatelimitationsInput | string[]
   images?: Prisma.EquipmentUpdateimagesInput | string[]
   manuals?: Prisma.EquipmentUpdatemanualsInput | string[]
   supplierId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -878,11 +1800,19 @@ export type EquipmentUncheckedUpdateManyWithoutCategoryInput = {
  */
 
 export type EquipmentCountOutputType = {
+  specs: number
   procedures: number
+  clinics: number
+  doctors: number
+  diseases: number
 }
 
 export type EquipmentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  specs?: boolean | EquipmentCountOutputTypeCountSpecsArgs
   procedures?: boolean | EquipmentCountOutputTypeCountProceduresArgs
+  clinics?: boolean | EquipmentCountOutputTypeCountClinicsArgs
+  doctors?: boolean | EquipmentCountOutputTypeCountDoctorsArgs
+  diseases?: boolean | EquipmentCountOutputTypeCountDiseasesArgs
 }
 
 /**
@@ -898,8 +1828,36 @@ export type EquipmentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ex
 /**
  * EquipmentCountOutputType without action
  */
+export type EquipmentCountOutputTypeCountSpecsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EquipmentSpecWhereInput
+}
+
+/**
+ * EquipmentCountOutputType without action
+ */
 export type EquipmentCountOutputTypeCountProceduresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ProcedureOnEquipmentWhereInput
+}
+
+/**
+ * EquipmentCountOutputType without action
+ */
+export type EquipmentCountOutputTypeCountClinicsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClinicOnEquipmentWhereInput
+}
+
+/**
+ * EquipmentCountOutputType without action
+ */
+export type EquipmentCountOutputTypeCountDoctorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DoctorOnEquipmentWhereInput
+}
+
+/**
+ * EquipmentCountOutputType without action
+ */
+export type EquipmentCountOutputTypeCountDiseasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DiseaseOnEquipmentWhereInput
 }
 
 
@@ -909,6 +1867,13 @@ export type EquipmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   title?: boolean
   summary?: boolean
   description?: boolean
+  manufacturer?: boolean
+  country?: boolean
+  year?: boolean
+  principle?: boolean
+  advantages?: boolean
+  indications?: boolean
+  limitations?: boolean
   images?: boolean
   manuals?: boolean
   categoryId?: boolean
@@ -917,7 +1882,11 @@ export type EquipmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   updatedAt?: boolean
   category?: boolean | Prisma.Equipment$categoryArgs<ExtArgs>
   supplier?: boolean | Prisma.Equipment$supplierArgs<ExtArgs>
+  specs?: boolean | Prisma.Equipment$specsArgs<ExtArgs>
   procedures?: boolean | Prisma.Equipment$proceduresArgs<ExtArgs>
+  clinics?: boolean | Prisma.Equipment$clinicsArgs<ExtArgs>
+  doctors?: boolean | Prisma.Equipment$doctorsArgs<ExtArgs>
+  diseases?: boolean | Prisma.Equipment$diseasesArgs<ExtArgs>
   _count?: boolean | Prisma.EquipmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["equipment"]>
 
@@ -927,6 +1896,13 @@ export type EquipmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   title?: boolean
   summary?: boolean
   description?: boolean
+  manufacturer?: boolean
+  country?: boolean
+  year?: boolean
+  principle?: boolean
+  advantages?: boolean
+  indications?: boolean
+  limitations?: boolean
   images?: boolean
   manuals?: boolean
   categoryId?: boolean
@@ -943,6 +1919,13 @@ export type EquipmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   title?: boolean
   summary?: boolean
   description?: boolean
+  manufacturer?: boolean
+  country?: boolean
+  year?: boolean
+  principle?: boolean
+  advantages?: boolean
+  indications?: boolean
+  limitations?: boolean
   images?: boolean
   manuals?: boolean
   categoryId?: boolean
@@ -959,6 +1942,13 @@ export type EquipmentSelectScalar = {
   title?: boolean
   summary?: boolean
   description?: boolean
+  manufacturer?: boolean
+  country?: boolean
+  year?: boolean
+  principle?: boolean
+  advantages?: boolean
+  indications?: boolean
+  limitations?: boolean
   images?: boolean
   manuals?: boolean
   categoryId?: boolean
@@ -967,11 +1957,15 @@ export type EquipmentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type EquipmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "summary" | "description" | "images" | "manuals" | "categoryId" | "supplierId" | "createdAt" | "updatedAt", ExtArgs["result"]["equipment"]>
+export type EquipmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "summary" | "description" | "manufacturer" | "country" | "year" | "principle" | "advantages" | "indications" | "limitations" | "images" | "manuals" | "categoryId" | "supplierId" | "createdAt" | "updatedAt", ExtArgs["result"]["equipment"]>
 export type EquipmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.Equipment$categoryArgs<ExtArgs>
   supplier?: boolean | Prisma.Equipment$supplierArgs<ExtArgs>
+  specs?: boolean | Prisma.Equipment$specsArgs<ExtArgs>
   procedures?: boolean | Prisma.Equipment$proceduresArgs<ExtArgs>
+  clinics?: boolean | Prisma.Equipment$clinicsArgs<ExtArgs>
+  doctors?: boolean | Prisma.Equipment$doctorsArgs<ExtArgs>
+  diseases?: boolean | Prisma.Equipment$diseasesArgs<ExtArgs>
   _count?: boolean | Prisma.EquipmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EquipmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -988,7 +1982,11 @@ export type $EquipmentPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   objects: {
     category: Prisma.$EquipmentCategoryPayload<ExtArgs> | null
     supplier: Prisma.$SupplierPayload<ExtArgs> | null
+    specs: Prisma.$EquipmentSpecPayload<ExtArgs>[]
     procedures: Prisma.$ProcedureOnEquipmentPayload<ExtArgs>[]
+    clinics: Prisma.$ClinicOnEquipmentPayload<ExtArgs>[]
+    doctors: Prisma.$DoctorOnEquipmentPayload<ExtArgs>[]
+    diseases: Prisma.$DiseaseOnEquipmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -996,6 +1994,13 @@ export type $EquipmentPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     title: string
     summary: string | null
     description: string | null
+    manufacturer: string | null
+    country: string | null
+    year: number | null
+    principle: string | null
+    advantages: string[]
+    indications: string[]
+    limitations: string[]
     images: string[]
     manuals: string[]
     categoryId: string | null
@@ -1398,7 +2403,11 @@ export interface Prisma__EquipmentClient<T, Null = never, ExtArgs extends runtim
   readonly [Symbol.toStringTag]: "PrismaPromise"
   category<T extends Prisma.Equipment$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipment$categoryArgs<ExtArgs>>): Prisma.Prisma__EquipmentCategoryClient<runtime.Types.Result.GetResult<Prisma.$EquipmentCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   supplier<T extends Prisma.Equipment$supplierArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipment$supplierArgs<ExtArgs>>): Prisma.Prisma__SupplierClient<runtime.Types.Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  specs<T extends Prisma.Equipment$specsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipment$specsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EquipmentSpecPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   procedures<T extends Prisma.Equipment$proceduresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipment$proceduresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProcedureOnEquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  clinics<T extends Prisma.Equipment$clinicsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipment$clinicsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicOnEquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  doctors<T extends Prisma.Equipment$doctorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipment$doctorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DoctorOnEquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  diseases<T extends Prisma.Equipment$diseasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipment$diseasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DiseaseOnEquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1433,6 +2442,13 @@ export interface EquipmentFieldRefs {
   readonly title: Prisma.FieldRef<"Equipment", 'String'>
   readonly summary: Prisma.FieldRef<"Equipment", 'String'>
   readonly description: Prisma.FieldRef<"Equipment", 'String'>
+  readonly manufacturer: Prisma.FieldRef<"Equipment", 'String'>
+  readonly country: Prisma.FieldRef<"Equipment", 'String'>
+  readonly year: Prisma.FieldRef<"Equipment", 'Int'>
+  readonly principle: Prisma.FieldRef<"Equipment", 'String'>
+  readonly advantages: Prisma.FieldRef<"Equipment", 'String[]'>
+  readonly indications: Prisma.FieldRef<"Equipment", 'String[]'>
+  readonly limitations: Prisma.FieldRef<"Equipment", 'String[]'>
   readonly images: Prisma.FieldRef<"Equipment", 'String[]'>
   readonly manuals: Prisma.FieldRef<"Equipment", 'String[]'>
   readonly categoryId: Prisma.FieldRef<"Equipment", 'String'>
@@ -1878,6 +2894,30 @@ export type Equipment$supplierArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
+ * Equipment.specs
+ */
+export type Equipment$specsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EquipmentSpec
+   */
+  select?: Prisma.EquipmentSpecSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EquipmentSpec
+   */
+  omit?: Prisma.EquipmentSpecOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EquipmentSpecInclude<ExtArgs> | null
+  where?: Prisma.EquipmentSpecWhereInput
+  orderBy?: Prisma.EquipmentSpecOrderByWithRelationInput | Prisma.EquipmentSpecOrderByWithRelationInput[]
+  cursor?: Prisma.EquipmentSpecWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EquipmentSpecScalarFieldEnum | Prisma.EquipmentSpecScalarFieldEnum[]
+}
+
+/**
  * Equipment.procedures
  */
 export type Equipment$proceduresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1899,6 +2939,78 @@ export type Equipment$proceduresArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ProcedureOnEquipmentScalarFieldEnum | Prisma.ProcedureOnEquipmentScalarFieldEnum[]
+}
+
+/**
+ * Equipment.clinics
+ */
+export type Equipment$clinicsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClinicOnEquipment
+   */
+  select?: Prisma.ClinicOnEquipmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClinicOnEquipment
+   */
+  omit?: Prisma.ClinicOnEquipmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicOnEquipmentInclude<ExtArgs> | null
+  where?: Prisma.ClinicOnEquipmentWhereInput
+  orderBy?: Prisma.ClinicOnEquipmentOrderByWithRelationInput | Prisma.ClinicOnEquipmentOrderByWithRelationInput[]
+  cursor?: Prisma.ClinicOnEquipmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClinicOnEquipmentScalarFieldEnum | Prisma.ClinicOnEquipmentScalarFieldEnum[]
+}
+
+/**
+ * Equipment.doctors
+ */
+export type Equipment$doctorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DoctorOnEquipment
+   */
+  select?: Prisma.DoctorOnEquipmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DoctorOnEquipment
+   */
+  omit?: Prisma.DoctorOnEquipmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DoctorOnEquipmentInclude<ExtArgs> | null
+  where?: Prisma.DoctorOnEquipmentWhereInput
+  orderBy?: Prisma.DoctorOnEquipmentOrderByWithRelationInput | Prisma.DoctorOnEquipmentOrderByWithRelationInput[]
+  cursor?: Prisma.DoctorOnEquipmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DoctorOnEquipmentScalarFieldEnum | Prisma.DoctorOnEquipmentScalarFieldEnum[]
+}
+
+/**
+ * Equipment.diseases
+ */
+export type Equipment$diseasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DiseaseOnEquipment
+   */
+  select?: Prisma.DiseaseOnEquipmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DiseaseOnEquipment
+   */
+  omit?: Prisma.DiseaseOnEquipmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DiseaseOnEquipmentInclude<ExtArgs> | null
+  where?: Prisma.DiseaseOnEquipmentWhereInput
+  orderBy?: Prisma.DiseaseOnEquipmentOrderByWithRelationInput | Prisma.DiseaseOnEquipmentOrderByWithRelationInput[]
+  cursor?: Prisma.DiseaseOnEquipmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DiseaseOnEquipmentScalarFieldEnum | Prisma.DiseaseOnEquipmentScalarFieldEnum[]
 }
 
 /**

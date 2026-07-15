@@ -28,6 +28,12 @@ export function DiseaseTemplate({ data }: { data: DiseaseDetail }) {
     href: `/procedures/${r.procedure.slug}`,
     title: r.procedure.title,
   }));
+  // Заболевание → Оборудование (двусторонняя связь с разделом оборудования)
+  const equipment = data.equipment.map((r) => ({
+    href: `/equipment/${r.equipment.slug}`,
+    title: r.equipment.title,
+    meta: r.equipment.manufacturer ?? undefined,
+  }));
 
   return (
     <TemplateShell
@@ -79,6 +85,9 @@ export function DiseaseTemplate({ data }: { data: DiseaseDetail }) {
             items={procedures}
             title="Процедуры"
           />
+          {equipment.length > 0 && (
+            <RelatedBlock empty="" items={equipment} title="Оборудование" />
+          )}
         </div>
       </div>
       <SchemaOrg

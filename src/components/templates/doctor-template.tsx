@@ -441,6 +441,45 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
               </Section>
             )}
 
+            {/* Оборудование: Врач → Оборудование (двусторонняя связь) */}
+            {data.equipment.length > 0 && (
+              <Section annotation="Врач → Оборудование." title="Работает на оборудовании">
+                <div className="space-y-[8px]">
+                  {data.equipment.map((r) => (
+                    <Link
+                      className="group flex items-center gap-[11px] rounded-[11px] border border-[#d8e3e1] bg-background p-[10px_11px] transition-colors hover:border-primary/50 hover:bg-primary/5"
+                      href={`/equipment/${r.equipment.slug}`}
+                      key={r.equipment.slug}
+                    >
+                      {r.equipment.images[0] ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          alt={r.equipment.title}
+                          className="h-[34px] w-[46px] shrink-0 rounded-[6px] border border-[#d8e3e1] object-cover"
+                          decoding="async"
+                          loading="lazy"
+                          src={r.equipment.images[0]}
+                        />
+                      ) : null}
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-[12.5px] font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+                          {r.equipment.title}
+                        </span>
+                        {r.equipment.manufacturer && (
+                          <span className="block text-[12px] text-muted-foreground">
+                            {r.equipment.manufacturer}
+                          </span>
+                        )}
+                      </span>
+                      <span aria-hidden className="text-muted-foreground">
+                        →
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </Section>
+            )}
+
             {/* Связанные страницы энциклопедии */}
             {relatedPages.length > 0 && (
               <Section title="Связанные страницы энциклопедии">
