@@ -1,0 +1,88 @@
+ПРОПРИЕТАРНАЯ ЛИЦЕНЗИЯ
+PROPRIETARY LICENSE
+
+Copyright (c) 2026. Все права защищены. / All rights reserved.
+
+--------------------------------------------------------------------------------
+РУССКАЯ ВЕРСИЯ
+--------------------------------------------------------------------------------
+
+Проект «Офтальмологическая энциклопедия» является проприетарным.
+Все права на него принадлежат правообладателю.
+
+1. Объём защиты
+
+   Лицензия распространяется на проект целиком, включая, помимо прочего:
+
+   - исходный код и архитектуру;
+   - схему базы данных, наполнение и связи между сущностями;
+   - медицинские материалы: описания заболеваний, процедур и оборудования;
+   - научные материалы: диссертации, публикации, извлечённые из них данные;
+   - изображения и фотографии, включая фотографии врачей;
+   - документы (PDF и иные файлы);
+   - архитектурную документацию.
+
+   Персональные данные врачей, изображения и научные материалы принадлежат их
+   авторам и правообладателям и размещены в проекте на отдельных основаниях.
+   Настоящая лицензия не передаёт на них никаких прав.
+
+2. Запрещено без письменного разрешения правообладателя
+
+   - копировать, распространять и публиковать проект или любую его часть;
+   - использовать проект или его части, включая базу данных и медицинские
+     материалы, в собственных или сторонних продуктах;
+   - создавать производные работы;
+   - использовать в коммерческих целях.
+
+3. Отсутствие гарантий
+
+   Проект предоставляется «как есть», без каких-либо гарантий, явных или
+   подразумеваемых. Правообладатель не несёт ответственности за любые
+   претензии, убытки или иную ответственность, возникшие в связи с проектом
+   или его использованием.
+
+4. Медицинская оговорка
+
+   Материалы проекта носят справочный характер и не являются медицинской
+   консультацией, диагнозом или назначением лечения.
+
+--------------------------------------------------------------------------------
+ENGLISH VERSION
+--------------------------------------------------------------------------------
+
+The "Ophthalmology Encyclopedia" project is proprietary. All rights are reserved
+by the copyright holder.
+
+1. Scope
+
+   This license covers the project as a whole, including but not limited to:
+   source code and architecture; the database schema, its contents and the
+   relations between entities; medical materials (descriptions of diseases,
+   procedures and equipment); scientific materials (dissertations, publications
+   and data extracted from them); images and photographs, including photographs
+   of physicians; documents (PDF and other files); and the architectural
+   documentation.
+
+   Personal data of physicians, images and scientific materials belong to their
+   respective authors and rights holders and are included in the project on
+   separate grounds. This license grants no rights to them.
+
+2. Prohibited without prior written permission of the copyright holder
+
+   - copying, distributing or publishing the project or any part of it;
+   - using the project or its parts, including the database and medical
+     materials, in your own or third-party products;
+   - creating derivative works;
+   - any commercial use.
+
+3. No warranty
+
+   The project is provided "as is", without warranty of any kind, express or
+   implied. In no event shall the copyright holder be liable for any claim,
+   damages or other liability arising from or in connection with the project or
+   its use.
+
+4. Medical disclaimer
+
+   The materials are provided for reference only and do not constitute medical
+   advice, diagnosis or a prescription of treatment.

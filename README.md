@@ -178,21 +178,59 @@ sitemap, индексируемые заголовки, двусторонняя
 
 ## Быстрый старт
 
+### Требования
+
+| | Версия | Примечание |
+|---|---|---|
+| **Node.js** | 24 LTS | Проверено на 24.14 (разработка) и 24.15 (прод). Формальный минимум Next.js 16 — 20.9, но на нём проект не тестировался |
+| **npm** | 10+ | Поставляется с Node 24 |
+| **PostgreSQL** | 16+ | Локально, в Docker или удалённо |
+
+### PostgreSQL за одну команду
+
+Если своего PostgreSQL нет — поднимите в Docker (`docker-compose` в проекте
+намеренно нет, одного контейнера достаточно):
+
 ```bash
-# 1. Зависимости
+docker run -d --name oe-postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=ophthalmology_encyclopedia \
+  -p 5432:5432 \
+  --restart unless-stopped \
+  postgres:16
+```
+
+Значения совпадают с `DATABASE_URL` по умолчанию из `.env.example` — менять ничего
+не потребуется.
+
+### Первый запуск
+
+```bash
+# 1. Клонировать
+git clone <repository-url>
+cd ophthalmology-encyclopedia1
+
+# 2. Зависимости
 npm install
 
-# 2. Окружение
+# 3. Окружение
 cp .env.example .env
-# указать DATABASE_URL (PostgreSQL)
+# Проверить DATABASE_URL. Для входа в /admin — задать SESSION_SECRET
+# (не нужен, чтобы просто посмотреть сайт): openssl rand -hex 32
 
-# 3. База данных
-npx prisma generate
-npx prisma db push
+# 4. База данных
+npx prisma generate    # клиент Prisma
+npx prisma db push     # схема → пустая БД
 npm run db:seed        # идемпотентно: повторный прогон не создаёт дублей
 
-# 4. Запуск
+# 5. Запуск
 npm run dev            # http://localhost:3000
+```
+
+Админ-панель (`/admin`) — опционально, после `SESSION_SECRET`:
+
+```bash
+ADMIN_EMAIL=you@example.com ADMIN_PASSWORD=<пароль> npm run create-owner
 ```
 
 ### Команды
@@ -245,4 +283,10 @@ Graph Knowledge Model.
 
 ## Лицензия
 
-Проприетарный проект. Все права защищены.
+Проприетарный проект. Все права защищены. См. [`LICENSE`](./LICENSE).
+
+Копирование, распространение и использование проекта или его частей — включая базу
+данных, медицинские и научные материалы, изображения и документы — без письменного
+разрешения правообладателя запрещено.
+
+Материалы носят справочный характер и не являются медицинской консультацией.

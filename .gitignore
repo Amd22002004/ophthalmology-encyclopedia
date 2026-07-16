@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ...кроме шаблона: он нужен для первого запуска (см. Quick Start в README).
+# Реальных значений в нём нет — только имена переменных и примеры.
+!.env.example
 
 # vercel
 .vercel
