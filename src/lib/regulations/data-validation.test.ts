@@ -120,6 +120,35 @@ test("хранит точные официальные источники цел
   assert.ok(article791.checks.some((check) => check.key === "formal-noc-scope"));
 });
 
+test("не приписывает текущую формулировку статьи 15 всему периоду с 1995 года", () => {
+  const law181 = REGULATORY_CORPUS.find((item) => item.slug === "federal-law-181-fz");
+  assert.ok(law181);
+
+  const edition = law181.editions.find((item) => item.key === "consolidated-2026-08-13");
+  assert.ok(edition);
+  const article15 = edition.provisions.find((item) => item.key === "article-15-accessibility");
+  assert.ok(article15);
+
+  assert.equal(edition.effectiveFrom, "2024-01-01");
+  assert.equal(edition.effectiveTo, "2026-08-31");
+  assert.equal(article15.effectiveFrom, edition.effectiveFrom);
+  assert.equal(article15.effectiveTo, edition.effectiveTo);
+  assert.equal(edition.historicalUseAllowed, false);
+  assert.match(edition.transitionNote ?? "", /архивн.*редакц/i);
+
+  const futureEdition = law181.editions.find((item) => item.key === "future-2026-09-01");
+  assert.ok(futureEdition);
+  assert.equal(futureEdition.effectiveFrom, "2026-09-01");
+  assert.equal(futureEdition.legalStatus, "FUTURE");
+  assert.ok(
+    law181.sources.some(
+      (source) =>
+        source.editionKey === futureEdition.key &&
+        source.url === "https://publication.pravo.gov.ru/document/0001202512290040",
+    ),
+  );
+});
+
 test("633н разделяет оснащение по каждому применимому приложению", () => {
   const expectedAppendices = new Map([
     ["3", 67],
