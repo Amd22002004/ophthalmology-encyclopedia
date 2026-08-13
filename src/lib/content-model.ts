@@ -228,6 +228,8 @@ export const sidebarSections = [
       { href: "/clinics/oms", label: "Клиники по ОМС", icon: ShieldCheck },
       { href: "/clinics/contract", label: "Договорные клиники", icon: FileCheck },
       { href: "/regulations", label: "Законодательство", icon: FileText },
+      { href: "/independent-control", label: "Независимая оценка", icon: ClipboardList },
+      { href: "/investigations", label: "Расследования", icon: ShieldCheck },
     ],
   },
   {
