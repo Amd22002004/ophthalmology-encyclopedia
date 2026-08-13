@@ -84,6 +84,7 @@ export function validateIndependentControlCorpus(
 
     methodology.sources.forEach((source, index) => {
       const sourceId = `source:${methodologyId}:${index}`;
+      if (!hasText(source.key)) errors.push(`${sourceId}:KEY_REQUIRED`);
       if (!hasText(source.title)) errors.push(`${sourceId}:TITLE_REQUIRED`);
       if (!hasText(source.url) && !hasText(source.internalFilename)) {
         errors.push(`${sourceId}:REFERENCE_REQUIRED`);
@@ -112,6 +113,9 @@ export function validateIndependentControlCorpus(
       for (const [field, error] of requiredCriterionFields) {
         if (!hasText(criterion[field])) errors.push(`${criterionId}:${error}`);
       }
+      if (typeof criterion.isSourceCriterion !== "boolean") {
+        errors.push(`${criterionId}:SOURCE_CRITERION_FLAG_REQUIRED`);
+      }
       if (criterion.allowedStatuses.length === 0) errors.push(`${criterionId}:ALLOWED_STATUSES_REQUIRED`);
       if (criterion.basisKind === "DIRECT_NORM" && criterion.normLinks.length === 0) {
         errors.push(`${criterionId}:DIRECT_NORM_LINK_REQUIRED`);
@@ -119,6 +123,7 @@ export function validateIndependentControlCorpus(
       criterion.normLinks.forEach((link, index) => {
         const linkId = `norm-link:${methodologyId}:${criterion.stableKey || "missing-key"}:${index}`;
         if (!hasText(link.regulationKey)) errors.push(`${linkId}:REGULATION_KEY_REQUIRED`);
+        if (!hasText(link.editionKey)) errors.push(`${linkId}:EDITION_KEY_REQUIRED`);
         if (!hasText(link.provisionKey)) errors.push(`${linkId}:PROVISION_KEY_REQUIRED`);
         if (!hasText(link.checkKey)) errors.push(`${linkId}:CHECK_KEY_REQUIRED`);
         if (!(INDEPENDENT_CONTROL_NORM_LINK_ROLES as readonly string[]).includes(link.role)) {

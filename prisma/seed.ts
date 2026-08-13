@@ -1,5 +1,17 @@
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { REGULATION_TOPICS, REGULATIONS } from "./data/regulations/core";
+import { EXTENDED_REGULATIONS } from "./data/regulations/extended";
+import { INDEPENDENT_CONTROL_REGULATIONS } from "./data/regulations/independent-control";
+import { ORDER_633N } from "./data/regulations/order-633n";
+import { validateRegulationCorpus } from "./data/regulations/validate";
+import { INDEPENDENT_CONTROL_OBSERVATION_FORM } from "./data/independent-control/observation-form";
+import { validateIndependentControlCorpus } from "./data/independent-control/validate";
+import {
+  buildPrivateGlazcentrSourceAssessments,
+  GLAZCENTR_FORMAL_NOC_SCOPE_ASSESSMENT,
+  GLAZCENTR_INDEPENDENT_CONTROL,
+} from "./data/investigations/glazcentr-independent-control";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
@@ -9,6 +21,31 @@ if (!connectionString) {
 const adapter = new PrismaPg({ connectionString });
 const db = new PrismaClient({ adapter });
 
+
+const REGULATORY_CORPUS = [
+  ...REGULATIONS,
+  ...EXTENDED_REGULATIONS,
+  ...INDEPENDENT_CONTROL_REGULATIONS,
+  ORDER_633N,
+];
+
+function validateSeedCorpora() {
+  const regulationValidation = validateRegulationCorpus(REGULATORY_CORPUS, REGULATION_TOPICS);
+  const independentControlValidation = validateIndependentControlCorpus([
+    INDEPENDENT_CONTROL_OBSERVATION_FORM,
+  ]);
+  const errors = [
+    ...regulationValidation.errors.map((error) => `regulations: ${error}`),
+    ...independentControlValidation.errors.map((error) => `independent-control: ${error}`),
+  ];
+  if (errors.length > 0) {
+    throw new Error(["Seed corpora не прошли предзаписную валидацию:", ...errors.map((error) => `- ${error}`)].join("\n"));
+  }
+}
+
+function regulatoryDate(value: string | undefined) {
+  return value ? new Date(`${value}T00:00:00.000Z`) : null;
+}
 function slug(text: string) {
   return text
     .toLowerCase()
@@ -56,6 +93,7 @@ type ClinicSeed = {
   slug: string;
   title: string;
   legalName?: string;
+  description?: string;
   city: string;
   region: string;
   clinicType: string;   // centre | cabinet | mntk | clinic | oms
@@ -316,6 +354,22 @@ const CLINICS: ClinicSeed[] = [
     inn: "8901029810",
     license: "Л041-01145-83/00332888 от 12.07.2019",
   },
+  {
+    slug: "glaztsentr-tyumen",
+    title: "ООО «Глазцентр-Тюмень»",
+    legalName: "ООО «Глазцентр-Тюмень»",
+    description:
+      "Карточка организации связана с опубликованным расследованием Ассоциации о проверке использования офтальмологического оборудования.",
+    city: "Тюмень",
+    region: "Тюменская область",
+    clinicType: "clinic",
+    status: "active",
+    omsEnabled: false,
+    phones: [],
+    address: "Тюмень, Червишевский тракт, 2",
+    inn: "7203541400",
+    license: "Л041-01107-72/00648949 от 25.04.2023",
+  },
 ];
 
 // ─── Справочные данные (без изменений) ───────────────────────────────────────
@@ -461,6 +515,83 @@ type EquipmentSeed = {
 };
 
 const EQUIPMENT: EquipmentSeed[] = [
+  {
+    slug: "alcon-allegretto-wave-eye-q",
+    title: "Alcon ALLEGRETTO Wave Eye-Q",
+    categoryTitle: "Лазерные системы",
+    manufacturer: "Alcon",
+    country: "Германия",
+    year: 2003,
+    summary:
+      "Эксимерная лазерная система WaveLight / Alcon второго поколения для рефракционной хирургии: LASIK, волновой фронт LASIK, топографически-управляемый LASIK и ФРК в пределах показаний, утверждённых регулятором.",
+    description:
+      "ALLEGRETTO Wave Eye-Q — стационарная эксимерная лазерная система WaveLight, входящая в портфель Alcon. В материалах FDA она описана как второе поколение стационарных сканирующих эксимерных систем WaveLight: компактный ArF-лазер, гальванометрический сканер и встроенный трекер положения глаза работают как единый контур нанесения абляции. В информационном буклете FDA производителем системы указан WaveLight GmbH, Германия.\n\nДля топографически-управляемого LASIK система используется совместно с топографом ALLEGRO Topolyzer и программным модулем T-CAT. План лечения строится по манифестной рефракции, топографическим данным и настройкам врача; программное обеспечение проверяет целостность файла до окончательного подтверждения лечения. Указанные показания относятся к маркировке FDA и не заменяют оценку конкретного пациента врачом или локальные регистрационные требования.",
+    principle:
+      "Аргон-фторидный (ArF) эксимерный лазер с длиной волны 193 нм формирует ультрафиолетовые импульсы и через гальванометрический сканер позиционирует сканирующее пятно на роговице. Частота импульсов Eye-Q составляет 400 Гц; в документации FDA приведена длительность импульса 10 нс ± 5 нс. Встроенный eye tracker определяет положение глаза перед каждым импульсом, обеспечивает автоматическую центрацию абляции и при чрезмерном смещении глаза останавливает лечение. В пациентском буклете FDA размер одного импульса описан как менее 1 мм.",
+    advantages: [
+      "Сканирующая система: гальванометрический сканер позиционирует лазерное пятно, а встроенный eye tracker корректирует его направление по положению глаза.",
+      "Автоматическая центрация и контроль движения глаза: по маркировке FDA трекер выравнивает импульс с роговицей перед его подачей и останавливает лечение при чрезмерном смещении глаза.",
+      "Топографически-управляемый контур T-CAT: совместимая связка Eye-Q, ALLEGRO Topolyzer и T-CAT использует топографию роговицы и манифестную рефракцию для построения плана LASIK.",
+      "Волновой фронт LASIK: FDA расширила показания Eye-Q на wavefront-guided LASIK отдельным дополнением к PMA.",
+      "Планирование вне операционной зоны: WaveNet Planning Software позволяет готовить планы лечения на совместимом ноутбуке до передачи их в систему.",
+    ],
+    indications: [
+      "LASIK: базовая маркировка FDA — коррекция миопии до −12,0 D и астигматизма до 6,0 D у пациентов от 18 лет со стабильной манифестной рефракцией.",
+      "Wavefront-guided LASIK: до −7,0 D сферического эквивалента миопии или миопии с астигматизмом; до −7,0 D сферического и до −3,0 D астигматического компонента (FDA PMA P020050/S004).",
+      "Топографически-управляемый LASIK (T-CAT): Eye-Q + ALLEGRO Topolyzer + T-CAT — до −9,0 D сферического эквивалента миопии; до −8,0 D сферического и до −3,0 D астигматического компонента (FDA PMA P020050/S012).",
+      "Фоторефракционная кератэктомия (ФРК / PRK): до −6,0 D сферического эквивалента миопии или миопии с астигматизмом; до −6,0 D сферического и до −3,0 D астигматического компонента (FDA PMA P020050/S023).",
+      "Точные показания, допустимые диапазоны и доступность программных модулей зависят от утверждённой маркировки в конкретной юрисдикции.",
+    ],
+    limitations: [
+      "Противопоказания в маркировке FDA для T-CAT LASIK включают беременность и кормление грудью, заболевания соединительной ткани / аутоиммунные или иммунодефицитные состояния, кератоконус или подозрение на него, выраженный синдром сухого глаза, повторяющуюся эрозию роговицы, выраженную глаукому и неконтролируемый сахарный диабет.",
+      "Для T-CAT LASIK противопоказанием является расчётная толщина остаточного стромального ложа менее 250 мкм; клиническая пригодность пациента определяется до вмешательства врачом.",
+      "Противопоказания и риски различаются для LASIK и ФРК. Полный перечень предупреждений и осложнений приведён в прикреплённых документах FDA; эта карточка не является инструкцией по применению.",
+      "Текущий статус производства модели и регистрационное удостоверение в России не указаны: в карточку не добавляется вывод без официального подтверждающего документа.",
+    ],
+    images: [
+      "/equipment/alcon-allegretto-wave-eye-q/alcon-allegretto-wave-eye-q-system.jpg",
+      "/equipment/alcon-allegretto-wave-eye-q/alcon-topography-workflow-interface.png",
+      "/equipment/alcon-allegretto-wave-eye-q/alcon-treatment-planning-interface.jpeg",
+    ],
+    manuals: [
+      "/equipment/alcon-allegretto-wave-eye-q/fda-summary-safety-effectiveness-lasik.pdf",
+      "/equipment/alcon-allegretto-wave-eye-q/fda-summary-safety-effectiveness-wavefront-lasik.pdf",
+      "/equipment/alcon-allegretto-wave-eye-q/fda-summary-safety-effectiveness-t-cat.pdf",
+      "/equipment/alcon-allegretto-wave-eye-q/fda-procedure-manual-topography-guided-lasik.pdf",
+      "/equipment/alcon-allegretto-wave-eye-q/fda-patient-information-topography-guided-lasik.pdf",
+      "/equipment/alcon-allegretto-wave-eye-q/fda-summary-safety-effectiveness-prk.pdf",
+    ],
+    specs: [
+      { group: "Идентификация линейки", label: "Серия", value: "WaveLight excimer systems" },
+      { group: "Идентификация линейки", label: "Позиция в линии", value: "2" },
+      { group: "Общие", label: "Тип системы", value: "Стационарная сканирующая эксимерная лазерная система для рефракционной хирургии" },
+      { group: "Общие", label: "Поколение платформы WaveLight", value: "Второе; последующее поколение — WaveLight EX500 (FDA SSED P020050/S023)" },
+      { group: "Общие", label: "Производитель в информационном буклете FDA", value: "WaveLight GmbH, Германия; портфель Alcon" },
+      { group: "Оптические данные", label: "Источник лазерного излучения", value: "Аргон-фторидный (ArF) эксимерный лазер" },
+      { group: "Оптические данные", label: "Класс лазера", value: "Класс 4" },
+      { group: "Оптические данные", label: "Длина волны", value: "193 нм" },
+      { group: "Оптические данные", label: "Частота импульсов", value: "400 Гц" },
+      { group: "Оптические данные", label: "Длительность импульса", value: "10 нс ± 5 нс" },
+      { group: "Оптические данные", label: "Размер лазерного пятна", value: "Менее 1 мм (информационный буклет FDA)" },
+      { group: "Система наведения", label: "Позиционирование пятна", value: "Гальванометрический сканер" },
+      { group: "Система наведения", label: "Eye tracking", value: "Встроенный; определение положения глаза, автоматическая центрация и контроль направления луча" },
+      { group: "Планирование лечения", label: "Топографически-управляемое лечение", value: "ALLEGRO Topolyzer + T-CAT (при соответствующей лицензии и совместимости устройств)" },
+      { group: "Планирование лечения", label: "Программное обеспечение", value: "WaveNet Planning Software; перенос плана на ноутбук системы и проверка целостности файла" },
+      { group: "Комплектация", label: "Основные компоненты", value: "Лазерный блок, гальванометрический сканер, eye tracker, микроскоп, компьютерные панели и мониторы, подвижная пациентская кушетка" },
+      { group: "Комплектация", label: "Управление", value: "Ножная педаль показана на официальном изображении системы в информационном буклете FDA" },
+      { group: "Регуляторный статус", label: "FDA: исходное показание LASIK", value: "PMA P020050; исходное одобрение 7 октября 2003 года" },
+      { group: "Регуляторный статус", label: "FDA: Wavefront-guided LASIK", value: "PMA P020050/S004" },
+      { group: "Регуляторный статус", label: "FDA: T-CAT LASIK", value: "PMA P020050/S012; решение от 27 сентября 2013 года" },
+      { group: "Регуляторный статус", label: "FDA: ФРК (PRK)", value: "PMA P020050/S023" },
+      { group: "Регуляторный статус", label: "CE / Росздравнадзор", value: "Подтверждающие документы для конкретной модели в публичную карточку не добавлены: статус не утверждается без первичного документа" },
+    ],
+    // Связь модели с клиникой требует отдельного доказательства. Расследование
+    // связывает конкретный экземпляр через InvestigationEquipmentInstance;
+    // ClinicOnEquipment этот seed намеренно не создаёт и не изменяет.
+    clinicIds: [],
+    procedureSlugs: ["lazernaya-korrektsiya-zreniya", "lasik"],
+    diseaseSlugs: ["miopiya", "astigmatizm"],
+  },
   {
     slug: "zeiss-visumax-800",
     title: "ZEISS VisuMax 800",
@@ -885,6 +1016,7 @@ const DISEASES: DiseaseSeed[] = [
 type ProcedureSeed = { slug: string; title: string; categoryTitle: string };
 
 const PROCEDURES: ProcedureSeed[] = [
+  { slug: "lazernaya-korrektsiya-zreniya", title: "Лазерная коррекция зрения", categoryTitle: "Рефракционные операции" },
   { slug: "lasik", title: "LASIK", categoryTitle: "Рефракционные операции" },
   { slug: "femto-lasik", title: "FEMTO-LASIK", categoryTitle: "Рефракционные операции" },
   { slug: "smile", title: "SMILE", categoryTitle: "Рефракционные операции" },
@@ -907,7 +1039,1278 @@ const PROCEDURES: ProcedureSeed[] = [
   { slug: "diagnosticheskiy-priem", title: "Диагностический прием", categoryTitle: "Диагностические процедуры" },
 ];
 
+// ─── Первое расследование Ассоциации ─────────────────────────────────────────
+// Все формулировки ниже основаны исключительно на файлах из
+// docs/httpstumenglazcentre/. Полные тексты обращений сохранены как доступные
+// расшифровки, потому что браузеры не отображают DOCX встроенно.
+
+async function seedRegulatoryCorpus() {
+  const validation = validateRegulationCorpus(REGULATORY_CORPUS, REGULATION_TOPICS);
+  if (!validation.valid) {
+    throw new Error(
+      ["Нормативный корпус не прошёл предзаписную валидацию:", ...validation.errors.map((error) => `- ${error}`)].join(
+        "\n",
+      ),
+    );
+  }
+
+  console.log("Seeding neutral regulatory corpus...");
+
+  const topicIds = new Map<string, string>();
+  for (const topic of REGULATION_TOPICS) {
+    const seededTopic = await db.regulationTopic.upsert({
+      where: { slug: topic.slug },
+      create: topic,
+      update: {
+        title: topic.title,
+        description: topic.description,
+        sortOrder: topic.sortOrder,
+        isPublished: topic.isPublished,
+      },
+    });
+    topicIds.set(topic.slug, seededTopic.id);
+  }
+
+  const regulationIds = new Map<string, string>();
+  const editionIds = new Map<string, string>();
+
+  for (const regulation of REGULATORY_CORPUS) {
+    const regulationData = {
+      title: regulation.title,
+      summary: regulation.summary,
+      sourceUrl: regulation.officialPublicationUrl,
+      documentType: regulation.documentType,
+      number: regulation.number,
+      adoptedAt: regulatoryDate(regulation.adoptedAt),
+      issuingAuthority: regulation.issuingAuthority,
+      jurisdiction: regulation.jurisdiction,
+      officialPublicationUrl: regulation.officialPublicationUrl,
+      legalStatus: regulation.legalStatus,
+      effectiveFrom: regulatoryDate(regulation.effectiveFrom),
+      effectiveTo: regulatoryDate(regulation.effectiveTo),
+      isPublished: regulation.isPublished,
+      publishedAt: regulatoryDate(regulation.publishedAt),
+      seoTitle: regulation.seoTitle,
+      seoDescription: regulation.seoDescription,
+    };
+    const seededRegulation = await db.regulation.upsert({
+      where: { slug: regulation.slug },
+      create: { slug: regulation.slug, content: regulation.content ?? null, ...regulationData },
+      update: {
+        ...regulationData,
+        ...(regulation.content === undefined ? {} : { content: regulation.content }),
+      },
+    });
+    regulationIds.set(regulation.slug, seededRegulation.id);
+
+    for (const topicSlug of regulation.topicSlugs) {
+      const topicId = topicIds.get(topicSlug);
+      if (!topicId) throw new Error(`Не найдена тема нормы: ${topicSlug}`);
+      await db.regulationOnTopic.upsert({
+        where: { regulationId_topicId: { regulationId: seededRegulation.id, topicId } },
+        create: { regulationId: seededRegulation.id, topicId },
+        update: {},
+      });
+    }
+
+    for (const edition of regulation.editions) {
+      const editionData = {
+        title: edition.title,
+        effectiveFrom: regulatoryDate(edition.effectiveFrom)!,
+        effectiveTo: regulatoryDate(edition.effectiveTo),
+        legalStatus: edition.legalStatus,
+        transitionNote: edition.transitionNote ?? null,
+        officialTextUrl: edition.officialTextUrl,
+        verifiedAt: regulatoryDate(edition.verifiedAt),
+        historicalUseAllowed: edition.historicalUseAllowed,
+        verificationNote: edition.verificationNote,
+        isPublished: edition.isPublished,
+        publishedAt: regulatoryDate(edition.publishedAt),
+      };
+      const seededEdition = await db.regulationEdition.upsert({
+        where: { regulationId_key: { regulationId: seededRegulation.id, key: edition.key } },
+        create: { regulationId: seededRegulation.id, key: edition.key, ...editionData },
+        update: editionData,
+      });
+      editionIds.set(`${regulation.slug}:${edition.key}`, seededEdition.id);
+
+      for (const provision of edition.provisions) {
+        const topicId = topicIds.get(provision.topicSlug);
+        if (!topicId) throw new Error(`Не найдена тема положения: ${provision.topicSlug}`);
+        const provisionData = {
+          topicId,
+          locator: provision.locator,
+          title: provision.title,
+          requirement: provision.requirement,
+          applicability: provision.applicability,
+          effectiveFrom: regulatoryDate(provision.effectiveFrom),
+          effectiveTo: regulatoryDate(provision.effectiveTo),
+          isPublished: provision.isPublished,
+          publishedAt: regulatoryDate(provision.publishedAt),
+          sortOrder: provision.sortOrder,
+        };
+        const seededProvision = await db.regulationProvision.upsert({
+          where: { editionId_key: { editionId: seededEdition.id, key: provision.key } },
+          create: { editionId: seededEdition.id, key: provision.key, ...provisionData },
+          update: provisionData,
+        });
+
+        for (const check of provision.checks) {
+          const checkData = {
+            question: check.question,
+            factToEstablish: check.factToEstablish,
+            primaryEvidenceType: check.primaryEvidenceType,
+            officialSearchUrl: check.officialSearchUrl ?? null,
+            officialSearchLabel: check.officialSearchLabel ?? null,
+            nonCompliancePattern: check.nonCompliancePattern ?? null,
+            evidenceThreshold: check.evidenceThreshold,
+            applicabilityNote: check.applicabilityNote ?? null,
+            isPublished: check.isPublished,
+            publishedAt: regulatoryDate(check.publishedAt),
+            sortOrder: check.sortOrder,
+          };
+          await db.regulatoryCheck.upsert({
+            where: { provisionId_key: { provisionId: seededProvision.id, key: check.key } },
+            create: { provisionId: seededProvision.id, key: check.key, ...checkData },
+            update: checkData,
+          });
+        }
+
+        for (const requirement of provision.equipmentRequirements ?? []) {
+          const requirementData = {
+            appendix: requirement.appendix,
+            subsection: requirement.subsection ?? null,
+            tableTitle: requirement.tableTitle ?? null,
+            position: requirement.position,
+            deviceTypeCode: requirement.deviceTypeCode ?? null,
+            regulatoryName: requirement.regulatoryName,
+            displayName: requirement.displayName ?? null,
+            quantity: requirement.quantity,
+            applicabilityCondition: requirement.applicabilityCondition ?? null,
+            isPublished: requirement.isPublished,
+            publishedAt: regulatoryDate(requirement.publishedAt),
+            sortOrder: requirement.sortOrder,
+          };
+          await db.regulationEquipmentRequirement.upsert({
+            where: {
+              provisionId_stableKey: {
+                provisionId: seededProvision.id,
+                stableKey: requirement.stableKey,
+              },
+            },
+            create: { provisionId: seededProvision.id, stableKey: requirement.stableKey, ...requirementData },
+            update: requirementData,
+          });
+        }
+      }
+    }
+
+    for (const source of regulation.sources) {
+      const editionId = source.editionKey
+        ? editionIds.get(`${regulation.slug}:${source.editionKey}`)
+        : undefined;
+      if (source.editionKey && !editionId) {
+        throw new Error(`Не найдена редакция источника: ${regulation.slug}:${source.editionKey}`);
+      }
+      const sourceData = {
+        editionId: editionId ?? null,
+        kind: source.kind,
+        title: source.title,
+        isOfficial: source.isOfficial,
+        isPublished: source.isPublished ?? true,
+        publishedAt:
+          source.isPublished === false
+            ? null
+            : regulatoryDate(source.publishedAt ?? "2026-08-12"),
+        sourceDate: regulatoryDate(source.sourceDate),
+        sortOrder: source.sortOrder,
+      };
+      await db.regulationSource.upsert({
+        where: { regulationId_url: { regulationId: seededRegulation.id, url: source.url } },
+        create: { regulationId: seededRegulation.id, url: source.url, ...sourceData },
+        update: sourceData,
+      });
+    }
+  }
+
+  // Связи создаются вторым проходом, когда оба акта уже есть в БД.
+  for (const regulation of REGULATORY_CORPUS) {
+    const sourceRegulationId = regulationIds.get(regulation.slug)!;
+    for (const relation of regulation.relations ?? []) {
+      const targetRegulationId = regulationIds.get(relation.targetSlug);
+      if (!targetRegulationId) throw new Error(`Не найден целевой акт: ${relation.targetSlug}`);
+      const legalEffectFrom = regulatoryDate(relation.legalEffectFrom);
+      const existing = await db.regulationRelation.findFirst({
+        where: { sourceRegulationId, targetRegulationId, type: relation.type, legalEffectFrom },
+        select: { id: true },
+      });
+      const relationData = {
+        note: relation.note ?? null,
+        officialSourceUrl: relation.officialSourceUrl ?? null,
+        isPublished: relation.isPublished,
+      };
+      if (existing) {
+        await db.regulationRelation.update({ where: { id: existing.id }, data: relationData });
+      } else {
+        await db.regulationRelation.create({
+          data: { sourceRegulationId, targetRegulationId, type: relation.type, legalEffectFrom, ...relationData },
+        });
+      }
+    }
+  }
+
+  console.log(`✓ Regulatory corpus: ${REGULATORY_CORPUS.length} acts, ${REGULATION_TOPICS.length} topics`);
+}
+
+const GLAZCENTR_INVESTIGATION = {
+  slug: "proverka-oborudovaniya-glaztsentr-tyumen",
+  title: "Проверка использования офтальмологического оборудования в ООО «Глазцентр-Тюмень»",
+  summary:
+    "Опубликованы материалы проверки сведений об использовании в ООО «Глазцентр-Тюмень» конкретного экземпляра эксимерной лазерной системы ALLEGRETTO Wave Eye-Q, зав. № 1010-2571, 2010 года выпуска.",
+  status: "Опубликовано; ожидаются результаты проверок компетентных органов",
+  statusNote:
+    "Опубликованные материалы содержат обращения Ассоциации и ответы производителя. Они не являются судебным решением или заключением государственного органа.",
+  publishedAt: new Date("2026-08-05T00:00:00.000Z"),
+  seoTitle: "Расследование Ассоциации: проверка оборудования ООО «Глазцентр-Тюмень»",
+  seoDescription:
+    "Документы, хронология и статус проверки сведений об использовании в ООО «Глазцентр-Тюмень» конкретного экземпляра ALLEGRETTO Wave Eye-Q, зав. № 1010-2571.",
+  sections: [
+    {
+      key: "summary",
+      title: "Краткое описание",
+      content:
+        "Предмет публикации — проверка сведений об использовании в ООО «Глазцентр-Тюмень» эксимерной лазерной системы ALLEGRETTO модели Wave Eye-Q, зав. № 1010-2571, 2010 года выпуска. В материалах Ассоциации указаны ответы ООО «Алкон Фармацевтика» и проекты обращений в Департамент здравоохранения Тюменской области и территориальный орган Росздравнадзора.\n\nСтраница отделяет содержание первичных документов от правовой позиции заявителя. Она не устанавливает нарушение, не заменяет техническую экспертизу и не содержит выводов, которых нет в переданном комплекте.",
+    },
+    {
+      key: "object-under-review",
+      title: "Объект проверки",
+      content:
+        "Модель: ALLEGRETTO Wave Eye-Q.\nЗаводской номер: 1010-2571.\nГод выпуска: 2010.\n\nОснование идентификации: эти реквизиты указаны в ответе ООО «Алкон Фармацевтика» от 07.04.2026 № 22-04-2026/L на запрос УМВД России по г. Тюмени. В обращении Ассоциации в Росздравнадзор запрошена дополнительная проверка с сопоставлением серийного номера в программном обеспечении с документами при участии технических специалистов.\n\nЭтот блок описывает конкретный экземпляр, указанный в переданных материалах. Карточка модели оборудования содержит энциклопедические сведения о модели в целом и не является выводом о статусе иных экземпляров.",
+    },
+    {
+      key: "official-documents",
+      title: "Официальные документы",
+      content:
+        "В комплекте есть два обращения Ассоциации: в Департамент здравоохранения Тюменской области и в территориальный орган Росздравнадзора. В них изложены сведения, на которых основано обращение, и запрошены меры проверки. Обе расшифровки и исходные DOCX открыто показаны в разделе доказательной базы.",
+    },
+    {
+      key: "manufacturer-responses",
+      title: "Ответы производителя",
+      content:
+        "На скане письма ООО «Алкон Фармацевтика» от 07.04.2026 № 22-04-2026/L указано, что это общество не ввозило на территорию Российской Федерации систему офтальмологическую эксимерную лазерную ALLEGRETTO модели Wave Eye-Q, зав. № 1010-2571, 2010 года выпуска.\n\nНа отдельном скане дополнительного сообщения ООО «Алкон Фармацевтика» указано, что до списания эта система находилась в эксплуатации в одной из клиник Румынии и использовалась по прямому назначению. В файле не указаны дата и исходящий номер дополнительного сообщения; поэтому они не добавлены в хронологию как установленные реквизиты.",
+    },
+    {
+      key: "legal-basis",
+      title: "Нормативная база, указанная в обращениях",
+      content:
+        "В проектах обращений Ассоциация ссылается, в частности, на часть 4 статьи 38 и статью 79 Федерального закона № 323-ФЗ, статьи 6, 7 и 10 Федерального закона № 59-ФЗ, а также на статью 20 Федерального закона № 99-ФЗ. Также в материалах упомянут приказ Департамента здравоохранения Тюменской области от 13.03.2024 № 69 и лицензия № Л041-01107-72/00648949 от 25.04.2023.\n\nЭто перечисление воспроизводит нормативные ссылки из предоставленных документов и не является самостоятельным юридическим заключением Ассоциации на этой странице.",
+    },
+    {
+      key: "conclusions",
+      title: "Выводы по опубликованным материалам",
+      content:
+        "Документы позволяют зафиксировать предмет проверки, идентификаторы конкретной системы и позицию, изложенную в письмах ООО «Алкон Фармацевтика». В обращении в Росздравнадзор Ассоциация просит сверить фактический серийный номер в программном обеспечении оборудования с документами с привлечением технических специалистов.\n\nОкончательные выводы о законности обращения медицинского изделия, достоверности сведений для лицензирования и мерах реагирования находятся в компетенции уполномоченных органов и не подменяются публикацией.",
+    },
+    {
+      key: "status",
+      title: "Статус расследования",
+      content:
+        "Статус публикации: материалы Ассоциации опубликованы. В переданном комплекте есть текст новости, в котором сказано о направлении обращений, однако на копиях самих обращений поля даты остаются незаполненными, а подтверждения отправки в папке нет. Поэтому на странице отмечено ожидание результатов проверок, а не завершение рассмотрения.",
+    },
+  ],
+  timeline: [
+    {
+      key: "police-response-reference",
+      date: new Date("2026-03-19T00:00:00.000Z"),
+      dateLabel: "19 марта 2026",
+      title: "Упомянут ответ УМВД России по г. Тюмени",
+      description:
+        "В обращении в Росздравнадзор приведена ссылка на ответ УМВД № 3/266601184932. Сам ответ в переданном комплекте отсутствует; эта дата отмечена как ссылка внутри обращения, а не как самостоятельно опубликованный первичный документ.",
+    },
+    {
+      key: "manufacturer-request",
+      date: new Date("2026-03-26T00:00:00.000Z"),
+      dateLabel: "26 марта 2026",
+      title: "Запрос УМВД в ООО «Алкон Фармацевтика»",
+      description:
+        "В скане ответа производителя указано, что запрос № 91/3/2-956 датирован 26.03.2026.",
+    },
+    {
+      key: "manufacturer-received-request",
+      date: new Date("2026-03-31T00:00:00.000Z"),
+      dateLabel: "31 марта 2026",
+      title: "Получение запроса производителем",
+      description:
+        "В том же скане указано, что ООО «Алкон Фармацевтика» получило запрос по электронной почте 31.03.2026.",
+    },
+    {
+      key: "manufacturer-response",
+      date: new Date("2026-04-07T00:00:00.000Z"),
+      dateLabel: "7 апреля 2026",
+      title: "Ответ ООО «Алкон Фармацевтика» № 22-04-2026/L",
+      description:
+        "В документе указано, что ООО «Алкон Фармацевтика» не ввозило на территорию Российской Федерации названную систему с зав. № 1010-2571.",
+    },
+    {
+      key: "manufacturer-supplement",
+      date: null,
+      dateLabel: "Дата не указана в файле",
+      title: "Дополнительное сообщение ООО «Алкон Фармацевтика»",
+      description:
+        "На скане сообщается, что до списания система находилась в эксплуатации в одной из клиник Румынии. Дата и номер на изображении отсутствуют.",
+    },
+    {
+      key: "association-appeals",
+      date: null,
+      dateLabel: "2026 год; дата отправки не подтверждена комплектом",
+      title: "Подготовлены обращения Ассоциации",
+      description:
+        "В папке есть два обращения Ассоциации с незаполненными датами. Проект новости сообщает об их направлении, но подтверждения отправки не приложены.",
+    },
+  ],
+  documents: [
+    {
+      slug: "alcon-response-2026-04-07",
+      kind: "manufacturer-response",
+      title: "Ответ ООО «Алкон Фармацевтика» от 07.04.2026 № 22-04-2026/L",
+      summary:
+        "Скан официального ответа: ООО «Алкон Фармацевтика» сообщает, что не ввозило указанную систему на территорию Российской Федерации.",
+      source: "ООО «Алкон Фармацевтика»",
+      documentDate: new Date("2026-04-07T00:00:00.000Z"),
+      storageFileName: null,
+      fileUrl: "/investigations/glaztsentr-tyumen/alcon-response-2026-04-07.jpg",
+      previewImageUrl: "/investigations/glaztsentr-tyumen/alcon-response-2026-04-07.jpg",
+      mimeType: "image/jpeg",
+      isEvidence: true,
+    },
+    {
+      slug: "alcon-supplement",
+      kind: "manufacturer-response",
+      title: "Дополнительное сообщение ООО «Алкон Фармацевтика»",
+      summary:
+        "Скан дополнительного сообщения о том, что до списания система эксплуатировалась в одной из клиник Румынии. Реквизиты даты и номера на файле отсутствуют.",
+      source: "ООО «Алкон Фармацевтика»",
+      storageFileName: null,
+      fileUrl: "/investigations/glaztsentr-tyumen/alcon-supplement.jpg",
+      previewImageUrl: "/investigations/glaztsentr-tyumen/alcon-supplement.jpg",
+      mimeType: "image/jpeg",
+      isEvidence: true,
+    },
+    {
+      slug: "appeal-to-depzdrav",
+      kind: "association-appeal",
+      title: "Обращение Ассоциации в Департамент здравоохранения Тюменской области",
+      summary:
+        "Полная текстовая расшифровка обращения. Поле даты в копии не заполнено.",
+      source: "Ассоциация офтальмологических клиник",
+      storageFileName: null,
+      fileUrl: "/investigations/glaztsentr-tyumen/appeal-to-depzdrav.docx",
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      content: String.raw`«АССОЦИАЦИЯ ОФТАЛЬМОЛОГИЧЕСКИХ КЛИНИК»
+620092, Свердловская область, г.о. город Екатеринбург, ул. Владимира Высоцкого, д. 5
++7 (919) 937-01-01; aok86e@mail.ru
+ИНН 6670530741, КПП 667001001, ОГРН 1256600034976, ОКПО 50986957
+
+Директору Департамента здравоохранения Тюменской области
+Логиновой Н. В.
+625000, г. Тюмень, ул. Герцена, д. 74
+
+Копия: Министру здравоохранения Российской Федерации Мурашко М. А.
+127994, ГСП-4, г. Москва, Рахмановский пер., д. 3
+От Ассоциации офтальмологических клиник
+620092, г. Екатеринбург, ул. Владимира Высоцкого, д. 5
+
+ЗАЯВЛЕНИЕ
+
+В соответствии со статьями 38, 79 Федерального закона от 21.11.2011 № 323-ФЗ «Об основах охраны здоровья граждан в Российской Федерации», а также статьями 6, 7, 10 Федерального закона от 02.05.2006 № 59-ФЗ «О порядке рассмотрения обращений граждан Российской Федерации», Ассоциация офтальмологических клиник сообщает о следующем.
+
+В соответствии с приказом Департамента здравоохранения Тюменской области от 13.03.2024 № 69 «Об организации оказания плановой медицинской помощи пациентам по профилю «офтальмология» ООО «Глазцентр-Тюмень» включено в перечень медицинских организаций, оказывающих консультативно-диагностическую и специализированную медицинскую помощь пациентам с заболеваниями органа зрения.
+
+Указанная организация участвует в реализации Территориальной программы государственных гарантий бесплатного оказания медицинской помощи в Тюменской области на основании согласования с ГАУЗ ТО «Областной офтальмологический диспансер».
+
+В ходе доследственной проверки, проведенной УМВД России по г. Тюмени, установлено, что ООО «Глазцентр-Тюмень» в своей медицинской деятельности использует эксимерный лазер «Alcon ALLEGRETTO Eye-Q», заводской номер 1010-2571, 2010 года выпуска.
+
+Официальный дистрибьютор — ООО «Алкон Фармацевтика» — в письме от 07.04.2026 № 22-04-2026/L, направленном в УМВД России по г. Тюмени, сообщил, что указанное оборудование не ввозилось на территорию Российской Федерации, а до списания находилось в эксплуатации в одной из клиник Румынии.
+
+Таким образом, данное оборудование:
+
+— не проходило обязательную государственную регистрацию в Росздравнадзоре;
+— не имеет регистрационного удостоверения, действующего на территории РФ;
+— не проходило технические испытания, токсикологические и клинические исследования, подтверждающие его качество, эффективность и безопасность;
+— является списанным и не подлежит использованию по прямому назначению.
+
+Указанные обстоятельства являются прямым нарушением части 4 статьи 38 Федерального закона № 323-ФЗ, согласно которой на территории Российской Федерации разрешается обращение только зарегистрированных медицинских изделий.
+
+В соответствии с пунктом 2 примечаний к приказу Департамента здравоохранения Тюменской области от 13.03.2024 № 69, направление пациентов в медицинские организации частной системы здравоохранения осуществляется по согласованию с ГАУЗ ТО «Областной офтальмологический диспансер».
+
+Включение ООО «Глазцентр-Тюмень» в маршрутизацию пациентов означает, что граждане, обратившиеся за медицинской помощью в государственные медицинские организации, могут быть направлены в указанную клинику для проведения диагностических и лечебных процедур на оборудовании, которое:
+
+— не имеет документов, подтверждающих его безопасность и эффективность;
+— не прошло регистрацию в установленном порядке;
+— является списанным и бывшим в употреблении в другой стране.
+
+Использование такого оборудования создает прямую угрозу жизни и здоровью пациентов, в том числе может повлечь необратимую утрату зрения.
+
+Обращаем внимание, что формальное наличие лицензии на медицинскую деятельность, полученной на основании недостоверных сведений о материально-техническом оснащении, не может служить основанием для включения организации в маршрутизацию пациентов.
+
+Государство обязано защищать здоровье граждан, а не создавать условия для его утраты. Направление пациентов в организацию, использующую нелегальное медицинское оборудование, является прямым нарушением конституционного права на охрану здоровья.
+
+На основании изложенного, ПРОШУ:
+
+1. Принять меры по исключению ООО «Глазцентр-Тюмень» из маршрутизации пациентов по профилю «офтальмология» до проведения полной и объективной проверки законности использования медицинского оборудования.
+2. Направить запрос в Росздравнадзор по Тюменской области для подтверждения либо опровержения факта наличия действующего регистрационного удостоверения на эксимерный лазер «Alcon ALLEGRETTO Eye-Q», заводской номер 1010-2571.
+3. Приостановить действие согласования, предусмотренного пунктом 2 примечаний к приказу от 13.03.2024 № 69, в отношении ООО «Глазцентр-Тюмень» до завершения проверки.
+
+Обращаем внимание, что формальный подход к рассмотрению данного обращения и оставление ООО «Глазцентр-Тюмень» в маршрутизации пациентов будет расценено как создание условий для использования незарегистрированного медицинского оборудования и подвергания опасности жизни и здоровья граждан, что является недопустимым.
+
+Ответ прошу направить на адрес электронной почты 89827713747@mail.ru.
+
+Приложение: письмо ООО «Алкон Фармацевтика» от 07.04.2026 № 22-04-2026/L.
+
+Руководитель Ассоциации А. С. Черных
+«___» ____________ 2026 г.`,
+      isEvidence: true,
+    },
+    {
+      slug: "appeal-to-roszdravnadzor",
+      kind: "association-appeal",
+      title: "Обращение Ассоциации в территориальный орган Росздравнадзора",
+      summary:
+        "Полная текстовая расшифровка обращения. Поле даты в копии не заполнено.",
+      source: "Ассоциация офтальмологических клиник",
+      storageFileName: null,
+      fileUrl: "/investigations/glaztsentr-tyumen/appeal-to-roszdravnadzor.docx",
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      content: String.raw`«АССОЦИАЦИЯ ОФТАЛЬМОЛОГИЧЕСКИХ КЛИНИК»
+620092, Свердловская область, г.о. город Екатеринбург, ул. Владимира Высоцкого, д. 5
++7 (919) 937-01-01; aok86e@mail.ru
+ИНН 6670530741, КПП 667001001, ОГРН 1256600034976, ОКПО 50986957
+
+Руководителю Территориального органа Федеральной службы по надзору в сфере здравоохранения по Тюменской области, Ханты-Мансийскому автономному округу – Югре и Ямало-Ненецкому автономному округу
+Левкиной Е. Г.
+625023, г. Тюмень, ул. Энергетиков, д. 26
+
+Копия: Руководителю Федеральной службы по надзору в сфере здравоохранения Самойловой В. А.
+109074, г. Москва, Славянская пл., д. 4, стр. 1
+От Ассоциации офтальмологических клиник
+620092, г. Екатеринбург, ул. Владимира Высоцкого, д. 5
+
+ЗАЯВЛЕНИЕ
+
+В соответствии со ст. 38, 79 Федерального закона от 21.11.2011 № 323-ФЗ «Об основах охраны здоровья граждан в Российской Федерации», Ассоциация офтальмологических клиник заявляет о грубейших нарушениях законодательства в сфере обращения медицинских изделий, допускаемых ООО «ГЛАЗЦЕНТР-ТЮМЕНЬ» (ИНН 7203541400, ОГРН 1227200012270).
+
+В силу части 4 статьи 38 Федерального закона № 323-ФЗ на территории Российской Федерации разрешается обращение только зарегистрированных медицинских изделий. Государственная регистрация проводится на основании результатов технических испытаний, токсикологических и клинических исследований, подтверждающих качество, эффективность и безопасность изделия, а также его соответствие обязательным требованиям. Процедура регистрации, результатом которой является выдача регистрационного удостоверения, является единственным легальным основанием для ввоза, производства и использования медицинского изделия.
+
+Вместе с тем, ООО «ГЛАЗЦЕНТР-ТЮМЕНЬ» при оказании медицинской помощи использует эксимерный лазер ALLEGRETTO Eye-Q, заводской номер 1010-2571, 2010 года выпуска. Согласно официальному ответу ООО «Алкон Фармацевтика» от 07.04.2026 № 22-04-2026/L, направленному в УМВД России по г. Тюмени, указанное оборудование не ввозилось на территорию Российской Федерации официальным дистрибьютором; до списания находилось в эксплуатации в одной из клиник Румынии. Таким образом, лазер был ввезен на территорию РФ с нарушением установленного порядка и не может быть признан безопасным для применения.
+
+Использование незарегистрированного медицинского изделия создает прямую угрозу жизни и здоровью неопределенного круга лиц и является нарушением требований, установленных статьей 38 Федерального закона № 323-ФЗ.
+
+В соответствии действующим законодательством для получения лицензии на медицинскую деятельность в лицензирующий орган предоставляются сведения об оснащении медицинскими изделиями, включая номера регистрационных удостоверений. Предоставление заведомо недостоверных сведений является основанием для аннулирования лицензии.
+
+Медицинская деятельность ООО «ГЛАЗЦЕНТР-ТЮМЕНЬ» осуществляется на основании лицензии № Л041-01107-72/00648949 от 25.04.2023. В силу закона медицинское изделие допускается к применению только при наличии регистрационного удостоверения. Поскольку лицензия была получена на основании недостоверных сведений о материально-техническом оснащении (использование незарегистрированного оборудования), лицензия подлежит аннулированию. В соответствии со статьей 20 Федерального закона от 04.05.2011 № 99-ФЗ «О лицензировании отдельных видов деятельности», действие лицензии прекращается в том числе на основании решения суда об аннулировании лицензии. Росздравнадзор и его территориальные органы уполномочены на обращение в суд с соответствующим заявлением.
+
+Ранее территориальными органами Росздравнадзора и УМВД России по г. Тюмени проводился визуальный осмотр оборудования. Как указано в ответе УМВД от 19.03.2026 № 3/266601184932, проверка ограничилась фиксацией сходства заводского номера на шильдике. При этом специалистами не проводилась проверка серийного номера на местоположение оборудования и его использовании. Данный подход не может считаться надлежащей проверкой в силу требований Административного регламента и не позволяет установить подлинность происхождения оборудования. Формальная проверка без привлечения квалифицированных технических специалистов и запросов дистрибьютору не исключает угрозу для здоровья пациентов.
+
+Таким образом, в непосредственной близости от территориального органа Росздравнадзора, на территории города Тюмени, ООО «ГЛАЗЦЕНТР-ТЮМЕНЬ» систематически используется медицинское оборудование, ввезенное с нарушением установленного порядка, не прошедшее государственную регистрацию и признанное официальным дистрибьютором списанным. Данное оборудование представляет прямую угрозу жизни и здоровью пациентов, в том числе может повлечь необратимую утрату зрения. Вместе с тем, меры реагирования со стороны уполномоченных органов носят формальный характер, что фактически лишает граждан конституционного права на охрану здоровья и оставляет безнаказанными лиц, ежедневно подвергающих опасности неопределенный круг лиц. Закон в данном случае должен действовать безусловно и неотвратимо, а формальные отписки недопустимы.
+
+На основании изложенного, ПРОШУ:
+
+1. Организовать внеплановую выездную проверку ООО «ГЛАЗЦЕНТР-ТЮМЕНЬ» по адресу: г. Тюмень, ул. Червишевский тракт, д. 2, с привлечением технических специалистов (инженеров), имеющих доступ к сервисному меню оборудования, в целях сверки реального серийного номера в программном обеспечении с данными, указанными в документах.
+2. Обеспечить проведение проверки с привлечением специалистов, обладающих необходимой квалификацией для идентификации медицинского изделия по данным, содержащимся в программном обеспечении, а не только по внешним идентификационным шильдам.
+3. При выявлении нарушения — изъять эксимерный лазер ALLEGRETTO Eye-Q (зав. номер 1010-2571) в порядке, установленном законодательством, и принять меры по его изоляции от обращения, вплоть до уничтожения, как недоброкачественного медицинского изделия.
+4. Инициировать процедуру аннулирования лицензии № Л041-01107-72/00648949 от 25.04.2023 в судебном порядке в связи с ее получением на основании недостоверных сведений, предусмотренных законодательством Российской Федерации.
+5. Направить материалы проверки в органы предварительного следствия.
+
+Ответ прошу направить на адрес электронной почты 89827713747@mail.ru.
+
+Приложение: письмо ООО «Алкон Фармацевтика» от 07.04.2026 № 22-04-2026/L.
+
+Руководитель Ассоциации А. С. Черных
+«___» ____________ 2026 г.`,
+      isEvidence: true,
+    },
+  ],
+  clinicSlugs: ["glaztsentr-tyumen"],
+  equipmentSlugs: ["alcon-allegretto-wave-eye-q"],
+  // В документах речь идёт о коррекции зрения без конкретного диагноза.
+  diseaseSlugs: [] as string[],
+  procedureSlugs: ["lazernaya-korrektsiya-zreniya"],
+} as const;
+
+const GLAZCENTR_NEWS = {
+  slug: "opublikovano-rassledovanie-glaztsentr-tyumen",
+  title: "Опубликованы материалы проверки конкретного экземпляра ALLEGRETTO Wave Eye-Q в ООО «Глазцентр-Тюмень»",
+  summary:
+    "Опубликованы материалы проверки сведений об использовании в ООО «Глазцентр-Тюмень» конкретного экземпляра ALLEGRETTO Wave Eye-Q, зав. № 1010-2571, 2010 года выпуска. Окончательные выводы ожидают оценки уполномоченных органов.",
+  content: String.raw`## Почему началась проверка
+
+В обращениях Ассоциации конкретный экземпляр эксимерной лазерной системы ALLEGRETTO Wave Eye-Q, заводской номер 1010-2571, 2010 года выпуска, назван используемым ООО «Глазцентр-Тюмень». Предмет публикации — проверка этих сведений, а не оценка модели оборудования в целом. В ответе ООО «Алкон Фармацевтика» на запрос УМВД России по г. Тюмени от 7 апреля 2026 года компания сообщила, что не ввозила названную систему на территорию Российской Федерации.
+
+## Что подтверждено документами
+
+- Скан официального ответа ООО «Алкон Фармацевтика» идентифицирует модель, заводской номер и год выпуска системы, а также сообщает, что эта компания её не ввозила в Россию.
+- В отдельном сообщении ООО «Алкон Фармацевтика» указано, что до списания система находилась в эксплуатации в одной из клиник Румынии. На скане нет даты и исходящего номера — поэтому этот факт опубликован без добавления неуказанных реквизитов.
+- В комплекте представлены два обращения Ассоциации: в Департамент здравоохранения Тюменской области и в территориальный орган Росздравнадзора. Они фиксируют позицию Ассоциации и перечень запрошенных проверочных действий.
+
+## Что ещё требует проверки
+
+Обращение в Росздравнадзор просит привлечь технических специалистов и сопоставить серийный номер в программном обеспечении лазера с документами, а не ограничиваться внешней маркировкой. Такой порядок проверки запрошен Ассоциацией, чтобы проверить изложенные в обращении обстоятельства.
+
+В опубликованном комплекте нет ответа Росздравнадзора, Департамента здравоохранения или судебного решения. В копиях обращений не заполнена дата, а подтверждение их отправки не приложено. Поэтому материал не устанавливает нарушение, не заменяет экспертизу и не подменяет решение уполномоченного органа.
+
+## Какие материалы опубликованы
+
+В новости собраны ссылки на четыре документа доказательной базы: два сообщения ООО «Алкон Фармацевтика» и две копии обращений Ассоциации. Полные сканы, текстовые расшифровки и хронология размещены в расследовании, чтобы читатель мог отделить содержание документов от позиции заявителя.
+
+## Текущий статус
+
+Материалы проверки опубликованы. Статус расследования — ожидание результатов проверок компетентных органов. Нормативные ссылки, приведённые в обращениях, отражают правовую позицию Ассоциации, а не самостоятельное юридическое заключение в этой новости.
+
+## Что будет дальше
+
+Мы будем обновлять публикацию только после появления новых официальных документов. До этого момента основанием для выводов остаются опубликованные первичные материалы и прямо обозначенные границы проверки.`,
+  seoTitle: "Проверка конкретного экземпляра ALLEGRETTO Wave Eye-Q: документы и статус",
+  seoDescription:
+    "Материалы проверки конкретного экземпляра ALLEGRETTO Wave Eye-Q, зав. № 1010-2571, указанного в документах об ООО «Глазцентр-Тюмень»: официальный ответ, обращения и статус.",
+} as const;
+
+async function seedGlazcentrInvestigation() {
+  const data = {
+    title: GLAZCENTR_INVESTIGATION.title,
+    summary: GLAZCENTR_INVESTIGATION.summary,
+    status: GLAZCENTR_INVESTIGATION.status,
+    statusNote: GLAZCENTR_INVESTIGATION.statusNote,
+    isPublished: true,
+    evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+    publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+    seoTitle: GLAZCENTR_INVESTIGATION.seoTitle,
+    seoDescription: GLAZCENTR_INVESTIGATION.seoDescription,
+  };
+
+  const investigation = await db.investigation.upsert({
+    where: { slug: GLAZCENTR_INVESTIGATION.slug },
+    create: { slug: GLAZCENTR_INVESTIGATION.slug, ...data },
+    update: data,
+  });
+
+  for (const [sortOrder, section] of GLAZCENTR_INVESTIGATION.sections.entries()) {
+    await db.investigationSection.upsert({
+      where: { investigationId_key: { investigationId: investigation.id, key: section.key } },
+      create: {
+        investigationId: investigation.id,
+        sortOrder,
+        ...section,
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+      update: {
+        title: section.title,
+        content: section.content,
+        sortOrder,
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+    });
+  }
+
+  for (const [sortOrder, event] of GLAZCENTR_INVESTIGATION.timeline.entries()) {
+    await db.investigationTimelineEvent.upsert({
+      where: { investigationId_key: { investigationId: investigation.id, key: event.key } },
+      create: {
+        investigationId: investigation.id,
+        sortOrder,
+        ...event,
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+      update: {
+        date: event.date,
+        dateLabel: event.dateLabel,
+        title: event.title,
+        description: event.description,
+        sortOrder,
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+    });
+  }
+
+  for (const [sortOrder, document] of GLAZCENTR_INVESTIGATION.documents.entries()) {
+    await db.investigationDocument.upsert({
+      where: { investigationId_slug: { investigationId: investigation.id, slug: document.slug } },
+      create: {
+        investigationId: investigation.id,
+        sortOrder,
+        ...document,
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+      update: {
+        ...document,
+        sortOrder,
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+    });
+  }
+
+  const [clinics, equipment, diseases, procedures] = await Promise.all([
+    Promise.all(
+      GLAZCENTR_INVESTIGATION.clinicSlugs.map((clinicSlug) =>
+        db.clinic.findUnique({ where: { slug: clinicSlug } }),
+      ),
+    ),
+    Promise.all(
+      GLAZCENTR_INVESTIGATION.equipmentSlugs.map((equipmentSlug) =>
+        db.equipment.findUnique({ where: { slug: equipmentSlug } }),
+      ),
+    ),
+    Promise.all(
+      GLAZCENTR_INVESTIGATION.diseaseSlugs.map((diseaseSlug) =>
+        db.disease.findUnique({ where: { slug: diseaseSlug } }),
+      ),
+    ),
+    Promise.all(
+      GLAZCENTR_INVESTIGATION.procedureSlugs.map((procedureSlug) =>
+        db.procedure.findUnique({ where: { slug: procedureSlug } }),
+      ),
+    ),
+  ]);
+
+  if ([...clinics, ...equipment, ...diseases, ...procedures].some((entity) => !entity)) {
+    throw new Error("Required entity for the Glazcentr investigation was not seeded");
+  }
+
+  for (const clinic of clinics) {
+    await db.investigationOnClinic.upsert({
+      where: { investigationId_clinicId: { investigationId: investigation.id, clinicId: clinic!.id } },
+      create: {
+        investigationId: investigation.id,
+        clinicId: clinic!.id,
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+      update: {
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+    });
+  }
+  for (const item of equipment) {
+    await db.investigationOnEquipment.upsert({
+      where: { investigationId_equipmentId: { investigationId: investigation.id, equipmentId: item!.id } },
+      create: {
+        investigationId: investigation.id,
+        equipmentId: item!.id,
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+      update: {
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+    });
+  }
+  for (const disease of diseases) {
+    await db.investigationOnDisease.upsert({
+      where: { investigationId_diseaseId: { investigationId: investigation.id, diseaseId: disease!.id } },
+      create: {
+        investigationId: investigation.id,
+        diseaseId: disease!.id,
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+      update: {
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+    });
+  }
+  for (const procedure of procedures) {
+    await db.investigationOnProcedure.upsert({
+      where: { investigationId_procedureId: { investigationId: investigation.id, procedureId: procedure!.id } },
+      create: {
+        investigationId: investigation.id,
+        procedureId: procedure!.id,
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+      update: {
+        isPublished: true,
+        evidenceValidatedAt: new Date("2026-08-05T00:00:00.000Z"),
+        publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      },
+    });
+  }
+
+  const primaryClinic = clinics[0]!;
+  const catalogEquipment = equipment[0]!;
+  const equipmentInstance = await db.investigationEquipmentInstance.upsert({
+    where: {
+      investigationId_key: {
+        investigationId: investigation.id,
+        key: "allegretto-wave-eye-q-1010-2571",
+      },
+    },
+    create: {
+      investigationId: investigation.id,
+      equipmentId: catalogEquipment.id,
+      key: "allegretto-wave-eye-q-1010-2571",
+      model: "ALLEGRETTO Wave Eye-Q",
+      serialNumber: "1010-2571",
+      manufactureYear: 2010,
+      identificationSummary:
+        "Модель, заводской номер и год выпуска воспроизведены из ответа ООО «Алкон Фармацевтика» от 07.04.2026 № 22-04-2026/L. Связь с каталожной моделью нужна для навигации и не переносит выводы о конкретном экземпляре на модель в целом.",
+      isPublished: true,
+      publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+    },
+    update: {
+      equipmentId: catalogEquipment.id,
+      model: "ALLEGRETTO Wave Eye-Q",
+      serialNumber: "1010-2571",
+      manufactureYear: 2010,
+      identificationSummary:
+        "Модель, заводской номер и год выпуска воспроизведены из ответа ООО «Алкон Фармацевтика» от 07.04.2026 № 22-04-2026/L. Связь с каталожной моделью нужна для навигации и не переносит выводы о конкретном экземпляре на модель в целом.",
+      isPublished: true,
+      publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+    },
+  });
+
+  const registrationCheck = await db.regulatoryCheck.findFirst({
+    where: {
+      key: "registration-match",
+      provision: {
+        edition: {
+          regulation: { slug: "federal-law-323-fz" },
+        },
+      },
+    },
+    select: { id: true },
+  });
+  if (!registrationCheck) {
+    throw new Error("Regulatory check federal-law-323-fz/registration-match was not seeded");
+  }
+
+  const registrationAssessment = await db.investigationRegulatoryAssessment.upsert({
+    where: {
+      investigationId_key: {
+        investigationId: investigation.id,
+        key: "allegretto-1010-2571-registration-match",
+      },
+    },
+    create: {
+      investigationId: investigation.id,
+      regulatoryCheckId: registrationCheck.id,
+      clinicId: primaryClinic.id,
+      equipmentInstanceId: equipmentInstance.id,
+      key: "allegretto-1010-2571-registration-match",
+      eventDateLabel:
+        "Период использования конкретного экземпляра в клинике требует подтверждения первичным документом",
+      status: "REQUIRES_VERIFICATION",
+      applicabilityStatus: "REQUIRES_VERIFICATION",
+      restrictedSignals: [
+        "DOCUMENT_NOT_FOUND",
+        "OLD_MANUFACTURE_YEAR",
+        "THIRD_PARTY_STATEMENT",
+      ],
+      neutralConclusion:
+        "Наличие или отсутствие применимой регистрации для конкретного экземпляра не установлено опубликованным комплектом. Требуются официальная реестровая запись с историей статуса и точное сопоставление производителя, модели и модификации.",
+      alternativeVersion:
+        "Регистрационная запись могла быть оформлена на иное официальное наименование, производителя или модификацию, а подтверждающие документы могли не входить в переданный комплект. Эту версию необходимо проверить по документам клиники и официальному реестру.",
+      evidenceGaps:
+        "Нет заверенной копии регистрационного удостоверения, архивной выписки из Государственного реестра медицинских изделий на дату использования, документов ввоза и приобретения, а также первичного документа, подтверждающего период использования экземпляра в клинике.",
+      supportingEvidenceSearchCompleted: false,
+      refutingEvidenceSearchCompleted: false,
+      isPublished: false,
+      evidenceValidatedAt: null,
+      publishedAt: null,
+    },
+    update: {
+      regulatoryCheckId: registrationCheck.id,
+      appliedEditionId: null,
+      clinicId: primaryClinic.id,
+      procedureId: null,
+      equipmentInstanceId: equipmentInstance.id,
+      eventFrom: null,
+      eventTo: null,
+      eventDateLabel:
+        "Период использования конкретного экземпляра в клинике требует подтверждения первичным документом",
+      status: "REQUIRES_VERIFICATION",
+      applicabilityStatus: "REQUIRES_VERIFICATION",
+      restrictedSignals: [
+        "DOCUMENT_NOT_FOUND",
+        "OLD_MANUFACTURE_YEAR",
+        "THIRD_PARTY_STATEMENT",
+      ],
+      neutralConclusion:
+        "Наличие или отсутствие применимой регистрации для конкретного экземпляра не установлено опубликованным комплектом. Требуются официальная реестровая запись с историей статуса и точное сопоставление производителя, модели и модификации.",
+      alternativeVersion:
+        "Регистрационная запись могла быть оформлена на иное официальное наименование, производителя или модификацию, а подтверждающие документы могли не входить в переданный комплект. Эту версию необходимо проверить по документам клиники и официальному реестру.",
+      evidenceGaps:
+        "Нет заверенной копии регистрационного удостоверения, архивной выписки из Государственного реестра медицинских изделий на дату использования, документов ввоза и приобретения, а также первичного документа, подтверждающего период использования экземпляра в клинике.",
+      supportingEvidenceSearchCompleted: false,
+      refutingEvidenceSearchCompleted: false,
+      isPublished: false,
+      evidenceValidatedAt: null,
+      publishedAt: null,
+    },
+  });
+
+  const manufacturerResponse = await db.investigationDocument.findUnique({
+    where: {
+      investigationId_slug: {
+        investigationId: investigation.id,
+        slug: "alcon-response-2026-04-07",
+      },
+    },
+    select: { id: true },
+  });
+  if (!manufacturerResponse) {
+    throw new Error("Manufacturer response for the ALLEGRETTO instance was not seeded");
+  }
+  await db.investigationAssessmentEvidence.upsert({
+    where: {
+      assessmentId_documentId: {
+        assessmentId: registrationAssessment.id,
+        documentId: manufacturerResponse.id,
+      },
+    },
+    create: {
+      investigationId: investigation.id,
+      assessmentId: registrationAssessment.id,
+      documentId: manufacturerResponse.id,
+      role: "CONTEXT",
+      isPrimary: true,
+      provenanceVerifiedAt: null,
+      note:
+        "Документ подтверждает идентификаторы экземпляра и позицию указанного юридического лица о том, что оно не ввозило систему. Он не подтверждает отсутствие регистрации, незаконность обращения или неприменимость иной регистрационной записи.",
+    },
+    update: {
+      role: "CONTEXT",
+      isPrimary: true,
+      provenanceVerifiedAt: null,
+      note:
+        "Документ подтверждает идентификаторы экземпляра и позицию указанного юридического лица о том, что оно не ввозило систему. Он не подтверждает отсутствие регистрации, незаконность обращения или неприменимость иной регистрационной записи.",
+    },
+  });
+
+  await db.investigationEquipmentInstanceEvidence.upsert({
+    where: {
+      equipmentInstanceId_documentId: {
+        equipmentInstanceId: equipmentInstance.id,
+        documentId: manufacturerResponse.id,
+      },
+    },
+    create: {
+      investigationId: investigation.id,
+      equipmentInstanceId: equipmentInstance.id,
+      documentId: manufacturerResponse.id,
+      note:
+        "По опубликованному скану сверены модель, заводской номер и год выпуска. Связь подтверждает только идентификацию экземпляра и не подтверждает правовое нарушение.",
+      evidenceValidatedAt: new Date("2026-08-12T00:00:00.000Z"),
+      isPublished: true,
+      publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+    },
+    update: {
+      note:
+        "По опубликованному скану сверены модель, заводской номер и год выпуска. Связь подтверждает только идентификацию экземпляра и не подтверждает правовое нарушение.",
+      evidenceValidatedAt: new Date("2026-08-12T00:00:00.000Z"),
+      isPublished: true,
+      publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+    },
+  });
+
+  await db.investigationTimelineEvent.updateMany({
+    where: {
+      investigationId: investigation.id,
+      key: {
+        in: [
+          "police-response-reference",
+          "manufacturer-request",
+          "manufacturer-received-request",
+          "manufacturer-response",
+          "manufacturer-supplement",
+          "association-appeals",
+        ],
+      },
+    },
+    data: { equipmentInstanceId: equipmentInstance.id },
+  });
+
+  const news = await db.news.upsert({
+    where: { slug: GLAZCENTR_NEWS.slug },
+    create: {
+      ...GLAZCENTR_NEWS,
+      isPublished: true,
+      publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+    },
+    update: {
+      title: GLAZCENTR_NEWS.title,
+      summary: GLAZCENTR_NEWS.summary,
+      content: GLAZCENTR_NEWS.content,
+      isPublished: true,
+      publishedAt: GLAZCENTR_INVESTIGATION.publishedAt,
+      seoTitle: GLAZCENTR_NEWS.seoTitle,
+      seoDescription: GLAZCENTR_NEWS.seoDescription,
+    },
+  });
+
+  await db.newsOnInvestigation.upsert({
+    where: { newsId_investigationId: { newsId: news.id, investigationId: investigation.id } },
+    create: { newsId: news.id, investigationId: investigation.id },
+    update: {},
+  });
+
+  console.log(
+    "✓ Investigation: " +
+      investigation.title +
+      " (" +
+      GLAZCENTR_INVESTIGATION.documents.length +
+      " documents, " +
+      GLAZCENTR_INVESTIGATION.procedureSlugs.length +
+      " procedures)",
+  );
+}
+
+async function seedIndependentControlCorpus() {
+  const validation = validateIndependentControlCorpus([
+    INDEPENDENT_CONTROL_OBSERVATION_FORM,
+  ]);
+  if (!validation.valid) {
+    throw new Error(
+      [
+        "Корпус независимого контроля не прошёл предзаписную валидацию:",
+        ...validation.errors.map((error) => `- ${error}`),
+      ].join("\n"),
+    );
+  }
+
+  console.log("Seeding independent-control methodology and assessments...");
+
+  const methodology = INDEPENDENT_CONTROL_OBSERVATION_FORM;
+  const methodologyData = {
+    title: methodology.title,
+    summary: methodology.summary,
+    description: methodology.rightsNote,
+    legalStatusNote: methodology.legalStatusNote,
+    bibliographicCitation: methodology.bibliographicDetails,
+    officialMethodologyUrl: methodology.officialMethodologyUrl,
+    isPublished: methodology.isPublished,
+    evidenceValidatedAt: methodology.evidenceValidatedAt ?? null,
+    publishedAt: methodology.publishedAt ?? null,
+    seoTitle: methodology.seo.title,
+    seoDescription: methodology.seo.description,
+  };
+  const seededMethodology = await db.independentControlMethodology.upsert({
+    where: { slug: methodology.slug },
+    create: { slug: methodology.slug, ...methodologyData },
+    update: methodologyData,
+  });
+
+  for (const [sortOrder, item] of methodology.sources.entries()) {
+    if (!item.key) throw new Error(`Independent-control source ${sortOrder} has no stable key`);
+    const kind = item.kind === "LOCAL_BIBLIOGRAPHIC"
+      ? "LOCAL_DOCUMENT" as const
+      : "OFFICIAL_METHODOLOGY" as const;
+    const sourceData = {
+      kind,
+      title: item.title,
+      bibliographicCitation:
+        item.kind === "LOCAL_BIBLIOGRAPHIC"
+          ? methodology.bibliographicDetails
+          : `${item.title}. ${item.url}`,
+      sourceUrl: item.url ?? null,
+      internalFileName: item.internalFilename ?? null,
+      sha256: item.sha256,
+      rightsBasis: item.rightsStatus,
+      rightsVerifiedAt: item.rightsVerifiedAt ?? null,
+      rightsNote: item.rightsNote,
+      publicFileUrl: item.publicFileUrl ?? null,
+      isPublished: true,
+      evidenceValidatedAt: methodology.evidenceValidatedAt ?? null,
+      publishedAt: methodology.publishedAt ?? null,
+      sortOrder,
+    };
+    await db.independentControlSource.upsert({
+      where: {
+        methodologyId_key: {
+          methodologyId: seededMethodology.id,
+          key: item.key,
+        },
+      },
+      create: {
+        methodologyId: seededMethodology.id,
+        key: item.key,
+        ...sourceData,
+      },
+      update: sourceData,
+    });
+  }
+
+  const criterionIds = new Map<string, string>();
+  for (const criterion of methodology.criteria) {
+    if (typeof criterion.isSourceCriterion !== "boolean") {
+      throw new Error(`Independent-control criterion ${criterion.stableKey} has no source flag`);
+    }
+    const criterionData = {
+      sourceLocator: criterion.sourceLocator,
+      sectionKey: criterion.sectionKey,
+      sectionTitle: criterion.sectionTitle,
+      title: criterion.title,
+      statement: criterion.statement,
+      whatIsChecked: criterion.whatIsChecked,
+      checkQuestion: criterion.checkQuestion,
+      factToEstablish: criterion.factToEstablish,
+      confirmingDocument: criterion.confirmingPrimaryDocument,
+      evidenceRequired: criterion.evidenceRequired,
+      evidenceThreshold: criterion.evidenceThreshold,
+      applicabilityNote: criterion.applicabilityNote,
+      sourceDivergenceNote: criterion.sourceDivergenceNote,
+      basisKind: criterion.basisKind,
+      allowedStatuses: [...criterion.allowedStatuses],
+      isSourceCriterion: criterion.isSourceCriterion,
+      effectiveFrom: null,
+      effectiveTo: null,
+      isPublished: criterion.isPublished,
+      evidenceValidatedAt: criterion.evidenceValidatedAt ?? null,
+      publishedAt: criterion.publishedAt ?? null,
+      sortOrder: criterion.sortOrder,
+    };
+    const seededCriterion = await db.independentControlCriterion.upsert({
+      where: {
+        methodologyId_key: {
+          methodologyId: seededMethodology.id,
+          key: criterion.stableKey,
+        },
+      },
+      create: {
+        methodologyId: seededMethodology.id,
+        key: criterion.stableKey,
+        ...criterionData,
+      },
+      update: criterionData,
+    });
+    criterionIds.set(criterion.stableKey, seededCriterion.id);
+  }
+
+  for (const criterion of methodology.criteria) {
+    const criterionId = criterionIds.get(criterion.stableKey);
+    if (!criterionId) throw new Error(`Independent-control criterion was not seeded: ${criterion.stableKey}`);
+
+    for (const link of criterion.normLinks) {
+      if (!link.editionKey) {
+        throw new Error(`Independent-control norm link has no edition: ${criterion.stableKey}`);
+      }
+      const matches = await db.regulatoryCheck.findMany({
+        where: {
+          key: link.checkKey,
+          provision: {
+            key: link.provisionKey,
+            edition: {
+              key: link.editionKey,
+              regulation: { slug: link.regulationKey },
+            },
+          },
+        },
+        select: { id: true },
+      });
+      if (matches.length !== 1) {
+        throw new Error(
+          `Expected exactly one regulatory node ${link.regulationKey}/${link.editionKey}/${link.provisionKey}/${link.checkKey}, found ${matches.length}`,
+        );
+      }
+      const role = link.role === "DIRECT_REQUIREMENT"
+        ? "DIRECT_BASIS" as const
+        : link.role === "HISTORICAL_CONTEXT"
+          ? "HISTORICAL_BASIS" as const
+          : "SUPPORTING_BASIS" as const;
+      const normData = {
+        role,
+        verifiedAt: methodology.evidenceValidatedAt!,
+        note:
+          `Связь с точной редакцией ${link.regulationKey}/${link.editionKey}; локальный критерий не расширяет содержание проверочного вопроса.`,
+        isPublished: criterion.isPublished,
+        evidenceValidatedAt: criterion.evidenceValidatedAt ?? null,
+        publishedAt: criterion.publishedAt ?? null,
+      };
+      await db.independentControlCriterionNorm.upsert({
+        where: {
+          criterionId_regulatoryCheckId: {
+            criterionId,
+            regulatoryCheckId: matches[0].id,
+          },
+        },
+        create: {
+          criterionId,
+          regulatoryCheckId: matches[0].id,
+          ...normData,
+        },
+        update: normData,
+      });
+    }
+  }
+
+  const investigation = await db.investigation.findUnique({
+    where: { slug: GLAZCENTR_INDEPENDENT_CONTROL.investigationSlug },
+    select: { id: true },
+  });
+  const clinic = await db.clinic.findUnique({
+    where: { slug: GLAZCENTR_INDEPENDENT_CONTROL.clinicSlug },
+    select: { id: true },
+  });
+  if (!investigation || !clinic) {
+    throw new Error("Glazcentr investigation or clinic was not seeded before independent-control assessments");
+  }
+  const clinicRelation = await db.investigationOnClinic.findUnique({
+    where: {
+      investigationId_clinicId: {
+        investigationId: investigation.id,
+        clinicId: clinic.id,
+      },
+    },
+    select: { investigationId: true },
+  });
+  if (!clinicRelation) {
+    throw new Error("Glazcentr investigation-clinic relation was not seeded before independent-control assessments");
+  }
+
+  const privateAssessments = buildPrivateGlazcentrSourceAssessments(methodology.criteria);
+  if (privateAssessments.length !== 80) {
+    throw new Error(`Expected 80 private source assessments, found ${privateAssessments.length}`);
+  }
+  for (const assessment of privateAssessments) {
+    const criterionId = criterionIds.get(assessment.criterionKey);
+    if (!criterionId) throw new Error(`Assessment criterion was not seeded: ${assessment.criterionKey}`);
+    const assessmentData = {
+      criterionId,
+      appliedCriterionNormId: null,
+      clinicId: clinic.id,
+      eventFrom: null,
+      eventTo: null,
+      eventDateLabel: assessment.eventDateLabel,
+      status: assessment.status,
+      applicabilityStatus: assessment.applicabilityStatus,
+      restrictedSignals: [],
+      neutralConclusion: assessment.neutralConclusion,
+      alternativeVersion: assessment.alternativeVersion,
+      evidenceGaps: assessment.evidenceGaps,
+      supportingEvidenceSearchCompleted: assessment.supportingEvidenceSearchCompleted,
+      refutingEvidenceSearchCompleted: assessment.refutingEvidenceSearchCompleted,
+      isPublished: assessment.isPublished,
+      evidenceValidatedAt: assessment.evidenceValidatedAt,
+      publishedAt: assessment.publishedAt,
+    };
+    await db.investigationIndependentControlAssessment.upsert({
+      where: {
+        investigationId_key: {
+          investigationId: investigation.id,
+          key: assessment.key,
+        },
+      },
+      create: {
+        investigationId: investigation.id,
+        key: assessment.key,
+        ...assessmentData,
+      },
+      update: assessmentData,
+    });
+  }
+
+  const publicScope = GLAZCENTR_FORMAL_NOC_SCOPE_ASSESSMENT;
+  const scopeCriterionId = criterionIds.get(publicScope.criterionKey);
+  if (!scopeCriterionId) throw new Error("formal-noc-scope criterion was not seeded");
+  const scopeData = {
+    criterionId: scopeCriterionId,
+    appliedCriterionNormId: null,
+    clinicId: clinic.id,
+    eventFrom: null,
+    eventTo: null,
+    eventDateLabel: publicScope.eventDateLabel,
+    status: publicScope.status,
+    applicabilityStatus: publicScope.applicabilityStatus,
+    restrictedSignals: [],
+    neutralConclusion: publicScope.neutralConclusion,
+    alternativeVersion: publicScope.alternativeVersion,
+    evidenceGaps: publicScope.evidenceGaps,
+    supportingEvidenceSearchCompleted: publicScope.supportingEvidenceSearchCompleted,
+    refutingEvidenceSearchCompleted: publicScope.refutingEvidenceSearchCompleted,
+    isPublished: publicScope.isPublished,
+    evidenceValidatedAt: publicScope.evidenceValidatedAt,
+    publishedAt: publicScope.publishedAt,
+  };
+  const scopeAssessment = await db.investigationIndependentControlAssessment.upsert({
+    where: {
+      investigationId_key: {
+        investigationId: investigation.id,
+        key: publicScope.key,
+      },
+    },
+    create: {
+      investigationId: investigation.id,
+      key: publicScope.key,
+      ...scopeData,
+    },
+    update: scopeData,
+  });
+
+  const contextDocument = await db.investigationDocument.findUnique({
+    where: {
+      investigationId_slug: {
+        investigationId: investigation.id,
+        slug: publicScope.contextDocumentSlug,
+      },
+    },
+    select: { id: true },
+  });
+  if (!contextDocument) {
+    throw new Error(`Context document was not seeded: ${publicScope.contextDocumentSlug}`);
+  }
+  await db.investigationIndependentControlEvidence.upsert({
+    where: {
+      assessmentId_documentId: {
+        assessmentId: scopeAssessment.id,
+        documentId: contextDocument.id,
+      },
+    },
+    create: {
+      investigationId: investigation.id,
+      assessmentId: scopeAssessment.id,
+      documentId: contextDocument.id,
+      role: "CONTEXT",
+      isPrimary: false,
+      provenanceVerifiedAt: null,
+      note:
+        "Обращение содержит утверждение заявителя об участии организации в территориальной программе, но не является первичным доказательством включения точного юридического лица в официальный цикл НОК.",
+    },
+    update: {
+      role: "CONTEXT",
+      isPrimary: false,
+      provenanceVerifiedAt: null,
+      note:
+        "Обращение содержит утверждение заявителя об участии организации в территориальной программе, но не является первичным доказательством включения точного юридического лица в официальный цикл НОК.",
+    },
+  });
+
+  console.log(
+    `✓ Independent control: ${methodology.criteria.length} criteria, ${privateAssessments.length} private assessments, 1 cautious public scope assessment`,
+  );
+}
+
 async function main() {
+  validateSeedCorpora();
   console.log("Seeding taxonomy...");
 
   for (const title of specialties) {
@@ -1259,6 +2662,12 @@ async function main() {
     );
   }
   console.log(`✓ Equipment total: ${await db.equipment.count()}`);
+
+  await seedRegulatoryCorpus();
+
+  console.log("Seeding Association investigations and news...");
+  await seedGlazcentrInvestigation();
+  await seedIndependentControlCorpus();
 
   // ─── Scientific works ───────────────────────────────────────────────────────
   console.log("Seeding scientific works...");

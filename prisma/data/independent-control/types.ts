@@ -33,12 +33,15 @@ export type IndependentControlAssessmentStatus =
 export const INDEPENDENT_CONTROL_NORM_LINK_ROLES = [
   "DIRECT_REQUIREMENT",
   "CONTEXT",
+  "HISTORICAL_CONTEXT",
 ] as const;
 
 export type IndependentControlNormLinkRole =
   (typeof INDEPENDENT_CONTROL_NORM_LINK_ROLES)[number];
 
 export type IndependentControlSource = {
+  /** Стабильный ключ для идемпотентного upsert; legacy consumers могут его не задавать. */
+  key?: string;
   title: string;
   kind: "LOCAL_BIBLIOGRAPHIC" | "OFFICIAL_METHODOLOGY";
   url?: string | null;
@@ -52,6 +55,8 @@ export type IndependentControlSource = {
 
 export type IndependentControlNormLink = {
   regulationKey: string;
+  /** Редакция обязательна для seed corpus; optional сохраняет Task 1 API fixtures. */
+  editionKey?: string;
   provisionKey: string;
   checkKey: string;
   role: IndependentControlNormLinkRole;
@@ -76,6 +81,8 @@ export type IndependentControlCriterion = {
   basisKind: IndependentControlBasisKind;
   allowedStatuses: readonly IndependentControlAssessmentStatus[];
   normLinks: readonly IndependentControlNormLink[];
+  /** false только у системного prerequisite, не являющегося строкой исходного бланка. */
+  isSourceCriterion?: boolean;
   isPublished: boolean;
   publishedAt?: Date | null;
   evidenceValidatedAt?: Date | null;
