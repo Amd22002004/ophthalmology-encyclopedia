@@ -40,6 +40,7 @@ test("публичный check question содержит все рабочие �
     factToEstablish: { not: "" },
     primaryEvidenceType: { not: "" },
     evidenceThreshold: { not: "" },
+    nonCompliancePattern: { not: "" },
   });
 });
 

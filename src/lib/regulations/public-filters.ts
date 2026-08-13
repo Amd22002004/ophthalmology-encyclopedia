@@ -23,6 +23,7 @@ export function publicRegulatoryCheckWhere(now = new Date()) {
     factToEstablish: { not: "" },
     primaryEvidenceType: { not: "" },
     evidenceThreshold: { not: "" },
+    nonCompliancePattern: { not: "" },
   } as const;
 }
 

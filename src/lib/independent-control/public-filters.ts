@@ -13,7 +13,11 @@ import type {
   IndependentControlCriterion,
   IndependentControlNormLink,
 } from "../../../prisma/data/independent-control/types";
-import type { Prisma } from "@/generated/prisma/client";
+import type {
+  IndependentControlRightsBasis,
+  IndependentControlSourceKind,
+  Prisma,
+} from "@/generated/prisma/client";
 
 type LoadedIndependentControlNormLink = IndependentControlNormLink & {
   id: string;
@@ -31,6 +35,40 @@ export type LoadedIndependentControlAssessmentForPublication = Omit<
 
 function requiredTextWhere() {
   return { not: "" } as const;
+}
+
+type IndependentControlSourcePublicInput = {
+  key: string;
+  kind: IndependentControlSourceKind;
+  title: string;
+  bibliographicCitation: string | null;
+  sourceUrl: string | null;
+  sha256: string | null;
+  rightsBasis: IndependentControlRightsBasis;
+  rightsVerifiedAt: Date | null;
+  publicFileUrl: string | null;
+  internalFileName?: string | null;
+  rightsNote?: string | null;
+};
+
+/**
+ * Explicit public DTO boundary: internal storage names and editorial rights
+ * notes are accepted only so this function can prove that it discards them.
+ */
+export function sanitizeIndependentControlSource(
+  source: IndependentControlSourcePublicInput,
+) {
+  return {
+    key: source.key,
+    kind: source.kind,
+    title: source.title,
+    bibliographicCitation: source.bibliographicCitation,
+    sourceUrl: source.sourceUrl,
+    sha256: source.sha256,
+    rightsBasis: source.rightsBasis,
+    rightsVerifiedAt: source.rightsVerifiedAt,
+    publicFileUrl: source.publicFileUrl,
+  };
 }
 
 export function publicIndependentControlSourceWhere(now = new Date()) {

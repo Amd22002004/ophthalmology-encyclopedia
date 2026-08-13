@@ -4,6 +4,7 @@ import {
   canPublishIndependentControlAssessment,
   canPublishIndependentControlCriterion,
   canPublishIndependentControlMethodology,
+  filterPublishableIndependentControlCriteria,
 } from "./publication";
 import type {
   IndependentControlAssessment,
@@ -132,6 +133,37 @@ test("не публикует methodology-derived критерий с сильн
 
   assert.equal(result.allowed, false);
   assert.ok(result.errors.includes("NON_NORM_STRONG_STATUS_NOT_ALLOWED"));
+});
+
+test("mixed методика возвращает только критерии, прошедшие pure publication gate", () => {
+  const invalid = criterion({
+    stableKey: "unsafe-methodology-claim",
+    basisKind: "METHODOLOGY_DERIVED",
+    normLinks: [],
+    allowedStatuses: ["CONFIRMED"],
+  });
+  const filtered = filterPublishableIndependentControlCriteria(
+    [criterion(), invalid],
+    now,
+  );
+
+  assert.deepEqual(filtered.map((item) => item.stableKey), ["sterilization-log"]);
+  assert.equal(
+    canPublishIndependentControlMethodology(
+      methodology({ criteria: filtered }),
+      now,
+    ).allowed,
+    true,
+  );
+  assert.equal(
+    canPublishIndependentControlMethodology(
+      methodology({
+        criteria: filterPublishableIndependentControlCriteria([invalid], now),
+      }),
+      now,
+    ).allowed,
+    false,
+  );
 });
 
 test("не публикует local-form-only критерий с сильными allowed statuses", () => {

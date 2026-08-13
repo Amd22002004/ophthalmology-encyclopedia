@@ -125,6 +125,7 @@ export async function searchEntities(query: string): Promise<SearchResult[]> {
             AND btrim(check_item."factToEstablish") <> ''
             AND btrim(check_item."primaryEvidenceType") <> ''
             AND btrim(COALESCE(check_item."evidenceThreshold", '')) <> ''
+            AND btrim(COALESCE(check_item."nonCompliancePattern", '')) <> ''
         )
         AND (
           to_tsvector('russian', concat_ws(' ', title, summary, content)) @@ search_query.query
@@ -144,6 +145,7 @@ export async function searchEntities(query: string): Promise<SearchResult[]> {
               AND btrim(search_check."factToEstablish") <> ''
               AND btrim(search_check."primaryEvidenceType") <> ''
               AND btrim(COALESCE(search_check."evidenceThreshold", '')) <> ''
+              AND btrim(COALESCE(search_check."nonCompliancePattern", '')) <> ''
               AND to_tsvector(
                 'russian',
                 concat_ws(
@@ -173,6 +175,7 @@ export async function searchEntities(query: string): Promise<SearchResult[]> {
         AND btrim(methodology.slug) <> ''
         AND btrim(methodology.title) <> ''
         AND btrim(methodology.summary) <> ''
+        AND btrim(COALESCE(methodology.description, '')) <> ''
         AND btrim(methodology."legalStatusNote") <> ''
         AND btrim(methodology."bibliographicCitation") <> ''
         AND btrim(methodology."officialMethodologyUrl") <> ''
@@ -217,6 +220,12 @@ export async function searchEntities(query: string): Promise<SearchResult[]> {
             AND btrim(criterion."applicabilityNote") <> ''
             AND btrim(COALESCE(criterion."sourceDivergenceNote", '')) <> ''
             AND COALESCE(cardinality(criterion."allowedStatuses"), 0) > 0
+            AND (
+              criterion."basisKind" = 'DIRECT_NORM'::"IndependentControlBasisKind"
+              OR NOT (
+                criterion."allowedStatuses" && ARRAY['CONFIRMED', 'LIKELY_NON_COMPLIANCE', 'COMPLIANT']::"RegulatoryAssessmentStatus"[]
+              )
+            )
             AND EXISTS (
               SELECT 1
               FROM "IndependentControlCriterionNorm" criterion_norm
@@ -240,6 +249,7 @@ export async function searchEntities(query: string): Promise<SearchResult[]> {
                 AND btrim(norm_check."factToEstablish") <> ''
                 AND btrim(norm_check."primaryEvidenceType") <> ''
                 AND btrim(COALESCE(norm_check."evidenceThreshold", '')) <> ''
+                AND btrim(COALESCE(norm_check."nonCompliancePattern", '')) <> ''
                 AND norm_provision."isPublished" = true
                 AND norm_provision."publishedAt" IS NOT NULL
                 AND norm_provision."publishedAt" <= CURRENT_TIMESTAMP

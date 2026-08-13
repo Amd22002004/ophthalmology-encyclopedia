@@ -82,6 +82,14 @@ export function canPublishIndependentControlCriterion(
   return { allowed: errors.length === 0, errors };
 }
 
+export function filterPublishableIndependentControlCriteria<
+  T extends IndependentControlCriterion,
+>(criteria: readonly T[], now = new Date()): T[] {
+  return criteria.filter(
+    (criterion) => canPublishIndependentControlCriterion(criterion, now).allowed,
+  );
+}
+
 export function canPublishIndependentControlMethodology(
   input: IndependentControlMethodology,
   now = new Date(),

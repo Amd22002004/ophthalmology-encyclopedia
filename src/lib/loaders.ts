@@ -24,10 +24,12 @@ import {
   publicIndependentControlCriterionWhere,
   publicIndependentControlMethodologyWhere,
   publicIndependentControlSourceWhere,
+  sanitizeIndependentControlSource,
 } from "@/lib/independent-control/public-filters";
 import {
   canPublishIndependentControlAssessment,
   canPublishIndependentControlMethodology,
+  filterPublishableIndependentControlCriteria,
 } from "@/lib/independent-control/publication";
 
 // ─── Inferred detail types (used in template props) ───────────────────────────
@@ -2006,7 +2008,6 @@ export async function getIndependentControlMethodologies() {
           sha256: true,
           rightsBasis: true,
           rightsVerifiedAt: true,
-          rightsNote: true,
           publicFileUrl: true,
         },
       },
@@ -2110,7 +2111,9 @@ export async function getIndependentControlMethodologies() {
       url: source.sourceUrl,
       sha256: source.sha256 ?? "",
       rightsStatus: source.rightsBasis,
-      rightsNote: source.rightsNote ?? "",
+      rightsNote: source.publicFileUrl == null
+        ? "Публичный файл отсутствует."
+        : "Право публичного размещения файла подтверждено.",
       rightsVerifiedAt: source.rightsVerifiedAt,
       publicFileUrl: source.publicFileUrl,
     }));
@@ -2146,6 +2149,11 @@ export async function getIndependentControlMethodologies() {
       evidenceValidatedAt: criterion.evidenceValidatedAt,
       sortOrder: criterion.sortOrder,
     }));
+    const publishableCriterionContract =
+      filterPublishableIndependentControlCriteria(criterionContract, now);
+    const publishableCriterionKeys = new Set(
+      publishableCriterionContract.map((criterion) => criterion.stableKey),
+    );
     const publication = canPublishIndependentControlMethodology({
       slug: row.slug,
       title: row.title,
@@ -2155,7 +2163,7 @@ export async function getIndependentControlMethodologies() {
       officialMethodologyUrl: row.officialMethodologyUrl,
       rightsNote: row.description ?? "",
       sources: sourceContract,
-      criteria: criterionContract,
+      criteria: publishableCriterionContract,
       seo: {
         title: row.seoTitle ?? "",
         description: row.seoDescription ?? "",
@@ -2176,8 +2184,12 @@ export async function getIndependentControlMethodologies() {
       officialMethodologyUrl: row.officialMethodologyUrl,
       seoTitle: row.seoTitle,
       seoDescription: row.seoDescription,
-      sources: row.sources,
-      criteria: row.criteria.map((criterion) => ({
+      sources: row.sources.map((source) =>
+        sanitizeIndependentControlSource(source),
+      ),
+      criteria: row.criteria
+        .filter((criterion) => publishableCriterionKeys.has(criterion.key))
+        .map((criterion) => ({
         key: criterion.key,
         sourceLocator: criterion.sourceLocator,
         sectionKey: criterion.sectionKey,
@@ -2236,7 +2248,7 @@ export async function getIndependentControlMethodologies() {
             sources: link.regulatoryCheck.provision.edition.regulation.sources,
           },
         })),
-      })),
+        })),
     }];
   });
 }

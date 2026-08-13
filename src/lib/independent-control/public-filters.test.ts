@@ -7,6 +7,7 @@ import {
   publicIndependentControlCriterionWhere,
   publicIndependentControlMethodologyWhere,
   publicIndependentControlSourceWhere,
+  sanitizeIndependentControlSource,
 } from "./public-filters";
 import type { LoadedIndependentControlAssessmentForPublication } from "./public-filters";
 
@@ -31,6 +32,36 @@ test("источник допускает библиографию без фай
   });
 });
 
+test("публичный DTO источника удаляет внутреннее имя и редакционную rights-note", () => {
+  const sanitized = sanitizeIndependentControlSource({
+    key: "local-form",
+    kind: "LOCAL_DOCUMENT",
+    title: "Локальный бланк",
+    bibliographicCitation: "Библиографическое описание",
+    sourceUrl: null,
+    internalFileName: "private-form.doc",
+    sha256: "a".repeat(64),
+    rightsBasis: "UNVERIFIED",
+    rightsVerifiedAt: null,
+    rightsNote: "Внутренняя редакционная заметка",
+    publicFileUrl: null,
+  });
+
+  assert.deepEqual(sanitized, {
+    key: "local-form",
+    kind: "LOCAL_DOCUMENT",
+    title: "Локальный бланк",
+    bibliographicCitation: "Библиографическое описание",
+    sourceUrl: null,
+    sha256: "a".repeat(64),
+    rightsBasis: "UNVERIFIED",
+    rightsVerifiedAt: null,
+    publicFileUrl: null,
+  });
+  assert.equal(Object.hasOwn(sanitized, "internalFileName"), false);
+  assert.equal(Object.hasOwn(sanitized, "rightsNote"), false);
+});
+
 test("связь критерия с нормой проходит всю официальную нормативную цепочку", () => {
   const predicate = publicIndependentControlCriterionNormWhere(NOW);
 
@@ -41,6 +72,7 @@ test("связь критерия с нормой проходит всю офи
   assert.deepEqual(predicate.regulatoryCheck.factToEstablish, { not: "" });
   assert.deepEqual(predicate.regulatoryCheck.primaryEvidenceType, { not: "" });
   assert.deepEqual(predicate.regulatoryCheck.evidenceThreshold, { not: "" });
+  assert.deepEqual(predicate.regulatoryCheck.nonCompliancePattern, { not: "" });
   assert.deepEqual(
     predicate.regulatoryCheck.provision.edition.regulation.sources.some,
     {

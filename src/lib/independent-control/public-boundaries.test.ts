@@ -27,7 +27,7 @@ test("list, detail и topic-count используют единый official-sou
   assert.match(detail, /sources:\s*\{[\s\S]*publicRegulationSourceWhere\(now\)/);
 });
 
-test("methodology loader не выбирает internalFileName и обязательно выполняет pure contract", () => {
+test("methodology loader не выбирает внутренние имена и редакционные rights-notes", () => {
   const loaders = source("src/lib/loaders.ts");
   const methodology = functionSlice(
     loaders,
@@ -36,7 +36,21 @@ test("methodology loader не выбирает internalFileName и обязат�
   );
 
   assert.doesNotMatch(methodology, /internalFileName/);
+  assert.doesNotMatch(methodology, /rightsNote:\s*true/);
+  assert.match(
+    methodology,
+    /sources:\s*row\.sources\.map\(\s*\(source\)\s*=>\s*sanitizeIndependentControlSource\(source\),?\s*\)/,
+  );
   assert.match(methodology, /publicIndependentControlMethodologyWhere\(now\)/);
+  assert.match(
+    methodology,
+    /filterPublishableIndependentControlCriteria\(criterionContract, now\)/,
+  );
+  assert.match(methodology, /criteria:\s*publishableCriterionContract/);
+  assert.match(
+    methodology,
+    /publishableCriterionKeys\.has\(criterion\.key\)/,
+  );
   assert.match(methodology, /canPublishIndependentControlMethodology/);
 });
 
@@ -67,7 +81,29 @@ test("search содержит official RegulationSource gate и полный ind
   assert.match(search, /FROM "IndependentControlCriterion"/);
   assert.match(search, /FROM "IndependentControlCriterionNorm"/);
   assert.match(search, /FROM "RegulationSource" norm_source/);
+  assert.match(search, /btrim\(COALESCE\(methodology\.description, ''\)\) <> ''/);
+  assert.match(
+    search,
+    /criterion\."basisKind" = 'DIRECT_NORM'::"IndependentControlBasisKind"/,
+  );
+  assert.match(
+    search,
+    /criterion\."allowedStatuses" && ARRAY\['CONFIRMED', 'LIKELY_NON_COMPLIANCE', 'COMPLIANT'\]::"RegulatoryAssessmentStatus"\[\]/,
+  );
+  assert.match(
+    search,
+    /btrim\(COALESCE\(check_item\."nonCompliancePattern", ''\)\) <> ''/,
+  );
+  assert.match(
+    search,
+    /btrim\(COALESCE\(search_check\."nonCompliancePattern", ''\)\) <> ''/,
+  );
+  assert.match(
+    search,
+    /btrim\(COALESCE\(norm_check\."nonCompliancePattern", ''\)\) <> ''/,
+  );
   assert.doesNotMatch(search, /internalFileName/);
+  assert.doesNotMatch(search, /rightsNote/);
 });
 
 test("sitemap включает один стабильный маршрут и использует SSOT regulation predicate", () => {
