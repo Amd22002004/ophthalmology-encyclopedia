@@ -77,3 +77,42 @@ test("отклоняет direct-norm критерий без нормы и пу�
   assert.ok(result.errors.includes("criterion:independent-control:sterilization-log:DIRECT_NORM_LINK_REQUIRED"));
   assert.ok(result.errors.includes("criterion:independent-control:sterilization-log:CHECK_QUESTION_REQUIRED"));
 });
+
+test("отклоняет публичную методологию без полного публичного критерия", () => {
+  const methodology = validMethodology();
+  methodology.criteria = [];
+
+  const result = validateIndependentControlCorpus([methodology]);
+
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.includes(
+    "methodology:independent-control:PUBLIC_COMPLETE_CRITERION_REQUIRED",
+  ));
+});
+
+test("отклоняет norm link без ключей или с неподдерживаемой ролью", () => {
+  const methodology = validMethodology();
+  methodology.criteria[0].normLinks = [{
+    regulationKey: "",
+    provisionKey: "",
+    checkKey: "",
+    role: "UNSUPPORTED" as never,
+    editionBound: true,
+  }];
+
+  const result = validateIndependentControlCorpus([methodology]);
+
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.includes(
+    "norm-link:independent-control:sterilization-log:0:REGULATION_KEY_REQUIRED",
+  ));
+  assert.ok(result.errors.includes(
+    "norm-link:independent-control:sterilization-log:0:PROVISION_KEY_REQUIRED",
+  ));
+  assert.ok(result.errors.includes(
+    "norm-link:independent-control:sterilization-log:0:CHECK_KEY_REQUIRED",
+  ));
+  assert.ok(result.errors.includes(
+    "norm-link:independent-control:sterilization-log:0:INVALID_ROLE",
+  ));
+});

@@ -18,6 +18,11 @@ const refutingStatuses: readonly IndependentControlAssessmentStatus[] = [
   "NOT_CONFIRMED",
   "COMPLIANT",
 ];
+const nonNormProhibitedStatuses: readonly IndependentControlAssessmentStatus[] = [
+  "CONFIRMED",
+  "LIKELY_NON_COMPLIANCE",
+  "COMPLIANT",
+];
 
 function hasText(value: string | null | undefined) {
   return Boolean(value?.trim());
@@ -66,6 +71,12 @@ export function canPublishIndependentControlCriterion(
   if (input.allowedStatuses.length === 0) errors.push("ALLOWED_STATUSES_REQUIRED");
   if (input.basisKind === "DIRECT_NORM" && input.normLinks.length === 0) {
     errors.push("DIRECT_NORM_LINK_REQUIRED");
+  }
+  if (
+    input.basisKind !== "DIRECT_NORM" &&
+    input.allowedStatuses.some((status) => nonNormProhibitedStatuses.includes(status))
+  ) {
+    errors.push("NON_NORM_STRONG_STATUS_NOT_ALLOWED");
   }
 
   return { allowed: errors.length === 0, errors };
@@ -130,8 +141,10 @@ export function canPublishIndependentControlAssessment(
     if (input.criterion.basisKind !== "DIRECT_NORM") {
       errors.push("STRONG_STATUS_DIRECT_NORM_REQUIRED");
     }
-    if (!input.criterion.normLinks.some((link) => link.editionBound)) {
-      errors.push("EDITION_BOUND_NORM_LINK_REQUIRED");
+    if (!input.criterion.normLinks.some(
+      (link) => link.role === "DIRECT_REQUIREMENT" && link.editionBound,
+    )) {
+      errors.push("EDITION_BOUND_DIRECT_NORM_LINK_REQUIRED");
     }
     if (input.temporalApplicability !== "APPLICABLE") {
       errors.push("TEMPORAL_APPLICABILITY_REQUIRED");

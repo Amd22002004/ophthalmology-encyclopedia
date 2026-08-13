@@ -63,6 +63,38 @@ const methodology = (overrides: Partial<IndependentControlMethodology> = {}): In
   ...overrides,
 });
 
+const assessment = (
+  overrides: Partial<IndependentControlAssessment> = {},
+): IndependentControlAssessment => ({
+  status: "CONFIRMED",
+  isPublished: true,
+  publishedAt: new Date("2026-08-12T00:00:00.000Z"),
+  evidenceValidatedAt: new Date("2026-08-12T00:00:00.000Z"),
+  investigationPublished: true,
+  investigationEvidenceValidatedAt: new Date("2026-08-12T00:00:00.000Z"),
+  criterion: criterion({
+    allowedStatuses: [
+      "CONFIRMED",
+      "LIKELY_NON_COMPLIANCE",
+      "REQUIRES_VERIFICATION",
+      "NOT_CONFIRMED",
+      "COMPLIANT",
+    ],
+  }),
+  neutralConclusion: "Вывод ограничен проверенными материалами.",
+  alternativeVersion: "Альтернативная версия проверена отдельно.",
+  evidenceGaps: "Существенные пробелы не выявлены.",
+  temporalApplicability: "APPLICABLE",
+  supportingEvidenceSearchCompleted: true,
+  refutingEvidenceSearchCompleted: true,
+  primaryEvidence: [{
+    role: "SUPPORTS",
+    isPrimary: true,
+    provenanceVerifiedAt: new Date("2026-08-12T00:00:00.000Z"),
+  }],
+  ...overrides,
+});
+
 test("не публикует непроверенный локальный файл, но допускает его библиографическое описание", () => {
   const bibliographyOnly = canPublishIndependentControlMethodology(methodology(), now);
   const unpublishedFile = canPublishIndependentControlMethodology(methodology({
@@ -89,6 +121,28 @@ test("не публикует direct-norm критерий без связи с 
 
   assert.equal(result.allowed, false);
   assert.ok(result.errors.includes("DIRECT_NORM_LINK_REQUIRED"));
+});
+
+test("не публикует methodology-derived критерий с сильными allowed statuses", () => {
+  const result = canPublishIndependentControlCriterion(criterion({
+    basisKind: "METHODOLOGY_DERIVED",
+    normLinks: [],
+    allowedStatuses: ["REQUIRES_VERIFICATION", "CONFIRMED", "COMPLIANT"],
+  }), now);
+
+  assert.equal(result.allowed, false);
+  assert.ok(result.errors.includes("NON_NORM_STRONG_STATUS_NOT_ALLOWED"));
+});
+
+test("не публикует local-form-only критерий с сильными allowed statuses", () => {
+  const result = canPublishIndependentControlCriterion(criterion({
+    basisKind: "LOCAL_FORM_ONLY",
+    normLinks: [],
+    allowedStatuses: ["NOT_CONFIRMED", "LIKELY_NON_COMPLIANCE"],
+  }), now);
+
+  assert.equal(result.allowed, false);
+  assert.ok(result.errors.includes("NON_NORM_STRONG_STATUS_NOT_ALLOWED"));
 });
 
 test("не допускает сильный вывод для methodology-derived критерия", () => {
@@ -173,4 +227,84 @@ test("требует двусторонний поиск и первичное �
   assert.ok(missingEvidence.errors.includes("SUPPORTING_SEARCH_REQUIRED"));
   assert.ok(missingEvidence.errors.includes("REFUTING_SEARCH_REQUIRED"));
   assert.ok(missingEvidence.errors.includes("ALIGNED_PRIMARY_EVIDENCE_REQUIRED"));
+});
+
+test("не принимает context-only ссылку как прямую edition-bound норму для сильного вывода", () => {
+  const result = canPublishIndependentControlAssessment(assessment({
+    criterion: criterion({
+      allowedStatuses: ["CONFIRMED"],
+      normLinks: [{
+        regulationKey: "sanitary-rules",
+        provisionKey: "p-4-2",
+        checkKey: "sterilization-log",
+        role: "CONTEXT",
+        editionBound: true,
+      }],
+    }),
+  }), now);
+
+  assert.equal(result.allowed, false);
+  assert.ok(result.errors.includes("EDITION_BOUND_DIRECT_NORM_LINK_REQUIRED"));
+});
+
+test("NOT_CONFIRMED и COMPLIANT требуют двусторонний поиск и primary REFUTES evidence", () => {
+  for (const status of ["NOT_CONFIRMED", "COMPLIANT"] as const) {
+    const result = canPublishIndependentControlAssessment(assessment({
+      status,
+      supportingEvidenceSearchCompleted: false,
+      refutingEvidenceSearchCompleted: false,
+      primaryEvidence: [{ role: "SUPPORTS", isPrimary: true, provenanceVerifiedAt: now }],
+    }), now);
+
+    assert.equal(result.allowed, false, status);
+    assert.ok(result.errors.includes("SUPPORTING_SEARCH_REQUIRED"), status);
+    assert.ok(result.errors.includes("REFUTING_SEARCH_REQUIRED"), status);
+    assert.ok(result.errors.includes("ALIGNED_PRIMARY_EVIDENCE_REQUIRED"), status);
+  }
+});
+
+test("доказанная неприменимость допускает только NOT_CONFIRMED без двустороннего поиска", () => {
+  const notApplicable = assessment({
+    status: "NOT_CONFIRMED",
+    temporalApplicability: "NOT_APPLICABLE",
+    legalNonApplicabilityProven: true,
+    supportingEvidenceSearchCompleted: false,
+    refutingEvidenceSearchCompleted: false,
+    primaryEvidence: [],
+  });
+  const notConfirmed = canPublishIndependentControlAssessment(notApplicable, now);
+  const compliant = canPublishIndependentControlAssessment({
+    ...notApplicable,
+    status: "COMPLIANT",
+  }, now);
+
+  assert.deepEqual(notConfirmed, { allowed: true, errors: [] });
+  assert.equal(compliant.allowed, false);
+  assert.ok(compliant.errors.includes("LEGAL_NON_APPLICABILITY_REQUIRES_NOT_CONFIRMED"));
+});
+
+test("не принимает restricted signal как primary evidence сильного вывода", () => {
+  const result = canPublishIndependentControlAssessment(assessment({
+    restrictedSignals: ["REGISTRY_NO_MATCH"],
+    primaryEvidence: [{
+      role: "SUPPORTS",
+      isPrimary: true,
+      provenanceVerifiedAt: now,
+      isRestrictedSignal: true,
+    }],
+  }), now);
+
+  assert.equal(result.allowed, false);
+  assert.ok(result.errors.includes("ALIGNED_PRIMARY_EVIDENCE_REQUIRED"));
+});
+
+test("публикует conclusive вывод только с прямой применимой нормой и aligned primary evidence", () => {
+  const confirmed = canPublishIndependentControlAssessment(assessment(), now);
+  const compliant = canPublishIndependentControlAssessment(assessment({
+    status: "COMPLIANT",
+    primaryEvidence: [{ role: "REFUTES", isPrimary: true, provenanceVerifiedAt: now }],
+  }), now);
+
+  assert.deepEqual(confirmed, { allowed: true, errors: [] });
+  assert.deepEqual(compliant, { allowed: true, errors: [] });
 });

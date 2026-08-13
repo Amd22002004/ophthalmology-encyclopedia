@@ -30,6 +30,14 @@ export const INDEPENDENT_CONTROL_ASSESSMENT_STATUSES = [
 export type IndependentControlAssessmentStatus =
   (typeof INDEPENDENT_CONTROL_ASSESSMENT_STATUSES)[number];
 
+export const INDEPENDENT_CONTROL_NORM_LINK_ROLES = [
+  "DIRECT_REQUIREMENT",
+  "CONTEXT",
+] as const;
+
+export type IndependentControlNormLinkRole =
+  (typeof INDEPENDENT_CONTROL_NORM_LINK_ROLES)[number];
+
 export type IndependentControlSource = {
   title: string;
   kind: "LOCAL_BIBLIOGRAPHIC" | "OFFICIAL_METHODOLOGY";
@@ -46,7 +54,7 @@ export type IndependentControlNormLink = {
   regulationKey: string;
   provisionKey: string;
   checkKey: string;
-  role: "DIRECT_REQUIREMENT" | "CONTEXT";
+  role: IndependentControlNormLinkRole;
   editionBound: boolean;
 };
 

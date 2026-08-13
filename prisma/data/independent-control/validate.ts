@@ -1,8 +1,12 @@
-import { canPublishIndependentControlCriterion } from "../../../src/lib/independent-control/publication";
+import {
+  canPublishIndependentControlCriterion,
+  canPublishIndependentControlMethodology,
+} from "../../../src/lib/independent-control/publication";
 import type {
   IndependentControlCriterion,
   IndependentControlMethodology,
 } from "./types";
+import { INDEPENDENT_CONTROL_NORM_LINK_ROLES } from "./types";
 
 type CorpusValidationResult = { valid: boolean; errors: string[] };
 
@@ -69,6 +73,14 @@ export function validateIndependentControlCorpus(
       errors.push(`methodology:${methodologyId}:EVIDENCE_VALIDATION_REQUIRED`);
     }
     if (methodology.sources.length === 0) errors.push(`methodology:${methodologyId}:BIBLIOGRAPHY_REQUIRED`);
+    if (
+      methodology.isPublished &&
+      canPublishIndependentControlMethodology(methodology, now).errors.includes(
+        "PUBLIC_COMPLETE_CRITERION_REQUIRED",
+      )
+    ) {
+      errors.push(`methodology:${methodologyId}:PUBLIC_COMPLETE_CRITERION_REQUIRED`);
+    }
 
     methodology.sources.forEach((source, index) => {
       const sourceId = `source:${methodologyId}:${index}`;
@@ -104,6 +116,15 @@ export function validateIndependentControlCorpus(
       if (criterion.basisKind === "DIRECT_NORM" && criterion.normLinks.length === 0) {
         errors.push(`${criterionId}:DIRECT_NORM_LINK_REQUIRED`);
       }
+      criterion.normLinks.forEach((link, index) => {
+        const linkId = `norm-link:${methodologyId}:${criterion.stableKey || "missing-key"}:${index}`;
+        if (!hasText(link.regulationKey)) errors.push(`${linkId}:REGULATION_KEY_REQUIRED`);
+        if (!hasText(link.provisionKey)) errors.push(`${linkId}:PROVISION_KEY_REQUIRED`);
+        if (!hasText(link.checkKey)) errors.push(`${linkId}:CHECK_KEY_REQUIRED`);
+        if (!(INDEPENDENT_CONTROL_NORM_LINK_ROLES as readonly string[]).includes(link.role)) {
+          errors.push(`${linkId}:INVALID_ROLE`);
+        }
+      });
       if (criterion.isPublished && criterion.publishedAt == null) {
         errors.push(`${criterionId}:PUBLICATION_DATE_REQUIRED`);
       }
