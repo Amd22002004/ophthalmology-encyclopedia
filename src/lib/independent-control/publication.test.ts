@@ -283,6 +283,23 @@ test("доказанная неприменимость допускает то�
   assert.ok(compliant.errors.includes("LEGAL_NON_APPLICABILITY_REQUIRES_NOT_CONFIRMED"));
 });
 
+test("не использует legal non-applicability для обхода evidence при APPLICABLE", () => {
+  const result = canPublishIndependentControlAssessment(assessment({
+    status: "NOT_CONFIRMED",
+    temporalApplicability: "APPLICABLE",
+    legalNonApplicabilityProven: true,
+    supportingEvidenceSearchCompleted: false,
+    refutingEvidenceSearchCompleted: false,
+    primaryEvidence: [],
+  }), now);
+
+  assert.equal(result.allowed, false);
+  assert.ok(result.errors.includes("LEGAL_NON_APPLICABILITY_REQUIRES_NOT_APPLICABLE"));
+  assert.ok(result.errors.includes("SUPPORTING_SEARCH_REQUIRED"));
+  assert.ok(result.errors.includes("REFUTING_SEARCH_REQUIRED"));
+  assert.ok(result.errors.includes("ALIGNED_PRIMARY_EVIDENCE_REQUIRED"));
+});
+
 test("не принимает restricted signal как primary evidence сильного вывода", () => {
   const result = canPublishIndependentControlAssessment(assessment({
     restrictedSignals: ["REGISTRY_NO_MATCH"],

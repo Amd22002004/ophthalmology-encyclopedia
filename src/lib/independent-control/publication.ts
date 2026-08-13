@@ -151,10 +151,17 @@ export function canPublishIndependentControlAssessment(
     }
   }
 
-  const legalNonApplicability = input.legalNonApplicabilityProven === true;
-  if (legalNonApplicability && input.status !== "NOT_CONFIRMED") {
+  const legalNonApplicabilityClaimed = input.legalNonApplicabilityProven === true;
+  if (legalNonApplicabilityClaimed && input.status !== "NOT_CONFIRMED") {
     errors.push("LEGAL_NON_APPLICABILITY_REQUIRES_NOT_CONFIRMED");
   }
+  if (legalNonApplicabilityClaimed && input.temporalApplicability !== "NOT_APPLICABLE") {
+    errors.push("LEGAL_NON_APPLICABILITY_REQUIRES_NOT_APPLICABLE");
+  }
+  const legalNonApplicability =
+    legalNonApplicabilityClaimed &&
+    input.status === "NOT_CONFIRMED" &&
+    input.temporalApplicability === "NOT_APPLICABLE";
   const requiresConclusiveEvidence =
     strongStatuses.includes(input.status) ||
     (refutingStatuses.includes(input.status) && !legalNonApplicability);
