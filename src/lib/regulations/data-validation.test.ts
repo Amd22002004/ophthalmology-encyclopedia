@@ -43,6 +43,20 @@ test("не допускает публичных норм без официал�
   assert.deepEqual(result, { valid: true, errors: [] });
 });
 
+test("scalar URL публичного акта совпадает с опубликованным официальным source", () => {
+  for (const regulation of REGULATORY_CORPUS.filter((item) => item.isPublished)) {
+    assert.ok(
+      regulation.sources.some(
+        (source) =>
+          source.isOfficial &&
+          source.isPublished &&
+          source.url === regulation.officialPublicationUrl,
+      ),
+      regulation.slug,
+    );
+  }
+});
+
 test("не считает опубликованной карточку без даты публикации", () => {
   const source = REGULATIONS.find((item) => item.slug === "federal-law-323-fz");
   assert.ok(source);
