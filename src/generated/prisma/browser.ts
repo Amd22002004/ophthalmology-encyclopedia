@@ -34,9 +34,7 @@ export type Procedure = Prisma.ProcedureModel
 export type Doctor = Prisma.DoctorModel
 /**
  * Model ScientificWork
- * Научная работа врача: диссертация, автореферат, статья, патент,
- * методические рекомендации, монография. Полный текст в БД не хранится —
- * только структурированные данные; сам документ отдаётся файлом (pdfUrl).
+ * 
  */
 export type ScientificWork = Prisma.ScientificWorkModel
 /**
@@ -50,6 +48,12 @@ export type ScientificWorkOnDisease = Prisma.ScientificWorkOnDiseaseModel
  * Процедура/методика, которая РЕАЛЬНО исследуется в научной работе.
  */
 export type ScientificWorkOnProcedure = Prisma.ScientificWorkOnProcedureModel
+/**
+ * Model ScientificWorkOnEquipment
+ * Оборудование, прямо указанное в научной работе как использованное в методике
+ * или клиническом случае. Прямая связь, а не вывод через процедуру.
+ */
+export type ScientificWorkOnEquipment = Prisma.ScientificWorkOnEquipmentModel
 /**
  * Model Clinic
  * 
@@ -77,6 +81,40 @@ export type EquipmentSpec = Prisma.EquipmentSpecModel
  */
 export type Publication = Prisma.PublicationModel
 /**
+ * Model Investigation
+ * Независимое расследование Ассоциации. Содержимое вынесено в отдельные
+ * блоки, события и документы, чтобы новые расследования не требовали
+ * изменения маршрутов или шаблонов.
+ */
+export type Investigation = Prisma.InvestigationModel
+/**
+ * Model InvestigationSection
+ * Смысловой блок расследования: краткое описание, официальные документы,
+ * нормативная база, выводы, статус и другие типы для будущих материалов.
+ */
+export type InvestigationSection = Prisma.InvestigationSectionModel
+/**
+ * Model InvestigationTimelineEvent
+ * Элемент хронологии с отдельной подписью даты: она допускает указание
+ * неопределённой или частичной даты без подмены её техническим значением.
+ */
+export type InvestigationTimelineEvent = Prisma.InvestigationTimelineEventModel
+/**
+ * Model InvestigationDocument
+ * Первичный документ или доказательная фотография, опубликованные в составе
+ * расследования. Техническое имя файла остаётся внутренней метаинформацией и
+ * никогда не передаётся в публичный шаблон.
+ * `content` хранит доступную текстовую расшифровку для документов, которые
+ * браузер не умеет показать встроенно, например DOCX.
+ */
+export type InvestigationDocument = Prisma.InvestigationDocumentModel
+/**
+ * Model News
+ * Короткая редакционная новость. Связь вынесена в отдельную таблицу: одна
+ * новость может указывать на несколько расследований и наоборот.
+ */
+export type News = Prisma.NewsModel
+/**
  * Model ClinicalGuideline
  * 
  */
@@ -86,6 +124,111 @@ export type ClinicalGuideline = Prisma.ClinicalGuidelineModel
  * 
  */
 export type Regulation = Prisma.RegulationModel
+/**
+ * Model RegulationEdition
+ * Конкретная редакция акта. Период хранится независимо от времени обновления
+ * карточки, чтобы текущая норма не применялась к историческому событию.
+ */
+export type RegulationEdition = Prisma.RegulationEditionModel
+/**
+ * Model RegulationRelation
+ * Направленная правовая связь: акт-источник изменяет, отменяет, заменяет,
+ * продлевает либо реализует акт-цель с указанной датой правового эффекта.
+ */
+export type RegulationRelation = Prisma.RegulationRelationModel
+/**
+ * Model RegulationSource
+ * Официальный источник акта или отдельной редакции. Неофициальные пересказы
+ * не становятся нормативным основанием расследования.
+ */
+export type RegulationSource = Prisma.RegulationSourceModel
+/**
+ * Model RegulationTopic
+ * Контролируемая тематическая категория нормативного графа.
+ */
+export type RegulationTopic = Prisma.RegulationTopicModel
+/**
+ * Model RegulationOnTopic
+ * 
+ */
+export type RegulationOnTopic = Prisma.RegulationOnTopicModel
+/**
+ * Model RegulationProvision
+ * Атомарное требование конкретной редакции с точным структурным указателем.
+ */
+export type RegulationProvision = Prisma.RegulationProvisionModel
+/**
+ * Model RegulatoryCheck
+ * Проверочный вопрос превращает норму в рабочую единицу аудита и обязательно
+ * указывает, какой факт и каким первичным документом необходимо подтвердить.
+ */
+export type RegulatoryCheck = Prisma.RegulatoryCheckModel
+/**
+ * Model IndependentControlMethodology
+ * Методика независимого контроля — отдельный ненормативный рабочий инструмент,
+ * а не нормативный правовой акт и не замена точной норме RegulatoryCheck.
+ */
+export type IndependentControlMethodology = Prisma.IndependentControlMethodologyModel
+/**
+ * Model IndependentControlSource
+ * 
+ */
+export type IndependentControlSource = Prisma.IndependentControlSourceModel
+/**
+ * Model IndependentControlCriterion
+ * 
+ */
+export type IndependentControlCriterion = Prisma.IndependentControlCriterionModel
+/**
+ * Model IndependentControlCriterionNorm
+ * 
+ */
+export type IndependentControlCriterionNorm = Prisma.IndependentControlCriterionNormModel
+/**
+ * Model RegulationEquipmentRequirement
+ * Одна строка стандарта оснащения без обобщения на другие подразделения.
+ */
+export type RegulationEquipmentRequirement = Prisma.RegulationEquipmentRequirementModel
+/**
+ * Model InvestigationEquipmentInstance
+ * Конкретный экземпляр оборудования существует только в контексте
+ * расследования и не меняет свойства каталожной модели Equipment.
+ */
+export type InvestigationEquipmentInstance = Prisma.InvestigationEquipmentInstanceModel
+/**
+ * Model InvestigationRegulatoryAssessment
+ * Применение одного проверочного вопроса к конкретному факту расследования.
+ * Публичный вывод допускается только после отдельного evidence-validation.
+ */
+export type InvestigationRegulatoryAssessment = Prisma.InvestigationRegulatoryAssessmentModel
+/**
+ * Model InvestigationAssessmentEvidence
+ * 
+ */
+export type InvestigationAssessmentEvidence = Prisma.InvestigationAssessmentEvidenceModel
+/**
+ * Model InvestigationIndependentControlAssessment
+ * 
+ */
+export type InvestigationIndependentControlAssessment = Prisma.InvestigationIndependentControlAssessmentModel
+/**
+ * Model InvestigationIndependentControlEvidence
+ * Доказательная связь использует составные FK с investigationId и тем самым
+ * запрещает смешивать оценку и документ из разных Investigation.
+ */
+export type InvestigationIndependentControlEvidence = Prisma.InvestigationIndependentControlEvidenceModel
+/**
+ * Model InvestigationEquipmentInstanceEvidence
+ * Первичный документ, которым подтверждены только идентификаторы конкретного
+ * экземпляра. Эта связь не переносит на экземпляр правовую оценку.
+ */
+export type InvestigationEquipmentInstanceEvidence = Prisma.InvestigationEquipmentInstanceEvidenceModel
+/**
+ * Model InvestigationRegistryCheck
+ * Воспроизводимая попытка поиска в официальном реестре. NO_MATCH означает
+ * только отсутствие результата по сохранённому запросу, а не отсутствие РУ.
+ */
+export type InvestigationRegistryCheck = Prisma.InvestigationRegistryCheckModel
 /**
  * Model HistoryEntry
  * 
@@ -211,6 +354,65 @@ export type ClinicOnProcedure = Prisma.ClinicOnProcedureModel
  * 
  */
 export type ClinicOnPublication = Prisma.ClinicOnPublicationModel
+/**
+ * Model InvestigationOnClinic
+ * 
+ */
+export type InvestigationOnClinic = Prisma.InvestigationOnClinicModel
+/**
+ * Model InvestigationOnEquipment
+ * 
+ */
+export type InvestigationOnEquipment = Prisma.InvestigationOnEquipmentModel
+/**
+ * Model InvestigationOnDisease
+ * 
+ */
+export type InvestigationOnDisease = Prisma.InvestigationOnDiseaseModel
+/**
+ * Model InvestigationOnProcedure
+ * 
+ */
+export type InvestigationOnProcedure = Prisma.InvestigationOnProcedureModel
+/**
+ * Model NewsOnInvestigation
+ * 
+ */
+export type NewsOnInvestigation = Prisma.NewsOnInvestigationModel
+/**
+ * Model Appeal
+ * Приватное обращение гражданина в Ассоциацию. Это операционная сущность:
+ * она не имеет публичной карточки и не превращает сообщённые заявителем
+ * сведения о враче или оборудовании в подтверждённые связи графа знаний.
+ */
+export type Appeal = Prisma.AppealModel
+/**
+ * Model AppealAttachment
+ * Метаданные приватного вложения. storageKey разрешается только относительно
+ * APPEAL_UPLOAD_DIR; файл никогда не размещается в public/.
+ */
+export type AppealAttachment = Prisma.AppealAttachmentModel
+/**
+ * Model AppealNote
+ * Внутренний комментарий сотрудника. Комментарии доступны только в admin.
+ */
+export type AppealNote = Prisma.AppealNoteModel
+/**
+ * Model AppealStatusHistory
+ * Неизменяемая история переходов между статусами обращения.
+ */
+export type AppealStatusHistory = Prisma.AppealStatusHistoryModel
+/**
+ * Model AppealNotification
+ * Outbox попыток доставки копии обращения на официальный email.
+ */
+export type AppealNotification = Prisma.AppealNotificationModel
+/**
+ * Model AppealConsentTemplate
+ * Версионируемая конфигурация согласия. Текст редактируется в admin без
+ * изменения кода; обращения сохраняют связь с той версией, которую видел заявитель.
+ */
+export type AppealConsentTemplate = Prisma.AppealConsentTemplateModel
 /**
  * Model AdminUser
  * 

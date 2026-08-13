@@ -14,9 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model ScientificWork
- * Научная работа врача: диссертация, автореферат, статья, патент,
- * методические рекомендации, монография. Полный текст в БД не хранится —
- * только структурированные данные; сам документ отдаётся файлом (pdfUrl).
+ * 
  */
 export type ScientificWorkModel = runtime.Types.Result.DefaultSelection<Prisma.$ScientificWorkPayload>
 
@@ -29,12 +27,14 @@ export type AggregateScientificWork = {
 }
 
 export type ScientificWorkAvgAggregateOutputType = {
+  doctorAuthorIndex: number | null
   year: number | null
   publicationCount: number | null
   sortOrder: number | null
 }
 
 export type ScientificWorkSumAggregateOutputType = {
+  doctorAuthorIndex: number | null
   year: number | null
   publicationCount: number | null
   sortOrder: number | null
@@ -46,6 +46,19 @@ export type ScientificWorkMinAggregateOutputType = {
   doctorId: string | null
   type: string | null
   title: string | null
+  doctorAuthorIndex: number | null
+  bibliography: string | null
+  journal: string | null
+  volume: string | null
+  issue: string | null
+  pages: string | null
+  doi: string | null
+  sourcePageUrl: string | null
+  sourcePdfUrl: string | null
+  sourceStatus: $Enums.ScientificWorkSourceStatus | null
+  sourceNote: string | null
+  contentKind: $Enums.ScientificWorkContentKind | null
+  topic: string | null
   degree: string | null
   speciality: string | null
   year: number | null
@@ -55,6 +68,15 @@ export type ScientificWorkMinAggregateOutputType = {
   publicationCount: number | null
   pdfUrl: string | null
   abstractUrl: string | null
+  isPublished: boolean | null
+  evidenceValidatedAt: Date | null
+  publishedAt: Date | null
+  publicationBlockReason: string | null
+  rightsVerifiedAt: Date | null
+  rightsBasis: $Enums.ScientificWorkRightsBasis | null
+  rightsNote: string | null
+  seoTitle: string | null
+  seoDescription: string | null
   sortOrder: number | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -66,6 +88,19 @@ export type ScientificWorkMaxAggregateOutputType = {
   doctorId: string | null
   type: string | null
   title: string | null
+  doctorAuthorIndex: number | null
+  bibliography: string | null
+  journal: string | null
+  volume: string | null
+  issue: string | null
+  pages: string | null
+  doi: string | null
+  sourcePageUrl: string | null
+  sourcePdfUrl: string | null
+  sourceStatus: $Enums.ScientificWorkSourceStatus | null
+  sourceNote: string | null
+  contentKind: $Enums.ScientificWorkContentKind | null
+  topic: string | null
   degree: string | null
   speciality: string | null
   year: number | null
@@ -75,6 +110,15 @@ export type ScientificWorkMaxAggregateOutputType = {
   publicationCount: number | null
   pdfUrl: string | null
   abstractUrl: string | null
+  isPublished: boolean | null
+  evidenceValidatedAt: Date | null
+  publishedAt: Date | null
+  publicationBlockReason: string | null
+  rightsVerifiedAt: Date | null
+  rightsBasis: $Enums.ScientificWorkRightsBasis | null
+  rightsNote: string | null
+  seoTitle: string | null
+  seoDescription: string | null
   sortOrder: number | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -86,6 +130,20 @@ export type ScientificWorkCountAggregateOutputType = {
   doctorId: number
   type: number
   title: number
+  authors: number
+  doctorAuthorIndex: number
+  bibliography: number
+  journal: number
+  volume: number
+  issue: number
+  pages: number
+  doi: number
+  sourcePageUrl: number
+  sourcePdfUrl: number
+  sourceStatus: number
+  sourceNote: number
+  contentKind: number
+  topic: number
   degree: number
   speciality: number
   year: number
@@ -95,9 +153,20 @@ export type ScientificWorkCountAggregateOutputType = {
   novelty: number
   practicalValue: number
   results: number
+  conclusions: number
   publicationCount: number
   pdfUrl: number
   abstractUrl: number
+  images: number
+  isPublished: number
+  evidenceValidatedAt: number
+  publishedAt: number
+  publicationBlockReason: number
+  rightsVerifiedAt: number
+  rightsBasis: number
+  rightsNote: number
+  seoTitle: number
+  seoDescription: number
   sortOrder: number
   createdAt: number
   updatedAt: number
@@ -106,12 +175,14 @@ export type ScientificWorkCountAggregateOutputType = {
 
 
 export type ScientificWorkAvgAggregateInputType = {
+  doctorAuthorIndex?: true
   year?: true
   publicationCount?: true
   sortOrder?: true
 }
 
 export type ScientificWorkSumAggregateInputType = {
+  doctorAuthorIndex?: true
   year?: true
   publicationCount?: true
   sortOrder?: true
@@ -123,6 +194,19 @@ export type ScientificWorkMinAggregateInputType = {
   doctorId?: true
   type?: true
   title?: true
+  doctorAuthorIndex?: true
+  bibliography?: true
+  journal?: true
+  volume?: true
+  issue?: true
+  pages?: true
+  doi?: true
+  sourcePageUrl?: true
+  sourcePdfUrl?: true
+  sourceStatus?: true
+  sourceNote?: true
+  contentKind?: true
+  topic?: true
   degree?: true
   speciality?: true
   year?: true
@@ -132,6 +216,15 @@ export type ScientificWorkMinAggregateInputType = {
   publicationCount?: true
   pdfUrl?: true
   abstractUrl?: true
+  isPublished?: true
+  evidenceValidatedAt?: true
+  publishedAt?: true
+  publicationBlockReason?: true
+  rightsVerifiedAt?: true
+  rightsBasis?: true
+  rightsNote?: true
+  seoTitle?: true
+  seoDescription?: true
   sortOrder?: true
   createdAt?: true
   updatedAt?: true
@@ -143,6 +236,19 @@ export type ScientificWorkMaxAggregateInputType = {
   doctorId?: true
   type?: true
   title?: true
+  doctorAuthorIndex?: true
+  bibliography?: true
+  journal?: true
+  volume?: true
+  issue?: true
+  pages?: true
+  doi?: true
+  sourcePageUrl?: true
+  sourcePdfUrl?: true
+  sourceStatus?: true
+  sourceNote?: true
+  contentKind?: true
+  topic?: true
   degree?: true
   speciality?: true
   year?: true
@@ -152,6 +258,15 @@ export type ScientificWorkMaxAggregateInputType = {
   publicationCount?: true
   pdfUrl?: true
   abstractUrl?: true
+  isPublished?: true
+  evidenceValidatedAt?: true
+  publishedAt?: true
+  publicationBlockReason?: true
+  rightsVerifiedAt?: true
+  rightsBasis?: true
+  rightsNote?: true
+  seoTitle?: true
+  seoDescription?: true
   sortOrder?: true
   createdAt?: true
   updatedAt?: true
@@ -163,6 +278,20 @@ export type ScientificWorkCountAggregateInputType = {
   doctorId?: true
   type?: true
   title?: true
+  authors?: true
+  doctorAuthorIndex?: true
+  bibliography?: true
+  journal?: true
+  volume?: true
+  issue?: true
+  pages?: true
+  doi?: true
+  sourcePageUrl?: true
+  sourcePdfUrl?: true
+  sourceStatus?: true
+  sourceNote?: true
+  contentKind?: true
+  topic?: true
   degree?: true
   speciality?: true
   year?: true
@@ -172,9 +301,20 @@ export type ScientificWorkCountAggregateInputType = {
   novelty?: true
   practicalValue?: true
   results?: true
+  conclusions?: true
   publicationCount?: true
   pdfUrl?: true
   abstractUrl?: true
+  images?: true
+  isPublished?: true
+  evidenceValidatedAt?: true
+  publishedAt?: true
+  publicationBlockReason?: true
+  rightsVerifiedAt?: true
+  rightsBasis?: true
+  rightsNote?: true
+  seoTitle?: true
+  seoDescription?: true
   sortOrder?: true
   createdAt?: true
   updatedAt?: true
@@ -273,6 +413,20 @@ export type ScientificWorkGroupByOutputType = {
   doctorId: string
   type: string
   title: string
+  authors: string[]
+  doctorAuthorIndex: number | null
+  bibliography: string | null
+  journal: string | null
+  volume: string | null
+  issue: string | null
+  pages: string | null
+  doi: string | null
+  sourcePageUrl: string | null
+  sourcePdfUrl: string | null
+  sourceStatus: $Enums.ScientificWorkSourceStatus
+  sourceNote: string | null
+  contentKind: $Enums.ScientificWorkContentKind
+  topic: string | null
   degree: string | null
   speciality: string | null
   year: number | null
@@ -282,9 +436,20 @@ export type ScientificWorkGroupByOutputType = {
   novelty: string[]
   practicalValue: string[]
   results: string[]
+  conclusions: string[]
   publicationCount: number | null
   pdfUrl: string | null
   abstractUrl: string | null
+  images: string[]
+  isPublished: boolean
+  evidenceValidatedAt: Date | null
+  publishedAt: Date | null
+  publicationBlockReason: string | null
+  rightsVerifiedAt: Date | null
+  rightsBasis: $Enums.ScientificWorkRightsBasis
+  rightsNote: string | null
+  seoTitle: string | null
+  seoDescription: string | null
   sortOrder: number
   createdAt: Date
   updatedAt: Date
@@ -319,6 +484,20 @@ export type ScientificWorkWhereInput = {
   doctorId?: Prisma.StringFilter<"ScientificWork"> | string
   type?: Prisma.StringFilter<"ScientificWork"> | string
   title?: Prisma.StringFilter<"ScientificWork"> | string
+  authors?: Prisma.StringNullableListFilter<"ScientificWork">
+  doctorAuthorIndex?: Prisma.IntNullableFilter<"ScientificWork"> | number | null
+  bibliography?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  journal?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  volume?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  issue?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  pages?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  doi?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  sourcePageUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  sourcePdfUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFilter<"ScientificWork"> | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFilter<"ScientificWork"> | $Enums.ScientificWorkContentKind
+  topic?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   degree?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   speciality?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   year?: Prisma.IntNullableFilter<"ScientificWork"> | number | null
@@ -328,15 +507,27 @@ export type ScientificWorkWhereInput = {
   novelty?: Prisma.StringNullableListFilter<"ScientificWork">
   practicalValue?: Prisma.StringNullableListFilter<"ScientificWork">
   results?: Prisma.StringNullableListFilter<"ScientificWork">
+  conclusions?: Prisma.StringNullableListFilter<"ScientificWork">
   publicationCount?: Prisma.IntNullableFilter<"ScientificWork"> | number | null
   pdfUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   abstractUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  images?: Prisma.StringNullableListFilter<"ScientificWork">
+  isPublished?: Prisma.BoolFilter<"ScientificWork"> | boolean
+  evidenceValidatedAt?: Prisma.DateTimeNullableFilter<"ScientificWork"> | Date | string | null
+  publishedAt?: Prisma.DateTimeNullableFilter<"ScientificWork"> | Date | string | null
+  publicationBlockReason?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  rightsVerifiedAt?: Prisma.DateTimeNullableFilter<"ScientificWork"> | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFilter<"ScientificWork"> | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  seoTitle?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  seoDescription?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   sortOrder?: Prisma.IntFilter<"ScientificWork"> | number
   createdAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
   doctor?: Prisma.XOR<Prisma.DoctorScalarRelationFilter, Prisma.DoctorWhereInput>
   diseases?: Prisma.ScientificWorkOnDiseaseListRelationFilter
   procedures?: Prisma.ScientificWorkOnProcedureListRelationFilter
+  equipment?: Prisma.ScientificWorkOnEquipmentListRelationFilter
 }
 
 export type ScientificWorkOrderByWithRelationInput = {
@@ -345,6 +536,20 @@ export type ScientificWorkOrderByWithRelationInput = {
   doctorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  authors?: Prisma.SortOrder
+  doctorAuthorIndex?: Prisma.SortOrderInput | Prisma.SortOrder
+  bibliography?: Prisma.SortOrderInput | Prisma.SortOrder
+  journal?: Prisma.SortOrderInput | Prisma.SortOrder
+  volume?: Prisma.SortOrderInput | Prisma.SortOrder
+  issue?: Prisma.SortOrderInput | Prisma.SortOrder
+  pages?: Prisma.SortOrderInput | Prisma.SortOrder
+  doi?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourcePageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourcePdfUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceStatus?: Prisma.SortOrder
+  sourceNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  contentKind?: Prisma.SortOrder
+  topic?: Prisma.SortOrderInput | Prisma.SortOrder
   degree?: Prisma.SortOrderInput | Prisma.SortOrder
   speciality?: Prisma.SortOrderInput | Prisma.SortOrder
   year?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -354,20 +559,33 @@ export type ScientificWorkOrderByWithRelationInput = {
   novelty?: Prisma.SortOrder
   practicalValue?: Prisma.SortOrder
   results?: Prisma.SortOrder
+  conclusions?: Prisma.SortOrder
   publicationCount?: Prisma.SortOrderInput | Prisma.SortOrder
   pdfUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   abstractUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  images?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  evidenceValidatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  publicationBlockReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  rightsVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  rightsBasis?: Prisma.SortOrder
+  rightsNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   doctor?: Prisma.DoctorOrderByWithRelationInput
   diseases?: Prisma.ScientificWorkOnDiseaseOrderByRelationAggregateInput
   procedures?: Prisma.ScientificWorkOnProcedureOrderByRelationAggregateInput
+  equipment?: Prisma.ScientificWorkOnEquipmentOrderByRelationAggregateInput
 }
 
 export type ScientificWorkWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   slug?: string
+  doi?: string
   doctorId_title?: Prisma.ScientificWorkDoctorIdTitleCompoundUniqueInput
   AND?: Prisma.ScientificWorkWhereInput | Prisma.ScientificWorkWhereInput[]
   OR?: Prisma.ScientificWorkWhereInput[]
@@ -375,6 +593,19 @@ export type ScientificWorkWhereUniqueInput = Prisma.AtLeast<{
   doctorId?: Prisma.StringFilter<"ScientificWork"> | string
   type?: Prisma.StringFilter<"ScientificWork"> | string
   title?: Prisma.StringFilter<"ScientificWork"> | string
+  authors?: Prisma.StringNullableListFilter<"ScientificWork">
+  doctorAuthorIndex?: Prisma.IntNullableFilter<"ScientificWork"> | number | null
+  bibliography?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  journal?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  volume?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  issue?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  pages?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  sourcePageUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  sourcePdfUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFilter<"ScientificWork"> | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFilter<"ScientificWork"> | $Enums.ScientificWorkContentKind
+  topic?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   degree?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   speciality?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   year?: Prisma.IntNullableFilter<"ScientificWork"> | number | null
@@ -384,16 +615,28 @@ export type ScientificWorkWhereUniqueInput = Prisma.AtLeast<{
   novelty?: Prisma.StringNullableListFilter<"ScientificWork">
   practicalValue?: Prisma.StringNullableListFilter<"ScientificWork">
   results?: Prisma.StringNullableListFilter<"ScientificWork">
+  conclusions?: Prisma.StringNullableListFilter<"ScientificWork">
   publicationCount?: Prisma.IntNullableFilter<"ScientificWork"> | number | null
   pdfUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   abstractUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  images?: Prisma.StringNullableListFilter<"ScientificWork">
+  isPublished?: Prisma.BoolFilter<"ScientificWork"> | boolean
+  evidenceValidatedAt?: Prisma.DateTimeNullableFilter<"ScientificWork"> | Date | string | null
+  publishedAt?: Prisma.DateTimeNullableFilter<"ScientificWork"> | Date | string | null
+  publicationBlockReason?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  rightsVerifiedAt?: Prisma.DateTimeNullableFilter<"ScientificWork"> | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFilter<"ScientificWork"> | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  seoTitle?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  seoDescription?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   sortOrder?: Prisma.IntFilter<"ScientificWork"> | number
   createdAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
   doctor?: Prisma.XOR<Prisma.DoctorScalarRelationFilter, Prisma.DoctorWhereInput>
   diseases?: Prisma.ScientificWorkOnDiseaseListRelationFilter
   procedures?: Prisma.ScientificWorkOnProcedureListRelationFilter
-}, "id" | "slug" | "doctorId_title">
+  equipment?: Prisma.ScientificWorkOnEquipmentListRelationFilter
+}, "id" | "slug" | "doi" | "doctorId_title">
 
 export type ScientificWorkOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -401,6 +644,20 @@ export type ScientificWorkOrderByWithAggregationInput = {
   doctorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  authors?: Prisma.SortOrder
+  doctorAuthorIndex?: Prisma.SortOrderInput | Prisma.SortOrder
+  bibliography?: Prisma.SortOrderInput | Prisma.SortOrder
+  journal?: Prisma.SortOrderInput | Prisma.SortOrder
+  volume?: Prisma.SortOrderInput | Prisma.SortOrder
+  issue?: Prisma.SortOrderInput | Prisma.SortOrder
+  pages?: Prisma.SortOrderInput | Prisma.SortOrder
+  doi?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourcePageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourcePdfUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceStatus?: Prisma.SortOrder
+  sourceNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  contentKind?: Prisma.SortOrder
+  topic?: Prisma.SortOrderInput | Prisma.SortOrder
   degree?: Prisma.SortOrderInput | Prisma.SortOrder
   speciality?: Prisma.SortOrderInput | Prisma.SortOrder
   year?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -410,9 +667,20 @@ export type ScientificWorkOrderByWithAggregationInput = {
   novelty?: Prisma.SortOrder
   practicalValue?: Prisma.SortOrder
   results?: Prisma.SortOrder
+  conclusions?: Prisma.SortOrder
   publicationCount?: Prisma.SortOrderInput | Prisma.SortOrder
   pdfUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   abstractUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  images?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  evidenceValidatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  publicationBlockReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  rightsVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  rightsBasis?: Prisma.SortOrder
+  rightsNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -432,6 +700,20 @@ export type ScientificWorkScalarWhereWithAggregatesInput = {
   doctorId?: Prisma.StringWithAggregatesFilter<"ScientificWork"> | string
   type?: Prisma.StringWithAggregatesFilter<"ScientificWork"> | string
   title?: Prisma.StringWithAggregatesFilter<"ScientificWork"> | string
+  authors?: Prisma.StringNullableListFilter<"ScientificWork">
+  doctorAuthorIndex?: Prisma.IntNullableWithAggregatesFilter<"ScientificWork"> | number | null
+  bibliography?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  journal?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  volume?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  issue?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  pages?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  doi?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  sourcePageUrl?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  sourcePdfUrl?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusWithAggregatesFilter<"ScientificWork"> | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindWithAggregatesFilter<"ScientificWork"> | $Enums.ScientificWorkContentKind
+  topic?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
   degree?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
   speciality?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
   year?: Prisma.IntNullableWithAggregatesFilter<"ScientificWork"> | number | null
@@ -441,9 +723,20 @@ export type ScientificWorkScalarWhereWithAggregatesInput = {
   novelty?: Prisma.StringNullableListFilter<"ScientificWork">
   practicalValue?: Prisma.StringNullableListFilter<"ScientificWork">
   results?: Prisma.StringNullableListFilter<"ScientificWork">
+  conclusions?: Prisma.StringNullableListFilter<"ScientificWork">
   publicationCount?: Prisma.IntNullableWithAggregatesFilter<"ScientificWork"> | number | null
   pdfUrl?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
   abstractUrl?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  images?: Prisma.StringNullableListFilter<"ScientificWork">
+  isPublished?: Prisma.BoolWithAggregatesFilter<"ScientificWork"> | boolean
+  evidenceValidatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ScientificWork"> | Date | string | null
+  publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ScientificWork"> | Date | string | null
+  publicationBlockReason?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  rightsVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ScientificWork"> | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisWithAggregatesFilter<"ScientificWork"> | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  seoTitle?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
+  seoDescription?: Prisma.StringNullableWithAggregatesFilter<"ScientificWork"> | string | null
   sortOrder?: Prisma.IntWithAggregatesFilter<"ScientificWork"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ScientificWork"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ScientificWork"> | Date | string
@@ -454,6 +747,20 @@ export type ScientificWorkCreateInput = {
   slug?: string | null
   type: string
   title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
   degree?: string | null
   speciality?: string | null
   year?: number | null
@@ -463,15 +770,27 @@ export type ScientificWorkCreateInput = {
   novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
   publicationCount?: number | null
   pdfUrl?: string | null
   abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   doctor: Prisma.DoctorCreateNestedOneWithoutScientificWorksInput
   diseases?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutWorkInput
   procedures?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutWorkInput
+  equipment?: Prisma.ScientificWorkOnEquipmentCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkUncheckedCreateInput = {
@@ -480,6 +799,20 @@ export type ScientificWorkUncheckedCreateInput = {
   doctorId: string
   type: string
   title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
   degree?: string | null
   speciality?: string | null
   year?: number | null
@@ -489,14 +822,26 @@ export type ScientificWorkUncheckedCreateInput = {
   novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
   publicationCount?: number | null
   pdfUrl?: string | null
   abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   diseases?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutWorkInput
   procedures?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutWorkInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUncheckedCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkUpdateInput = {
@@ -504,6 +849,20 @@ export type ScientificWorkUpdateInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -513,15 +872,27 @@ export type ScientificWorkUpdateInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctor?: Prisma.DoctorUpdateOneRequiredWithoutScientificWorksNestedInput
   diseases?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutWorkNestedInput
   procedures?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutWorkNestedInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkUncheckedUpdateInput = {
@@ -530,6 +901,20 @@ export type ScientificWorkUncheckedUpdateInput = {
   doctorId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -539,14 +924,26 @@ export type ScientificWorkUncheckedUpdateInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   diseases?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutWorkNestedInput
   procedures?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutWorkNestedInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUncheckedUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkCreateManyInput = {
@@ -555,6 +952,20 @@ export type ScientificWorkCreateManyInput = {
   doctorId: string
   type: string
   title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
   degree?: string | null
   speciality?: string | null
   year?: number | null
@@ -564,9 +975,20 @@ export type ScientificWorkCreateManyInput = {
   novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
   publicationCount?: number | null
   pdfUrl?: string | null
   abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -577,6 +999,20 @@ export type ScientificWorkUpdateManyMutationInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -586,9 +1022,20 @@ export type ScientificWorkUpdateManyMutationInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -600,6 +1047,20 @@ export type ScientificWorkUncheckedUpdateManyInput = {
   doctorId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -609,9 +1070,20 @@ export type ScientificWorkUncheckedUpdateManyInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -638,6 +1110,20 @@ export type ScientificWorkCountOrderByAggregateInput = {
   doctorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  authors?: Prisma.SortOrder
+  doctorAuthorIndex?: Prisma.SortOrder
+  bibliography?: Prisma.SortOrder
+  journal?: Prisma.SortOrder
+  volume?: Prisma.SortOrder
+  issue?: Prisma.SortOrder
+  pages?: Prisma.SortOrder
+  doi?: Prisma.SortOrder
+  sourcePageUrl?: Prisma.SortOrder
+  sourcePdfUrl?: Prisma.SortOrder
+  sourceStatus?: Prisma.SortOrder
+  sourceNote?: Prisma.SortOrder
+  contentKind?: Prisma.SortOrder
+  topic?: Prisma.SortOrder
   degree?: Prisma.SortOrder
   speciality?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -647,15 +1133,27 @@ export type ScientificWorkCountOrderByAggregateInput = {
   novelty?: Prisma.SortOrder
   practicalValue?: Prisma.SortOrder
   results?: Prisma.SortOrder
+  conclusions?: Prisma.SortOrder
   publicationCount?: Prisma.SortOrder
   pdfUrl?: Prisma.SortOrder
   abstractUrl?: Prisma.SortOrder
+  images?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  evidenceValidatedAt?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  publicationBlockReason?: Prisma.SortOrder
+  rightsVerifiedAt?: Prisma.SortOrder
+  rightsBasis?: Prisma.SortOrder
+  rightsNote?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ScientificWorkAvgOrderByAggregateInput = {
+  doctorAuthorIndex?: Prisma.SortOrder
   year?: Prisma.SortOrder
   publicationCount?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
@@ -667,6 +1165,19 @@ export type ScientificWorkMaxOrderByAggregateInput = {
   doctorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  doctorAuthorIndex?: Prisma.SortOrder
+  bibliography?: Prisma.SortOrder
+  journal?: Prisma.SortOrder
+  volume?: Prisma.SortOrder
+  issue?: Prisma.SortOrder
+  pages?: Prisma.SortOrder
+  doi?: Prisma.SortOrder
+  sourcePageUrl?: Prisma.SortOrder
+  sourcePdfUrl?: Prisma.SortOrder
+  sourceStatus?: Prisma.SortOrder
+  sourceNote?: Prisma.SortOrder
+  contentKind?: Prisma.SortOrder
+  topic?: Prisma.SortOrder
   degree?: Prisma.SortOrder
   speciality?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -676,6 +1187,15 @@ export type ScientificWorkMaxOrderByAggregateInput = {
   publicationCount?: Prisma.SortOrder
   pdfUrl?: Prisma.SortOrder
   abstractUrl?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  evidenceValidatedAt?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  publicationBlockReason?: Prisma.SortOrder
+  rightsVerifiedAt?: Prisma.SortOrder
+  rightsBasis?: Prisma.SortOrder
+  rightsNote?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -687,6 +1207,19 @@ export type ScientificWorkMinOrderByAggregateInput = {
   doctorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  doctorAuthorIndex?: Prisma.SortOrder
+  bibliography?: Prisma.SortOrder
+  journal?: Prisma.SortOrder
+  volume?: Prisma.SortOrder
+  issue?: Prisma.SortOrder
+  pages?: Prisma.SortOrder
+  doi?: Prisma.SortOrder
+  sourcePageUrl?: Prisma.SortOrder
+  sourcePdfUrl?: Prisma.SortOrder
+  sourceStatus?: Prisma.SortOrder
+  sourceNote?: Prisma.SortOrder
+  contentKind?: Prisma.SortOrder
+  topic?: Prisma.SortOrder
   degree?: Prisma.SortOrder
   speciality?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -696,12 +1229,22 @@ export type ScientificWorkMinOrderByAggregateInput = {
   publicationCount?: Prisma.SortOrder
   pdfUrl?: Prisma.SortOrder
   abstractUrl?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  evidenceValidatedAt?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  publicationBlockReason?: Prisma.SortOrder
+  rightsVerifiedAt?: Prisma.SortOrder
+  rightsBasis?: Prisma.SortOrder
+  rightsNote?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ScientificWorkSumOrderByAggregateInput = {
+  doctorAuthorIndex?: Prisma.SortOrder
   year?: Prisma.SortOrder
   publicationCount?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
@@ -754,6 +1297,10 @@ export type ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput = {
   deleteMany?: Prisma.ScientificWorkScalarWhereInput | Prisma.ScientificWorkScalarWhereInput[]
 }
 
+export type ScientificWorkCreateauthorsInput = {
+  set: string[]
+}
+
 export type ScientificWorkCreatenoveltyInput = {
   set: string[]
 }
@@ -764,6 +1311,27 @@ export type ScientificWorkCreatepracticalValueInput = {
 
 export type ScientificWorkCreateresultsInput = {
   set: string[]
+}
+
+export type ScientificWorkCreateconclusionsInput = {
+  set: string[]
+}
+
+export type ScientificWorkCreateimagesInput = {
+  set: string[]
+}
+
+export type ScientificWorkUpdateauthorsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type EnumScientificWorkSourceStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ScientificWorkSourceStatus
+}
+
+export type EnumScientificWorkContentKindFieldUpdateOperationsInput = {
+  set?: $Enums.ScientificWorkContentKind
 }
 
 export type ScientificWorkUpdatenoveltyInput = {
@@ -779,6 +1347,28 @@ export type ScientificWorkUpdatepracticalValueInput = {
 export type ScientificWorkUpdateresultsInput = {
   set?: string[]
   push?: string | string[]
+}
+
+export type ScientificWorkUpdateconclusionsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type ScientificWorkUpdateimagesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
+export type EnumScientificWorkRightsBasisFieldUpdateOperationsInput = {
+  set?: $Enums.ScientificWorkRightsBasis
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -817,11 +1407,39 @@ export type ScientificWorkUpdateOneRequiredWithoutProceduresNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ScientificWorkUpdateToOneWithWhereWithoutProceduresInput, Prisma.ScientificWorkUpdateWithoutProceduresInput>, Prisma.ScientificWorkUncheckedUpdateWithoutProceduresInput>
 }
 
+export type ScientificWorkCreateNestedOneWithoutEquipmentInput = {
+  create?: Prisma.XOR<Prisma.ScientificWorkCreateWithoutEquipmentInput, Prisma.ScientificWorkUncheckedCreateWithoutEquipmentInput>
+  connectOrCreate?: Prisma.ScientificWorkCreateOrConnectWithoutEquipmentInput
+  connect?: Prisma.ScientificWorkWhereUniqueInput
+}
+
+export type ScientificWorkUpdateOneRequiredWithoutEquipmentNestedInput = {
+  create?: Prisma.XOR<Prisma.ScientificWorkCreateWithoutEquipmentInput, Prisma.ScientificWorkUncheckedCreateWithoutEquipmentInput>
+  connectOrCreate?: Prisma.ScientificWorkCreateOrConnectWithoutEquipmentInput
+  upsert?: Prisma.ScientificWorkUpsertWithoutEquipmentInput
+  connect?: Prisma.ScientificWorkWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ScientificWorkUpdateToOneWithWhereWithoutEquipmentInput, Prisma.ScientificWorkUpdateWithoutEquipmentInput>, Prisma.ScientificWorkUncheckedUpdateWithoutEquipmentInput>
+}
+
 export type ScientificWorkCreateWithoutDoctorInput = {
   id?: string
   slug?: string | null
   type: string
   title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
   degree?: string | null
   speciality?: string | null
   year?: number | null
@@ -831,14 +1449,26 @@ export type ScientificWorkCreateWithoutDoctorInput = {
   novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
   publicationCount?: number | null
   pdfUrl?: string | null
   abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   diseases?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutWorkInput
   procedures?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutWorkInput
+  equipment?: Prisma.ScientificWorkOnEquipmentCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkUncheckedCreateWithoutDoctorInput = {
@@ -846,6 +1476,20 @@ export type ScientificWorkUncheckedCreateWithoutDoctorInput = {
   slug?: string | null
   type: string
   title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
   degree?: string | null
   speciality?: string | null
   year?: number | null
@@ -855,14 +1499,26 @@ export type ScientificWorkUncheckedCreateWithoutDoctorInput = {
   novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
   publicationCount?: number | null
   pdfUrl?: string | null
   abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   diseases?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutWorkInput
   procedures?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutWorkInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUncheckedCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkCreateOrConnectWithoutDoctorInput = {
@@ -900,6 +1556,20 @@ export type ScientificWorkScalarWhereInput = {
   doctorId?: Prisma.StringFilter<"ScientificWork"> | string
   type?: Prisma.StringFilter<"ScientificWork"> | string
   title?: Prisma.StringFilter<"ScientificWork"> | string
+  authors?: Prisma.StringNullableListFilter<"ScientificWork">
+  doctorAuthorIndex?: Prisma.IntNullableFilter<"ScientificWork"> | number | null
+  bibliography?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  journal?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  volume?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  issue?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  pages?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  doi?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  sourcePageUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  sourcePdfUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFilter<"ScientificWork"> | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFilter<"ScientificWork"> | $Enums.ScientificWorkContentKind
+  topic?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   degree?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   speciality?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   year?: Prisma.IntNullableFilter<"ScientificWork"> | number | null
@@ -909,9 +1579,20 @@ export type ScientificWorkScalarWhereInput = {
   novelty?: Prisma.StringNullableListFilter<"ScientificWork">
   practicalValue?: Prisma.StringNullableListFilter<"ScientificWork">
   results?: Prisma.StringNullableListFilter<"ScientificWork">
+  conclusions?: Prisma.StringNullableListFilter<"ScientificWork">
   publicationCount?: Prisma.IntNullableFilter<"ScientificWork"> | number | null
   pdfUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   abstractUrl?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  images?: Prisma.StringNullableListFilter<"ScientificWork">
+  isPublished?: Prisma.BoolFilter<"ScientificWork"> | boolean
+  evidenceValidatedAt?: Prisma.DateTimeNullableFilter<"ScientificWork"> | Date | string | null
+  publishedAt?: Prisma.DateTimeNullableFilter<"ScientificWork"> | Date | string | null
+  publicationBlockReason?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  rightsVerifiedAt?: Prisma.DateTimeNullableFilter<"ScientificWork"> | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFilter<"ScientificWork"> | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  seoTitle?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
+  seoDescription?: Prisma.StringNullableFilter<"ScientificWork"> | string | null
   sortOrder?: Prisma.IntFilter<"ScientificWork"> | number
   createdAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ScientificWork"> | Date | string
@@ -922,6 +1603,20 @@ export type ScientificWorkCreateWithoutDiseasesInput = {
   slug?: string | null
   type: string
   title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
   degree?: string | null
   speciality?: string | null
   year?: number | null
@@ -931,14 +1626,26 @@ export type ScientificWorkCreateWithoutDiseasesInput = {
   novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
   publicationCount?: number | null
   pdfUrl?: string | null
   abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   doctor: Prisma.DoctorCreateNestedOneWithoutScientificWorksInput
   procedures?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutWorkInput
+  equipment?: Prisma.ScientificWorkOnEquipmentCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkUncheckedCreateWithoutDiseasesInput = {
@@ -947,6 +1654,20 @@ export type ScientificWorkUncheckedCreateWithoutDiseasesInput = {
   doctorId: string
   type: string
   title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
   degree?: string | null
   speciality?: string | null
   year?: number | null
@@ -956,13 +1677,25 @@ export type ScientificWorkUncheckedCreateWithoutDiseasesInput = {
   novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
   publicationCount?: number | null
   pdfUrl?: string | null
   abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   procedures?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutWorkInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUncheckedCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkCreateOrConnectWithoutDiseasesInput = {
@@ -986,6 +1719,20 @@ export type ScientificWorkUpdateWithoutDiseasesInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -995,14 +1742,26 @@ export type ScientificWorkUpdateWithoutDiseasesInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctor?: Prisma.DoctorUpdateOneRequiredWithoutScientificWorksNestedInput
   procedures?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutWorkNestedInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkUncheckedUpdateWithoutDiseasesInput = {
@@ -1011,6 +1770,20 @@ export type ScientificWorkUncheckedUpdateWithoutDiseasesInput = {
   doctorId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1020,13 +1793,25 @@ export type ScientificWorkUncheckedUpdateWithoutDiseasesInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   procedures?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutWorkNestedInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUncheckedUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkCreateWithoutProceduresInput = {
@@ -1034,6 +1819,20 @@ export type ScientificWorkCreateWithoutProceduresInput = {
   slug?: string | null
   type: string
   title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
   degree?: string | null
   speciality?: string | null
   year?: number | null
@@ -1043,14 +1842,26 @@ export type ScientificWorkCreateWithoutProceduresInput = {
   novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
   publicationCount?: number | null
   pdfUrl?: string | null
   abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   doctor: Prisma.DoctorCreateNestedOneWithoutScientificWorksInput
   diseases?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutWorkInput
+  equipment?: Prisma.ScientificWorkOnEquipmentCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkUncheckedCreateWithoutProceduresInput = {
@@ -1059,6 +1870,20 @@ export type ScientificWorkUncheckedCreateWithoutProceduresInput = {
   doctorId: string
   type: string
   title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
   degree?: string | null
   speciality?: string | null
   year?: number | null
@@ -1068,13 +1893,25 @@ export type ScientificWorkUncheckedCreateWithoutProceduresInput = {
   novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
   publicationCount?: number | null
   pdfUrl?: string | null
   abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   diseases?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutWorkInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUncheckedCreateNestedManyWithoutWorkInput
 }
 
 export type ScientificWorkCreateOrConnectWithoutProceduresInput = {
@@ -1098,6 +1935,20 @@ export type ScientificWorkUpdateWithoutProceduresInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1107,14 +1958,26 @@ export type ScientificWorkUpdateWithoutProceduresInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctor?: Prisma.DoctorUpdateOneRequiredWithoutScientificWorksNestedInput
   diseases?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutWorkNestedInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkUncheckedUpdateWithoutProceduresInput = {
@@ -1123,6 +1986,20 @@ export type ScientificWorkUncheckedUpdateWithoutProceduresInput = {
   doctorId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1132,20 +2009,46 @@ export type ScientificWorkUncheckedUpdateWithoutProceduresInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   diseases?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutWorkNestedInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUncheckedUpdateManyWithoutWorkNestedInput
 }
 
-export type ScientificWorkCreateManyDoctorInput = {
+export type ScientificWorkCreateWithoutEquipmentInput = {
   id?: string
   slug?: string | null
   type: string
   title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
   degree?: string | null
   speciality?: string | null
   year?: number | null
@@ -1155,9 +2058,236 @@ export type ScientificWorkCreateManyDoctorInput = {
   novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
   publicationCount?: number | null
   pdfUrl?: string | null
   abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  doctor: Prisma.DoctorCreateNestedOneWithoutScientificWorksInput
+  diseases?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutWorkInput
+  procedures?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutWorkInput
+}
+
+export type ScientificWorkUncheckedCreateWithoutEquipmentInput = {
+  id?: string
+  slug?: string | null
+  doctorId: string
+  type: string
+  title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
+  degree?: string | null
+  speciality?: string | null
+  year?: number | null
+  organization?: string | null
+  supervisor?: string | null
+  summary?: string | null
+  novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
+  publicationCount?: number | null
+  pdfUrl?: string | null
+  abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  diseases?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutWorkInput
+  procedures?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutWorkInput
+}
+
+export type ScientificWorkCreateOrConnectWithoutEquipmentInput = {
+  where: Prisma.ScientificWorkWhereUniqueInput
+  create: Prisma.XOR<Prisma.ScientificWorkCreateWithoutEquipmentInput, Prisma.ScientificWorkUncheckedCreateWithoutEquipmentInput>
+}
+
+export type ScientificWorkUpsertWithoutEquipmentInput = {
+  update: Prisma.XOR<Prisma.ScientificWorkUpdateWithoutEquipmentInput, Prisma.ScientificWorkUncheckedUpdateWithoutEquipmentInput>
+  create: Prisma.XOR<Prisma.ScientificWorkCreateWithoutEquipmentInput, Prisma.ScientificWorkUncheckedCreateWithoutEquipmentInput>
+  where?: Prisma.ScientificWorkWhereInput
+}
+
+export type ScientificWorkUpdateToOneWithWhereWithoutEquipmentInput = {
+  where?: Prisma.ScientificWorkWhereInput
+  data: Prisma.XOR<Prisma.ScientificWorkUpdateWithoutEquipmentInput, Prisma.ScientificWorkUncheckedUpdateWithoutEquipmentInput>
+}
+
+export type ScientificWorkUpdateWithoutEquipmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  organization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supervisor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
+  publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  doctor?: Prisma.DoctorUpdateOneRequiredWithoutScientificWorksNestedInput
+  diseases?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutWorkNestedInput
+  procedures?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutWorkNestedInput
+}
+
+export type ScientificWorkUncheckedUpdateWithoutEquipmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doctorId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  organization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supervisor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
+  publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  diseases?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutWorkNestedInput
+  procedures?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutWorkNestedInput
+}
+
+export type ScientificWorkCreateManyDoctorInput = {
+  id?: string
+  slug?: string | null
+  type: string
+  title: string
+  authors?: Prisma.ScientificWorkCreateauthorsInput | string[]
+  doctorAuthorIndex?: number | null
+  bibliography?: string | null
+  journal?: string | null
+  volume?: string | null
+  issue?: string | null
+  pages?: string | null
+  doi?: string | null
+  sourcePageUrl?: string | null
+  sourcePdfUrl?: string | null
+  sourceStatus?: $Enums.ScientificWorkSourceStatus
+  sourceNote?: string | null
+  contentKind?: $Enums.ScientificWorkContentKind
+  topic?: string | null
+  degree?: string | null
+  speciality?: string | null
+  year?: number | null
+  organization?: string | null
+  supervisor?: string | null
+  summary?: string | null
+  novelty?: Prisma.ScientificWorkCreatenoveltyInput | string[]
+  practicalValue?: Prisma.ScientificWorkCreatepracticalValueInput | string[]
+  results?: Prisma.ScientificWorkCreateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkCreateconclusionsInput | string[]
+  publicationCount?: number | null
+  pdfUrl?: string | null
+  abstractUrl?: string | null
+  images?: Prisma.ScientificWorkCreateimagesInput | string[]
+  isPublished?: boolean
+  evidenceValidatedAt?: Date | string | null
+  publishedAt?: Date | string | null
+  publicationBlockReason?: string | null
+  rightsVerifiedAt?: Date | string | null
+  rightsBasis?: $Enums.ScientificWorkRightsBasis
+  rightsNote?: string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1168,6 +2298,20 @@ export type ScientificWorkUpdateWithoutDoctorInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1177,14 +2321,26 @@ export type ScientificWorkUpdateWithoutDoctorInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   diseases?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutWorkNestedInput
   procedures?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutWorkNestedInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkUncheckedUpdateWithoutDoctorInput = {
@@ -1192,6 +2348,20 @@ export type ScientificWorkUncheckedUpdateWithoutDoctorInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1201,14 +2371,26 @@ export type ScientificWorkUncheckedUpdateWithoutDoctorInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   diseases?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutWorkNestedInput
   procedures?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutWorkNestedInput
+  equipment?: Prisma.ScientificWorkOnEquipmentUncheckedUpdateManyWithoutWorkNestedInput
 }
 
 export type ScientificWorkUncheckedUpdateManyWithoutDoctorInput = {
@@ -1216,6 +2398,20 @@ export type ScientificWorkUncheckedUpdateManyWithoutDoctorInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  authors?: Prisma.ScientificWorkUpdateauthorsInput | string[]
+  doctorAuthorIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bibliography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  journal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  volume?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pages?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  doi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourcePdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceStatus?: Prisma.EnumScientificWorkSourceStatusFieldUpdateOperationsInput | $Enums.ScientificWorkSourceStatus
+  sourceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contentKind?: Prisma.EnumScientificWorkContentKindFieldUpdateOperationsInput | $Enums.ScientificWorkContentKind
+  topic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speciality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1225,9 +2421,20 @@ export type ScientificWorkUncheckedUpdateManyWithoutDoctorInput = {
   novelty?: Prisma.ScientificWorkUpdatenoveltyInput | string[]
   practicalValue?: Prisma.ScientificWorkUpdatepracticalValueInput | string[]
   results?: Prisma.ScientificWorkUpdateresultsInput | string[]
+  conclusions?: Prisma.ScientificWorkUpdateconclusionsInput | string[]
   publicationCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pdfUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   abstractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  images?: Prisma.ScientificWorkUpdateimagesInput | string[]
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  evidenceValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publicationBlockReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rightsVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rightsBasis?: Prisma.EnumScientificWorkRightsBasisFieldUpdateOperationsInput | $Enums.ScientificWorkRightsBasis
+  rightsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1241,11 +2448,13 @@ export type ScientificWorkUncheckedUpdateManyWithoutDoctorInput = {
 export type ScientificWorkCountOutputType = {
   diseases: number
   procedures: number
+  equipment: number
 }
 
 export type ScientificWorkCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   diseases?: boolean | ScientificWorkCountOutputTypeCountDiseasesArgs
   procedures?: boolean | ScientificWorkCountOutputTypeCountProceduresArgs
+  equipment?: boolean | ScientificWorkCountOutputTypeCountEquipmentArgs
 }
 
 /**
@@ -1272,6 +2481,13 @@ export type ScientificWorkCountOutputTypeCountProceduresArgs<ExtArgs extends run
   where?: Prisma.ScientificWorkOnProcedureWhereInput
 }
 
+/**
+ * ScientificWorkCountOutputType without action
+ */
+export type ScientificWorkCountOutputTypeCountEquipmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScientificWorkOnEquipmentWhereInput
+}
+
 
 export type ScientificWorkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1279,6 +2495,20 @@ export type ScientificWorkSelect<ExtArgs extends runtime.Types.Extensions.Intern
   doctorId?: boolean
   type?: boolean
   title?: boolean
+  authors?: boolean
+  doctorAuthorIndex?: boolean
+  bibliography?: boolean
+  journal?: boolean
+  volume?: boolean
+  issue?: boolean
+  pages?: boolean
+  doi?: boolean
+  sourcePageUrl?: boolean
+  sourcePdfUrl?: boolean
+  sourceStatus?: boolean
+  sourceNote?: boolean
+  contentKind?: boolean
+  topic?: boolean
   degree?: boolean
   speciality?: boolean
   year?: boolean
@@ -1288,15 +2518,27 @@ export type ScientificWorkSelect<ExtArgs extends runtime.Types.Extensions.Intern
   novelty?: boolean
   practicalValue?: boolean
   results?: boolean
+  conclusions?: boolean
   publicationCount?: boolean
   pdfUrl?: boolean
   abstractUrl?: boolean
+  images?: boolean
+  isPublished?: boolean
+  evidenceValidatedAt?: boolean
+  publishedAt?: boolean
+  publicationBlockReason?: boolean
+  rightsVerifiedAt?: boolean
+  rightsBasis?: boolean
+  rightsNote?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
   sortOrder?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   doctor?: boolean | Prisma.DoctorDefaultArgs<ExtArgs>
   diseases?: boolean | Prisma.ScientificWork$diseasesArgs<ExtArgs>
   procedures?: boolean | Prisma.ScientificWork$proceduresArgs<ExtArgs>
+  equipment?: boolean | Prisma.ScientificWork$equipmentArgs<ExtArgs>
   _count?: boolean | Prisma.ScientificWorkCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scientificWork"]>
 
@@ -1306,6 +2548,20 @@ export type ScientificWorkSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   doctorId?: boolean
   type?: boolean
   title?: boolean
+  authors?: boolean
+  doctorAuthorIndex?: boolean
+  bibliography?: boolean
+  journal?: boolean
+  volume?: boolean
+  issue?: boolean
+  pages?: boolean
+  doi?: boolean
+  sourcePageUrl?: boolean
+  sourcePdfUrl?: boolean
+  sourceStatus?: boolean
+  sourceNote?: boolean
+  contentKind?: boolean
+  topic?: boolean
   degree?: boolean
   speciality?: boolean
   year?: boolean
@@ -1315,9 +2571,20 @@ export type ScientificWorkSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   novelty?: boolean
   practicalValue?: boolean
   results?: boolean
+  conclusions?: boolean
   publicationCount?: boolean
   pdfUrl?: boolean
   abstractUrl?: boolean
+  images?: boolean
+  isPublished?: boolean
+  evidenceValidatedAt?: boolean
+  publishedAt?: boolean
+  publicationBlockReason?: boolean
+  rightsVerifiedAt?: boolean
+  rightsBasis?: boolean
+  rightsNote?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
   sortOrder?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1330,6 +2597,20 @@ export type ScientificWorkSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   doctorId?: boolean
   type?: boolean
   title?: boolean
+  authors?: boolean
+  doctorAuthorIndex?: boolean
+  bibliography?: boolean
+  journal?: boolean
+  volume?: boolean
+  issue?: boolean
+  pages?: boolean
+  doi?: boolean
+  sourcePageUrl?: boolean
+  sourcePdfUrl?: boolean
+  sourceStatus?: boolean
+  sourceNote?: boolean
+  contentKind?: boolean
+  topic?: boolean
   degree?: boolean
   speciality?: boolean
   year?: boolean
@@ -1339,9 +2620,20 @@ export type ScientificWorkSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   novelty?: boolean
   practicalValue?: boolean
   results?: boolean
+  conclusions?: boolean
   publicationCount?: boolean
   pdfUrl?: boolean
   abstractUrl?: boolean
+  images?: boolean
+  isPublished?: boolean
+  evidenceValidatedAt?: boolean
+  publishedAt?: boolean
+  publicationBlockReason?: boolean
+  rightsVerifiedAt?: boolean
+  rightsBasis?: boolean
+  rightsNote?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
   sortOrder?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1354,6 +2646,20 @@ export type ScientificWorkSelectScalar = {
   doctorId?: boolean
   type?: boolean
   title?: boolean
+  authors?: boolean
+  doctorAuthorIndex?: boolean
+  bibliography?: boolean
+  journal?: boolean
+  volume?: boolean
+  issue?: boolean
+  pages?: boolean
+  doi?: boolean
+  sourcePageUrl?: boolean
+  sourcePdfUrl?: boolean
+  sourceStatus?: boolean
+  sourceNote?: boolean
+  contentKind?: boolean
+  topic?: boolean
   degree?: boolean
   speciality?: boolean
   year?: boolean
@@ -1363,19 +2669,31 @@ export type ScientificWorkSelectScalar = {
   novelty?: boolean
   practicalValue?: boolean
   results?: boolean
+  conclusions?: boolean
   publicationCount?: boolean
   pdfUrl?: boolean
   abstractUrl?: boolean
+  images?: boolean
+  isPublished?: boolean
+  evidenceValidatedAt?: boolean
+  publishedAt?: boolean
+  publicationBlockReason?: boolean
+  rightsVerifiedAt?: boolean
+  rightsBasis?: boolean
+  rightsNote?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
   sortOrder?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ScientificWorkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "doctorId" | "type" | "title" | "degree" | "speciality" | "year" | "organization" | "supervisor" | "summary" | "novelty" | "practicalValue" | "results" | "publicationCount" | "pdfUrl" | "abstractUrl" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["scientificWork"]>
+export type ScientificWorkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "doctorId" | "type" | "title" | "authors" | "doctorAuthorIndex" | "bibliography" | "journal" | "volume" | "issue" | "pages" | "doi" | "sourcePageUrl" | "sourcePdfUrl" | "sourceStatus" | "sourceNote" | "contentKind" | "topic" | "degree" | "speciality" | "year" | "organization" | "supervisor" | "summary" | "novelty" | "practicalValue" | "results" | "conclusions" | "publicationCount" | "pdfUrl" | "abstractUrl" | "images" | "isPublished" | "evidenceValidatedAt" | "publishedAt" | "publicationBlockReason" | "rightsVerifiedAt" | "rightsBasis" | "rightsNote" | "seoTitle" | "seoDescription" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["scientificWork"]>
 export type ScientificWorkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   doctor?: boolean | Prisma.DoctorDefaultArgs<ExtArgs>
   diseases?: boolean | Prisma.ScientificWork$diseasesArgs<ExtArgs>
   procedures?: boolean | Prisma.ScientificWork$proceduresArgs<ExtArgs>
+  equipment?: boolean | Prisma.ScientificWork$equipmentArgs<ExtArgs>
   _count?: boolean | Prisma.ScientificWorkCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ScientificWorkIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1391,6 +2709,7 @@ export type $ScientificWorkPayload<ExtArgs extends runtime.Types.Extensions.Inte
     doctor: Prisma.$DoctorPayload<ExtArgs>
     diseases: Prisma.$ScientificWorkOnDiseasePayload<ExtArgs>[]
     procedures: Prisma.$ScientificWorkOnProcedurePayload<ExtArgs>[]
+    equipment: Prisma.$ScientificWorkOnEquipmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1404,6 +2723,28 @@ export type $ScientificWorkPayload<ExtArgs extends runtime.Types.Extensions.Inte
     doctorId: string
     type: string
     title: string
+    /**
+     * Полный список авторов в порядке первичного источника. doctorId остаётся
+     * владельцем работы в графе и не подменяет библиографическое авторство.
+     */
+    authors: string[]
+    /**
+     * Индекс связанного врача в упорядоченном authors[]. Нужен для однозначной
+     * Schema.org-ссылки и не выводится сравнением фамилий.
+     */
+    doctorAuthorIndex: number | null
+    bibliography: string | null
+    journal: string | null
+    volume: string | null
+    issue: string | null
+    pages: string | null
+    doi: string | null
+    sourcePageUrl: string | null
+    sourcePdfUrl: string | null
+    sourceStatus: $Enums.ScientificWorkSourceStatus
+    sourceNote: string | null
+    contentKind: $Enums.ScientificWorkContentKind
+    topic: string | null
     degree: string | null
     speciality: string | null
     year: number | null
@@ -1413,9 +2754,31 @@ export type $ScientificWorkPayload<ExtArgs extends runtime.Types.Extensions.Inte
     novelty: string[]
     practicalValue: string[]
     results: string[]
+    conclusions: string[]
     publicationCount: number | null
     pdfUrl: string | null
     abstractUrl: string | null
+    images: string[]
+    /**
+     * Стабильный slug не означает публикацию. Публичность требует всех трёх
+     * признаков: isPublished, наступивший publishedAt и evidenceValidatedAt.
+     */
+    isPublished: boolean
+    evidenceValidatedAt: Date | null
+    publishedAt: Date | null
+    /**
+     * Явный редакционный блокер, который нельзя обойти одним переключением
+     * isPublished. Снимается только после устранения указанного противоречия.
+     */
+    publicationBlockReason: string | null
+    /**
+     * Локальные PDF и изображения выводятся только после проверки прав.
+     */
+    rightsVerifiedAt: Date | null
+    rightsBasis: $Enums.ScientificWorkRightsBasis
+    rightsNote: string | null
+    seoTitle: string | null
+    seoDescription: string | null
     sortOrder: number
     createdAt: Date
     updatedAt: Date
@@ -1816,6 +3179,7 @@ export interface Prisma__ScientificWorkClient<T, Null = never, ExtArgs extends r
   doctor<T extends Prisma.DoctorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DoctorDefaultArgs<ExtArgs>>): Prisma.Prisma__DoctorClient<runtime.Types.Result.GetResult<Prisma.$DoctorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   diseases<T extends Prisma.ScientificWork$diseasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ScientificWork$diseasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScientificWorkOnDiseasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   procedures<T extends Prisma.ScientificWork$proceduresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ScientificWork$proceduresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScientificWorkOnProcedurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  equipment<T extends Prisma.ScientificWork$equipmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ScientificWork$equipmentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScientificWorkOnEquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1850,6 +3214,20 @@ export interface ScientificWorkFieldRefs {
   readonly doctorId: Prisma.FieldRef<"ScientificWork", 'String'>
   readonly type: Prisma.FieldRef<"ScientificWork", 'String'>
   readonly title: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly authors: Prisma.FieldRef<"ScientificWork", 'String[]'>
+  readonly doctorAuthorIndex: Prisma.FieldRef<"ScientificWork", 'Int'>
+  readonly bibliography: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly journal: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly volume: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly issue: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly pages: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly doi: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly sourcePageUrl: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly sourcePdfUrl: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly sourceStatus: Prisma.FieldRef<"ScientificWork", 'ScientificWorkSourceStatus'>
+  readonly sourceNote: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly contentKind: Prisma.FieldRef<"ScientificWork", 'ScientificWorkContentKind'>
+  readonly topic: Prisma.FieldRef<"ScientificWork", 'String'>
   readonly degree: Prisma.FieldRef<"ScientificWork", 'String'>
   readonly speciality: Prisma.FieldRef<"ScientificWork", 'String'>
   readonly year: Prisma.FieldRef<"ScientificWork", 'Int'>
@@ -1859,9 +3237,20 @@ export interface ScientificWorkFieldRefs {
   readonly novelty: Prisma.FieldRef<"ScientificWork", 'String[]'>
   readonly practicalValue: Prisma.FieldRef<"ScientificWork", 'String[]'>
   readonly results: Prisma.FieldRef<"ScientificWork", 'String[]'>
+  readonly conclusions: Prisma.FieldRef<"ScientificWork", 'String[]'>
   readonly publicationCount: Prisma.FieldRef<"ScientificWork", 'Int'>
   readonly pdfUrl: Prisma.FieldRef<"ScientificWork", 'String'>
   readonly abstractUrl: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly images: Prisma.FieldRef<"ScientificWork", 'String[]'>
+  readonly isPublished: Prisma.FieldRef<"ScientificWork", 'Boolean'>
+  readonly evidenceValidatedAt: Prisma.FieldRef<"ScientificWork", 'DateTime'>
+  readonly publishedAt: Prisma.FieldRef<"ScientificWork", 'DateTime'>
+  readonly publicationBlockReason: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly rightsVerifiedAt: Prisma.FieldRef<"ScientificWork", 'DateTime'>
+  readonly rightsBasis: Prisma.FieldRef<"ScientificWork", 'ScientificWorkRightsBasis'>
+  readonly rightsNote: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly seoTitle: Prisma.FieldRef<"ScientificWork", 'String'>
+  readonly seoDescription: Prisma.FieldRef<"ScientificWork", 'String'>
   readonly sortOrder: Prisma.FieldRef<"ScientificWork", 'Int'>
   readonly createdAt: Prisma.FieldRef<"ScientificWork", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ScientificWork", 'DateTime'>
@@ -2311,6 +3700,30 @@ export type ScientificWork$proceduresArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.ScientificWorkOnProcedureScalarFieldEnum | Prisma.ScientificWorkOnProcedureScalarFieldEnum[]
+}
+
+/**
+ * ScientificWork.equipment
+ */
+export type ScientificWork$equipmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScientificWorkOnEquipment
+   */
+  select?: Prisma.ScientificWorkOnEquipmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScientificWorkOnEquipment
+   */
+  omit?: Prisma.ScientificWorkOnEquipmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScientificWorkOnEquipmentInclude<ExtArgs> | null
+  where?: Prisma.ScientificWorkOnEquipmentWhereInput
+  orderBy?: Prisma.ScientificWorkOnEquipmentOrderByWithRelationInput | Prisma.ScientificWorkOnEquipmentOrderByWithRelationInput[]
+  cursor?: Prisma.ScientificWorkOnEquipmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScientificWorkOnEquipmentScalarFieldEnum | Prisma.ScientificWorkOnEquipmentScalarFieldEnum[]
 }
 
 /**

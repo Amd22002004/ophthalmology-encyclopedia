@@ -206,6 +206,8 @@ export type AdminUserWhereInput = {
   lastLoginAt?: Prisma.DateTimeNullableFilter<"AdminUser"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
+  appealNotes?: Prisma.AppealNoteListRelationFilter
+  appealStatusHistory?: Prisma.AppealStatusHistoryListRelationFilter
 }
 
 export type AdminUserOrderByWithRelationInput = {
@@ -217,6 +219,8 @@ export type AdminUserOrderByWithRelationInput = {
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  appealNotes?: Prisma.AppealNoteOrderByRelationAggregateInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryOrderByRelationAggregateInput
 }
 
 export type AdminUserWhereUniqueInput = Prisma.AtLeast<{
@@ -231,6 +235,8 @@ export type AdminUserWhereUniqueInput = Prisma.AtLeast<{
   lastLoginAt?: Prisma.DateTimeNullableFilter<"AdminUser"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
+  appealNotes?: Prisma.AppealNoteListRelationFilter
+  appealStatusHistory?: Prisma.AppealStatusHistoryListRelationFilter
 }, "id" | "email">
 
 export type AdminUserOrderByWithAggregationInput = {
@@ -270,6 +276,8 @@ export type AdminUserCreateInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
 }
 
 export type AdminUserUncheckedCreateInput = {
@@ -281,6 +289,8 @@ export type AdminUserUncheckedCreateInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
 }
 
 export type AdminUserUpdateInput = {
@@ -292,6 +302,8 @@ export type AdminUserUpdateInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
 }
 
 export type AdminUserUncheckedUpdateInput = {
@@ -303,6 +315,8 @@ export type AdminUserUncheckedUpdateInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
 }
 
 export type AdminUserCreateManyInput = {
@@ -338,6 +352,16 @@ export type AdminUserUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type AdminUserScalarRelationFilter = {
+  is?: Prisma.AdminUserWhereInput
+  isNot?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserNullableScalarRelationFilter = {
+  is?: Prisma.AdminUserWhereInput | null
+  isNot?: Prisma.AdminUserWhereInput | null
+}
+
 export type AdminUserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -371,10 +395,206 @@ export type AdminUserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type AdminUserCreateNestedOneWithoutAppealNotesInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealNotesInput, Prisma.AdminUserUncheckedCreateWithoutAppealNotesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutAppealNotesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutAppealNotesNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealNotesInput, Prisma.AdminUserUncheckedCreateWithoutAppealNotesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutAppealNotesInput
+  upsert?: Prisma.AdminUserUpsertWithoutAppealNotesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutAppealNotesInput, Prisma.AdminUserUpdateWithoutAppealNotesInput>, Prisma.AdminUserUncheckedUpdateWithoutAppealNotesInput>
+}
+
+export type AdminUserCreateNestedOneWithoutAppealStatusHistoryInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutAppealStatusHistoryInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutAppealStatusHistoryInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneWithoutAppealStatusHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutAppealStatusHistoryInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutAppealStatusHistoryInput
+  upsert?: Prisma.AdminUserUpsertWithoutAppealStatusHistoryInput
+  disconnect?: Prisma.AdminUserWhereInput | boolean
+  delete?: Prisma.AdminUserWhereInput | boolean
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutAppealStatusHistoryInput, Prisma.AdminUserUpdateWithoutAppealStatusHistoryInput>, Prisma.AdminUserUncheckedUpdateWithoutAppealStatusHistoryInput>
+}
+
 export type EnumAdminRoleFieldUpdateOperationsInput = {
   set?: $Enums.AdminRole
 }
 
+export type AdminUserCreateWithoutAppealNotesInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+}
+
+export type AdminUserUncheckedCreateWithoutAppealNotesInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+}
+
+export type AdminUserCreateOrConnectWithoutAppealNotesInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealNotesInput, Prisma.AdminUserUncheckedCreateWithoutAppealNotesInput>
+}
+
+export type AdminUserUpsertWithoutAppealNotesInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutAppealNotesInput, Prisma.AdminUserUncheckedUpdateWithoutAppealNotesInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealNotesInput, Prisma.AdminUserUncheckedCreateWithoutAppealNotesInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutAppealNotesInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutAppealNotesInput, Prisma.AdminUserUncheckedUpdateWithoutAppealNotesInput>
+}
+
+export type AdminUserUpdateWithoutAppealNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutAppealNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+}
+
+export type AdminUserCreateWithoutAppealStatusHistoryInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+}
+
+export type AdminUserUncheckedCreateWithoutAppealStatusHistoryInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type AdminUserCreateOrConnectWithoutAppealStatusHistoryInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutAppealStatusHistoryInput>
+}
+
+export type AdminUserUpsertWithoutAppealStatusHistoryInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedUpdateWithoutAppealStatusHistoryInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutAppealStatusHistoryInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutAppealStatusHistoryInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedUpdateWithoutAppealStatusHistoryInput>
+}
+
+export type AdminUserUpdateWithoutAppealStatusHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutAppealStatusHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+}
+
+
+/**
+ * Count Type AdminUserCountOutputType
+ */
+
+export type AdminUserCountOutputType = {
+  appealNotes: number
+  appealStatusHistory: number
+}
+
+export type AdminUserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  appealNotes?: boolean | AdminUserCountOutputTypeCountAppealNotesArgs
+  appealStatusHistory?: boolean | AdminUserCountOutputTypeCountAppealStatusHistoryArgs
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminUserCountOutputType
+   */
+  select?: Prisma.AdminUserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountAppealNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppealNoteWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountAppealStatusHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppealStatusHistoryWhereInput
+}
 
 
 export type AdminUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -386,6 +606,9 @@ export type AdminUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  appealNotes?: boolean | Prisma.AdminUser$appealNotesArgs<ExtArgs>
+  appealStatusHistory?: boolean | Prisma.AdminUser$appealStatusHistoryArgs<ExtArgs>
+  _count?: boolean | Prisma.AdminUserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["adminUser"]>
 
 export type AdminUserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -422,10 +645,20 @@ export type AdminUserSelectScalar = {
 }
 
 export type AdminUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "name" | "role" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["adminUser"]>
+export type AdminUserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  appealNotes?: boolean | Prisma.AdminUser$appealNotesArgs<ExtArgs>
+  appealStatusHistory?: boolean | Prisma.AdminUser$appealStatusHistoryArgs<ExtArgs>
+  _count?: boolean | Prisma.AdminUserCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type AdminUserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type AdminUserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $AdminUserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AdminUser"
-  objects: {}
+  objects: {
+    appealNotes: Prisma.$AppealNotePayload<ExtArgs>[]
+    appealStatusHistory: Prisma.$AppealStatusHistoryPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
@@ -829,6 +1062,8 @@ readonly fields: AdminUserFieldRefs;
  */
 export interface Prisma__AdminUserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  appealNotes<T extends Prisma.AdminUser$appealNotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$appealNotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppealNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  appealStatusHistory<T extends Prisma.AdminUser$appealStatusHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$appealStatusHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppealStatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -883,6 +1118,10 @@ export type AdminUserFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * Filter, which AdminUser to fetch.
    */
   where: Prisma.AdminUserWhereUniqueInput
@@ -901,6 +1140,10 @@ export type AdminUserFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensi
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * Filter, which AdminUser to fetch.
    */
   where: Prisma.AdminUserWhereUniqueInput
@@ -918,6 +1161,10 @@ export type AdminUserFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the AdminUser
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
   /**
    * Filter, which AdminUser to fetch.
    */
@@ -967,6 +1214,10 @@ export type AdminUserFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * Filter, which AdminUser to fetch.
    */
   where?: Prisma.AdminUserWhereInput
@@ -1014,6 +1265,10 @@ export type AdminUserFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the AdminUser
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
   /**
    * Filter, which AdminUsers to fetch.
    */
@@ -1063,6 +1318,10 @@ export type AdminUserCreateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * The data needed to create a AdminUser.
    */
   data: Prisma.XOR<Prisma.AdminUserCreateInput, Prisma.AdminUserUncheckedCreateInput>
@@ -1110,6 +1369,10 @@ export type AdminUserUpdateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the AdminUser
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
   /**
    * The data needed to update a AdminUser.
    */
@@ -1177,6 +1440,10 @@ export type AdminUserUpsertArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * The filter to search for the AdminUser to update in case it exists.
    */
   where: Prisma.AdminUserWhereUniqueInput
@@ -1203,6 +1470,10 @@ export type AdminUserDeleteArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * Filter which AdminUser to delete.
    */
   where: Prisma.AdminUserWhereUniqueInput
@@ -1223,6 +1494,54 @@ export type AdminUserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 /**
+ * AdminUser.appealNotes
+ */
+export type AdminUser$appealNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AppealNote
+   */
+  select?: Prisma.AppealNoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AppealNote
+   */
+  omit?: Prisma.AppealNoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppealNoteInclude<ExtArgs> | null
+  where?: Prisma.AppealNoteWhereInput
+  orderBy?: Prisma.AppealNoteOrderByWithRelationInput | Prisma.AppealNoteOrderByWithRelationInput[]
+  cursor?: Prisma.AppealNoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppealNoteScalarFieldEnum | Prisma.AppealNoteScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.appealStatusHistory
+ */
+export type AdminUser$appealStatusHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AppealStatusHistory
+   */
+  select?: Prisma.AppealStatusHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AppealStatusHistory
+   */
+  omit?: Prisma.AppealStatusHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppealStatusHistoryInclude<ExtArgs> | null
+  where?: Prisma.AppealStatusHistoryWhereInput
+  orderBy?: Prisma.AppealStatusHistoryOrderByWithRelationInput | Prisma.AppealStatusHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.AppealStatusHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppealStatusHistoryScalarFieldEnum | Prisma.AppealStatusHistoryScalarFieldEnum[]
+}
+
+/**
  * AdminUser without action
  */
 export type AdminUserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1234,4 +1553,8 @@ export type AdminUserDefaultArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the AdminUser
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
 }

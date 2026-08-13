@@ -9,8 +9,180 @@
 * 🟢 You can import this file directly.
 */
 
+export const ScientificWorkSourceStatus = {
+  FULL_TEXT: 'FULL_TEXT',
+  EXTRACTED_PAGES: 'EXTRACTED_PAGES',
+  SCANNED_PAGES: 'SCANNED_PAGES',
+  BIBLIOGRAPHIC_ONLY: 'BIBLIOGRAPHIC_ONLY'
+} as const
+
+export type ScientificWorkSourceStatus = (typeof ScientificWorkSourceStatus)[keyof typeof ScientificWorkSourceStatus]
+
+
+export const ScientificWorkContentKind = {
+  ORIGINAL_RESEARCH: 'ORIGINAL_RESEARCH',
+  CLINICAL_CASE: 'CLINICAL_CASE',
+  REVIEW: 'REVIEW',
+  THESIS: 'THESIS',
+  OTHER: 'OTHER'
+} as const
+
+export type ScientificWorkContentKind = (typeof ScientificWorkContentKind)[keyof typeof ScientificWorkContentKind]
+
+
+export const ScientificWorkRightsBasis = {
+  UNVERIFIED: 'UNVERIFIED',
+  OPEN_LICENSE: 'OPEN_LICENSE',
+  AUTHOR_PERMISSION: 'AUTHOR_PERMISSION',
+  PUBLISHER_PERMISSION: 'PUBLISHER_PERMISSION',
+  USER_CONFIRMED_PERMISSION: 'USER_CONFIRMED_PERMISSION',
+  PUBLIC_DOMAIN: 'PUBLIC_DOMAIN'
+} as const
+
+export type ScientificWorkRightsBasis = (typeof ScientificWorkRightsBasis)[keyof typeof ScientificWorkRightsBasis]
+
+
+export const RegulationLegalStatus = {
+  DRAFT: 'DRAFT',
+  IN_FORCE: 'IN_FORCE',
+  FUTURE: 'FUTURE',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type RegulationLegalStatus = (typeof RegulationLegalStatus)[keyof typeof RegulationLegalStatus]
+
+
+export const RegulationRelationType = {
+  AMENDS: 'AMENDS',
+  REPEALS: 'REPEALS',
+  REPLACES: 'REPLACES',
+  EXTENDS: 'EXTENDS',
+  IMPLEMENTS: 'IMPLEMENTS'
+} as const
+
+export type RegulationRelationType = (typeof RegulationRelationType)[keyof typeof RegulationRelationType]
+
+
+export const RegulationSourceKind = {
+  OFFICIAL_PUBLICATION: 'OFFICIAL_PUBLICATION',
+  OFFICIAL_CONSOLIDATED_TEXT: 'OFFICIAL_CONSOLIDATED_TEXT',
+  OFFICIAL_REGISTER: 'OFFICIAL_REGISTER',
+  OFFICIAL_GUIDANCE: 'OFFICIAL_GUIDANCE'
+} as const
+
+export type RegulationSourceKind = (typeof RegulationSourceKind)[keyof typeof RegulationSourceKind]
+
+
+export const RegulatoryAssessmentStatus = {
+  CONFIRMED: 'CONFIRMED',
+  LIKELY_NON_COMPLIANCE: 'LIKELY_NON_COMPLIANCE',
+  REQUIRES_VERIFICATION: 'REQUIRES_VERIFICATION',
+  NOT_CONFIRMED: 'NOT_CONFIRMED',
+  COMPLIANT: 'COMPLIANT'
+} as const
+
+export type RegulatoryAssessmentStatus = (typeof RegulatoryAssessmentStatus)[keyof typeof RegulatoryAssessmentStatus]
+
+
+export const RegulationApplicabilityStatus = {
+  APPLICABLE: 'APPLICABLE',
+  NOT_APPLICABLE: 'NOT_APPLICABLE',
+  REQUIRES_VERIFICATION: 'REQUIRES_VERIFICATION'
+} as const
+
+export type RegulationApplicabilityStatus = (typeof RegulationApplicabilityStatus)[keyof typeof RegulationApplicabilityStatus]
+
+
+export const InvestigationEvidenceRole = {
+  SUPPORTS: 'SUPPORTS',
+  REFUTES: 'REFUTES',
+  CONTEXT: 'CONTEXT'
+} as const
+
+export type InvestigationEvidenceRole = (typeof InvestigationEvidenceRole)[keyof typeof InvestigationEvidenceRole]
+
+
+export const RestrictedInferenceSignal = {
+  DOCUMENT_NOT_FOUND: 'DOCUMENT_NOT_FOUND',
+  REGISTRY_NO_MATCH: 'REGISTRY_NO_MATCH',
+  OLD_MANUFACTURE_YEAR: 'OLD_MANUFACTURE_YEAR',
+  MODEL_DISCONTINUED: 'MODEL_DISCONTINUED',
+  THIRD_PARTY_STATEMENT: 'THIRD_PARTY_STATEMENT'
+} as const
+
+export type RestrictedInferenceSignal = (typeof RestrictedInferenceSignal)[keyof typeof RestrictedInferenceSignal]
+
+
+export const RegistryCheckResult = {
+  MATCH: 'MATCH',
+  NO_MATCH: 'NO_MATCH',
+  AMBIGUOUS: 'AMBIGUOUS',
+  UNAVAILABLE: 'UNAVAILABLE'
+} as const
+
+export type RegistryCheckResult = (typeof RegistryCheckResult)[keyof typeof RegistryCheckResult]
+
+
+export const IndependentControlBasisKind = {
+  DIRECT_NORM: 'DIRECT_NORM',
+  METHODOLOGY_DERIVED: 'METHODOLOGY_DERIVED',
+  LOCAL_FORM_ONLY: 'LOCAL_FORM_ONLY'
+} as const
+
+export type IndependentControlBasisKind = (typeof IndependentControlBasisKind)[keyof typeof IndependentControlBasisKind]
+
+
+export const IndependentControlSourceKind = {
+  LOCAL_DOCUMENT: 'LOCAL_DOCUMENT',
+  OFFICIAL_METHODOLOGY: 'OFFICIAL_METHODOLOGY',
+  OFFICIAL_GUIDANCE: 'OFFICIAL_GUIDANCE'
+} as const
+
+export type IndependentControlSourceKind = (typeof IndependentControlSourceKind)[keyof typeof IndependentControlSourceKind]
+
+
+export const IndependentControlRightsBasis = {
+  UNVERIFIED: 'UNVERIFIED',
+  OPEN_LICENSE: 'OPEN_LICENSE',
+  AUTHOR_PERMISSION: 'AUTHOR_PERMISSION',
+  PUBLISHER_PERMISSION: 'PUBLISHER_PERMISSION',
+  USER_CONFIRMED_PERMISSION: 'USER_CONFIRMED_PERMISSION',
+  PUBLIC_DOMAIN: 'PUBLIC_DOMAIN'
+} as const
+
+export type IndependentControlRightsBasis = (typeof IndependentControlRightsBasis)[keyof typeof IndependentControlRightsBasis]
+
+
+export const IndependentControlNormRole = {
+  DIRECT_BASIS: 'DIRECT_BASIS',
+  SUPPORTING_BASIS: 'SUPPORTING_BASIS',
+  HISTORICAL_BASIS: 'HISTORICAL_BASIS'
+} as const
+
+export type IndependentControlNormRole = (typeof IndependentControlNormRole)[keyof typeof IndependentControlNormRole]
+
+
 export const AdminRole = {
   OWNER: 'OWNER'
 } as const
 
 export type AdminRole = (typeof AdminRole)[keyof typeof AdminRole]
+
+
+export const AppealStatus = {
+  NEW: 'NEW',
+  IN_REVIEW: 'IN_REVIEW',
+  VERIFIED: 'VERIFIED',
+  CLOSED: 'CLOSED'
+} as const
+
+export type AppealStatus = (typeof AppealStatus)[keyof typeof AppealStatus]
+
+
+export const AppealNotificationStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type AppealNotificationStatus = (typeof AppealNotificationStatus)[keyof typeof AppealNotificationStatus]

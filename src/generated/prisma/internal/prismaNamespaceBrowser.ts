@@ -57,13 +57,38 @@ export const ModelName = {
   ScientificWork: 'ScientificWork',
   ScientificWorkOnDisease: 'ScientificWorkOnDisease',
   ScientificWorkOnProcedure: 'ScientificWorkOnProcedure',
+  ScientificWorkOnEquipment: 'ScientificWorkOnEquipment',
   Clinic: 'Clinic',
   Supplier: 'Supplier',
   Equipment: 'Equipment',
   EquipmentSpec: 'EquipmentSpec',
   Publication: 'Publication',
+  Investigation: 'Investigation',
+  InvestigationSection: 'InvestigationSection',
+  InvestigationTimelineEvent: 'InvestigationTimelineEvent',
+  InvestigationDocument: 'InvestigationDocument',
+  News: 'News',
   ClinicalGuideline: 'ClinicalGuideline',
   Regulation: 'Regulation',
+  RegulationEdition: 'RegulationEdition',
+  RegulationRelation: 'RegulationRelation',
+  RegulationSource: 'RegulationSource',
+  RegulationTopic: 'RegulationTopic',
+  RegulationOnTopic: 'RegulationOnTopic',
+  RegulationProvision: 'RegulationProvision',
+  RegulatoryCheck: 'RegulatoryCheck',
+  IndependentControlMethodology: 'IndependentControlMethodology',
+  IndependentControlSource: 'IndependentControlSource',
+  IndependentControlCriterion: 'IndependentControlCriterion',
+  IndependentControlCriterionNorm: 'IndependentControlCriterionNorm',
+  RegulationEquipmentRequirement: 'RegulationEquipmentRequirement',
+  InvestigationEquipmentInstance: 'InvestigationEquipmentInstance',
+  InvestigationRegulatoryAssessment: 'InvestigationRegulatoryAssessment',
+  InvestigationAssessmentEvidence: 'InvestigationAssessmentEvidence',
+  InvestigationIndependentControlAssessment: 'InvestigationIndependentControlAssessment',
+  InvestigationIndependentControlEvidence: 'InvestigationIndependentControlEvidence',
+  InvestigationEquipmentInstanceEvidence: 'InvestigationEquipmentInstanceEvidence',
+  InvestigationRegistryCheck: 'InvestigationRegistryCheck',
   HistoryEntry: 'HistoryEntry',
   Innovation: 'Innovation',
   Specialty: 'Specialty',
@@ -89,6 +114,17 @@ export const ModelName = {
   ClinicOnDisease: 'ClinicOnDisease',
   ClinicOnProcedure: 'ClinicOnProcedure',
   ClinicOnPublication: 'ClinicOnPublication',
+  InvestigationOnClinic: 'InvestigationOnClinic',
+  InvestigationOnEquipment: 'InvestigationOnEquipment',
+  InvestigationOnDisease: 'InvestigationOnDisease',
+  InvestigationOnProcedure: 'InvestigationOnProcedure',
+  NewsOnInvestigation: 'NewsOnInvestigation',
+  Appeal: 'Appeal',
+  AppealAttachment: 'AppealAttachment',
+  AppealNote: 'AppealNote',
+  AppealStatusHistory: 'AppealStatusHistory',
+  AppealNotification: 'AppealNotification',
+  AppealConsentTemplate: 'AppealConsentTemplate',
   AdminUser: 'AdminUser'
 } as const
 
@@ -170,6 +206,20 @@ export const ScientificWorkScalarFieldEnum = {
   doctorId: 'doctorId',
   type: 'type',
   title: 'title',
+  authors: 'authors',
+  doctorAuthorIndex: 'doctorAuthorIndex',
+  bibliography: 'bibliography',
+  journal: 'journal',
+  volume: 'volume',
+  issue: 'issue',
+  pages: 'pages',
+  doi: 'doi',
+  sourcePageUrl: 'sourcePageUrl',
+  sourcePdfUrl: 'sourcePdfUrl',
+  sourceStatus: 'sourceStatus',
+  sourceNote: 'sourceNote',
+  contentKind: 'contentKind',
+  topic: 'topic',
   degree: 'degree',
   speciality: 'speciality',
   year: 'year',
@@ -179,9 +229,20 @@ export const ScientificWorkScalarFieldEnum = {
   novelty: 'novelty',
   practicalValue: 'practicalValue',
   results: 'results',
+  conclusions: 'conclusions',
   publicationCount: 'publicationCount',
   pdfUrl: 'pdfUrl',
   abstractUrl: 'abstractUrl',
+  images: 'images',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  publicationBlockReason: 'publicationBlockReason',
+  rightsVerifiedAt: 'rightsVerifiedAt',
+  rightsBasis: 'rightsBasis',
+  rightsNote: 'rightsNote',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
   sortOrder: 'sortOrder',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -206,6 +267,15 @@ export const ScientificWorkOnProcedureScalarFieldEnum = {
 } as const
 
 export type ScientificWorkOnProcedureScalarFieldEnum = (typeof ScientificWorkOnProcedureScalarFieldEnum)[keyof typeof ScientificWorkOnProcedureScalarFieldEnum]
+
+
+export const ScientificWorkOnEquipmentScalarFieldEnum = {
+  workId: 'workId',
+  equipmentId: 'equipmentId',
+  createdAt: 'createdAt'
+} as const
+
+export type ScientificWorkOnEquipmentScalarFieldEnum = (typeof ScientificWorkOnEquipmentScalarFieldEnum)[keyof typeof ScientificWorkOnEquipmentScalarFieldEnum]
 
 
 export const ClinicScalarFieldEnum = {
@@ -327,6 +397,105 @@ export const PublicationScalarFieldEnum = {
 export type PublicationScalarFieldEnum = (typeof PublicationScalarFieldEnum)[keyof typeof PublicationScalarFieldEnum]
 
 
+export const InvestigationScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  summary: 'summary',
+  status: 'status',
+  statusNote: 'statusNote',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvestigationScalarFieldEnum = (typeof InvestigationScalarFieldEnum)[keyof typeof InvestigationScalarFieldEnum]
+
+
+export const InvestigationSectionScalarFieldEnum = {
+  id: 'id',
+  investigationId: 'investigationId',
+  key: 'key',
+  title: 'title',
+  content: 'content',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvestigationSectionScalarFieldEnum = (typeof InvestigationSectionScalarFieldEnum)[keyof typeof InvestigationSectionScalarFieldEnum]
+
+
+export const InvestigationTimelineEventScalarFieldEnum = {
+  id: 'id',
+  investigationId: 'investigationId',
+  equipmentInstanceId: 'equipmentInstanceId',
+  key: 'key',
+  date: 'date',
+  dateLabel: 'dateLabel',
+  title: 'title',
+  description: 'description',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvestigationTimelineEventScalarFieldEnum = (typeof InvestigationTimelineEventScalarFieldEnum)[keyof typeof InvestigationTimelineEventScalarFieldEnum]
+
+
+export const InvestigationDocumentScalarFieldEnum = {
+  id: 'id',
+  investigationId: 'investigationId',
+  slug: 'slug',
+  kind: 'kind',
+  title: 'title',
+  summary: 'summary',
+  source: 'source',
+  documentDate: 'documentDate',
+  storageFileName: 'storageFileName',
+  fileUrl: 'fileUrl',
+  previewImageUrl: 'previewImageUrl',
+  mimeType: 'mimeType',
+  content: 'content',
+  isEvidence: 'isEvidence',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvestigationDocumentScalarFieldEnum = (typeof InvestigationDocumentScalarFieldEnum)[keyof typeof InvestigationDocumentScalarFieldEnum]
+
+
+export const NewsScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  summary: 'summary',
+  content: 'content',
+  isPublished: 'isPublished',
+  publishedAt: 'publishedAt',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NewsScalarFieldEnum = (typeof NewsScalarFieldEnum)[keyof typeof NewsScalarFieldEnum]
+
+
 export const ClinicalGuidelineScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
@@ -350,12 +519,413 @@ export const RegulationScalarFieldEnum = {
   content: 'content',
   sourceUrl: 'sourceUrl',
   documentType: 'documentType',
+  number: 'number',
+  adoptedAt: 'adoptedAt',
+  issuingAuthority: 'issuingAuthority',
+  jurisdiction: 'jurisdiction',
+  officialPublicationUrl: 'officialPublicationUrl',
+  legalStatus: 'legalStatus',
   effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  isPublished: 'isPublished',
+  publishedAt: 'publishedAt',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type RegulationScalarFieldEnum = (typeof RegulationScalarFieldEnum)[keyof typeof RegulationScalarFieldEnum]
+
+
+export const RegulationEditionScalarFieldEnum = {
+  id: 'id',
+  regulationId: 'regulationId',
+  key: 'key',
+  title: 'title',
+  effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  legalStatus: 'legalStatus',
+  transitionNote: 'transitionNote',
+  officialTextUrl: 'officialTextUrl',
+  verifiedAt: 'verifiedAt',
+  historicalUseAllowed: 'historicalUseAllowed',
+  verificationNote: 'verificationNote',
+  isPublished: 'isPublished',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RegulationEditionScalarFieldEnum = (typeof RegulationEditionScalarFieldEnum)[keyof typeof RegulationEditionScalarFieldEnum]
+
+
+export const RegulationRelationScalarFieldEnum = {
+  id: 'id',
+  sourceRegulationId: 'sourceRegulationId',
+  targetRegulationId: 'targetRegulationId',
+  type: 'type',
+  legalEffectFrom: 'legalEffectFrom',
+  note: 'note',
+  officialSourceUrl: 'officialSourceUrl',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RegulationRelationScalarFieldEnum = (typeof RegulationRelationScalarFieldEnum)[keyof typeof RegulationRelationScalarFieldEnum]
+
+
+export const RegulationSourceScalarFieldEnum = {
+  id: 'id',
+  regulationId: 'regulationId',
+  editionId: 'editionId',
+  kind: 'kind',
+  title: 'title',
+  url: 'url',
+  isOfficial: 'isOfficial',
+  isPublished: 'isPublished',
+  publishedAt: 'publishedAt',
+  sourceDate: 'sourceDate',
+  accessedAt: 'accessedAt',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RegulationSourceScalarFieldEnum = (typeof RegulationSourceScalarFieldEnum)[keyof typeof RegulationSourceScalarFieldEnum]
+
+
+export const RegulationTopicScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  description: 'description',
+  sortOrder: 'sortOrder',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RegulationTopicScalarFieldEnum = (typeof RegulationTopicScalarFieldEnum)[keyof typeof RegulationTopicScalarFieldEnum]
+
+
+export const RegulationOnTopicScalarFieldEnum = {
+  regulationId: 'regulationId',
+  topicId: 'topicId',
+  createdAt: 'createdAt'
+} as const
+
+export type RegulationOnTopicScalarFieldEnum = (typeof RegulationOnTopicScalarFieldEnum)[keyof typeof RegulationOnTopicScalarFieldEnum]
+
+
+export const RegulationProvisionScalarFieldEnum = {
+  id: 'id',
+  editionId: 'editionId',
+  topicId: 'topicId',
+  key: 'key',
+  locator: 'locator',
+  title: 'title',
+  requirement: 'requirement',
+  applicability: 'applicability',
+  effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  isPublished: 'isPublished',
+  publishedAt: 'publishedAt',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RegulationProvisionScalarFieldEnum = (typeof RegulationProvisionScalarFieldEnum)[keyof typeof RegulationProvisionScalarFieldEnum]
+
+
+export const RegulatoryCheckScalarFieldEnum = {
+  id: 'id',
+  provisionId: 'provisionId',
+  key: 'key',
+  question: 'question',
+  factToEstablish: 'factToEstablish',
+  primaryEvidenceType: 'primaryEvidenceType',
+  officialSearchUrl: 'officialSearchUrl',
+  officialSearchLabel: 'officialSearchLabel',
+  nonCompliancePattern: 'nonCompliancePattern',
+  evidenceThreshold: 'evidenceThreshold',
+  applicabilityNote: 'applicabilityNote',
+  isPublished: 'isPublished',
+  publishedAt: 'publishedAt',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RegulatoryCheckScalarFieldEnum = (typeof RegulatoryCheckScalarFieldEnum)[keyof typeof RegulatoryCheckScalarFieldEnum]
+
+
+export const IndependentControlMethodologyScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  summary: 'summary',
+  description: 'description',
+  legalStatusNote: 'legalStatusNote',
+  bibliographicCitation: 'bibliographicCitation',
+  officialMethodologyUrl: 'officialMethodologyUrl',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IndependentControlMethodologyScalarFieldEnum = (typeof IndependentControlMethodologyScalarFieldEnum)[keyof typeof IndependentControlMethodologyScalarFieldEnum]
+
+
+export const IndependentControlSourceScalarFieldEnum = {
+  id: 'id',
+  methodologyId: 'methodologyId',
+  key: 'key',
+  kind: 'kind',
+  title: 'title',
+  bibliographicCitation: 'bibliographicCitation',
+  sourceUrl: 'sourceUrl',
+  internalFileName: 'internalFileName',
+  sha256: 'sha256',
+  rightsBasis: 'rightsBasis',
+  rightsVerifiedAt: 'rightsVerifiedAt',
+  rightsNote: 'rightsNote',
+  publicFileUrl: 'publicFileUrl',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IndependentControlSourceScalarFieldEnum = (typeof IndependentControlSourceScalarFieldEnum)[keyof typeof IndependentControlSourceScalarFieldEnum]
+
+
+export const IndependentControlCriterionScalarFieldEnum = {
+  id: 'id',
+  methodologyId: 'methodologyId',
+  key: 'key',
+  sourceLocator: 'sourceLocator',
+  sectionKey: 'sectionKey',
+  sectionTitle: 'sectionTitle',
+  title: 'title',
+  statement: 'statement',
+  whatIsChecked: 'whatIsChecked',
+  checkQuestion: 'checkQuestion',
+  factToEstablish: 'factToEstablish',
+  confirmingDocument: 'confirmingDocument',
+  evidenceRequired: 'evidenceRequired',
+  evidenceThreshold: 'evidenceThreshold',
+  applicabilityNote: 'applicabilityNote',
+  sourceDivergenceNote: 'sourceDivergenceNote',
+  basisKind: 'basisKind',
+  allowedStatuses: 'allowedStatuses',
+  isSourceCriterion: 'isSourceCriterion',
+  effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IndependentControlCriterionScalarFieldEnum = (typeof IndependentControlCriterionScalarFieldEnum)[keyof typeof IndependentControlCriterionScalarFieldEnum]
+
+
+export const IndependentControlCriterionNormScalarFieldEnum = {
+  id: 'id',
+  criterionId: 'criterionId',
+  regulatoryCheckId: 'regulatoryCheckId',
+  role: 'role',
+  verifiedAt: 'verifiedAt',
+  note: 'note',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IndependentControlCriterionNormScalarFieldEnum = (typeof IndependentControlCriterionNormScalarFieldEnum)[keyof typeof IndependentControlCriterionNormScalarFieldEnum]
+
+
+export const RegulationEquipmentRequirementScalarFieldEnum = {
+  id: 'id',
+  provisionId: 'provisionId',
+  stableKey: 'stableKey',
+  appendix: 'appendix',
+  subsection: 'subsection',
+  tableTitle: 'tableTitle',
+  position: 'position',
+  deviceTypeCode: 'deviceTypeCode',
+  regulatoryName: 'regulatoryName',
+  displayName: 'displayName',
+  quantity: 'quantity',
+  applicabilityCondition: 'applicabilityCondition',
+  isPublished: 'isPublished',
+  publishedAt: 'publishedAt',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RegulationEquipmentRequirementScalarFieldEnum = (typeof RegulationEquipmentRequirementScalarFieldEnum)[keyof typeof RegulationEquipmentRequirementScalarFieldEnum]
+
+
+export const InvestigationEquipmentInstanceScalarFieldEnum = {
+  id: 'id',
+  investigationId: 'investigationId',
+  equipmentId: 'equipmentId',
+  key: 'key',
+  manufacturer: 'manufacturer',
+  model: 'model',
+  serialNumber: 'serialNumber',
+  manufactureYear: 'manufactureYear',
+  acquiredAt: 'acquiredAt',
+  commissionedAt: 'commissionedAt',
+  useFrom: 'useFrom',
+  useTo: 'useTo',
+  decommissionedAt: 'decommissionedAt',
+  identificationSummary: 'identificationSummary',
+  isPublished: 'isPublished',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvestigationEquipmentInstanceScalarFieldEnum = (typeof InvestigationEquipmentInstanceScalarFieldEnum)[keyof typeof InvestigationEquipmentInstanceScalarFieldEnum]
+
+
+export const InvestigationRegulatoryAssessmentScalarFieldEnum = {
+  id: 'id',
+  investigationId: 'investigationId',
+  regulatoryCheckId: 'regulatoryCheckId',
+  appliedEditionId: 'appliedEditionId',
+  clinicId: 'clinicId',
+  procedureId: 'procedureId',
+  equipmentInstanceId: 'equipmentInstanceId',
+  key: 'key',
+  eventFrom: 'eventFrom',
+  eventTo: 'eventTo',
+  eventDateLabel: 'eventDateLabel',
+  status: 'status',
+  applicabilityStatus: 'applicabilityStatus',
+  restrictedSignals: 'restrictedSignals',
+  neutralConclusion: 'neutralConclusion',
+  alternativeVersion: 'alternativeVersion',
+  evidenceGaps: 'evidenceGaps',
+  supportingEvidenceSearchCompleted: 'supportingEvidenceSearchCompleted',
+  refutingEvidenceSearchCompleted: 'refutingEvidenceSearchCompleted',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvestigationRegulatoryAssessmentScalarFieldEnum = (typeof InvestigationRegulatoryAssessmentScalarFieldEnum)[keyof typeof InvestigationRegulatoryAssessmentScalarFieldEnum]
+
+
+export const InvestigationAssessmentEvidenceScalarFieldEnum = {
+  investigationId: 'investigationId',
+  assessmentId: 'assessmentId',
+  documentId: 'documentId',
+  role: 'role',
+  isPrimary: 'isPrimary',
+  provenanceVerifiedAt: 'provenanceVerifiedAt',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type InvestigationAssessmentEvidenceScalarFieldEnum = (typeof InvestigationAssessmentEvidenceScalarFieldEnum)[keyof typeof InvestigationAssessmentEvidenceScalarFieldEnum]
+
+
+export const InvestigationIndependentControlAssessmentScalarFieldEnum = {
+  id: 'id',
+  investigationId: 'investigationId',
+  criterionId: 'criterionId',
+  appliedCriterionNormId: 'appliedCriterionNormId',
+  clinicId: 'clinicId',
+  key: 'key',
+  eventFrom: 'eventFrom',
+  eventTo: 'eventTo',
+  eventDateLabel: 'eventDateLabel',
+  status: 'status',
+  applicabilityStatus: 'applicabilityStatus',
+  restrictedSignals: 'restrictedSignals',
+  neutralConclusion: 'neutralConclusion',
+  alternativeVersion: 'alternativeVersion',
+  evidenceGaps: 'evidenceGaps',
+  supportingEvidenceSearchCompleted: 'supportingEvidenceSearchCompleted',
+  refutingEvidenceSearchCompleted: 'refutingEvidenceSearchCompleted',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvestigationIndependentControlAssessmentScalarFieldEnum = (typeof InvestigationIndependentControlAssessmentScalarFieldEnum)[keyof typeof InvestigationIndependentControlAssessmentScalarFieldEnum]
+
+
+export const InvestigationIndependentControlEvidenceScalarFieldEnum = {
+  investigationId: 'investigationId',
+  assessmentId: 'assessmentId',
+  documentId: 'documentId',
+  role: 'role',
+  isPrimary: 'isPrimary',
+  provenanceVerifiedAt: 'provenanceVerifiedAt',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type InvestigationIndependentControlEvidenceScalarFieldEnum = (typeof InvestigationIndependentControlEvidenceScalarFieldEnum)[keyof typeof InvestigationIndependentControlEvidenceScalarFieldEnum]
+
+
+export const InvestigationEquipmentInstanceEvidenceScalarFieldEnum = {
+  investigationId: 'investigationId',
+  equipmentInstanceId: 'equipmentInstanceId',
+  documentId: 'documentId',
+  note: 'note',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  isPublished: 'isPublished',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvestigationEquipmentInstanceEvidenceScalarFieldEnum = (typeof InvestigationEquipmentInstanceEvidenceScalarFieldEnum)[keyof typeof InvestigationEquipmentInstanceEvidenceScalarFieldEnum]
+
+
+export const InvestigationRegistryCheckScalarFieldEnum = {
+  id: 'id',
+  investigationId: 'investigationId',
+  assessmentId: 'assessmentId',
+  equipmentInstanceId: 'equipmentInstanceId',
+  snapshotDocumentId: 'snapshotDocumentId',
+  key: 'key',
+  registryName: 'registryName',
+  query: 'query',
+  searchedAt: 'searchedAt',
+  officialUrl: 'officialUrl',
+  result: 'result',
+  resultSummary: 'resultSummary',
+  isPublished: 'isPublished',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvestigationRegistryCheckScalarFieldEnum = (typeof InvestigationRegistryCheckScalarFieldEnum)[keyof typeof InvestigationRegistryCheckScalarFieldEnum]
 
 
 export const HistoryEntryScalarFieldEnum = {
@@ -609,6 +1179,165 @@ export const ClinicOnPublicationScalarFieldEnum = {
 } as const
 
 export type ClinicOnPublicationScalarFieldEnum = (typeof ClinicOnPublicationScalarFieldEnum)[keyof typeof ClinicOnPublicationScalarFieldEnum]
+
+
+export const InvestigationOnClinicScalarFieldEnum = {
+  investigationId: 'investigationId',
+  clinicId: 'clinicId',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type InvestigationOnClinicScalarFieldEnum = (typeof InvestigationOnClinicScalarFieldEnum)[keyof typeof InvestigationOnClinicScalarFieldEnum]
+
+
+export const InvestigationOnEquipmentScalarFieldEnum = {
+  investigationId: 'investigationId',
+  equipmentId: 'equipmentId',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type InvestigationOnEquipmentScalarFieldEnum = (typeof InvestigationOnEquipmentScalarFieldEnum)[keyof typeof InvestigationOnEquipmentScalarFieldEnum]
+
+
+export const InvestigationOnDiseaseScalarFieldEnum = {
+  investigationId: 'investigationId',
+  diseaseId: 'diseaseId',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type InvestigationOnDiseaseScalarFieldEnum = (typeof InvestigationOnDiseaseScalarFieldEnum)[keyof typeof InvestigationOnDiseaseScalarFieldEnum]
+
+
+export const InvestigationOnProcedureScalarFieldEnum = {
+  investigationId: 'investigationId',
+  procedureId: 'procedureId',
+  isPublished: 'isPublished',
+  evidenceValidatedAt: 'evidenceValidatedAt',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type InvestigationOnProcedureScalarFieldEnum = (typeof InvestigationOnProcedureScalarFieldEnum)[keyof typeof InvestigationOnProcedureScalarFieldEnum]
+
+
+export const NewsOnInvestigationScalarFieldEnum = {
+  newsId: 'newsId',
+  investigationId: 'investigationId',
+  createdAt: 'createdAt'
+} as const
+
+export type NewsOnInvestigationScalarFieldEnum = (typeof NewsOnInvestigationScalarFieldEnum)[keyof typeof NewsOnInvestigationScalarFieldEnum]
+
+
+export const AppealScalarFieldEnum = {
+  id: 'id',
+  publicNumber: 'publicNumber',
+  investigationId: 'investigationId',
+  clinicId: 'clinicId',
+  consentTemplateId: 'consentTemplateId',
+  name: 'name',
+  phone: 'phone',
+  email: 'email',
+  city: 'city',
+  reporterRoles: 'reporterRoles',
+  categories: 'categories',
+  requestedActions: 'requestedActions',
+  description: 'description',
+  operationDate: 'operationDate',
+  reportedClinicName: 'reportedClinicName',
+  reportedDoctorName: 'reportedDoctorName',
+  reportedEquipmentName: 'reportedEquipmentName',
+  collectiveInterest: 'collectiveInterest',
+  consentAcceptedAt: 'consentAcceptedAt',
+  status: 'status',
+  statusChangedAt: 'statusChangedAt',
+  requestFingerprint: 'requestFingerprint',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AppealScalarFieldEnum = (typeof AppealScalarFieldEnum)[keyof typeof AppealScalarFieldEnum]
+
+
+export const AppealAttachmentScalarFieldEnum = {
+  id: 'id',
+  appealId: 'appealId',
+  displayName: 'displayName',
+  originalFileName: 'originalFileName',
+  storageKey: 'storageKey',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  sha256: 'sha256',
+  securityStatus: 'securityStatus',
+  createdAt: 'createdAt'
+} as const
+
+export type AppealAttachmentScalarFieldEnum = (typeof AppealAttachmentScalarFieldEnum)[keyof typeof AppealAttachmentScalarFieldEnum]
+
+
+export const AppealNoteScalarFieldEnum = {
+  id: 'id',
+  appealId: 'appealId',
+  adminUserId: 'adminUserId',
+  text: 'text',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AppealNoteScalarFieldEnum = (typeof AppealNoteScalarFieldEnum)[keyof typeof AppealNoteScalarFieldEnum]
+
+
+export const AppealStatusHistoryScalarFieldEnum = {
+  id: 'id',
+  appealId: 'appealId',
+  adminUserId: 'adminUserId',
+  fromStatus: 'fromStatus',
+  toStatus: 'toStatus',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type AppealStatusHistoryScalarFieldEnum = (typeof AppealStatusHistoryScalarFieldEnum)[keyof typeof AppealStatusHistoryScalarFieldEnum]
+
+
+export const AppealNotificationScalarFieldEnum = {
+  id: 'id',
+  appealId: 'appealId',
+  status: 'status',
+  recipient: 'recipient',
+  attempts: 'attempts',
+  lastAttemptAt: 'lastAttemptAt',
+  sentAt: 'sentAt',
+  messageId: 'messageId',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AppealNotificationScalarFieldEnum = (typeof AppealNotificationScalarFieldEnum)[keyof typeof AppealNotificationScalarFieldEnum]
+
+
+export const AppealConsentTemplateScalarFieldEnum = {
+  id: 'id',
+  version: 'version',
+  title: 'title',
+  body: 'body',
+  isActive: 'isActive',
+  requiresApproval: 'requiresApproval',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AppealConsentTemplateScalarFieldEnum = (typeof AppealConsentTemplateScalarFieldEnum)[keyof typeof AppealConsentTemplateScalarFieldEnum]
 
 
 export const AdminUserScalarFieldEnum = {
