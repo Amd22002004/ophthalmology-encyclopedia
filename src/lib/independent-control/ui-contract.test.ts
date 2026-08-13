@@ -55,6 +55,17 @@ test("карточка критерия показывает рабочий во
   assert.match(component, /criterion\.isSourceCriterion/);
 });
 
+test("вложенные disclosure используют независимые named groups и свои индикаторы", () => {
+  const component = source(methodologyComponentPath);
+
+  assert.match(component, /className="group\/section rounded-lg border bg-card"/);
+  assert.match(component, /group-open\/section:rotate-45/);
+  assert.match(component, /className="group\/criterion rounded-md border bg-card"/);
+  assert.match(component, /group-open\/criterion:rotate-45/);
+  assert.equal((component.match(/aria-hidden/g) ?? []).length >= 2, true);
+  assert.doesNotMatch(component, /className="group rounded-(?:md|lg) border bg-card"/);
+});
+
 test("расследование выводит отдельный evidence-gated блок independent-control", () => {
   const component = source(assessmentComponentPath);
   const template = source("src/components/templates/investigation-template.tsx");

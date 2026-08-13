@@ -122,7 +122,7 @@ function NormReference({ normLink }: { normLink: NormLink }) {
 
 function CriterionCard({ criterion }: { criterion: Criterion }) {
   return (
-    <details className="group rounded-md border bg-card">
+    <details className="group/criterion rounded-md border bg-card">
       <summary className="cursor-pointer list-none px-4 py-3 marker:content-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
         <span className="flex items-start justify-between gap-3">
           <span className="min-w-0">
@@ -135,7 +135,7 @@ function CriterionCard({ criterion }: { criterion: Criterion }) {
           </span>
           <span
             aria-hidden
-            className="shrink-0 text-lg leading-5 text-muted-foreground group-open:rotate-45"
+            className="shrink-0 text-lg leading-5 text-muted-foreground transition-transform group-open/criterion:rotate-45"
           >
             +
           </span>
@@ -448,14 +448,25 @@ function MethodologyCard({ methodology }: { methodology: Methodology }) {
 
         <div className="space-y-3">
           {[...groups.entries()].map(([sectionKey, group]) => (
-            <details className="group rounded-lg border bg-card" key={sectionKey}>
+            <details
+              className="group/section rounded-lg border bg-card"
+              key={sectionKey}
+            >
               <summary className="cursor-pointer list-none p-4 marker:content-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
                 <span className="flex items-center justify-between gap-3">
                   <span className="font-semibold leading-6 text-foreground">
                     {group.title}
                   </span>
-                  <span className="inline-flex shrink-0 items-center rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                    {group.criteria.length}
+                  <span className="flex shrink-0 items-center gap-2">
+                    <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                      {group.criteria.length}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="text-lg leading-5 text-muted-foreground transition-transform group-open/section:rotate-45"
+                    >
+                      +
+                    </span>
                   </span>
                 </span>
               </summary>
