@@ -1,0 +1,4 @@
+interface:
+  display_name: "Entity Network"
+  short_description: "Find missing domain relationships"
+  default_prompt: "Use $entity-network to review missing links after adding a domain entity."

@@ -3,7 +3,7 @@
 > Профессиональный справочник по офтальмологии, построенный как **граф знаний**,
 > а не как каталог страниц.
 
-[![Data Model](https://img.shields.io/badge/Data%20Model-Frozen%20v1-0f766e)](./docs/architecture/CHANGELOG.md)
+[![Data Model](https://img.shields.io/badge/Data%20Model-v1.2-0f766e)](./docs/architecture/CHANGELOG.md)
 [![Next.js](https://img.shields.io/badge/Next.js-16.2-black)](https://nextjs.org)
 [![Prisma](https://img.shields.io/badge/Prisma-7.8-2D3748)](https://prisma.io)
 [![Docs](https://img.shields.io/badge/docs-architecture-blue)](./docs/architecture/overview.md)
@@ -63,6 +63,8 @@
 | **Оборудование** | Страница с ТХ, галереей, документами; связи с клиниками, врачами, процедурами |
 | **Научные работы** | Диссертации и исследования как полноценные сущности энциклопедии |
 | **Каталог публикаций** | `/publications` строится из научных работ **автоматически** |
+| **Расследования и новости** | Доказательные материалы, документы, хронология и редакционные входные точки |
+| **Обращения** | Единая форма, приватные вложения, статусы, история, фильтры и защищённый admin-реестр |
 | **Поставщики** | Раздел и связи с клиниками и категориями оборудования |
 | **Справочники** | Специальности, регионы, категории заболеваний / процедур / оборудования |
 
@@ -110,7 +112,7 @@ sitemap, индексируемые заголовки, двусторонняя
 |---|---|---|
 | **Прямая** | `ScientificWork → Disease` | Физически в БД (join-таблица) |
 | **Вычисляемая** | `ScientificWork → Clinics` | Через автора — истинно по построению («клиники автора») |
-| **Намеренно отсутствует** | `Equipment → ScientificWork` | Архитектурное решение, не недоработка |
+| **Намеренно отсутствует** | `Appeal → Equipment` по словам заявителя | Непроверенное сообщение не становится фактом графа |
 
 **Масштабируемость доказана:** 8 разнотипных аппаратов (лазеры, ОКТ, биометры,
 микроскопы, витреосистемы) добавляются **только данными**, без изменения схемы —
@@ -129,8 +131,9 @@ sitemap, индексируемые заголовки, двусторонняя
 ├── src/
 │   ├── app/
 │   │   ├── (platform)/        Публичные разделы: /doctors, /clinics, /diseases,
-│   │   │                      /procedures, /equipment, /publications, /suppliers …
-│   │   └── admin/             Админ-панель (авторизация, редактор клиник)
+│   │   │                      /procedures, /equipment, /publications, /investigations,
+│   │   │                      /news, /appeal, /suppliers …
+│   │   └── admin/             Админ-панель, включая закрытый реестр обращений
 │   ├── components/
 │   │   ├── templates/         Шаблоны страниц сущностей
 │   │   ├── entity/            Переиспользуемые блоки сущностей
@@ -170,6 +173,7 @@ sitemap, индексируемые заголовки, двусторонняя
 | [`doctors.md`](./docs/architecture/doctors.md) · [`clinics.md`](./docs/architecture/clinics.md) · [`diseases.md`](./docs/architecture/diseases.md) · [`procedures.md`](./docs/architecture/procedures.md) | Модели сущностей |
 | [`equipment.md`](./docs/architecture/equipment.md) | 🔒 `Equipment` + `EquipmentSpec` (заморожена) |
 | [`publications.md`](./docs/architecture/publications.md) | `ScientificWork` vs `Publication` |
+| [`appeals.md`](./docs/architecture/appeals.md) | Приватный реестр обращений, файлы, статусы и граница с Knowledge Graph |
 
 **Для контрибьюторов:** [`CONTRIBUTING.md`](./.github/CONTRIBUTING.md) ·
 [`ARCHITECTURE.md`](./.github/ARCHITECTURE.md)

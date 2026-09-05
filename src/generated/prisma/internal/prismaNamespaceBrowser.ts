@@ -125,7 +125,33 @@ export const ModelName = {
   AppealStatusHistory: 'AppealStatusHistory',
   AppealNotification: 'AppealNotification',
   AppealConsentTemplate: 'AppealConsentTemplate',
-  AdminUser: 'AdminUser'
+  CooperationApplication: 'CooperationApplication',
+  CooperationApplicationStatusHistory: 'CooperationApplicationStatusHistory',
+  CooperationApplicationNote: 'CooperationApplicationNote',
+  CooperationApplicationNotification: 'CooperationApplicationNotification',
+  CooperationApplicationAttachment: 'CooperationApplicationAttachment',
+  User: 'User',
+  CooperationEntityMatch: 'CooperationEntityMatch',
+  Invitation: 'Invitation',
+  InvitationDelivery: 'InvitationDelivery',
+  UserDoctorLink: 'UserDoctorLink',
+  UserClinicAccess: 'UserClinicAccess',
+  PasswordResetToken: 'PasswordResetToken',
+  AuthRateLimitBucket: 'AuthRateLimitBucket',
+  AuthAuditEvent: 'AuthAuditEvent',
+  AdminUser: 'AdminUser',
+  AdminPasswordResetToken: 'AdminPasswordResetToken',
+  Event: 'Event',
+  EventSpeaker: 'EventSpeaker',
+  EventTalk: 'EventTalk',
+  EventConsentTemplate: 'EventConsentTemplate',
+  EventRegistration: 'EventRegistration',
+  EventRegistrationStatusHistory: 'EventRegistrationStatusHistory',
+  EventRegistrationNote: 'EventRegistrationNote',
+  EventRegistrationNotification: 'EventRegistrationNotification',
+  EventTelegramUpdate: 'EventTelegramUpdate',
+  EventTelegramAuditEvent: 'EventTelegramAuditEvent',
+  EventTelegramJob: 'EventTelegramJob'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1314,8 +1340,13 @@ export const AppealNotificationScalarFieldEnum = {
   appealId: 'appealId',
   status: 'status',
   recipient: 'recipient',
+  recipients: 'recipients',
+  deliveredRecipients: 'deliveredRecipients',
   attempts: 'attempts',
   lastAttemptAt: 'lastAttemptAt',
+  nextAttemptAt: 'nextAttemptAt',
+  lockedAt: 'lockedAt',
+  lockedBy: 'lockedBy',
   sentAt: 'sentAt',
   messageId: 'messageId',
   lastError: 'lastError',
@@ -1340,12 +1371,263 @@ export const AppealConsentTemplateScalarFieldEnum = {
 export type AppealConsentTemplateScalarFieldEnum = (typeof AppealConsentTemplateScalarFieldEnum)[keyof typeof AppealConsentTemplateScalarFieldEnum]
 
 
+export const CooperationApplicationScalarFieldEnum = {
+  id: 'id',
+  applicationNumber: 'applicationNumber',
+  participantType: 'participantType',
+  applicationType: 'applicationType',
+  status: 'status',
+  organizationName: 'organizationName',
+  inn: 'inn',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  middleName: 'middleName',
+  contactName: 'contactName',
+  contactPosition: 'contactPosition',
+  phone: 'phone',
+  email: 'email',
+  city: 'city',
+  region: 'region',
+  website: 'website',
+  workplace: 'workplace',
+  customWorkplace: 'customWorkplace',
+  specialties: 'specialties',
+  academicDegree: 'academicDegree',
+  professionalUrl: 'professionalUrl',
+  partnerType: 'partnerType',
+  interests: 'interests',
+  message: 'message',
+  consentPersonalData: 'consentPersonalData',
+  consentMarketing: 'consentMarketing',
+  source: 'source',
+  landingUrl: 'landingUrl',
+  pageTitle: 'pageTitle',
+  referrer: 'referrer',
+  utmSource: 'utmSource',
+  utmMedium: 'utmMedium',
+  utmCampaign: 'utmCampaign',
+  utmContent: 'utmContent',
+  requestFingerprint: 'requestFingerprint',
+  idempotencyKey: 'idempotencyKey',
+  responsibleUserId: 'responsibleUserId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CooperationApplicationScalarFieldEnum = (typeof CooperationApplicationScalarFieldEnum)[keyof typeof CooperationApplicationScalarFieldEnum]
+
+
+export const CooperationApplicationStatusHistoryScalarFieldEnum = {
+  id: 'id',
+  applicationId: 'applicationId',
+  fromStatus: 'fromStatus',
+  toStatus: 'toStatus',
+  adminUserId: 'adminUserId',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type CooperationApplicationStatusHistoryScalarFieldEnum = (typeof CooperationApplicationStatusHistoryScalarFieldEnum)[keyof typeof CooperationApplicationStatusHistoryScalarFieldEnum]
+
+
+export const CooperationApplicationNoteScalarFieldEnum = {
+  id: 'id',
+  applicationId: 'applicationId',
+  adminUserId: 'adminUserId',
+  text: 'text',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CooperationApplicationNoteScalarFieldEnum = (typeof CooperationApplicationNoteScalarFieldEnum)[keyof typeof CooperationApplicationNoteScalarFieldEnum]
+
+
+export const CooperationApplicationNotificationScalarFieldEnum = {
+  id: 'id',
+  applicationId: 'applicationId',
+  kind: 'kind',
+  status: 'status',
+  recipient: 'recipient',
+  recipients: 'recipients',
+  deliveredRecipients: 'deliveredRecipients',
+  attempts: 'attempts',
+  lastAttemptAt: 'lastAttemptAt',
+  nextAttemptAt: 'nextAttemptAt',
+  lockedAt: 'lockedAt',
+  lockedBy: 'lockedBy',
+  sentAt: 'sentAt',
+  messageId: 'messageId',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CooperationApplicationNotificationScalarFieldEnum = (typeof CooperationApplicationNotificationScalarFieldEnum)[keyof typeof CooperationApplicationNotificationScalarFieldEnum]
+
+
+export const CooperationApplicationAttachmentScalarFieldEnum = {
+  id: 'id',
+  applicationId: 'applicationId',
+  displayName: 'displayName',
+  originalName: 'originalName',
+  storageKey: 'storageKey',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  sha256: 'sha256',
+  createdAt: 'createdAt'
+} as const
+
+export type CooperationApplicationAttachmentScalarFieldEnum = (typeof CooperationApplicationAttachmentScalarFieldEnum)[keyof typeof CooperationApplicationAttachmentScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  displayName: 'displayName',
+  status: 'status',
+  emailVerifiedAt: 'emailVerifiedAt',
+  sessionVersion: 'sessionVersion',
+  lastLoginAt: 'lastLoginAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const CooperationEntityMatchScalarFieldEnum = {
+  id: 'id',
+  applicationId: 'applicationId',
+  doctorId: 'doctorId',
+  clinicId: 'clinicId',
+  status: 'status',
+  confirmedById: 'confirmedById',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CooperationEntityMatchScalarFieldEnum = (typeof CooperationEntityMatchScalarFieldEnum)[keyof typeof CooperationEntityMatchScalarFieldEnum]
+
+
+export const InvitationScalarFieldEnum = {
+  id: 'id',
+  applicationId: 'applicationId',
+  invitedEmail: 'invitedEmail',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  revokedAt: 'revokedAt',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
+
+
+export const InvitationDeliveryScalarFieldEnum = {
+  id: 'id',
+  invitationId: 'invitationId',
+  status: 'status',
+  recipient: 'recipient',
+  attempts: 'attempts',
+  lastAttemptAt: 'lastAttemptAt',
+  sentAt: 'sentAt',
+  messageId: 'messageId',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvitationDeliveryScalarFieldEnum = (typeof InvitationDeliveryScalarFieldEnum)[keyof typeof InvitationDeliveryScalarFieldEnum]
+
+
+export const UserDoctorLinkScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  doctorId: 'doctorId',
+  applicationId: 'applicationId',
+  status: 'status',
+  confirmedById: 'confirmedById',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserDoctorLinkScalarFieldEnum = (typeof UserDoctorLinkScalarFieldEnum)[keyof typeof UserDoctorLinkScalarFieldEnum]
+
+
+export const UserClinicAccessScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  clinicId: 'clinicId',
+  applicationId: 'applicationId',
+  role: 'role',
+  status: 'status',
+  confirmedById: 'confirmedById',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserClinicAccessScalarFieldEnum = (typeof UserClinicAccessScalarFieldEnum)[keyof typeof UserClinicAccessScalarFieldEnum]
+
+
+export const PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  revokedAt: 'revokedAt',
+  attempts: 'attempts',
+  sentAt: 'sentAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt'
+} as const
+
+export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum]
+
+
+export const AuthRateLimitBucketScalarFieldEnum = {
+  id: 'id',
+  scope: 'scope',
+  fingerprint: 'fingerprint',
+  windowStartedAt: 'windowStartedAt',
+  expiresAt: 'expiresAt',
+  attempts: 'attempts',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AuthRateLimitBucketScalarFieldEnum = (typeof AuthRateLimitBucketScalarFieldEnum)[keyof typeof AuthRateLimitBucketScalarFieldEnum]
+
+
+export const AuthAuditEventScalarFieldEnum = {
+  id: 'id',
+  eventType: 'eventType',
+  userId: 'userId',
+  adminUserId: 'adminUserId',
+  applicationId: 'applicationId',
+  invitationId: 'invitationId',
+  doctorId: 'doctorId',
+  clinicId: 'clinicId',
+  details: 'details',
+  createdAt: 'createdAt'
+} as const
+
+export type AuthAuditEventScalarFieldEnum = (typeof AuthAuditEventScalarFieldEnum)[keyof typeof AuthAuditEventScalarFieldEnum]
+
+
 export const AdminUserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   passwordHash: 'passwordHash',
   name: 'name',
   role: 'role',
+  sessionVersion: 'sessionVersion',
   lastLoginAt: 'lastLoginAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1354,12 +1636,242 @@ export const AdminUserScalarFieldEnum = {
 export type AdminUserScalarFieldEnum = (typeof AdminUserScalarFieldEnum)[keyof typeof AdminUserScalarFieldEnum]
 
 
+export const AdminPasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  adminUserId: 'adminUserId',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  revokedAt: 'revokedAt',
+  attempts: 'attempts',
+  sentAt: 'sentAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt'
+} as const
+
+export type AdminPasswordResetTokenScalarFieldEnum = (typeof AdminPasswordResetTokenScalarFieldEnum)[keyof typeof AdminPasswordResetTokenScalarFieldEnum]
+
+
+export const EventScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  description: 'description',
+  organizerName: 'organizerName',
+  organizerEmail: 'organizerEmail',
+  startsAt: 'startsAt',
+  registrationStartsAt: 'registrationStartsAt',
+  venueName: 'venueName',
+  venueAddress: 'venueAddress',
+  city: 'city',
+  registrationOpen: 'registrationOpen',
+  programPublished: 'programPublished',
+  speakersPublished: 'speakersPublished',
+  registrationSequence: 'registrationSequence',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
+
+
+export const EventSpeakerScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  doctorId: 'doctorId',
+  order: 'order',
+  fullNameSnapshot: 'fullNameSnapshot',
+  credentialsSnapshot: 'credentialsSnapshot',
+  organizationRole: 'organizationRole',
+  photoUrlSnapshot: 'photoUrlSnapshot',
+  published: 'published',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventSpeakerScalarFieldEnum = (typeof EventSpeakerScalarFieldEnum)[keyof typeof EventSpeakerScalarFieldEnum]
+
+
+export const EventTalkScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  speakerId: 'speakerId',
+  kind: 'kind',
+  title: 'title',
+  description: 'description',
+  speakerNameSnapshot: 'speakerNameSnapshot',
+  moderatorSnapshot: 'moderatorSnapshot',
+  startAt: 'startAt',
+  endAt: 'endAt',
+  published: 'published',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventTalkScalarFieldEnum = (typeof EventTalkScalarFieldEnum)[keyof typeof EventTalkScalarFieldEnum]
+
+
+export const EventConsentTemplateScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  version: 'version',
+  title: 'title',
+  body: 'body',
+  isActive: 'isActive',
+  requiresApproval: 'requiresApproval',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventConsentTemplateScalarFieldEnum = (typeof EventConsentTemplateScalarFieldEnum)[keyof typeof EventConsentTemplateScalarFieldEnum]
+
+
+export const EventRegistrationScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  publicNumber: 'publicNumber',
+  consentTemplateId: 'consentTemplateId',
+  status: 'status',
+  fullName: 'fullName',
+  phone: 'phone',
+  email: 'email',
+  city: 'city',
+  specialty: 'specialty',
+  customSpecialty: 'customSpecialty',
+  organization: 'organization',
+  position: 'position',
+  comment: 'comment',
+  consentAcceptedAt: 'consentAcceptedAt',
+  source: 'source',
+  landingUrl: 'landingUrl',
+  pageTitle: 'pageTitle',
+  referrer: 'referrer',
+  utmSource: 'utmSource',
+  utmMedium: 'utmMedium',
+  utmCampaign: 'utmCampaign',
+  utmContent: 'utmContent',
+  requestFingerprint: 'requestFingerprint',
+  idempotencyKey: 'idempotencyKey',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventRegistrationScalarFieldEnum = (typeof EventRegistrationScalarFieldEnum)[keyof typeof EventRegistrationScalarFieldEnum]
+
+
+export const EventRegistrationStatusHistoryScalarFieldEnum = {
+  id: 'id',
+  registrationId: 'registrationId',
+  adminUserId: 'adminUserId',
+  fromStatus: 'fromStatus',
+  toStatus: 'toStatus',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type EventRegistrationStatusHistoryScalarFieldEnum = (typeof EventRegistrationStatusHistoryScalarFieldEnum)[keyof typeof EventRegistrationStatusHistoryScalarFieldEnum]
+
+
+export const EventRegistrationNoteScalarFieldEnum = {
+  id: 'id',
+  registrationId: 'registrationId',
+  adminUserId: 'adminUserId',
+  text: 'text',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventRegistrationNoteScalarFieldEnum = (typeof EventRegistrationNoteScalarFieldEnum)[keyof typeof EventRegistrationNoteScalarFieldEnum]
+
+
+export const EventRegistrationNotificationScalarFieldEnum = {
+  id: 'id',
+  registrationId: 'registrationId',
+  kind: 'kind',
+  channel: 'channel',
+  type: 'type',
+  idempotencyKey: 'idempotencyKey',
+  status: 'status',
+  recipient: 'recipient',
+  recipients: 'recipients',
+  deliveredRecipients: 'deliveredRecipients',
+  attempts: 'attempts',
+  lastAttemptAt: 'lastAttemptAt',
+  nextAttemptAt: 'nextAttemptAt',
+  lockedAt: 'lockedAt',
+  lockedBy: 'lockedBy',
+  sentAt: 'sentAt',
+  messageId: 'messageId',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventRegistrationNotificationScalarFieldEnum = (typeof EventRegistrationNotificationScalarFieldEnum)[keyof typeof EventRegistrationNotificationScalarFieldEnum]
+
+
+export const EventTelegramUpdateScalarFieldEnum = {
+  id: 'id',
+  updateId: 'updateId',
+  receivedAt: 'receivedAt',
+  processedAt: 'processedAt'
+} as const
+
+export type EventTelegramUpdateScalarFieldEnum = (typeof EventTelegramUpdateScalarFieldEnum)[keyof typeof EventTelegramUpdateScalarFieldEnum]
+
+
+export const EventTelegramAuditEventScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  registrationId: 'registrationId',
+  telegramUserId: 'telegramUserId',
+  telegramChatId: 'telegramChatId',
+  updateId: 'updateId',
+  action: 'action',
+  deliveryStatus: 'deliveryStatus',
+  createdAt: 'createdAt'
+} as const
+
+export type EventTelegramAuditEventScalarFieldEnum = (typeof EventTelegramAuditEventScalarFieldEnum)[keyof typeof EventTelegramAuditEventScalarFieldEnum]
+
+
+export const EventTelegramJobScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  kind: 'kind',
+  status: 'status',
+  dedupeKey: 'dedupeKey',
+  telegramChatId: 'telegramChatId',
+  telegramUserId: 'telegramUserId',
+  requestedAt: 'requestedAt',
+  attempts: 'attempts',
+  nextAttemptAt: 'nextAttemptAt',
+  lockedAt: 'lockedAt',
+  lockedBy: 'lockedBy',
+  sentAt: 'sentAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventTelegramJobScalarFieldEnum = (typeof EventTelegramJobScalarFieldEnum)[keyof typeof EventTelegramJobScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1376,4 +1888,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

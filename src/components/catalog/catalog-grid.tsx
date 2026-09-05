@@ -6,6 +6,13 @@ export type CatalogGridItem = {
   title: string;
   description: string;
   badges?: string[];
+  image?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    loading?: "eager" | "lazy";
+  };
 };
 
 export function CatalogGrid({

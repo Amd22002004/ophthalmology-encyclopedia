@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/.data/
 
 # next.js
 /.next/
@@ -19,6 +20,7 @@
 
 # production
 /build
+/public/uploads/
 
 # misc
 .DS_Store
@@ -60,12 +62,18 @@ dev-out.txt
 .firecrawl/
 .codex/
 .vscode/
+!.vscode/
+.vscode/*
+!.vscode/settings.json
 
 # ── Исходные материалы и рабочие черновики ───────────────────────────────────
 # Исходники (DOCX/PDF диссертаций, дизайн-макеты) не хранятся в репозитории:
 # в public/ лежат только опубликованные файлы.
 audit/
 data/
+!/prisma/data/
+!/prisma/data/regulations/
+!/prisma/data/regulations/**
 
 # ── Посторонние проекты, лежащие внутри рабочей папки ────────────────────────
 free-claude-code/

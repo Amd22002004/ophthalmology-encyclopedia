@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1024 682" role="img" aria-labelledby="title desc">
+  <title id="title">Факоэмульсификация катаракты</title><desc id="desc">Уникальная схематичная иллюстрация: Факоэмульсификация катаракты</desc>
+  <rect width="1024" height="682" rx="34" fill="#f5faf9"/>
+  <circle cx="820" cy="110" r="190" fill="#155e75" opacity=".08"/><circle cx="190" cy="590" r="240" fill="#0f172a" opacity=".035"/>
+  <g fill="none" stroke="#155e75" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M330 360c0-70 60-120 130-120h150c70 0 130 50 130 120v220c0 70-60 120-130 120H460c-70 0-130-50-130-120Z"/><path d="m690 430 150-105M690 510l150 105"/><circle cx="520" cy="470" r="82"/></g>
+  <path d="M105 115h180" stroke="#155e75" stroke-width="8" stroke-linecap="round" opacity=".45"/>
+  <text x="105" y="155" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#0f172a">Факоэмульсификация катаракты</text>
+  <text x="105" y="610" font-family="Arial, sans-serif" font-size="18" fill="#475569">Офтальмологическая энциклопедия</text>
+</svg>

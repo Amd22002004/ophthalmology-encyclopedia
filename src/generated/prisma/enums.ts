@@ -186,3 +186,174 @@ export const AppealNotificationStatus = {
 } as const
 
 export type AppealNotificationStatus = (typeof AppealNotificationStatus)[keyof typeof AppealNotificationStatus]
+
+
+export const CooperationParticipantType = {
+  CLINIC: 'CLINIC',
+  DOCTOR: 'DOCTOR',
+  PARTNER: 'PARTNER'
+} as const
+
+export type CooperationParticipantType = (typeof CooperationParticipantType)[keyof typeof CooperationParticipantType]
+
+
+export const CooperationApplicationStatus = {
+  NEW: 'NEW',
+  IN_REVIEW: 'IN_REVIEW',
+  NEED_INFO: 'NEED_INFO',
+  APPROVED: 'APPROVED',
+  INVITED: 'INVITED',
+  PROFILE_REVIEW: 'PROFILE_REVIEW',
+  ACTIVE: 'ACTIVE',
+  REJECTED: 'REJECTED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type CooperationApplicationStatus = (typeof CooperationApplicationStatus)[keyof typeof CooperationApplicationStatus]
+
+
+export const CooperationNotificationKind = {
+  APPLICANT: 'APPLICANT',
+  ASSOCIATION: 'ASSOCIATION'
+} as const
+
+export type CooperationNotificationKind = (typeof CooperationNotificationKind)[keyof typeof CooperationNotificationKind]
+
+
+export const CooperationNotificationStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type CooperationNotificationStatus = (typeof CooperationNotificationStatus)[keyof typeof CooperationNotificationStatus]
+
+
+export const ParticipantUserStatus = {
+  ACTIVE: 'ACTIVE',
+  SUSPENDED: 'SUSPENDED'
+} as const
+
+export type ParticipantUserStatus = (typeof ParticipantUserStatus)[keyof typeof ParticipantUserStatus]
+
+
+export const EntityMatchStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type EntityMatchStatus = (typeof EntityMatchStatus)[keyof typeof EntityMatchStatus]
+
+
+export const UserEntityLinkStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type UserEntityLinkStatus = (typeof UserEntityLinkStatus)[keyof typeof UserEntityLinkStatus]
+
+
+export const InvitationDeliveryStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type InvitationDeliveryStatus = (typeof InvitationDeliveryStatus)[keyof typeof InvitationDeliveryStatus]
+
+
+export const AuthAuditEventType = {
+  INVITATION_CREATED: 'INVITATION_CREATED',
+  INVITATION_SENT: 'INVITATION_SENT',
+  INVITATION_SEND_FAILED: 'INVITATION_SEND_FAILED',
+  INVITATION_REISSUED: 'INVITATION_REISSUED',
+  INVITATION_REVOKED: 'INVITATION_REVOKED',
+  INVITATION_ACCEPTED: 'INVITATION_ACCEPTED',
+  USER_CREATED: 'USER_CREATED',
+  EXISTING_USER_LINKED: 'EXISTING_USER_LINKED',
+  DOCTOR_LINK_PENDING: 'DOCTOR_LINK_PENDING',
+  DOCTOR_LINK_CONFIRMED: 'DOCTOR_LINK_CONFIRMED',
+  CLINIC_ACCESS_PENDING: 'CLINIC_ACCESS_PENDING',
+  CLINIC_ACCESS_CONFIRMED: 'CLINIC_ACCESS_CONFIRMED',
+  PASSWORD_RESET_REQUESTED: 'PASSWORD_RESET_REQUESTED',
+  PASSWORD_RESET_COMPLETED: 'PASSWORD_RESET_COMPLETED',
+  ADMIN_PASSWORD_RESET_REQUESTED: 'ADMIN_PASSWORD_RESET_REQUESTED',
+  ADMIN_PASSWORD_RESET_SENT: 'ADMIN_PASSWORD_RESET_SENT',
+  ADMIN_PASSWORD_RESET_SEND_FAILED: 'ADMIN_PASSWORD_RESET_SEND_FAILED',
+  ADMIN_PASSWORD_RESET_COMPLETED: 'ADMIN_PASSWORD_RESET_COMPLETED'
+} as const
+
+export type AuthAuditEventType = (typeof AuthAuditEventType)[keyof typeof AuthAuditEventType]
+
+
+export const EventTalkKind = {
+  TALK: 'TALK',
+  BREAK: 'BREAK'
+} as const
+
+export type EventTalkKind = (typeof EventTalkKind)[keyof typeof EventTalkKind]
+
+
+export const EventRegistrationStatus = {
+  NEW: 'NEW',
+  CONTACTED: 'CONTACTED',
+  CONFIRMED: 'CONFIRMED',
+  ATTENDED: 'ATTENDED',
+  CANCELLED: 'CANCELLED',
+  NO_SHOW: 'NO_SHOW',
+  SPAM: 'SPAM'
+} as const
+
+export type EventRegistrationStatus = (typeof EventRegistrationStatus)[keyof typeof EventRegistrationStatus]
+
+
+export const EventRegistrationNotificationKind = {
+  APPLICANT: 'APPLICANT',
+  ASSOCIATION: 'ASSOCIATION'
+} as const
+
+export type EventRegistrationNotificationKind = (typeof EventRegistrationNotificationKind)[keyof typeof EventRegistrationNotificationKind]
+
+
+export const EventRegistrationNotificationChannel = {
+  EMAIL: 'EMAIL',
+  TELEGRAM: 'TELEGRAM',
+  GOOGLE_SHEETS: 'GOOGLE_SHEETS'
+} as const
+
+export type EventRegistrationNotificationChannel = (typeof EventRegistrationNotificationChannel)[keyof typeof EventRegistrationNotificationChannel]
+
+
+export const EventRegistrationNotificationType = {
+  EVENT_REGISTRATION_CREATED: 'EVENT_REGISTRATION_CREATED'
+} as const
+
+export type EventRegistrationNotificationType = (typeof EventRegistrationNotificationType)[keyof typeof EventRegistrationNotificationType]
+
+
+export const EventRegistrationNotificationStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type EventRegistrationNotificationStatus = (typeof EventRegistrationNotificationStatus)[keyof typeof EventRegistrationNotificationStatus]
+
+
+export const EventTelegramJobKind = {
+  FULL_EXPORT: 'FULL_EXPORT'
+} as const
+
+export type EventTelegramJobKind = (typeof EventTelegramJobKind)[keyof typeof EventTelegramJobKind]
+
+
+export const EventTelegramJobStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type EventTelegramJobStatus = (typeof EventTelegramJobStatus)[keyof typeof EventTelegramJobStatus]

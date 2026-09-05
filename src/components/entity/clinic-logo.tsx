@@ -36,6 +36,7 @@ export function ClinicLogo({
           className="h-full w-full object-contain"
           height={px}
           src={logo}
+          unoptimized={logo.startsWith("/uploads/")}
           width={px}
         />
       </div>

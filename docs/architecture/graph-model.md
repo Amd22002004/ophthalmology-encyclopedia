@@ -14,6 +14,15 @@
 | **Вычисляемая** | Связи в БД нет; список собирается в загрузчике через промежуточную сущность |
 | **Намеренно отсутствует** | Связь сознательно НЕ создана. Причина указана — это архитектурное решение, а не недоработка |
 
+## 0. Participant access boundary
+
+`User`, `Invitation`, `CooperationEntityMatch`, `UserDoctorLink` и
+`UserClinicAccess` — приватные операционные/auth-модели. Они не являются узлами
+Knowledge Graph и не добавляют медицинское утверждение «пользователь — врач» или
+«пользователь — клиника» без ручного подтверждения. Кабинет использует эти связи
+только для access-control и ведёт пользователя на уже существующий публичный
+`Doctor`/`Clinic`. Полный lifecycle описан в [`participant-auth.md`](./participant-auth.md).
+
 ---
 
 ## 1. Doctor
@@ -40,6 +49,7 @@ Doctor
 | Doctor ↔ Equipment | прямая | `DoctorOnEquipment` |
 | Doctor → ScientificWork | прямая, 1:N | `ScientificWork.doctorId` (`onDelete: Cascade`) |
 | Doctor → Publication | прямая, 1:N | `Publication.doctorId` (nullable, `onDelete: SetNull`) |
+| Doctor ↔ User | операционная access-связь | `UserDoctorLink`; не публичная медицинская связь |
 
 **Семантика:** `Doctor → Diseases` означает **направления работы врача**, а НЕ темы его
 научных работ. Это разные вещи (см. §4).
@@ -79,6 +89,7 @@ Clinic
 | Clinic → RegulatoryAssessment | прямая, 1:N | `InvestigationRegulatoryAssessment.clinicId` (nullable) |
 | Clinic → IndependentControlAssessment | прямая через evidence-edge | `[investigationId, clinicId]` → `InvestigationOnClinic` (nullable), затем `assessments` |
 | Clinic → Appeal | прямая, 1:N | `Appeal.clinicId` (nullable) |
+| Clinic ↔ User | операционная access-связь | `UserClinicAccess`; допускает нескольких представителей, не публичная медицинская связь |
 | **Clinic → ScientificWorks** | **вычисляемая** | `Clinic.doctors[].doctor.scientificWorks`, дедупликация по `slug` |
 
 **Почему `Clinic → ScientificWorks` вычисляемая, а не прямая:** научная работа принадлежит

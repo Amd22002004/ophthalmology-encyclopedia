@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Architecture"
+  short_description: "Project entities and architecture"
+  default_prompt: "Use $project-architecture to assess a proposed entity change."

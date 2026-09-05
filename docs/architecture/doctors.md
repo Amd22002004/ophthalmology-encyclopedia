@@ -45,6 +45,7 @@
 | ↔ `Equipment` | прямая | `DoctorOnEquipment` |
 | → `ScientificWork` | прямая 1:N | `ScientificWork.doctorId` (`Cascade`) |
 | → `Publication` | прямая 1:N | `Publication.doctorId` (`SetNull`) |
+| ↔ `User` | операционная access | `UserDoctorLink`, только после ручного подтверждения |
 
 Полная карта — [`graph-model.md`](./graph-model.md).
 
@@ -95,6 +96,8 @@ UI общий со страницей `/publications/[slug]` — компоне�
    Не путать с темами научных работ (см. [`graph-model.md`](./graph-model.md) §4.2).
 5. Связь `Doctor → Equipment` создаётся только при прямом подтверждении
    («работает на данном аппарате»), а не по косвенным признакам.
+6. Личный кабинет не создаёт второго `Doctor`: `UserDoctorLink` ведёт на эту
+   существующую карточку и может оставаться `PENDING` до подтверждения администратора.
 
 ## 5. Известный технический долг
 

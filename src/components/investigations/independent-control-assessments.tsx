@@ -2,6 +2,7 @@ import { ExternalLink, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { isPubliclyHiddenInvestigationDocument } from "@/lib/investigation-documents";
 import type { InvestigationDetail } from "@/lib/loaders";
 
 type Assessment = InvestigationDetail["independentControlAssessments"][number];
@@ -89,10 +90,19 @@ function NormSources({ normLink }: { normLink: NormLink }) {
   );
 }
 
-function AssessmentCard({ assessment }: { assessment: Assessment }) {
+function AssessmentCard({
+  assessment,
+  investigationSlug,
+}: {
+  assessment: Assessment;
+  investigationSlug: string;
+}) {
   const normLinks = assessment.appliedCriterionNorm
     ? assessment.criterion.normLinks.filter((link) => link.isApplied)
     : assessment.criterion.normLinks;
+  const publicEvidence = assessment.evidence.filter(
+    (item) => !isPubliclyHiddenInvestigationDocument(investigationSlug, item.document),
+  );
 
   return (
     <Card>
@@ -205,13 +215,13 @@ function AssessmentCard({ assessment }: { assessment: Assessment }) {
           </div>
         </div>
 
-        {assessment.evidence.length ? (
+        {publicEvidence.length ? (
           <div>
             <p className="text-xs font-medium text-muted-foreground">
               Связанные доказательства
             </p>
             <ul className="mt-2 space-y-2">
-              {assessment.evidence.map((item) => (
+              {publicEvidence.map((item) => (
                 <li
                   className="rounded-md border p-3 text-sm"
                   key={`${item.role}-${item.document.slug}`}
@@ -248,8 +258,10 @@ function AssessmentCard({ assessment }: { assessment: Assessment }) {
 
 export function IndependentControlAssessments({
   assessments,
+  investigationSlug,
 }: {
   assessments: InvestigationDetail["independentControlAssessments"];
+  investigationSlug: string;
 }) {
   if (!assessments.length) return null;
 
@@ -268,7 +280,11 @@ export function IndependentControlAssessments({
 
       <div className="space-y-4">
         {assessments.map((assessment) => (
-          <AssessmentCard assessment={assessment} key={assessment.key} />
+          <AssessmentCard
+            assessment={assessment}
+            investigationSlug={investigationSlug}
+            key={assessment.key}
+          />
         ))}
       </div>
 

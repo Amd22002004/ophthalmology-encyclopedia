@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1024 682" role="img" aria-labelledby="title desc">
+  <title id="title">Имплантация роговичных сегментов</title><desc id="desc">Уникальная схематичная иллюстрация: Имплантация роговичных сегментов</desc>
+  <rect width="1024" height="682" rx="34" fill="#f5faf9"/>
+  <circle cx="820" cy="110" r="190" fill="#155e75" opacity=".08"/><circle cx="190" cy="590" r="240" fill="#0f172a" opacity=".035"/>
+  <g fill="none" stroke="#155e75" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><circle cx="520" cy="470" r="180"/><path d="M370 390a190 190 0 0 1 300 0l-48 42a130 130 0 0 0-204 0Z"/><path d="M370 550a190 190 0 0 0 300 0l-48-42a130 130 0 0 1-204 0Z"/></g>
+  <path d="M105 115h180" stroke="#155e75" stroke-width="8" stroke-linecap="round" opacity=".45"/>
+  <text x="105" y="155" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#0f172a">Имплантация роговичных сегментов</text>
+  <text x="105" y="610" font-family="Arial, sans-serif" font-size="18" fill="#475569">Офтальмологическая энциклопедия</text>
+</svg>

@@ -74,6 +74,14 @@ function EncyclopediaPill({ href, title }: { href: string; title: string }) {
   );
 }
 
+function isClinicalArticle(type: string) {
+  return /клиническ|научная статья|статья/i.test(type) && !/диссертац/i.test(type);
+}
+
+function uniqueBySlug<T extends { slug: string }>(items: T[]): T[] {
+  return Array.from(new Map(items.map((item) => [item.slug, item] as const)).values());
+}
+
 /* Компоненты научной работы (InfoField, NoveltyCard, PracticalCard, ResultCard,
    DocCard, parseSupervisor, parseOrganization, splitIntoParagraphs) вынесены в
    @/components/entity/scientific-work-ui — общие со страницей /publications/[slug],
@@ -84,6 +92,7 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
   const shortName = doctorShortName(data);
   const specialtiesLine = data.specialties.map((s) => s.specialty.title).join(" · ");
   const networkName = data.clinics.find((r) => r.clinic.networkName)?.clinic.networkName;
+  const affiliationLabel = networkName ? `Сеть «${networkName}»` : data.region;
 
   const diseases = data.diseases.map((r) => ({
     href: `/diseases/${r.disease.slug}`,
@@ -97,6 +106,32 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
     href: `/publications/${r.slug}`,
     title: r.title,
     year: r.publishedAt ? String(new Date(r.publishedAt).getFullYear()) : null,
+  }));
+  const scientificDiseaseTopics = uniqueBySlug(
+    data.scientificWorks.flatMap((work) =>
+      work.diseases.map((relation) => relation.disease),
+    ),
+  ).map((disease) => ({
+    href: `/diseases/${disease.slug}`,
+    title: disease.title,
+  }));
+  const scientificProcedureTopics = uniqueBySlug(
+    data.scientificWorks.flatMap((work) =>
+      work.procedures.map((relation) => relation.procedure),
+    ),
+  ).map((procedure) => ({
+    href: `/procedures/${procedure.slug}`,
+    title: procedure.title,
+  }));
+  const scientificEquipment = uniqueBySlug(
+    data.scientificWorks.flatMap((work) =>
+      work.equipment.map((relation) => relation.equipment),
+    ),
+  ).map((equipment) => ({
+    href: `/equipment/${equipment.slug}`,
+    title: equipment.title,
+    manufacturer: equipment.manufacturer,
+    image: equipment.images[0],
   }));
   // Резервируем места под оба типа, чтобы процедуры не вытеснялись заболеваниями
   const relatedPages = [...diseases.slice(0, 4), ...procedures.slice(0, 2)];
@@ -113,13 +148,19 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
     Boolean(data.bio || data.credo || data.career) ||
     diseases.length > 0 ||
     procedures.length > 0 ||
-    publications.length > 0;
+    publications.length > 0 ||
+    scientificDiseaseTopics.length > 0 ||
+    scientificProcedureTopics.length > 0;
   const hasGraph =
     data.clinics.length > 0 ||
     diseases.length > 0 ||
     procedures.length > 0 ||
-    publications.length > 0;
-  const hasSidebar = data.clinics.length > 0 || relatedPages.length > 0;
+    publications.length > 0 ||
+    scientificDiseaseTopics.length > 0 ||
+    scientificProcedureTopics.length > 0 ||
+    scientificEquipment.length > 0;
+  const hasSidebar =
+    data.clinics.length > 0 || relatedPages.length > 0 || scientificEquipment.length > 0;
 
   return (
     <>
@@ -138,7 +179,9 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                 <img
                   alt={fullName}
                   className="h-full w-full object-cover"
+                  decoding="async"
                   src={data.photoUrl}
+                  style={{ objectPosition: "center 24%" }}
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
@@ -149,9 +192,9 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
 
             {/* Name / specialties / position / стаж */}
             <div className="min-w-0">
-              {networkName && (
+              {affiliationLabel && (
                 <p className="text-[11px] font-bold uppercase tracking-[0.09em] text-primary">
-                  Сеть «{networkName}»
+                  {affiliationLabel}
                 </p>
               )}
               <h1 className="mt-1 text-[23px] font-bold leading-tight tracking-[-0.02em] text-foreground">
@@ -234,8 +277,26 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                     const supervisor = w.supervisor ? parseSupervisor(w.supervisor) : null;
                     const org = w.organization ? parseOrganization(w.organization) : null;
                     const summaryParagraphs = w.summary ? splitIntoParagraphs(w.summary) : [];
-
-
+                    const clinicalArticle = isClinicalArticle(w.type);
+                    const sectionLabels = clinicalArticle
+                      ? {
+                          summary: "Краткое описание",
+                          novelty: "Актуальность",
+                          practical: "Цель, клинический случай и методы лечения",
+                          results: "Результаты и выводы",
+                          documentTitle: "Полный текст статьи",
+                          documentDescription: "PDF · Научная статья и клинические иллюстрации",
+                          speciality: "Научное направление",
+                        }
+                      : {
+                          summary: "Аннотация",
+                          novelty: "Научная новизна",
+                          practical: "Практическая значимость",
+                          results: "Основные результаты",
+                          documentTitle: "Диссертация",
+                          documentDescription: "PDF · Полный текст научной работы",
+                          speciality: "Специальность ВАК",
+                        };
 
                     return (
                       <article className="space-y-[20px]" key={w.id}>
@@ -295,7 +356,7 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
 
                           {/* Специальность */}
                           {w.speciality && (
-                            <InfoField label="Специальность ВАК">
+                            <InfoField label={sectionLabels.speciality}>
                               <p>{w.speciality}</p>
                             </InfoField>
                           )}
@@ -312,7 +373,7 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                         {summaryParagraphs.length > 0 && (
                           <div className="rounded-[11px] border-l-[3px] border-primary bg-primary/[0.04] p-[16px_18px]">
                             <h5 className="mb-[10px] text-[12px] font-bold uppercase tracking-[0.06em] text-primary">
-                              Аннотация
+                              {sectionLabels.summary}
                             </h5>
                             <div className="space-y-[10px]">
                               {summaryParagraphs.map((para, i) => (
@@ -331,7 +392,7 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                         {w.novelty.length > 0 && (
                           <div>
                             <h5 className="mb-[10px] text-[12.5px] font-bold text-foreground">
-                              Научная новизна
+                              {sectionLabels.novelty}
                             </h5>
                             <div className="space-y-[8px]">
                               {w.novelty.map((item) => (
@@ -345,7 +406,7 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                         {w.practicalValue.length > 0 && (
                           <div>
                             <h5 className="mb-[10px] text-[12.5px] font-bold text-foreground">
-                              Практическая значимость
+                              {sectionLabels.practical}
                             </h5>
                             <div className="space-y-[8px]">
                               {w.practicalValue.map((item) => (
@@ -359,7 +420,7 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                         {w.results.length > 0 && (
                           <div>
                             <h5 className="mb-[10px] text-[12.5px] font-bold text-foreground">
-                              Основные результаты
+                              {sectionLabels.results}
                             </h5>
                             <div className="grid gap-[10px] sm:grid-cols-2">
                               {w.results.map((r) => (
@@ -385,9 +446,9 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                               )}
                               {w.pdfUrl && (
                                 <DocCard
-                                  description="PDF · Полный текст научной работы"
+                                  description={sectionLabels.documentDescription}
                                   href={w.pdfUrl}
-                                  title="Диссертация"
+                                  title={sectionLabels.documentTitle}
                                 />
                               )}
                             </div>
@@ -410,6 +471,48 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                   })}
                 </div>
               </section>
+            )}
+
+            {(scientificDiseaseTopics.length > 0 || scientificProcedureTopics.length > 0) && (
+              <Section
+                annotation="Производные связи из научных работ: они показывают тему публикаций, а не заменяют прямые клинические направления врача."
+                title="Темы научных работ"
+              >
+                <div className="space-y-[12px]">
+                  {scientificDiseaseTopics.length > 0 && (
+                    <div>
+                      <p className="mb-[6px] text-[11.5px] font-bold uppercase tracking-[0.06em] text-muted-foreground">
+                        Заболевания
+                      </p>
+                      <div className="flex flex-wrap gap-[8px]">
+                        {scientificDiseaseTopics.map((disease) => (
+                          <EncyclopediaPill
+                            href={disease.href}
+                            key={disease.href}
+                            title={disease.title}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {scientificProcedureTopics.length > 0 && (
+                    <div>
+                      <p className="mb-[6px] text-[11.5px] font-bold uppercase tracking-[0.06em] text-muted-foreground">
+                        Методики
+                      </p>
+                      <div className="flex flex-wrap gap-[8px]">
+                        {scientificProcedureTopics.map((procedure) => (
+                          <EncyclopediaPill
+                            href={procedure.href}
+                            key={procedure.href}
+                            title={procedure.title}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Section>
             )}
 
             {/* Основные направления: Врач → Заболевания */}
@@ -572,6 +675,50 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
               </Section>
             )}
 
+            {/* Научная работа → Оборудование.
+                Это производная связь из публикаций врача: она не означает
+                подтверждённую текущую работу врача на аппарате. */}
+            {scientificEquipment.length > 0 && (
+              <Section
+                annotation="Научная работа → Оборудование: подтверждено текстом публикации, без вывода о клинике или текущем рабочем месте."
+                title="Оборудование в научных работах"
+              >
+                <div className="space-y-[8px]">
+                  {scientificEquipment.map((equipment) => (
+                    <Link
+                      className="group flex items-center gap-[11px] rounded-[11px] border border-[#d8e3e1] bg-background p-[10px_11px] transition-colors hover:border-primary/50 hover:bg-primary/5"
+                      href={equipment.href}
+                      key={equipment.href}
+                    >
+                      {equipment.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          alt={equipment.title}
+                          className="h-[34px] w-[46px] shrink-0 rounded-[6px] border border-[#d8e3e1] object-cover"
+                          decoding="async"
+                          loading="lazy"
+                          src={equipment.image}
+                        />
+                      ) : null}
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-[12.5px] font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+                          {equipment.title}
+                        </span>
+                        {equipment.manufacturer && (
+                          <span className="block text-[12px] text-muted-foreground">
+                            {equipment.manufacturer}
+                          </span>
+                        )}
+                      </span>
+                      <span aria-hidden className="text-muted-foreground">
+                        →
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </Section>
+            )}
+
             {/* Связанные страницы энциклопедии */}
             {relatedPages.length > 0 && (
               <Section title="Связанные страницы энциклопедии">
@@ -617,6 +764,15 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
               )}
               {publications.length > 0 && (
                 <GraphColumn label="→ Публикации" nodes={publications.slice(0, 2)} />
+              )}
+              {scientificDiseaseTopics.length > 0 && (
+                <GraphColumn label="→ Темы работ" nodes={scientificDiseaseTopics.slice(0, 3)} />
+              )}
+              {scientificEquipment.length > 0 && (
+                <GraphColumn
+                  label="→ Оборудование в работах"
+                  nodes={scientificEquipment.slice(0, 3)}
+                />
               )}
             </div>
           </Section>

@@ -33,7 +33,7 @@ export function SearchDialog({ trigger }: { trigger: ReactNode }) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Поиск по энциклопедии</DialogTitle>
+          <DialogTitle>Поиск по сайту</DialogTitle>
           <DialogDescription>
             Поиск по заболеваниям, врачам, клиникам, поставщикам, оборудованию,
             публикациям, рекомендациям и нормативным материалам.

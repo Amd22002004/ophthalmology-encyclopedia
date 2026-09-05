@@ -52,6 +52,16 @@
 | `Investigation` | Расследование Ассоциации | `/investigations/[slug]` |
 | `News` | Редакционная входная точка | `/news/[slug]` |
 
+### 2.1.1 Операционный контур событий
+
+Публичные конференции реализуются через операционные модели `Event`,
+`EventSpeaker`, `EventTalk` и приватный реестр регистрации. Они не являются
+самостоятельными медицинскими узлами графа и не создают новые `Doctor` или
+`Clinic`; подтверждённые связи со существующими врачами могут использоваться
+только как редакционная ссылка спикера. Постоянные QR-маршруты, snapshot-fallback,
+публикационные флаги и юридический gate регистрации описаны в
+[`events.md`](./events.md).
+
 ### 2.2 Подчинённые и контекстные сущности
 
 | Модель | Принадлежит | Назначение |
@@ -90,13 +100,21 @@
 
 | Модель | Назначение |
 |---|---|
-| `AdminUser` + enum `AdminRole` | Учётная запись админ-панели |
+| `AdminUser` + enum `AdminRole` | Учётная запись админ-панели; session version и hash-only `AdminPasswordResetToken` |
 | `Appeal` | Приватное обращение и его классификация |
 | `AppealAttachment` | Метаданные приватного вложения |
 | `AppealNote` | Внутренний комментарий сотрудника |
 | `AppealStatusHistory` | История изменения статуса |
-| `AppealNotification` | Outbox email-уведомления |
+| `AppealNotification` | Outbox email-уведомления с per-recipient retry state |
 | `AppealConsentTemplate` | Версионируемая конфигурация согласия |
+| `CooperationApplication` + history/notes/notifications/attachment | Приватная заявка на сотрудничество; не является узлом графа и не создаёт автоматически профиль или членство |
+| `User` + `Invitation` + `PasswordResetToken` | Учётная запись и hash-only auth lifecycle участника; не публичные узлы графа |
+| `CooperationEntityMatch` + `UserDoctorLink` + `UserClinicAccess` | Подтверждаемая access-связь заявки/User с существующим Doctor/Clinic; не медицинские связи графа |
+| `InvitationDelivery` + `AuthRateLimitBucket` + `AuthAuditEvent` | Delivery, rate limit и audit инфраструктура P1.1 без raw secrets |
+
+Почтовые outbox-модели используют один общий runtime-контракт: сохранённые
+`recipients` и `deliveredRecipients`, lock lease и backoff. Это не новая сущность
+графа и не дублирование операционных заявок.
 
 ### 2.5 Связующие и edge-модели
 
@@ -241,5 +259,6 @@ instance, assessment, evidence document, timeline event, registry check и snaps
 | [`CONTENT_GUIDELINES.md`](./CONTENT_GUIDELINES.md) | Редакционная политика и качество публичного текста |
 | [`ENTITY_GRAPH.md`](./ENTITY_GRAPH.md) | Семантическая модель связей и критерии полной карточки |
 | [`appeals.md`](./appeals.md) | Приватный реестр обращений, безопасность, статусы и граница с Knowledge Graph |
+| [`participant-auth.md`](./participant-auth.md) | P1.1 participant auth, invitation и подтверждаемый доступ к Doctor/Clinic |
 | [`regulations.md`](./regulations.md) | Нормативный граф, временная применимость и evidence-gated оценки расследований |
 | [`independent-control.md`](./independent-control.md) | Ненормативная методика, 80 критериев, формальная применимость и evidence-gated проверки |

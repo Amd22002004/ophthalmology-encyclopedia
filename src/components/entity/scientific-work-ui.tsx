@@ -1,4 +1,4 @@
-import { Check, ExternalLink, FileText, Lightbulb } from "lucide-react";
+import { Check, Download, ExternalLink, FileText, Lightbulb } from "lucide-react";
 
 /**
  * Общий UI научной работы.
@@ -83,17 +83,22 @@ export function DocCard({
   href,
   title,
   description,
+  actionLabel = "Посмотреть",
+  download = false,
 }: {
   href: string;
   title: string;
   description?: string;
+  actionLabel?: string;
+  download?: boolean;
 }) {
   return (
     <a
       className="group flex flex-1 items-start gap-[12px] rounded-[11px] border border-[#d8e3e1] bg-card p-[14px_16px] shadow-[0_1px_3px_rgba(15,33,31,0.04)] transition-all duration-200 hover:border-primary/50 hover:bg-primary/[0.03] hover:shadow-[0_2px_10px_rgba(15,118,110,0.1)]"
+      download={download || undefined}
       href={href}
       rel="noopener"
-      target="_blank"
+      target={download ? undefined : "_blank"}
     >
       <span
         aria-hidden
@@ -110,8 +115,12 @@ export function DocCard({
         )}
         {/* Явное действие: понятно, что откроется документ */}
         <span className="mt-[4px] inline-flex items-center gap-[4px] text-[12px] font-medium text-primary/80 transition-colors group-hover:text-primary">
-          Посмотреть
-          <ExternalLink className="h-[11px] w-[11px] transition-transform duration-200 group-hover:translate-x-[2px]" />
+          {actionLabel}
+          {download ? (
+            <Download className="h-[11px] w-[11px]" />
+          ) : (
+            <ExternalLink className="h-[11px] w-[11px] transition-transform duration-200 group-hover:translate-x-[2px]" />
+          )}
         </span>
       </span>
     </a>

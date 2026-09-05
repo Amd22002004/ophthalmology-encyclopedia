@@ -1,0 +1,1 @@
+export const ADMIN_PASSWORD_RESET_TTL_MS = 45 * 60 * 1_000;

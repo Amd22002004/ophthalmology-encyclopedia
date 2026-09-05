@@ -9,15 +9,20 @@ type NavItem = { href: string; label: string };
 export function TopNavLinks({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
 
-  // Без flex-1: меню занимает только необходимое место, а не всё свободное.
-  // Иначе на широких экранах внутри nav оставалась большая пустая область,
-  // визуально «разрывавшая» меню и блок поиска.
+  // Навигация занимает доступную ширину между мобильным брендом и
+  // фиксированными действиями справа, поэтому пункты равномерно заполняют
+  // верхнюю панель и не оставляют пустой разрыв перед поиском.
   return (
-    <nav className="hidden min-w-0 items-center gap-1 xl:flex">
+    <nav className="hidden min-w-0 flex-1 items-center justify-between gap-0 2xl:gap-2 xl:flex">
       {items.map((item) => {
         const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
         return (
-          <Button asChild key={item.href} size="sm" variant={isActive ? "secondary" : "ghost"}>
+          <Button
+            asChild
+            key={item.href}
+            className="px-2 text-sm 2xl:px-4 2xl:text-[15px]"
+            variant={isActive ? "secondary" : "ghost"}
+          >
             <Link href={item.href}>{item.label}</Link>
           </Button>
         );

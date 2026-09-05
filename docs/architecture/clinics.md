@@ -71,6 +71,7 @@
 | ↔ `Supplier` | прямая | `ClinicOnSupplier` |
 | ↔ `Publication` | прямая | `ClinicOnPublication` |
 | → `ScientificWork` | **вычисляемая** | через врачей клиники |
+| ↔ `User` | операционная access | `UserClinicAccess`, несколько представителей одной клиники |
 
 ## 3. Связь с врачами
 
@@ -114,9 +115,14 @@
    источников.
 4. Связь `Clinic → Equipment` создаётся при подтверждении, что аппарат стоит именно
    в этой клинике.
+5. Личный кабинет представителя не создаёт вторую `Clinic`: `UserClinicAccess`
+   ссылается на существующую карточку и требует `CONFIRMED` для публичного доступа.
 
 ## 7. SEO
 
 - Canonical `/clinics/[slug]`; `seoTitle` / `seoDescription` переопределяют дефолт.
 - Schema.org: `MedicalOrganization` + `BreadcrumbList`; при наличии FAQ — `FAQPage`.
 - Двусторонняя перелинковка: врачи, оборудование, процедуры, заболевания, публикации.
+
+Публичные изображения, загружаемые из admin, сохраняются вне release-каталога в
+`CLINIC_UPLOAD_DIR` и публикуются через nginx по URL `/uploads/clinics/...`.

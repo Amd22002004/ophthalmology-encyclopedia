@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prisma Schema Safety"
+  short_description: "Safe schema and migration changes"
+  default_prompt: "Use $prisma-schema-safety before changing the Prisma schema."

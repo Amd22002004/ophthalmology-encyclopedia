@@ -438,7 +438,153 @@ export type AppealNotification = Prisma.AppealNotificationModel
  */
 export type AppealConsentTemplate = Prisma.AppealConsentTemplateModel
 /**
+ * Model CooperationApplication
+ * Операционная заявка на участие или сотрудничество. Это не публичная
+ * сущность графа и не создаёт автоматически Doctor, Clinic или membership.
+ */
+export type CooperationApplication = Prisma.CooperationApplicationModel
+/**
+ * Model CooperationApplicationStatusHistory
+ * Неизменяемая история переходов заявки между операционными статусами.
+ */
+export type CooperationApplicationStatusHistory = Prisma.CooperationApplicationStatusHistoryModel
+/**
+ * Model CooperationApplicationNote
+ * Внутренняя заметка по заявке; никогда не отправляется заявителю.
+ */
+export type CooperationApplicationNote = Prisma.CooperationApplicationNoteModel
+/**
+ * Model CooperationApplicationNotification
+ * Outbox уведомлений по заявке. Ошибка SMTP не отменяет запись заявки.
+ */
+export type CooperationApplicationNotification = Prisma.CooperationApplicationNotificationModel
+/**
+ * Model CooperationApplicationAttachment
+ * Безопасное метаописание одного необязательного файла заявки партнёра.
+ * Файл хранится вне public и получает случайный storageKey.
+ */
+export type CooperationApplicationAttachment = Prisma.CooperationApplicationAttachmentModel
+/**
+ * Model User
+ * Участник личного кабинета. Это не публичная сущность графа и не AdminUser.
+ */
+export type User = Prisma.UserModel
+/**
+ * Model CooperationEntityMatch
+ * Административно выбранное соответствие заявки существующей сущности каталога.
+ * Отсутствие строки означает, что подтверждённого кандидата нет.
+ */
+export type CooperationEntityMatch = Prisma.CooperationEntityMatchModel
+/**
+ * Model Invitation
+ * Одноразовое приглашение. В БД хранится только hash токена.
+ */
+export type Invitation = Prisma.InvitationModel
+/**
+ * Model InvitationDelivery
+ * Outbox состояния приглашения. Raw token намеренно не хранится; повторная
+ * отправка выполняется только через безопасный reissue нового токена.
+ */
+export type InvitationDelivery = Prisma.InvitationDeliveryModel
+/**
+ * Model UserDoctorLink
+ * Связь кабинета с существующим профилем врача. Это access-control relation,
+ * а не медицинская связь графа.
+ */
+export type UserDoctorLink = Prisma.UserDoctorLinkModel
+/**
+ * Model UserClinicAccess
+ * Доступ представителя к существующей клинике. Несколько пользователей могут
+ * иметь подтверждённый доступ к одной Clinic.
+ */
+export type UserClinicAccess = Prisma.UserClinicAccessModel
+/**
+ * Model PasswordResetToken
+ * Hash-only одноразовый парольный reset token.
+ */
+export type PasswordResetToken = Prisma.PasswordResetTokenModel
+/**
+ * Model AuthRateLimitBucket
+ * DB-backed rate-limit bucket. В fingerprint хранится только HMAC, не IP/email.
+ */
+export type AuthRateLimitBucket = Prisma.AuthRateLimitBucketModel
+/**
+ * Model AuthAuditEvent
+ * Аудит auth/invitation/access событий без секретов и credential material.
+ */
+export type AuthAuditEvent = Prisma.AuthAuditEventModel
+/**
  * Model AdminUser
  * 
  */
 export type AdminUser = Prisma.AdminUserModel
+/**
+ * Model AdminPasswordResetToken
+ * Одноразовый hash-only токен восстановления доступа к AdminUser.
+ * Это приватная auth-инфраструктура; raw token никогда не сохраняется.
+ */
+export type AdminPasswordResetToken = Prisma.AdminPasswordResetTokenModel
+/**
+ * Model Event
+ * Операционная конференция и её публичный контент. Event не является
+ * сущностью медицинского графа и не создаёт Doctor/Clinic автоматически.
+ */
+export type Event = Prisma.EventModel
+/**
+ * Model EventSpeaker
+ * Снимок спикера на момент утверждения программы с обратной ссылкой на
+ * существующего Doctor; публичный текст не зависит от будущей редакции профиля.
+ */
+export type EventSpeaker = Prisma.EventSpeakerModel
+/**
+ * Model EventTalk
+ * Один пункт утверждённой программы. Время доклада nullable: отсутствие
+ * времени не превращается в выдуманное расписание.
+ */
+export type EventTalk = Prisma.EventTalkModel
+/**
+ * Model EventConsentTemplate
+ * Отдельная версия согласия для регистрации на мероприятие; AppealConsent
+ * намеренно не переиспользуется, поскольку у доменов разные цели обработки.
+ */
+export type EventConsentTemplate = Prisma.EventConsentTemplateModel
+/**
+ * Model EventRegistration
+ * Приватная заявка на участие. Не создаёт User, CooperationApplication,
+ * membership или профиль врача; персональные поля остаются только здесь.
+ */
+export type EventRegistration = Prisma.EventRegistrationModel
+/**
+ * Model EventRegistrationStatusHistory
+ * Неизменяемая история операционного статуса регистрации.
+ */
+export type EventRegistrationStatusHistory = Prisma.EventRegistrationStatusHistoryModel
+/**
+ * Model EventRegistrationNote
+ * Внутренняя заметка администратора; никогда не попадает в публичный DTO.
+ */
+export type EventRegistrationNote = Prisma.EventRegistrationNoteModel
+/**
+ * Model EventRegistrationNotification
+ * Outbox для email участнику и уведомления Ассоциации. Ошибка SMTP не
+ * отменяет сохранённую регистрацию.
+ */
+export type EventRegistrationNotification = Prisma.EventRegistrationNotificationModel
+/**
+ * Model EventTelegramUpdate
+ * Telegram update idempotency marker. Raw Telegram payload is intentionally
+ * not stored; only the numeric update id is retained.
+ */
+export type EventTelegramUpdate = Prisma.EventTelegramUpdateModel
+/**
+ * Model EventTelegramAuditEvent
+ * Security/audit record for Telegram commands and deliveries. It stores IDs
+ * and action outcome, never bot secrets, callback payloads or XLSX contents.
+ */
+export type EventTelegramAuditEvent = Prisma.EventTelegramAuditEventModel
+/**
+ * Model EventTelegramJob
+ * Short-lived asynchronous Telegram jobs. XLSX generation is deliberately
+ * outside the webhook request; no participant data is duplicated here.
+ */
+export type EventTelegramJob = Prisma.EventTelegramJobModel

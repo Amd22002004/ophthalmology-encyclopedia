@@ -78,7 +78,7 @@ model Doctor {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  regionEntity    Region?             @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  regionEntity    Region?                  @relation(fields: [regionId], references: [id], onDelete: SetNull)
   specialties     DoctorOnSpecialty[]
   clinics         DoctorOnClinic[]
   diseases        DoctorOnDisease[]
@@ -86,6 +86,10 @@ model Doctor {
   publications    Publication[]
   scientificWorks ScientificWork[]
   equipment       DoctorOnEquipment[]
+  accountLinks    UserDoctorLink[]
+  entityMatches   CooperationEntityMatch[]
+  authAuditEvents AuthAuditEvent[]
+  eventSpeakers   EventSpeaker[]
 
   @@index([regionId])
   @@index([lastName, firstName])
@@ -279,16 +283,19 @@ model Clinic {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
-  regionEntity   Region?                 @relation(fields: [regionId], references: [id], onDelete: SetNull)
-  specialties    ClinicOnSpecialty[]
-  doctors        DoctorOnClinic[]
-  suppliers      ClinicOnSupplier[]
-  diseases       ClinicOnDisease[]
-  procedures     ClinicOnProcedure[]
-  publications   ClinicOnPublication[]
-  equipment      ClinicOnEquipment[]
-  investigations InvestigationOnClinic[]
-  appeals        Appeal[]
+  regionEntity    Region?                  @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  specialties     ClinicOnSpecialty[]
+  doctors         DoctorOnClinic[]
+  suppliers       ClinicOnSupplier[]
+  diseases        ClinicOnDisease[]
+  procedures      ClinicOnProcedure[]
+  publications    ClinicOnPublication[]
+  equipment       ClinicOnEquipment[]
+  investigations  InvestigationOnClinic[]
+  appeals         Appeal[]
+  accountAccesses UserClinicAccess[]
+  entityMatches   CooperationEntityMatch[]
+  authAuditEvents AuthAuditEvent[]
 
   @@index([regionId])
   @@index([title])
@@ -1611,6 +1618,79 @@ enum AppealNotificationStatus {
   FAILED
 }
 
+enum CooperationParticipantType {
+  CLINIC
+  DOCTOR
+  PARTNER
+}
+
+enum CooperationApplicationStatus {
+  NEW
+  IN_REVIEW
+  NEED_INFO
+  APPROVED
+  INVITED
+  PROFILE_REVIEW
+  ACTIVE
+  REJECTED
+  ARCHIVED
+}
+
+enum CooperationNotificationKind {
+  APPLICANT
+  ASSOCIATION
+}
+
+enum CooperationNotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum ParticipantUserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum EntityMatchStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
+enum UserEntityLinkStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
+enum InvitationDeliveryStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum AuthAuditEventType {
+  INVITATION_CREATED
+  INVITATION_SENT
+  INVITATION_SEND_FAILED
+  INVITATION_REISSUED
+  INVITATION_REVOKED
+  INVITATION_ACCEPTED
+  USER_CREATED
+  EXISTING_USER_LINKED
+  DOCTOR_LINK_PENDING
+  DOCTOR_LINK_CONFIRMED
+  CLINIC_ACCESS_PENDING
+  CLINIC_ACCESS_CONFIRMED
+  PASSWORD_RESET_REQUESTED
+  PASSWORD_RESET_COMPLETED
+  ADMIN_PASSWORD_RESET_REQUESTED
+  ADMIN_PASSWORD_RESET_SENT
+  ADMIN_PASSWORD_RESET_SEND_FAILED
+  ADMIN_PASSWORD_RESET_COMPLETED
+}
+
 /// Приватное обращение гражданина в Ассоциацию. Это операционная сущность:
 /// она не имеет публичной карточки и не превращает сообщённые заявителем
 /// сведения о враче или оборудовании в подтверждённые связи графа знаний.
@@ -1714,8 +1794,13 @@ model AppealNotification {
   appealId      String
   status        AppealNotificationStatus @default(PENDING)
   recipient     String?
+  recipients    String[]                 @default([])
+  deliveredRecipients String[]           @default([])
   attempts      Int                      @default(0)
   lastAttemptAt DateTime?
+  nextAttemptAt DateTime?
+  lockedAt      DateTime?
+  lockedBy      String?
   sentAt        DateTime?
   messageId     String?
   lastError     String?
@@ -1726,6 +1811,7 @@ model AppealNotification {
 
   @@index([appealId, createdAt])
   @@index([status, createdAt])
+  @@index([status, nextAttemptAt])
 }
 
 /// Версионируемая конфигурация согласия. Текст редактируется в admin без
@@ -1745,16 +1831,710 @@ model AppealConsentTemplate {
   @@index([isActive, updatedAt])
 }
 
+/// Операционная заявка на участие или сотрудничество. Это не публичная
+/// сущность графа и не создаёт автоматически Doctor, Clinic или membership.
+model CooperationApplication {
+  id                  String                       @id @default(cuid())
+  applicationNumber   String                       @unique
+  participantType     CooperationParticipantType
+  applicationType     String?
+  status              CooperationApplicationStatus @default(NEW)
+  organizationName    String?
+  inn                 String?
+  firstName           String?
+  lastName            String?
+  middleName          String?
+  contactName         String?
+  contactPosition     String?
+  phone               String
+  email               String
+  city                String?
+  region              String?
+  website             String?
+  workplace           String?
+  customWorkplace     String?
+  specialties         String[]                     @default([])
+  academicDegree      String?
+  professionalUrl     String?
+  partnerType         String?
+  interests           String[]                     @default([])
+  message             String?
+  consentPersonalData Boolean
+  consentMarketing    Boolean                      @default(false)
+  source              String?
+  landingUrl          String?
+  pageTitle           String?
+  referrer            String?
+  utmSource           String?
+  utmMedium           String?
+  utmCampaign         String?
+  utmContent          String?
+  requestFingerprint  String?
+  idempotencyKey      String?                      @unique
+  responsibleUserId   String?
+  userId              String?
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+
+  responsibleUser AdminUser?                            @relation("CooperationResponsible", fields: [responsibleUserId], references: [id], onDelete: SetNull)
+  statusHistory   CooperationApplicationStatusHistory[]
+  notes           CooperationApplicationNote[]
+  notifications   CooperationApplicationNotification[]
+  attachment      CooperationApplicationAttachment?
+  participantUser User?                                 @relation("ApplicationParticipant", fields: [userId], references: [id], onDelete: SetNull)
+  invitations     Invitation[]
+  entityMatch     CooperationEntityMatch?
+  doctorLinks     UserDoctorLink[]
+  clinicAccesses  UserClinicAccess[]
+  authAuditEvents AuthAuditEvent[]
+
+  @@index([status, createdAt])
+  @@index([participantType, createdAt])
+  @@index([city, region])
+  @@index([source, utmCampaign])
+  @@index([requestFingerprint, createdAt])
+  @@index([email])
+  @@index([phone])
+  @@index([inn])
+  @@index([lastName, firstName])
+  @@index([organizationName])
+}
+
+/// Неизменяемая история переходов заявки между операционными статусами.
+model CooperationApplicationStatusHistory {
+  id            String                        @id @default(cuid())
+  applicationId String
+  fromStatus    CooperationApplicationStatus?
+  toStatus      CooperationApplicationStatus
+  adminUserId   String?
+  comment       String?
+  createdAt     DateTime                      @default(now())
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  changedBy   AdminUser?             @relation("CooperationStatusChangedBy", fields: [adminUserId], references: [id], onDelete: SetNull)
+
+  @@index([applicationId, createdAt])
+  @@index([adminUserId])
+}
+
+/// Внутренняя заметка по заявке; никогда не отправляется заявителю.
+model CooperationApplicationNote {
+  id            String   @id @default(cuid())
+  applicationId String
+  adminUserId   String
+  text          String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  author      AdminUser              @relation("CooperationNoteAuthor", fields: [adminUserId], references: [id], onDelete: Restrict)
+
+  @@index([applicationId, createdAt])
+  @@index([adminUserId])
+}
+
+/// Outbox уведомлений по заявке. Ошибка SMTP не отменяет запись заявки.
+model CooperationApplicationNotification {
+  id            String                        @id @default(cuid())
+  applicationId String
+  kind          CooperationNotificationKind
+  status        CooperationNotificationStatus @default(PENDING)
+  recipient     String?
+  recipients    String[]                      @default([])
+  deliveredRecipients String[]                @default([])
+  attempts      Int                           @default(0)
+  lastAttemptAt DateTime?
+  nextAttemptAt DateTime?
+  lockedAt      DateTime?
+  lockedBy      String?
+  sentAt        DateTime?
+  messageId     String?
+  lastError     String?
+  createdAt     DateTime                      @default(now())
+  updatedAt     DateTime                      @updatedAt
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@unique([applicationId, kind])
+  @@index([status, createdAt])
+  @@index([status, nextAttemptAt])
+  @@index([applicationId, createdAt])
+}
+
+/// Безопасное метаописание одного необязательного файла заявки партнёра.
+/// Файл хранится вне public и получает случайный storageKey.
+model CooperationApplicationAttachment {
+  id            String   @id @default(cuid())
+  applicationId String   @unique
+  displayName   String
+  originalName  String
+  storageKey    String   @unique
+  mimeType      String
+  sizeBytes     Int
+  sha256        String
+  createdAt     DateTime @default(now())
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+/// Участник личного кабинета. Это не публичная сущность графа и не AdminUser.
+model User {
+  id              String                @id @default(cuid())
+  email           String                @unique
+  passwordHash    String
+  displayName     String
+  status          ParticipantUserStatus @default(ACTIVE)
+  emailVerifiedAt DateTime?
+  sessionVersion  Int                   @default(0)
+  lastLoginAt     DateTime?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  applications   CooperationApplication[] @relation("ApplicationParticipant")
+  doctorLinks    UserDoctorLink[]
+  clinicAccesses UserClinicAccess[]
+  resetTokens    PasswordResetToken[]
+  auditEvents    AuthAuditEvent[]
+
+  @@index([status, createdAt])
+}
+
+/// Административно выбранное соответствие заявки существующей сущности каталога.
+/// Отсутствие строки означает, что подтверждённого кандидата нет.
+model CooperationEntityMatch {
+  id            String            @id @default(cuid())
+  applicationId String            @unique
+  doctorId      String?
+  clinicId      String?
+  status        EntityMatchStatus
+  confirmedById String?
+  confirmedAt   DateTime?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  doctor      Doctor?                @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  clinic      Clinic?                @relation(fields: [clinicId], references: [id], onDelete: SetNull)
+  confirmedBy AdminUser?             @relation("EntityMatchConfirmedBy", fields: [confirmedById], references: [id], onDelete: SetNull)
+
+  @@index([doctorId, status])
+  @@index([clinicId, status])
+}
+
+/// Одноразовое приглашение. В БД хранится только hash токена.
+model Invitation {
+  id            String    @id @default(cuid())
+  applicationId String
+  invitedEmail  String
+  tokenHash     String    @unique
+  expiresAt     DateTime
+  usedAt        DateTime?
+  revokedAt     DateTime?
+  createdById   String
+  createdAt     DateTime  @default(now())
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  createdBy   AdminUser              @relation("InvitationCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  delivery    InvitationDelivery?
+  auditEvents AuthAuditEvent[]
+
+  @@index([applicationId, createdAt])
+  @@index([invitedEmail, expiresAt])
+  @@index([revokedAt, usedAt, expiresAt])
+}
+
+/// Outbox состояния приглашения. Raw token намеренно не хранится; повторная
+/// отправка выполняется только через безопасный reissue нового токена.
+model InvitationDelivery {
+  id            String                   @id @default(cuid())
+  invitationId  String                   @unique
+  status        InvitationDeliveryStatus @default(PENDING)
+  recipient     String
+  attempts      Int                      @default(0)
+  lastAttemptAt DateTime?
+  sentAt        DateTime?
+  messageId     String?
+  lastError     String?
+  createdAt     DateTime                 @default(now())
+  updatedAt     DateTime                 @updatedAt
+
+  invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+
+  @@index([status, createdAt])
+}
+
+/// Связь кабинета с существующим профилем врача. Это access-control relation,
+/// а не медицинская связь графа.
+model UserDoctorLink {
+  id            String               @id @default(cuid())
+  userId        String
+  doctorId      String
+  applicationId String?
+  status        UserEntityLinkStatus @default(PENDING)
+  confirmedById String?
+  confirmedAt   DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  user        User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  doctor      Doctor                  @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  application CooperationApplication? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  confirmedBy AdminUser?              @relation("DoctorLinkConfirmedBy", fields: [confirmedById], references: [id], onDelete: SetNull)
+
+  @@unique([userId, doctorId])
+  @@index([doctorId, status])
+  @@index([applicationId])
+}
+
+/// Доступ представителя к существующей клинике. Несколько пользователей могут
+/// иметь подтверждённый доступ к одной Clinic.
+model UserClinicAccess {
+  id            String               @id @default(cuid())
+  userId        String
+  clinicId      String
+  applicationId String?
+  role          String               @default("REPRESENTATIVE")
+  status        UserEntityLinkStatus @default(PENDING)
+  confirmedById String?
+  confirmedAt   DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  user        User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clinic      Clinic                  @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  application CooperationApplication? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  confirmedBy AdminUser?              @relation("ClinicAccessConfirmedBy", fields: [confirmedById], references: [id], onDelete: SetNull)
+
+  @@unique([userId, clinicId])
+  @@index([clinicId, status])
+  @@index([applicationId])
+}
+
+/// Hash-only одноразовый парольный reset token.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  revokedAt DateTime?
+  attempts  Int       @default(0)
+  sentAt    DateTime?
+  lastError String?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([revokedAt, usedAt, expiresAt])
+}
+
+/// DB-backed rate-limit bucket. В fingerprint хранится только HMAC, не IP/email.
+model AuthRateLimitBucket {
+  id              String   @id @default(cuid())
+  scope           String
+  fingerprint     String
+  windowStartedAt DateTime
+  expiresAt       DateTime
+  attempts        Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([scope, fingerprint])
+  @@index([expiresAt])
+}
+
+/// Аудит auth/invitation/access событий без секретов и credential material.
+model AuthAuditEvent {
+  id            String             @id @default(cuid())
+  eventType     AuthAuditEventType
+  userId        String?
+  adminUserId   String?
+  applicationId String?
+  invitationId  String?
+  doctorId      String?
+  clinicId      String?
+  details       Json?
+  createdAt     DateTime           @default(now())
+
+  user        User?                   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  adminUser   AdminUser?              @relation("AuthAuditActor", fields: [adminUserId], references: [id], onDelete: SetNull)
+  application CooperationApplication? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  invitation  Invitation?             @relation(fields: [invitationId], references: [id], onDelete: SetNull)
+  doctor      Doctor?                 @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  clinic      Clinic?                 @relation(fields: [clinicId], references: [id], onDelete: SetNull)
+
+  @@index([eventType, createdAt])
+  @@index([userId, createdAt])
+  @@index([applicationId, createdAt])
+  @@index([invitationId, createdAt])
+}
+
 model AdminUser {
   id           String    @id @default(cuid())
   email        String    @unique
   passwordHash String
   name         String
   role         AdminRole @default(OWNER)
+  sessionVersion Int      @default(0)
   lastLoginAt  DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  appealNotes         AppealNote[]
-  appealStatusHistory AppealStatusHistory[]
+  appealNotes                        AppealNote[]
+  appealStatusHistory                AppealStatusHistory[]
+  cooperationResponsibleApplications CooperationApplication[]              @relation("CooperationResponsible")
+  cooperationStatusHistory           CooperationApplicationStatusHistory[] @relation("CooperationStatusChangedBy")
+  cooperationNotes                   CooperationApplicationNote[]          @relation("CooperationNoteAuthor")
+  invitationsCreated                 Invitation[]                          @relation("InvitationCreatedBy")
+  entityMatchesConfirmed             CooperationEntityMatch[]              @relation("EntityMatchConfirmedBy")
+  doctorLinksConfirmed               UserDoctorLink[]                      @relation("DoctorLinkConfirmedBy")
+  clinicAccessesConfirmed            UserClinicAccess[]                    @relation("ClinicAccessConfirmedBy")
+  authAuditEvents                    AuthAuditEvent[]                      @relation("AuthAuditActor")
+  eventNotes                         EventRegistrationNote[]
+  eventStatusHistory                 EventRegistrationStatusHistory[]
+  passwordResetTokens                AdminPasswordResetToken[]
+}
+
+/// Одноразовый hash-only токен восстановления доступа к AdminUser.
+/// Это приватная auth-инфраструктура; raw token никогда не сохраняется.
+model AdminPasswordResetToken {
+  id          String    @id @default(cuid())
+  adminUserId String
+  tokenHash   String    @unique
+  expiresAt   DateTime
+  usedAt      DateTime?
+  revokedAt   DateTime?
+  attempts    Int       @default(0)
+  sentAt      DateTime?
+  lastError   String?
+  createdAt   DateTime  @default(now())
+
+  adminUser AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+
+  @@index([adminUserId, createdAt])
+  @@index([revokedAt, usedAt, expiresAt])
+}
+
+enum EventTalkKind {
+  TALK
+  BREAK
+}
+
+enum EventRegistrationStatus {
+  NEW
+  CONTACTED
+  CONFIRMED
+  ATTENDED
+  CANCELLED
+  NO_SHOW
+  SPAM
+}
+
+enum EventRegistrationNotificationKind {
+  APPLICANT
+  ASSOCIATION
+}
+
+enum EventRegistrationNotificationChannel {
+  EMAIL
+  TELEGRAM
+  GOOGLE_SHEETS
+}
+
+enum EventRegistrationNotificationType {
+  EVENT_REGISTRATION_CREATED
+}
+
+enum EventRegistrationNotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+/// Операционная конференция и её публичный контент. Event не является
+/// сущностью медицинского графа и не создаёт Doctor/Clinic автоматически.
+model Event {
+  id                   String   @id @default(cuid())
+  slug                 String   @unique
+  title                String
+  description          String
+  organizerName        String
+  organizerEmail       String?
+  startsAt             DateTime
+  registrationStartsAt DateTime
+  venueName            String
+  venueAddress         String
+  city                 String
+  registrationOpen     Boolean  @default(false)
+  programPublished     Boolean  @default(true)
+  speakersPublished    Boolean  @default(true)
+  registrationSequence Int      @default(0)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  speakers          EventSpeaker[]
+  talks             EventTalk[]
+  consentTemplates  EventConsentTemplate[]
+  registrations     EventRegistration[]
+  telegramAuditEvents EventTelegramAuditEvent[]
+  telegramJobs      EventTelegramJob[]
+
+  @@index([registrationOpen, startsAt])
+  @@index([programPublished, speakersPublished])
+}
+
+/// Снимок спикера на момент утверждения программы с обратной ссылкой на
+/// существующего Doctor; публичный текст не зависит от будущей редакции профиля.
+model EventSpeaker {
+  id                   String   @id @default(cuid())
+  eventId              String
+  doctorId             String?
+  order                Int
+  fullNameSnapshot     String
+  credentialsSnapshot  String
+  organizationRole     String?
+  photoUrlSnapshot     String?
+  published            Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  event  Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  doctor Doctor? @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  talks  EventTalk[]
+
+  @@unique([eventId, order])
+  @@unique([eventId, doctorId])
+  @@index([eventId, published, order])
+}
+
+/// Один пункт утверждённой программы. Время доклада nullable: отсутствие
+/// времени не превращается в выдуманное расписание.
+model EventTalk {
+  id                   String        @id @default(cuid())
+  eventId              String
+  speakerId            String?
+  kind                 EventTalkKind  @default(TALK)
+  title                String
+  description          String?
+  speakerNameSnapshot  String?
+  moderatorSnapshot    String?
+  startAt              DateTime?
+  endAt                DateTime?
+  published            Boolean       @default(true)
+  sortOrder            Int
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  event   Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  speaker EventSpeaker? @relation(fields: [speakerId], references: [id], onDelete: SetNull)
+
+  @@unique([eventId, sortOrder])
+  @@index([eventId, published, sortOrder])
+  @@index([speakerId])
+}
+
+/// Отдельная версия согласия для регистрации на мероприятие; AppealConsent
+/// намеренно не переиспользуется, поскольку у доменов разные цели обработки.
+model EventConsentTemplate {
+  id               String   @id @default(cuid())
+  eventId          String
+  version          String
+  title            String
+  body             String
+  isActive         Boolean  @default(false)
+  requiresApproval Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  event          Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  registrations EventRegistration[]
+
+  @@unique([eventId, version])
+  @@index([eventId, isActive, requiresApproval])
+}
+
+/// Приватная заявка на участие. Не создаёт User, CooperationApplication,
+/// membership или профиль врача; персональные поля остаются только здесь.
+model EventRegistration {
+  id                    String                         @id @default(cuid())
+  eventId               String
+  publicNumber          String                         @unique
+  consentTemplateId     String
+  status                EventRegistrationStatus       @default(NEW)
+  fullName              String
+  phone                 String
+  email                 String
+  city                  String?
+  specialty             String?
+  customSpecialty       String?
+  organization          String?
+  position              String?
+  comment               String?
+  consentAcceptedAt     DateTime
+  source                String?
+  landingUrl            String?
+  pageTitle             String?
+  referrer              String?
+  utmSource             String?
+  utmMedium             String?
+  utmCampaign           String?
+  utmContent            String?
+  requestFingerprint    String?
+  idempotencyKey        String?
+  createdAt             DateTime                       @default(now())
+  updatedAt             DateTime                       @updatedAt
+
+  event          Event                         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  consent        EventConsentTemplate          @relation(fields: [consentTemplateId], references: [id], onDelete: Restrict)
+  notes          EventRegistrationNote[]
+  statusHistory  EventRegistrationStatusHistory[]
+  notifications  EventRegistrationNotification[]
+  telegramAuditEvents EventTelegramAuditEvent[]
+
+  @@unique([eventId, email])
+  @@unique([eventId, phone])
+  @@unique([eventId, idempotencyKey])
+  @@index([eventId, status, createdAt])
+  @@index([eventId, city])
+  @@index([eventId, specialty])
+  @@index([eventId, source, utmCampaign])
+  @@index([requestFingerprint, createdAt])
+  @@index([fullName])
+}
+
+/// Неизменяемая история операционного статуса регистрации.
+model EventRegistrationStatusHistory {
+  id             String                   @id @default(cuid())
+  registrationId String
+  adminUserId    String?
+  fromStatus     EventRegistrationStatus?
+  toStatus       EventRegistrationStatus
+  comment        String?
+  createdAt      DateTime                 @default(now())
+
+  registration EventRegistration       @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  changedBy    AdminUser?              @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+
+  @@index([registrationId, createdAt])
+  @@index([adminUserId])
+}
+
+/// Внутренняя заметка администратора; никогда не попадает в публичный DTO.
+model EventRegistrationNote {
+  id             String   @id @default(cuid())
+  registrationId String
+  adminUserId    String
+  text           String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  registration EventRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  author       AdminUser          @relation(fields: [adminUserId], references: [id], onDelete: Restrict)
+
+  @@index([registrationId, createdAt])
+  @@index([adminUserId])
+}
+
+/// Outbox для email участнику и уведомления Ассоциации. Ошибка SMTP не
+/// отменяет сохранённую регистрацию.
+model EventRegistrationNotification {
+  id             String                              @id @default(cuid())
+  registrationId String
+  kind           EventRegistrationNotificationKind
+  channel        EventRegistrationNotificationChannel @default(EMAIL)
+  type           EventRegistrationNotificationType  @default(EVENT_REGISTRATION_CREATED)
+  idempotencyKey String?                             @unique
+  status         EventRegistrationNotificationStatus @default(PENDING)
+  recipient      String?
+  recipients     String[]                            @default([])
+  deliveredRecipients String[]                       @default([])
+  attempts       Int                                 @default(0)
+  lastAttemptAt  DateTime?
+  nextAttemptAt  DateTime?
+  lockedAt       DateTime?
+  lockedBy       String?
+  sentAt         DateTime?
+  messageId      String?
+  lastError      String?
+  createdAt      DateTime                            @default(now())
+  updatedAt      DateTime                            @updatedAt
+
+  registration EventRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  // PostgreSQL truncates the generated 67-character identifier to this 63-character name.
+  // Keep Prisma aligned with the existing production index without issuing a rename.
+  @@unique([registrationId, channel, kind, type], map: "EventRegistrationNotification_registrationId_channel_kind_type_")
+  @@index([status, createdAt])
+  @@index([registrationId, createdAt])
+  @@index([channel, status, nextAttemptAt])
+}
+
+/// Telegram update idempotency marker. Raw Telegram payload is intentionally
+/// not stored; only the numeric update id is retained.
+model EventTelegramUpdate {
+  id          String   @id @default(cuid())
+  updateId    BigInt   @unique
+  receivedAt  DateTime @default(now())
+  processedAt DateTime?
+}
+
+/// Security/audit record for Telegram commands and deliveries. It stores IDs
+/// and action outcome, never bot secrets, callback payloads or XLSX contents.
+model EventTelegramAuditEvent {
+  id                String   @id @default(cuid())
+  eventId           String?
+  registrationId    String?
+  telegramUserId    String?
+  telegramChatId    String?
+  updateId          BigInt?
+  action            String
+  deliveryStatus    String?
+  createdAt         DateTime @default(now())
+
+  event        Event?             @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  registration EventRegistration? @relation(fields: [registrationId], references: [id], onDelete: SetNull)
+
+  @@index([eventId, createdAt])
+  @@index([registrationId, createdAt])
+  @@index([telegramUserId, createdAt])
+  @@index([telegramChatId, createdAt])
+  @@index([action, createdAt])
+}
+
+enum EventTelegramJobKind {
+  FULL_EXPORT
+}
+
+enum EventTelegramJobStatus {
+  PENDING
+  PROCESSING
+  SENT
+  FAILED
+}
+
+/// Short-lived asynchronous Telegram jobs. XLSX generation is deliberately
+/// outside the webhook request; no participant data is duplicated here.
+model EventTelegramJob {
+  id            String                @id @default(cuid())
+  eventId       String
+  kind          EventTelegramJobKind
+  status        EventTelegramJobStatus @default(PENDING)
+  dedupeKey     String                @unique
+  telegramChatId String
+  telegramUserId String
+  requestedAt   DateTime              @default(now())
+  attempts      Int                   @default(0)
+  nextAttemptAt DateTime?
+  lockedAt      DateTime?
+  lockedBy      String?
+  sentAt        DateTime?
+  lastError     String?
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, kind, status, requestedAt])
+  @@index([status, nextAttemptAt])
 }

@@ -17,7 +17,7 @@ export function EntityHeader({
         {eyebrow}
       </div>
       <div className="mt-3 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div className="min-w-0">
+        <div className="min-w-0 lg:flex-1">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             {title}
           </h1>
@@ -26,7 +26,7 @@ export function EntityHeader({
           </p>
         </div>
         {badges.length ? (
-          <div className="flex shrink-0 flex-wrap gap-2">
+          <div className="flex shrink-0 flex-wrap gap-2 lg:max-w-[46%] lg:justify-end">
             {badges.map((badge) => (
               <EntityBadge key={badge}>{badge}</EntityBadge>
             ))}

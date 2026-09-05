@@ -7,8 +7,21 @@ module.exports = {
       cwd: "/var/www/vysotsky.pro",
       env: {
         NODE_ENV: "production",
-        PORT: 3000,
+        PORT: 3001,
       },
+    },
+    {
+      name: "ophthalmology-email-worker",
+      script: "node_modules/.bin/tsx",
+      args: "scripts/process-email-outbox.ts",
+      cwd: "/var/www/vysotsky.pro",
+      env: {
+        NODE_ENV: "production",
+        NODE_OPTIONS: "--conditions=react-server",
+      },
+      autorestart: true,
+      restart_delay: 5000,
+      max_restarts: 10,
     },
   ],
 };

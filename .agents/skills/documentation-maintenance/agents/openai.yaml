@@ -1,0 +1,4 @@
+interface:
+  display_name: "Documentation Maintenance"
+  short_description: "Keep architecture documentation current"
+  default_prompt: "Use $documentation-maintenance after an architectural change."

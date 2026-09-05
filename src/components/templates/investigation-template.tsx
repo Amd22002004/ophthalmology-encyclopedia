@@ -7,9 +7,14 @@ import { IndependentControlAssessments } from "@/components/investigations/indep
 import { RegulatoryAssessments } from "@/components/investigations/regulatory-assessments";
 import { SchemaOrg } from "@/components/seo/schema-org";
 import { TemplateShell } from "@/components/templates/template-shell";
-import { getPublicInvestigationDocumentTitle } from "@/lib/investigation-documents";
+import {
+  GLAZCENTR_INVESTIGATION_SLUG,
+  getPublicInvestigationDocumentTitle,
+  isPubliclyHiddenInvestigationDocument,
+  PUBLIC_ASSOCIATION_MATERIALS_NOTE,
+} from "@/lib/investigation-documents";
 import type { InvestigationDetail } from "@/lib/loaders";
-import { absoluteUrl, breadcrumbJsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, faqPageJsonLd } from "@/lib/seo";
 
 function formatDate(value: Date | null) {
   if (!value) return null;
@@ -129,6 +134,63 @@ function RelatedEntityList({
   );
 }
 
+function buildInvestigationFaq(data: InvestigationDetail, publicDocumentCount: number) {
+  const clinic = data.clinics[0]?.clinic;
+  const instance = data.equipmentInstances[0];
+  const objectLabel = instance
+    ? `${instance.model}${instance.serialNumber ? `, заводской номер ${instance.serialNumber}` : ""}`
+    : "конкретный объект, указанный в опубликованных документах";
+
+  return [
+    {
+      question: "Что является объектом проверки?",
+      answer: `В опубликованных материалах объектом проверки обозначен ${objectLabel}. Каталожная модель оборудования используется для навигации и не является самостоятельным объектом проверки.`,
+    },
+    {
+      question: "Какая клиника указана в материалах?",
+      answer: clinic
+        ? `${clinic.title}${clinic.city ? `, ${clinic.city}` : ""}. Связь основана на опубликованных материалах расследования.`
+        : "Клиника не указана в доступной версии расследования.",
+    },
+    {
+      question: "Какие документы опубликованы?",
+      answer: publicDocumentCount > 0
+        ? `Опубликовано документов: ${publicDocumentCount}. Для каждого документа указаны публичное название, источник и дата, если они доступны.`
+        : "Документы в открытом разделе расследования пока не опубликованы.",
+    },
+    {
+      question: "Как обозначается статус материалов?",
+      answer: data.status,
+    },
+    {
+      question: "Какие нормативные материалы связаны с расследованием?",
+      answer: data.regulatoryAssessments.length > 0 || data.registryChecks.length > 0
+        ? "Связанные нормативные положения и результаты проверок отображаются в разделе нормативной проверки с указанием применимости и доказательной базы."
+        : "На странице опубликованы только те нормативные ссылки, для которых в материалах есть проверенная связь. Отсутствие отдельной оценки не является выводом о нарушении.",
+    },
+    {
+      question: "Есть ли окончательный вывод о нарушении?",
+      answer: "Окончательные выводы не подменяются публикацией материалов проверки. На странице отдельно указаны подтверждённые сведения, границы оценки и вопросы, требующие проверки компетентных органов.",
+    },
+    {
+      question: "Где посмотреть первичные документы?",
+      answer: "Публичные первичные документы размещены в разделах доказательной базы этой страницы. В карточках используются публичные названия без внутренних имён файлов; документы, не вошедшие в открытую часть, здесь не показываются.",
+    },
+    {
+      question: "Как сообщить дополнительную информацию?",
+      answer: "Используйте форму обращения на этой странице. Контекст расследования будет передан в форму автоматически.",
+    },
+    {
+      question: "Можно ли направить документы?",
+      answer: "Да. Форма обращения позволяет описать ситуацию и приложить материалы в предусмотренных форматах. Каждое обращение рассматривается индивидуально.",
+    },
+    {
+      question: "Будет ли расследование обновляться?",
+      answer: "Материал может обновляться при появлении новых проверенных документов и официальных ответов. Изменения должны сохранять ссылку на источник и границы вывода.",
+    },
+  ];
+}
+
 export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
   const primaryAppealId = `appeal-primary-${data.slug}`;
   const endAppealId = `appeal-end-${data.slug}`;
@@ -139,9 +201,12 @@ export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
   const remainingSections = data.sections.filter(
     (section) => section.key !== "summary" && section.key !== "object-under-review",
   );
-  const manufacturerDocuments = data.documents.filter((document) => document.kind === "manufacturer-response");
-  const officialDocuments = data.documents.filter((document) => document.kind === "association-appeal");
-  const otherEvidenceDocuments = data.documents.filter(
+  const publicDocuments = data.documents.filter(
+    (document) => !isPubliclyHiddenInvestigationDocument(data.slug, document),
+  );
+  const manufacturerDocuments = publicDocuments.filter((document) => document.kind === "manufacturer-response");
+  const officialDocuments = publicDocuments.filter((document) => document.kind === "association-appeal");
+  const otherEvidenceDocuments = publicDocuments.filter(
     (document) => document.kind !== "manufacturer-response" && document.kind !== "association-appeal",
   );
 
@@ -168,9 +233,14 @@ export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
     title: relation.news.title,
     meta: formatDate(relation.news.publishedAt),
   }));
+  const faqItems = buildInvestigationFaq(data, publicDocuments.length);
+  const investigationTitle = data.clinics.length === 1
+    ? `Проверка деятельности ${data.clinics[0].clinic.title}`
+    : data.title;
 
   const anchors = [
     summary ? { href: "#summary", label: summary.title } : null,
+    data.equipmentInstances.length > 0 ? { href: "#object-of-review", label: "Объект проверки" } : null,
     objectUnderReview ? { href: "#object-under-review", label: objectUnderReview.title } : null,
     data.equipmentInstances.length || data.regulatoryAssessments.length || data.registryChecks.length
       ? { href: "#regulatory-analysis", label: "Нормативная проверка" }
@@ -184,6 +254,7 @@ export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
     data.timeline.length > 0 ? { href: "#timeline", label: "Хронология" } : null,
     ...remainingSections.map((section) => ({ href: "#" + section.key, label: section.title })),
     otherEvidenceDocuments.length > 0 ? { href: "#evidence", label: "Другие доказательства" } : null,
+    { href: "#faq", label: "Вопросы и ответы" },
   ].filter((item): item is { href: string; label: string } => Boolean(item));
 
   return (
@@ -195,7 +266,7 @@ export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
       ]}
       description={data.summary}
       eyebrow="Расследования"
-      title={data.title}
+      title={investigationTitle}
     >
       <div className="space-y-5">
         <section className="rounded-lg border border-primary/20 bg-primary/5 p-4">
@@ -208,6 +279,56 @@ export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
             </div>
           </div>
         </section>
+
+        {data.equipmentInstances.length > 0 && (
+          <section id="object-of-review">
+            <EntityBlock title="Объект проверки">
+              <p className="mb-4 text-sm leading-6 text-muted-foreground">
+                Этот блок описывает идентифицированный экземпляр оборудования. Связь с каталожной карточкой нужна для навигации и не переносит выводы расследования на модель в целом.
+              </p>
+              <div className="grid gap-3 md:grid-cols-2">
+                {data.equipmentInstances.map((instance) => (
+                  <article className="rounded-lg border bg-card p-4" id={`equipment-instance-${instance.id}`} key={instance.id}>
+                    <dl className="grid gap-2 text-sm sm:grid-cols-[150px_1fr]">
+                      <dt className="text-muted-foreground">Модель</dt>
+                      <dd className="font-semibold text-foreground">
+                        {instance.equipment ? (
+                          <Link className="text-primary hover:underline" href={`/equipment/${instance.equipment.slug}`}>
+                            {instance.model}
+                          </Link>
+                        ) : instance.model}
+                      </dd>
+                      {instance.serialNumber && <><dt className="text-muted-foreground">Заводской номер</dt><dd>{instance.serialNumber}</dd></>}
+                      {instance.manufactureYear && <><dt className="text-muted-foreground">Год выпуска</dt><dd>{instance.manufactureYear}</dd></>}
+                      {instance.manufacturer && <><dt className="text-muted-foreground">Производитель</dt><dd>{instance.manufacturer}</dd></>}
+                    </dl>
+                    {instance.identificationSummary && <p className="mt-4 text-sm leading-6 text-muted-foreground">{instance.identificationSummary}</p>}
+                    {instance.identificationEvidence.filter(
+                      (evidence) =>
+                        !isPubliclyHiddenInvestigationDocument(data.slug, evidence.document),
+                    ).length > 0 && (
+                      <div className="mt-4 border-t pt-3">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Основание идентификации</p>
+                        <div className="mt-2 space-y-1">
+                          {instance.identificationEvidence
+                            .filter(
+                              (evidence) =>
+                                !isPubliclyHiddenInvestigationDocument(data.slug, evidence.document),
+                            )
+                            .map(({ document }) => (
+                            <a className="block text-sm font-semibold text-primary hover:underline" href={`#document-${document.slug}`} key={document.slug}>
+                              {getPublicInvestigationDocumentTitle(document)} →
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </EntityBlock>
+          </section>
+        )}
 
         <nav aria-label="Разделы расследования" className="rounded-lg border bg-card p-3">
           <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
@@ -233,48 +354,6 @@ export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
           <section id={objectUnderReview.key}>
             <EntityBlock title={objectUnderReview.title}>
               <div className="whitespace-pre-line leading-7">{objectUnderReview.content}</div>
-
-              {equipment.length > 0 && (
-                <div className="mt-5">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Модель оборудования
-                  </p>
-                  <div className="space-y-2">
-                    {equipment.map((item) => (
-                      <Link
-                        className="block rounded-md border bg-background p-3 text-sm transition-colors hover:border-primary/50 hover:bg-primary/5"
-                        href={item.href}
-                        key={item.href}
-                      >
-                        <span className="font-medium text-primary">{item.title}</span>
-                        {item.meta && <span className="mt-1 block text-xs text-muted-foreground">{item.meta}</span>}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {manufacturerDocuments.length > 0 && (
-                <div className="mt-5">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Документы об идентификации экземпляра
-                  </p>
-                  <div className="space-y-2">
-                    {manufacturerDocuments.map((document) => (
-                      <a
-                        className="block rounded-md border bg-background p-3 text-sm transition-colors hover:border-primary/50 hover:bg-primary/5"
-                        href={`#document-${document.slug}`}
-                        key={document.slug}
-                      >
-                        <span className="font-medium text-primary">{getPublicInvestigationDocumentTitle(document)}</span>
-                        {document.summary && (
-                          <span className="mt-1 block text-xs leading-5 text-muted-foreground">{document.summary}</span>
-                        )}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
             </EntityBlock>
           </section>
         )}
@@ -282,11 +361,13 @@ export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
         <RegulatoryAssessments
           assessments={data.regulatoryAssessments}
           instances={data.equipmentInstances}
+          investigationSlug={data.slug}
           registryChecks={data.registryChecks}
         />
 
         <IndependentControlAssessments
           assessments={data.independentControlAssessments}
+          investigationSlug={data.slug}
         />
 
         {data.timeline.length > 0 && <section id="timeline">
@@ -318,7 +399,13 @@ export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
         {remainingSections.map((section) => (
           <section id={section.key} key={section.id}>
             <EntityBlock title={section.title}>
-              <div className="whitespace-pre-line leading-7">{section.content}</div>
+              <div className="whitespace-pre-line leading-7">
+                {data.slug === GLAZCENTR_INVESTIGATION_SLUG &&
+                section.key === "official-documents" &&
+                officialDocuments.length === 0
+                  ? PUBLIC_ASSOCIATION_MATERIALS_NOTE
+                  : section.content}
+              </div>
               {section.key === "official-documents" && officialDocuments.length > 0 && (
                 <div className="mt-5 space-y-4">
                   {officialDocuments.map((document) => (
@@ -348,6 +435,19 @@ export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
             </EntityBlock>
           </section>
         )}
+
+        <section id="faq">
+          <EntityBlock title="Вопросы и ответы">
+            <div className="space-y-4">
+              {faqItems.map((item) => (
+                <div className="border-b pb-4 last:border-b-0 last:pb-0" key={item.question}>
+                  <h3 className="font-semibold text-foreground">{item.question}</h3>
+                  <p className="mt-1 text-sm leading-6 text-muted-foreground">{item.answer}</p>
+                </div>
+              ))}
+            </div>
+          </EntityBlock>
+        </section>
 
         <div id={primaryAppealId}>
           <AppealInvitation investigationSlug={data.slug} />
@@ -408,6 +508,7 @@ export function InvestigationTemplate({ data }: { data: InvestigationDetail }) {
           mainEntityOfPage: absoluteUrl("/investigations/" + data.slug),
         }}
       />
+      <SchemaOrg data={faqPageJsonLd(faqItems)} />
     </TemplateShell>
   );
 }

@@ -19,10 +19,15 @@ const staticRoutes = [
   "/investigations",
   "/independent-control",
   "/cooperation",
+  "/cooperation/clinic",
+  "/cooperation/doctor",
+  "/cooperation/partner",
   "/appeal",
+  "/privacy-policy",
+  "/personal-data-consent",
+  "/legal",
+  "/cookies",
   "/questions",
-  "/register/doctor",
-  "/register/clinic",
   "/diseases",
   "/procedures",
   "/doctors",
@@ -73,7 +78,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     db.disease.findMany({ select: { slug: true, updatedAt: true } }),
     db.procedure.findMany({ select: { slug: true, updatedAt: true } }),
     db.doctor.findMany({ select: { slug: true, updatedAt: true } }),
-    db.clinic.findMany({ select: { slug: true, updatedAt: true } }),
+    db.clinic.findMany({
+      select: {
+        slug: true,
+        updatedAt: true,
+        investigations: {
+          where: {
+            isPublished: true,
+            evidenceValidatedAt: { not: null },
+            publishedAt: { not: null, lte: now },
+            investigation: {
+              isPublished: true,
+              evidenceValidatedAt: { not: null },
+              publishedAt: { not: null, lte: now },
+            },
+          },
+          select: { investigationId: true },
+        },
+      },
+    }),
     db.supplier.findMany({ select: { slug: true, updatedAt: true } }),
     db.equipment.findMany({ select: { slug: true, updatedAt: true } }),
     db.publication.findMany({ select: { slug: true, updatedAt: true } }),
@@ -120,7 +143,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...diseases.map((r) => ({ path: `/diseases/${r.slug}`, updatedAt: r.updatedAt })),
     ...procedures.map((r) => ({ path: `/procedures/${r.slug}`, updatedAt: r.updatedAt })),
     ...doctors.map((r) => ({ path: `/doctors/${r.slug}`, updatedAt: r.updatedAt })),
-    ...clinics.map((r) => ({ path: `/clinics/${r.slug}`, updatedAt: r.updatedAt })),
+    ...clinics.flatMap((r) => [
+      { path: `/clinics/${r.slug}`, updatedAt: r.updatedAt },
+      ...(r.investigations.length > 0
+        ? [
+            { path: `/clinics/${r.slug}/equipment`, updatedAt: r.updatedAt },
+            { path: `/clinics/${r.slug}/documents`, updatedAt: r.updatedAt },
+            { path: `/clinics/${r.slug}/license`, updatedAt: r.updatedAt },
+          ]
+        : []),
+    ]),
     ...suppliers.map((r) => ({ path: `/suppliers/${r.slug}`, updatedAt: r.updatedAt })),
     ...equipment.map((r) => ({ path: `/equipment/${r.slug}`, updatedAt: r.updatedAt })),
     ...publications

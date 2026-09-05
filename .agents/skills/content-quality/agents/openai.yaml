@@ -1,0 +1,4 @@
+interface:
+  display_name: "Content Quality"
+  short_description: "Check evidence-led medical content"
+  default_prompt: "Use $content-quality to review this medical content."

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1024 682" role="img" aria-labelledby="title desc">
+  <title id="title">Катаракта</title><desc id="desc">Уникальная схематичная иллюстрация: Катаракта</desc>
+  <rect width="1024" height="682" rx="34" fill="#f5faf9"/>
+  <circle cx="820" cy="110" r="190" fill="#0f766e" opacity=".08"/><circle cx="190" cy="590" r="240" fill="#0f172a" opacity=".035"/>
+  <g fill="none" stroke="#0f766e" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><circle cx="520" cy="460" r="170"/><path d="m400 410 80 50-65 80 125 55 66-86-32-66 72-48"/><path d="M690 460h150"/></g>
+  <path d="M105 115h180" stroke="#0f766e" stroke-width="8" stroke-linecap="round" opacity=".45"/>
+  <text x="105" y="155" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#0f172a">Катаракта</text>
+  <text x="105" y="610" font-family="Arial, sans-serif" font-size="18" fill="#475569">Офтальмологическая энциклопедия</text>
+</svg>

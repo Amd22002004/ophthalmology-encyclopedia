@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -14,17 +14,21 @@ import {
 import { SidebarNavContent } from "@/components/layout/left-sidebar";
 
 export function MobileSidebarToggle() {
-  const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const [{ open, pathname: openedPathname }, setSheetState] = useState(() => ({
+    open: false,
+    pathname,
+  }));
+  const isOpen = openedPathname === pathname ? open : false;
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  function handleOpenChange(nextOpen: boolean) {
+    setSheetState({ open: nextOpen, pathname });
+  }
 
   return (
-    <Sheet onOpenChange={setOpen} open={open}>
+    <Sheet onOpenChange={handleOpenChange} open={isOpen}>
       <SheetTrigger asChild>
-        <Button aria-label="Открыть навигацию" size="icon" variant="ghost">
+        <Button aria-label="Открыть навигацию" className="max-[359px]:h-9 max-[359px]:w-9" size="icon" variant="ghost">
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>

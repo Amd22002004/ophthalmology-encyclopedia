@@ -3,6 +3,8 @@
 import { cookies } from "next/headers";
 import { getIronSession } from "iron-session";
 import { sessionOptions, type AdminSessionData } from "@/lib/session";
+import { findAdminUserByEmail } from "@/lib/admin-auth";
+import { normalizeEmail } from "@/lib/auth-security";
 import { getPrisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
@@ -13,20 +15,20 @@ export async function loginAction(
   _prev: LoginState,
   formData: FormData,
 ): Promise<LoginState> {
-  const email = String(formData.get("email") ?? "").trim();
+  const email = normalizeEmail(String(formData.get("email") ?? ""));
   const password = String(formData.get("password") ?? "");
 
   if (!email || !password) {
     return { error: "Введите email и пароль" };
   }
 
-  const db = getPrisma();
-  if (!db) return { error: "Нет подключения к базе данных" };
-
-  const user = await db.adminUser.findUnique({ where: { email } });
+  const user = await findAdminUserByEmail(email);
   if (!user) {
     return { error: "Неверный email или пароль" };
   }
+
+  const db = getPrisma();
+  if (!db) return { error: "Нет подключения к базе данных" };
 
   const valid = await bcrypt.compare(password, user.passwordHash);
   if (!valid) {
@@ -46,6 +48,7 @@ export async function loginAction(
   session.adminId = user.id;
   session.email = user.email;
   session.name = user.name;
+  session.sessionVersion = user.sessionVersion;
   await session.save();
 
   redirect("/admin/dashboard");

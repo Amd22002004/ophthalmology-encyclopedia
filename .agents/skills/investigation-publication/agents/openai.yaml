@@ -1,0 +1,4 @@
+interface:
+  display_name: "Investigation Publication"
+  short_description: "Evidence-led investigation workflow"
+  default_prompt: "Use $investigation-publication to prepare an investigation."

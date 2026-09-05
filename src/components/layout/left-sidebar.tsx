@@ -1,24 +1,17 @@
 "use client";
 
 import { Fragment } from "react";
-import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { sidebarSections } from "@/lib/content-model";
 import { SidebarSection } from "@/components/layout/sidebar-section";
+import { AssociationBrand } from "@/components/layout/association-brand";
 
 export function SidebarNavContent() {
   return (
     <div className="flex h-full flex-col">
       <div className="border-b px-4 py-4">
-        <Link href="/" className="block">
-          <div className="text-sm font-semibold leading-tight">
-            Офтальмологическая энциклопедия
-          </div>
-          <div className="mt-1 text-xs text-muted-foreground">
-            Профессиональный справочник
-          </div>
-        </Link>
+        <AssociationBrand />
       </div>
       <ScrollArea className="min-h-0 flex-1">
         <div className="px-3 pb-4">

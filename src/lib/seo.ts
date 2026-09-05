@@ -3,9 +3,9 @@ import type { CatalogConfig, EntityKind } from "@/lib/content-model";
 import { catalogConfigs } from "@/lib/content-model";
 import { slugToTitle } from "@/lib/slug";
 
-export const siteName = "Офтальмологическая энциклопедия";
+export const siteName = "Ассоциация офтальмологических клиник";
 export const siteDescription =
-  "Профессиональная SEO-ориентированная энциклопедия и directory-платформа по офтальмологии.";
+  "Профессиональное объединение офтальмологических клиник, врачей и отраслевых партнёров.";
 
 export function absoluteUrl(path = "/") {
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -16,15 +16,28 @@ export function createPageMetadata({
   title,
   description,
   path,
+  image,
+  imageAlt,
+  imageWidth,
+  imageHeight,
+  absoluteTitle = false,
+  robots,
 }: {
   title: string;
   description: string;
   path: string;
+  image?: string | null;
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  absoluteTitle?: boolean;
+  robots?: Metadata["robots"];
 }): Metadata {
   const url = absoluteUrl(path);
+  const imageUrl = image ? absoluteUrl(image) : null;
 
   return {
-    title,
+    title: absoluteTitle ? { absolute: title } : title,
     description,
     alternates: {
       canonical: url,
@@ -36,12 +49,26 @@ export function createPageMetadata({
       siteName,
       type: "website",
       locale: "ru_RU",
+      ...(imageUrl
+        ? {
+            images: [
+              {
+                url: imageUrl,
+                ...(imageAlt ? { alt: imageAlt } : {}),
+                ...(imageWidth ? { width: imageWidth } : {}),
+                ...(imageHeight ? { height: imageHeight } : {}),
+              },
+            ],
+          }
+        : {}),
     },
     twitter: {
       card: "summary",
       title,
       description,
+      ...(imageUrl ? { images: [imageUrl] } : {}),
     },
+    ...(robots ? { robots } : {}),
   };
 }
 
@@ -89,6 +116,185 @@ export function faqPageJsonLd(items: { question: string; answer: string }[]) {
         text: item.answer,
       },
     })),
+  };
+}
+
+export function diseaseConditionJsonLd({
+  title,
+  description,
+  aliases = [],
+  category,
+  path,
+  icdCode,
+}: {
+  title: string;
+  description: string;
+  aliases?: string[];
+  category?: string | null;
+  path: string;
+  icdCode?: string | null;
+}): {
+  "@context": "https://schema.org";
+  "@type": "MedicalCondition";
+  "@id": string;
+  name: string;
+  description: string;
+  url: string;
+  alternateName?: string[];
+  category?: string;
+  code?: { "@type": "MedicalCode"; codeValue: string; codingSystem: "ICD-10" };
+} {
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalCondition",
+    "@id": `${absoluteUrl(path)}#condition`,
+    name: title,
+    description,
+    url: absoluteUrl(path),
+    ...(aliases.length > 0 ? { alternateName: aliases } : {}),
+    ...(category ? { category } : {}),
+    ...(icdCode
+      ? {
+          code: {
+            "@type": "MedicalCode" as const,
+            codeValue: icdCode,
+            codingSystem: "ICD-10" as const,
+          },
+        }
+      : {}),
+  };
+}
+
+export function diseaseWebPageJsonLd({
+  title,
+  description,
+  path,
+  image,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  image?: string | null;
+}): {
+  "@context": "https://schema.org";
+  "@type": "MedicalWebPage";
+  name: string;
+  description: string;
+  url: string;
+  inLanguage: "ru-RU";
+  about: { "@id": string };
+  primaryImageOfPage?: string;
+} {
+  const url = absoluteUrl(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    name: title,
+    description,
+    url,
+    inLanguage: "ru-RU",
+    about: { "@id": `${url}#condition` },
+    ...(image ? { primaryImageOfPage: absoluteUrl(image) } : {}),
+  };
+}
+
+export function medicalProcedureJsonLd({
+  title,
+  description,
+  path,
+  image,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  image?: string | null;
+}) {
+  const url = absoluteUrl(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalProcedure",
+    "@id": `${url}#procedure`,
+    name: title,
+    description,
+    url,
+    ...(image ? { image: absoluteUrl(image) } : {}),
+  };
+}
+
+export function procedureWebPageJsonLd({
+  title,
+  description,
+  path,
+  image,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  image?: string | null;
+}) {
+  const url = absoluteUrl(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    name: title,
+    description,
+    url,
+    inLanguage: "ru-RU" as const,
+    about: { "@id": `${url}#procedure` },
+    ...(image ? { primaryImageOfPage: absoluteUrl(image) } : {}),
+  };
+}
+
+export function medicalDeviceJsonLd({
+  title,
+  description,
+  path,
+  image,
+  manufacturer,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  image?: string | null;
+  manufacturer?: string | null;
+}) {
+  const url = absoluteUrl(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalDevice",
+    "@id": `${url}#device`,
+    name: title,
+    description,
+    url,
+    category: "Intraocular lens",
+    ...(manufacturer
+      ? { manufacturer: { "@type": "Organization", name: manufacturer } }
+      : {}),
+    ...(image ? { image: absoluteUrl(image) } : {}),
+  };
+}
+
+export function innovationWebPageJsonLd({
+  title,
+  description,
+  path,
+  image,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  image?: string | null;
+}) {
+  const url = absoluteUrl(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    name: title,
+    description,
+    url,
+    inLanguage: "ru-RU" as const,
+    about: { "@id": `${url}#device` },
+    ...(image ? { primaryImageOfPage: absoluteUrl(image) } : {}),
   };
 }
 

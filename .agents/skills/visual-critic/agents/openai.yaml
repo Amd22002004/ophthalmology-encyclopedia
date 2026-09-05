@@ -1,0 +1,4 @@
+interface:
+  display_name: "Visual Critic"
+  short_description: "Challenge UI clarity before delivery"
+  default_prompt: "Use $visual-critic to assess this UI change before delivery."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Encyclopedia Editor"
+  short_description: "Validate encyclopedia page fit"
+  default_prompt: "Use $encyclopedia-editor before creating or editing an encyclopedia page."

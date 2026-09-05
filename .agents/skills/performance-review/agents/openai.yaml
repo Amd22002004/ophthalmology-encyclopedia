@@ -1,0 +1,4 @@
+interface:
+  display_name: "Performance Review"
+  short_description: "Review page and data performance"
+  default_prompt: "Use $performance-review to inspect this performance-sensitive change."

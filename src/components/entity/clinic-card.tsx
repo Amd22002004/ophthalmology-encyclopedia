@@ -3,6 +3,8 @@ import { MapPin, Phone } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ClinicLogo, getClinicInitial } from "@/components/entity/clinic-logo";
 import type { ClinicCardData } from "@/lib/loaders";
+import { formatClinicAddress } from "@/lib/clinic-address";
+import { cn } from "@/lib/utils";
 
 const CLINIC_TYPE_LABEL: Record<string, string> = {
   centre: "Центр",
@@ -28,22 +30,24 @@ function ClinicBadge({ label, variant }: { label: string; variant: keyof typeof 
   );
 }
 
-export function ClinicCard({ clinic }: { clinic: ClinicCardData }) {
+export function ClinicCard({
+  clinic,
+  className,
+}: {
+  clinic: ClinicCardData;
+  className?: string;
+}) {
   const initial = getClinicInitial(clinic.networkName ?? undefined, clinic.title);
   const typeLabel = clinic.clinicType ? (CLINIC_TYPE_LABEL[clinic.clinicType] ?? null) : null;
 
-  const addressText = clinic.city
-    ? clinic.address
-      ? `${clinic.city} — ${clinic.address}`
-      : clinic.city
-    : (clinic.address ?? null);
+  const addressText = formatClinicAddress(clinic.city, clinic.address);
 
   const visibleTags = clinic.specializationTags.slice(0, 4);
   const extraCount = Math.max(0, clinic.specializationTags.length - 4);
   const phone = clinic.phones[0];
 
   return (
-    <Card className="flex flex-col">
+    <Card className={cn("flex flex-col", className)}>
       <CardHeader className="pb-2">
         <div className="flex items-start gap-3">
           <ClinicLogo

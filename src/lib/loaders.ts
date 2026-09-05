@@ -1,6 +1,12 @@
 import type { CatalogGridItem } from "@/components/catalog/catalog-grid";
+import { getDiseaseContent } from "@/lib/disease-content";
+import { getInnovationContent } from "@/lib/innovation-content";
 import { getPrisma } from "@/lib/prisma";
 import { getEquipmentEditorial } from "@/lib/equipment-editorial";
+import {
+  GLAZCENTR_INVESTIGATION_SLUG,
+  PUBLICLY_HIDDEN_INVESTIGATION_DOCUMENT_SLUGS,
+} from "@/lib/investigation-documents";
 import {
   evidenceValidatedContentWhere,
   isPubliclyVisibleAt,
@@ -81,14 +87,16 @@ export async function getDiseases(opts?: {
   return rows.map((r) => ({
     href: `/diseases/${r.slug}`,
     title: r.title,
-    description: r.summary ?? (r.icdCode ? `МКБ: ${r.icdCode}` : ""),
+    description:
+      getDiseaseContent(r.slug)?.summary ?? (r.summary ?? (r.icdCode ? `МКБ: ${r.icdCode}` : "")),
   }));
 }
 
 export async function getDisease(slug: string) {
   const db = getPrisma();
   if (!db) return null;
-  return db.disease.findUnique({
+  const editorial = getDiseaseContent(slug);
+  const diseaseQuery = db.disease.findUnique({
     where: { slug },
     include: {
       category: { select: { slug: true, title: true } },
@@ -99,6 +107,10 @@ export async function getDisease(slug: string) {
       doctors: {
         take: 6,
         include: { doctor: { select: { slug: true, firstName: true, lastName: true } } },
+      },
+      clinics: {
+        take: 6,
+        include: { clinic: { select: { slug: true, title: true, city: true } } },
       },
       guidelines: {
         take: 4,
@@ -179,6 +191,34 @@ export async function getDisease(slug: string) {
       },
     },
   });
+
+  const relatedDiseaseQuery = editorial
+    ? db.disease.findMany({
+        where: { slug: { in: editorial.relatedDiseaseSlugs } },
+        select: { slug: true, title: true, summary: true },
+      })
+    : Promise.resolve([] as { slug: string; title: string; summary: string | null }[]);
+
+  const [disease, relatedDiseaseRows] = await Promise.all([
+    diseaseQuery,
+    relatedDiseaseQuery,
+  ]);
+  if (!disease) return null;
+
+  const relatedDiseaseBySlug = new Map(
+    relatedDiseaseRows.map((relatedDisease) => [relatedDisease.slug, relatedDisease] as const),
+  );
+
+  return {
+    ...disease,
+    editorial,
+    relatedDiseases: editorial
+      ? editorial.relatedDiseaseSlugs.flatMap((relatedSlug) => {
+          const relatedDisease = relatedDiseaseBySlug.get(relatedSlug);
+          return relatedDisease ? [relatedDisease] : [];
+        })
+      : [],
+  };
 }
 
 // ─── Procedures ───────────────────────────────────────────────────────────────
@@ -210,7 +250,7 @@ export async function getProcedures(opts?: {
 export async function getProcedure(slug: string) {
   const db = getPrisma();
   if (!db) return null;
-  return db.procedure.findUnique({
+  const procedure = await db.procedure.findUnique({
     where: { slug },
     include: {
       category: { select: { slug: true, title: true } },
@@ -222,22 +262,19 @@ export async function getProcedure(slug: string) {
         take: 6,
         include: { doctor: { select: { slug: true, firstName: true, lastName: true } } },
       },
+      clinics: {
+        take: 6,
+        include: { clinic: { select: { slug: true, title: true, city: true } } },
+      },
       equipment: {
         take: 4,
         include: { equipment: { select: { slug: true, title: true } } },
       },
-      // Процедура → Научные работы (прямая связь по теме работы)
-      scientificWorks: {
-        where: { work: publicScientificWorkWhere() },
+      publications: {
+        take: 4,
         include: {
-          work: {
-            select: {
-              slug: true,
-              title: true,
-              type: true,
-              year: true,
-              doctor: { select: { slug: true, firstName: true, lastName: true, middleName: true } },
-            },
+          publication: {
+            select: { slug: true, title: true, publicationType: true, authorName: true },
           },
         },
       },
@@ -292,6 +329,37 @@ export async function getProcedure(slug: string) {
       },
     },
   });
+
+  if (!procedure) return null;
+
+  // ScientificWork — необязательная связь. Если таблица или её relation ещё
+  // недоступны в dev-базе, сама страница процедуры остаётся рабочей.
+  const scientificWorks = await db.procedure
+    .findUnique({
+      where: { slug },
+      select: {
+        scientificWorks: {
+          where: { work: publicScientificWorkWhere() },
+          include: {
+            work: {
+              select: {
+                slug: true,
+                title: true,
+                type: true,
+                year: true,
+                doctor: {
+                  select: { slug: true, firstName: true, lastName: true, middleName: true },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+    .then((row) => row?.scientificWorks ?? [])
+    .catch(() => []);
+
+  return { ...procedure, scientificWorks };
 }
 
 // ─── Doctors ──────────────────────────────────────────────────────────────────
@@ -619,6 +687,8 @@ export async function getClinic(slug: string) {
                   source: true,
                   documentDate: true,
                   mimeType: true,
+                  fileUrl: true,
+                  previewImageUrl: true,
                 },
               },
               clinics: {
@@ -636,6 +706,15 @@ export async function getClinic(slug: string) {
               diseases: {
                 where: publicInvestigationRelationWhere(),
                 select: { disease: { select: { slug: true, title: true } } },
+              },
+              news: {
+                where: {
+                  news: {
+                    isPublished: true,
+                    publishedAt: { not: null, lte: new Date() },
+                  },
+                },
+                select: { news: { select: { slug: true, title: true, publishedAt: true } } },
               },
             },
           },
@@ -911,6 +990,9 @@ export async function getInvestigation(slug: string) {
   if (!db) return null;
   const now = new Date();
   const published = publishedContentWhere(now);
+  const publicDocumentFilter = slug === GLAZCENTR_INVESTIGATION_SLUG
+    ? { slug: { notIn: [...PUBLICLY_HIDDEN_INVESTIGATION_DOCUMENT_SLUGS] } }
+    : {};
   const investigation = await db.investigation.findFirst({
     where: { slug, ...evidenceValidatedContentWhere(now) },
     include: {
@@ -938,7 +1020,12 @@ export async function getInvestigation(slug: string) {
         },
       },
       documents: {
-        where: { isEvidence: true, evidenceValidatedAt: { not: null }, ...published },
+        where: {
+          isEvidence: true,
+          evidenceValidatedAt: { not: null },
+          ...published,
+          ...publicDocumentFilter,
+        },
         orderBy: { sortOrder: "asc" },
         select: {
           id: true,
@@ -980,6 +1067,7 @@ export async function getInvestigation(slug: string) {
               document: {
                 select: {
                   slug: true,
+                  kind: true,
                   title: true,
                   source: true,
                   documentDate: true,
@@ -2556,11 +2644,20 @@ export async function getInnovations(opts?: {
     take: opts?.take ?? 100,
     skip: opts?.skip ?? 0,
   });
-  return rows.map((r) => ({
-    href: `/innovations/${r.slug}`,
-    title: r.title,
-    description: r.summary ?? "",
-  }));
+  return rows.map((r) => {
+    const editorial = getInnovationContent(r.slug);
+    return {
+      href: `/innovations/${r.slug}`,
+      title: editorial?.title ?? r.title,
+      description: editorial?.summary ?? r.summary ?? "",
+      ...(editorial
+        ? {
+            badges: [editorial.type, editorial.manufacturer],
+            image: { ...editorial.images[0], loading: "eager" },
+          }
+        : {}),
+    };
+  });
 }
 
 export async function getInnovation(slug: string) {
@@ -2625,11 +2722,16 @@ export async function getEntityCounts() {
   }
   // Раздел /publications наполняется научными работами (ScientificWork) и, в перспективе,
   // редакционными материалами (Publication). Счётчик = сумма обоих типов контента.
-  const reservedScientificSlugs = await db.scientificWork.findMany({
-    where: { slug: { not: null } },
-    select: { slug: true },
-  });
+  const reservedScientificSlugs = await db.scientificWork
+    .findMany({
+      where: { slug: { not: null } },
+      select: { slug: true },
+    })
+    .catch(() => []);
   const reservedSlugs = reservedScientificSlugs.flatMap((record) => record.slug ?? []);
+  const scientificCount = db.scientificWork
+    .count({ where: publicScientificWorkWhere() })
+    .catch(() => 0);
   const [diseases, procedures, doctors, clinics, suppliers, equipment, editorial, scientific] =
     await Promise.all([
       db.disease.count(),
@@ -2639,7 +2741,7 @@ export async function getEntityCounts() {
       db.supplier.count(),
       db.equipment.count(),
       db.publication.count({ where: { slug: { notIn: reservedSlugs } } }),
-      db.scientificWork.count({ where: publicScientificWorkWhere() }),
+      scientificCount,
     ]);
   return {
     diseases,

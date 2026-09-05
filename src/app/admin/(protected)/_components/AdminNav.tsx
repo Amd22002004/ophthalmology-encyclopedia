@@ -7,6 +7,9 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard" },
   { href: "/admin/clinics", label: "Клиники" },
+  { href: "/admin/appeals", label: "Обращения" },
+  { href: "/admin/cooperation", label: "Заявки участников" },
+  { href: "/admin/events", label: "Конференции" },
 ];
 
 export default function AdminNav() {

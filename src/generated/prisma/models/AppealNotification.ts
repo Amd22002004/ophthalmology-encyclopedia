@@ -41,6 +41,9 @@ export type AppealNotificationMinAggregateOutputType = {
   recipient: string | null
   attempts: number | null
   lastAttemptAt: Date | null
+  nextAttemptAt: Date | null
+  lockedAt: Date | null
+  lockedBy: string | null
   sentAt: Date | null
   messageId: string | null
   lastError: string | null
@@ -55,6 +58,9 @@ export type AppealNotificationMaxAggregateOutputType = {
   recipient: string | null
   attempts: number | null
   lastAttemptAt: Date | null
+  nextAttemptAt: Date | null
+  lockedAt: Date | null
+  lockedBy: string | null
   sentAt: Date | null
   messageId: string | null
   lastError: string | null
@@ -67,8 +73,13 @@ export type AppealNotificationCountAggregateOutputType = {
   appealId: number
   status: number
   recipient: number
+  recipients: number
+  deliveredRecipients: number
   attempts: number
   lastAttemptAt: number
+  nextAttemptAt: number
+  lockedAt: number
+  lockedBy: number
   sentAt: number
   messageId: number
   lastError: number
@@ -93,6 +104,9 @@ export type AppealNotificationMinAggregateInputType = {
   recipient?: true
   attempts?: true
   lastAttemptAt?: true
+  nextAttemptAt?: true
+  lockedAt?: true
+  lockedBy?: true
   sentAt?: true
   messageId?: true
   lastError?: true
@@ -107,6 +121,9 @@ export type AppealNotificationMaxAggregateInputType = {
   recipient?: true
   attempts?: true
   lastAttemptAt?: true
+  nextAttemptAt?: true
+  lockedAt?: true
+  lockedBy?: true
   sentAt?: true
   messageId?: true
   lastError?: true
@@ -119,8 +136,13 @@ export type AppealNotificationCountAggregateInputType = {
   appealId?: true
   status?: true
   recipient?: true
+  recipients?: true
+  deliveredRecipients?: true
   attempts?: true
   lastAttemptAt?: true
+  nextAttemptAt?: true
+  lockedAt?: true
+  lockedBy?: true
   sentAt?: true
   messageId?: true
   lastError?: true
@@ -220,8 +242,13 @@ export type AppealNotificationGroupByOutputType = {
   appealId: string
   status: $Enums.AppealNotificationStatus
   recipient: string | null
+  recipients: string[]
+  deliveredRecipients: string[]
   attempts: number
   lastAttemptAt: Date | null
+  nextAttemptAt: Date | null
+  lockedAt: Date | null
+  lockedBy: string | null
   sentAt: Date | null
   messageId: string | null
   lastError: string | null
@@ -257,8 +284,13 @@ export type AppealNotificationWhereInput = {
   appealId?: Prisma.StringFilter<"AppealNotification"> | string
   status?: Prisma.EnumAppealNotificationStatusFilter<"AppealNotification"> | $Enums.AppealNotificationStatus
   recipient?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
+  recipients?: Prisma.StringNullableListFilter<"AppealNotification">
+  deliveredRecipients?: Prisma.StringNullableListFilter<"AppealNotification">
   attempts?: Prisma.IntFilter<"AppealNotification"> | number
   lastAttemptAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
+  nextAttemptAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
+  lockedAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
+  lockedBy?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
   messageId?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
   lastError?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
@@ -272,8 +304,13 @@ export type AppealNotificationOrderByWithRelationInput = {
   appealId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   recipient?: Prisma.SortOrderInput | Prisma.SortOrder
+  recipients?: Prisma.SortOrder
+  deliveredRecipients?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   lastAttemptAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextAttemptAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lockedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   sentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   messageId?: Prisma.SortOrderInput | Prisma.SortOrder
   lastError?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -290,8 +327,13 @@ export type AppealNotificationWhereUniqueInput = Prisma.AtLeast<{
   appealId?: Prisma.StringFilter<"AppealNotification"> | string
   status?: Prisma.EnumAppealNotificationStatusFilter<"AppealNotification"> | $Enums.AppealNotificationStatus
   recipient?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
+  recipients?: Prisma.StringNullableListFilter<"AppealNotification">
+  deliveredRecipients?: Prisma.StringNullableListFilter<"AppealNotification">
   attempts?: Prisma.IntFilter<"AppealNotification"> | number
   lastAttemptAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
+  nextAttemptAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
+  lockedAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
+  lockedBy?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
   messageId?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
   lastError?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
@@ -305,8 +347,13 @@ export type AppealNotificationOrderByWithAggregationInput = {
   appealId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   recipient?: Prisma.SortOrderInput | Prisma.SortOrder
+  recipients?: Prisma.SortOrder
+  deliveredRecipients?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   lastAttemptAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextAttemptAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lockedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   sentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   messageId?: Prisma.SortOrderInput | Prisma.SortOrder
   lastError?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -327,8 +374,13 @@ export type AppealNotificationScalarWhereWithAggregatesInput = {
   appealId?: Prisma.StringWithAggregatesFilter<"AppealNotification"> | string
   status?: Prisma.EnumAppealNotificationStatusWithAggregatesFilter<"AppealNotification"> | $Enums.AppealNotificationStatus
   recipient?: Prisma.StringNullableWithAggregatesFilter<"AppealNotification"> | string | null
+  recipients?: Prisma.StringNullableListFilter<"AppealNotification">
+  deliveredRecipients?: Prisma.StringNullableListFilter<"AppealNotification">
   attempts?: Prisma.IntWithAggregatesFilter<"AppealNotification"> | number
   lastAttemptAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AppealNotification"> | Date | string | null
+  nextAttemptAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AppealNotification"> | Date | string | null
+  lockedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AppealNotification"> | Date | string | null
+  lockedBy?: Prisma.StringNullableWithAggregatesFilter<"AppealNotification"> | string | null
   sentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AppealNotification"> | Date | string | null
   messageId?: Prisma.StringNullableWithAggregatesFilter<"AppealNotification"> | string | null
   lastError?: Prisma.StringNullableWithAggregatesFilter<"AppealNotification"> | string | null
@@ -340,8 +392,13 @@ export type AppealNotificationCreateInput = {
   id?: string
   status?: $Enums.AppealNotificationStatus
   recipient?: string | null
+  recipients?: Prisma.AppealNotificationCreaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationCreatedeliveredRecipientsInput | string[]
   attempts?: number
   lastAttemptAt?: Date | string | null
+  nextAttemptAt?: Date | string | null
+  lockedAt?: Date | string | null
+  lockedBy?: string | null
   sentAt?: Date | string | null
   messageId?: string | null
   lastError?: string | null
@@ -355,8 +412,13 @@ export type AppealNotificationUncheckedCreateInput = {
   appealId: string
   status?: $Enums.AppealNotificationStatus
   recipient?: string | null
+  recipients?: Prisma.AppealNotificationCreaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationCreatedeliveredRecipientsInput | string[]
   attempts?: number
   lastAttemptAt?: Date | string | null
+  nextAttemptAt?: Date | string | null
+  lockedAt?: Date | string | null
+  lockedBy?: string | null
   sentAt?: Date | string | null
   messageId?: string | null
   lastError?: string | null
@@ -368,8 +430,13 @@ export type AppealNotificationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAppealNotificationStatusFieldUpdateOperationsInput | $Enums.AppealNotificationStatus
   recipient?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipients?: Prisma.AppealNotificationUpdaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationUpdatedeliveredRecipientsInput | string[]
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   messageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -383,8 +450,13 @@ export type AppealNotificationUncheckedUpdateInput = {
   appealId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAppealNotificationStatusFieldUpdateOperationsInput | $Enums.AppealNotificationStatus
   recipient?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipients?: Prisma.AppealNotificationUpdaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationUpdatedeliveredRecipientsInput | string[]
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   messageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -397,8 +469,13 @@ export type AppealNotificationCreateManyInput = {
   appealId: string
   status?: $Enums.AppealNotificationStatus
   recipient?: string | null
+  recipients?: Prisma.AppealNotificationCreaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationCreatedeliveredRecipientsInput | string[]
   attempts?: number
   lastAttemptAt?: Date | string | null
+  nextAttemptAt?: Date | string | null
+  lockedAt?: Date | string | null
+  lockedBy?: string | null
   sentAt?: Date | string | null
   messageId?: string | null
   lastError?: string | null
@@ -410,8 +487,13 @@ export type AppealNotificationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAppealNotificationStatusFieldUpdateOperationsInput | $Enums.AppealNotificationStatus
   recipient?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipients?: Prisma.AppealNotificationUpdaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationUpdatedeliveredRecipientsInput | string[]
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   messageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -424,8 +506,13 @@ export type AppealNotificationUncheckedUpdateManyInput = {
   appealId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAppealNotificationStatusFieldUpdateOperationsInput | $Enums.AppealNotificationStatus
   recipient?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipients?: Prisma.AppealNotificationUpdaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationUpdatedeliveredRecipientsInput | string[]
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   messageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -448,8 +535,13 @@ export type AppealNotificationCountOrderByAggregateInput = {
   appealId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   recipient?: Prisma.SortOrder
+  recipients?: Prisma.SortOrder
+  deliveredRecipients?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   lastAttemptAt?: Prisma.SortOrder
+  nextAttemptAt?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrder
+  lockedBy?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   messageId?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
@@ -468,6 +560,9 @@ export type AppealNotificationMaxOrderByAggregateInput = {
   recipient?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   lastAttemptAt?: Prisma.SortOrder
+  nextAttemptAt?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrder
+  lockedBy?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   messageId?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
@@ -482,6 +577,9 @@ export type AppealNotificationMinOrderByAggregateInput = {
   recipient?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   lastAttemptAt?: Prisma.SortOrder
+  nextAttemptAt?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrder
+  lockedBy?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   messageId?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
@@ -535,16 +633,39 @@ export type AppealNotificationUncheckedUpdateManyWithoutAppealNestedInput = {
   deleteMany?: Prisma.AppealNotificationScalarWhereInput | Prisma.AppealNotificationScalarWhereInput[]
 }
 
+export type AppealNotificationCreaterecipientsInput = {
+  set: string[]
+}
+
+export type AppealNotificationCreatedeliveredRecipientsInput = {
+  set: string[]
+}
+
 export type EnumAppealNotificationStatusFieldUpdateOperationsInput = {
   set?: $Enums.AppealNotificationStatus
+}
+
+export type AppealNotificationUpdaterecipientsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type AppealNotificationUpdatedeliveredRecipientsInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type AppealNotificationCreateWithoutAppealInput = {
   id?: string
   status?: $Enums.AppealNotificationStatus
   recipient?: string | null
+  recipients?: Prisma.AppealNotificationCreaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationCreatedeliveredRecipientsInput | string[]
   attempts?: number
   lastAttemptAt?: Date | string | null
+  nextAttemptAt?: Date | string | null
+  lockedAt?: Date | string | null
+  lockedBy?: string | null
   sentAt?: Date | string | null
   messageId?: string | null
   lastError?: string | null
@@ -556,8 +677,13 @@ export type AppealNotificationUncheckedCreateWithoutAppealInput = {
   id?: string
   status?: $Enums.AppealNotificationStatus
   recipient?: string | null
+  recipients?: Prisma.AppealNotificationCreaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationCreatedeliveredRecipientsInput | string[]
   attempts?: number
   lastAttemptAt?: Date | string | null
+  nextAttemptAt?: Date | string | null
+  lockedAt?: Date | string | null
+  lockedBy?: string | null
   sentAt?: Date | string | null
   messageId?: string | null
   lastError?: string | null
@@ -599,8 +725,13 @@ export type AppealNotificationScalarWhereInput = {
   appealId?: Prisma.StringFilter<"AppealNotification"> | string
   status?: Prisma.EnumAppealNotificationStatusFilter<"AppealNotification"> | $Enums.AppealNotificationStatus
   recipient?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
+  recipients?: Prisma.StringNullableListFilter<"AppealNotification">
+  deliveredRecipients?: Prisma.StringNullableListFilter<"AppealNotification">
   attempts?: Prisma.IntFilter<"AppealNotification"> | number
   lastAttemptAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
+  nextAttemptAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
+  lockedAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
+  lockedBy?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"AppealNotification"> | Date | string | null
   messageId?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
   lastError?: Prisma.StringNullableFilter<"AppealNotification"> | string | null
@@ -612,8 +743,13 @@ export type AppealNotificationCreateManyAppealInput = {
   id?: string
   status?: $Enums.AppealNotificationStatus
   recipient?: string | null
+  recipients?: Prisma.AppealNotificationCreaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationCreatedeliveredRecipientsInput | string[]
   attempts?: number
   lastAttemptAt?: Date | string | null
+  nextAttemptAt?: Date | string | null
+  lockedAt?: Date | string | null
+  lockedBy?: string | null
   sentAt?: Date | string | null
   messageId?: string | null
   lastError?: string | null
@@ -625,8 +761,13 @@ export type AppealNotificationUpdateWithoutAppealInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAppealNotificationStatusFieldUpdateOperationsInput | $Enums.AppealNotificationStatus
   recipient?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipients?: Prisma.AppealNotificationUpdaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationUpdatedeliveredRecipientsInput | string[]
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   messageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -638,8 +779,13 @@ export type AppealNotificationUncheckedUpdateWithoutAppealInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAppealNotificationStatusFieldUpdateOperationsInput | $Enums.AppealNotificationStatus
   recipient?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipients?: Prisma.AppealNotificationUpdaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationUpdatedeliveredRecipientsInput | string[]
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   messageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -651,8 +797,13 @@ export type AppealNotificationUncheckedUpdateManyWithoutAppealInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAppealNotificationStatusFieldUpdateOperationsInput | $Enums.AppealNotificationStatus
   recipient?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipients?: Prisma.AppealNotificationUpdaterecipientsInput | string[]
+  deliveredRecipients?: Prisma.AppealNotificationUpdatedeliveredRecipientsInput | string[]
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   messageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -667,8 +818,13 @@ export type AppealNotificationSelect<ExtArgs extends runtime.Types.Extensions.In
   appealId?: boolean
   status?: boolean
   recipient?: boolean
+  recipients?: boolean
+  deliveredRecipients?: boolean
   attempts?: boolean
   lastAttemptAt?: boolean
+  nextAttemptAt?: boolean
+  lockedAt?: boolean
+  lockedBy?: boolean
   sentAt?: boolean
   messageId?: boolean
   lastError?: boolean
@@ -682,8 +838,13 @@ export type AppealNotificationSelectCreateManyAndReturn<ExtArgs extends runtime.
   appealId?: boolean
   status?: boolean
   recipient?: boolean
+  recipients?: boolean
+  deliveredRecipients?: boolean
   attempts?: boolean
   lastAttemptAt?: boolean
+  nextAttemptAt?: boolean
+  lockedAt?: boolean
+  lockedBy?: boolean
   sentAt?: boolean
   messageId?: boolean
   lastError?: boolean
@@ -697,8 +858,13 @@ export type AppealNotificationSelectUpdateManyAndReturn<ExtArgs extends runtime.
   appealId?: boolean
   status?: boolean
   recipient?: boolean
+  recipients?: boolean
+  deliveredRecipients?: boolean
   attempts?: boolean
   lastAttemptAt?: boolean
+  nextAttemptAt?: boolean
+  lockedAt?: boolean
+  lockedBy?: boolean
   sentAt?: boolean
   messageId?: boolean
   lastError?: boolean
@@ -712,8 +878,13 @@ export type AppealNotificationSelectScalar = {
   appealId?: boolean
   status?: boolean
   recipient?: boolean
+  recipients?: boolean
+  deliveredRecipients?: boolean
   attempts?: boolean
   lastAttemptAt?: boolean
+  nextAttemptAt?: boolean
+  lockedAt?: boolean
+  lockedBy?: boolean
   sentAt?: boolean
   messageId?: boolean
   lastError?: boolean
@@ -721,7 +892,7 @@ export type AppealNotificationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AppealNotificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "appealId" | "status" | "recipient" | "attempts" | "lastAttemptAt" | "sentAt" | "messageId" | "lastError" | "createdAt" | "updatedAt", ExtArgs["result"]["appealNotification"]>
+export type AppealNotificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "appealId" | "status" | "recipient" | "recipients" | "deliveredRecipients" | "attempts" | "lastAttemptAt" | "nextAttemptAt" | "lockedAt" | "lockedBy" | "sentAt" | "messageId" | "lastError" | "createdAt" | "updatedAt", ExtArgs["result"]["appealNotification"]>
 export type AppealNotificationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appeal?: boolean | Prisma.AppealDefaultArgs<ExtArgs>
 }
@@ -742,8 +913,13 @@ export type $AppealNotificationPayload<ExtArgs extends runtime.Types.Extensions.
     appealId: string
     status: $Enums.AppealNotificationStatus
     recipient: string | null
+    recipients: string[]
+    deliveredRecipients: string[]
     attempts: number
     lastAttemptAt: Date | null
+    nextAttemptAt: Date | null
+    lockedAt: Date | null
+    lockedBy: string | null
     sentAt: Date | null
     messageId: string | null
     lastError: string | null
@@ -1177,8 +1353,13 @@ export interface AppealNotificationFieldRefs {
   readonly appealId: Prisma.FieldRef<"AppealNotification", 'String'>
   readonly status: Prisma.FieldRef<"AppealNotification", 'AppealNotificationStatus'>
   readonly recipient: Prisma.FieldRef<"AppealNotification", 'String'>
+  readonly recipients: Prisma.FieldRef<"AppealNotification", 'String[]'>
+  readonly deliveredRecipients: Prisma.FieldRef<"AppealNotification", 'String[]'>
   readonly attempts: Prisma.FieldRef<"AppealNotification", 'Int'>
   readonly lastAttemptAt: Prisma.FieldRef<"AppealNotification", 'DateTime'>
+  readonly nextAttemptAt: Prisma.FieldRef<"AppealNotification", 'DateTime'>
+  readonly lockedAt: Prisma.FieldRef<"AppealNotification", 'DateTime'>
+  readonly lockedBy: Prisma.FieldRef<"AppealNotification", 'String'>
   readonly sentAt: Prisma.FieldRef<"AppealNotification", 'DateTime'>
   readonly messageId: Prisma.FieldRef<"AppealNotification", 'String'>
   readonly lastError: Prisma.FieldRef<"AppealNotification", 'String'>
