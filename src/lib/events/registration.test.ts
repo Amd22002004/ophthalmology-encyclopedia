@@ -58,8 +58,10 @@ test("registration validation gates consent and rejects obvious bots", () => {
 test("registration number and calendar attachment keep the approved event facts", () => {
   assert.equal(formatEventRegistrationNumber(7), "AOK-EVENT-2026-000007");
   const ics = buildEventIcs();
-  assert.match(ics, /DTSTART:20261015T100000Z/);
+  assert.match(ics, /BEGIN:VTIMEZONE[\s\S]*TZID:Asia\/Yekaterinburg/);
+  assert.match(ics, /DTSTART;TZID=Asia\/Yekaterinburg:20261015T150000/);
   assert.match(ics, /DoubleTree by Hilton Tyumen/);
   assert.match(ics, /https:\/\/oftalmologia\.pro\/events\/sovremennye-tehnologii-v-oftalmologii-2026/);
   assert.doesNotMatch(ics, /DTEND:/);
+  assert.doesNotMatch(ics, /Урай/);
 });

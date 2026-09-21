@@ -2,7 +2,7 @@ import "server-only";
 
 import { createHmac, randomUUID } from "node:crypto";
 import { getPrisma } from "@/lib/prisma";
-import { getInternalNotificationRecipients } from "@/lib/email/recipients";
+import { getEventAssociationNotificationRecipients } from "@/lib/email/recipients";
 import type { ValidatedEventRegistration } from "./registration-validation";
 import { formatEventRegistrationNumber } from "./registration-reference";
 import { parseTelegramBotConfig } from "./telegram";
@@ -99,7 +99,7 @@ export async function createEventRegistration(params: {
   }
 
   const consentTemplate = event.consentTemplates[0];
-  const associationRecipients = getInternalNotificationRecipients();
+  const associationRecipients = getEventAssociationNotificationRecipients(params.input.email, null, null);
 
   try {
     const created = await db.$transaction(async (tx) => {

@@ -91,3 +91,45 @@ skills-lock.json
 scripts/test-prisma.mjs
 # Случайно сохранённый вывод пейджера `less`
 /system*
+
+# ── Временные и рабочие артефакты (deploy-архивы, скриншоты, аудит-JSON) ──────
+# Любые `.tmp-*` файлы и папки в корне — это локальные одноразовые артефакты.
+.tmp-*
+.output/
+/output/
+/tmp/
+/.tmp-qr/
+/.tmp-allegretto-source-review/
+
+# Tesseract OCR data (≈30 МБ) — не часть проекта
+rus.traineddata
+
+# Локальные design-исследования и прототипы
+/artifacts/
+/ostroverhov-research/
+
+# Деплой-архивы и sha-файлы из `output/` и корня
+/output/*.tar.gz
+/output/*.zip
+/output/*.sha256
+*.tar.gz
+*.sha256
+
+# Тестовые прогоны Playwright CLI (артефакты)
+.playwright-cli/
+
+# ── Внутренние документы (планы, черновики, расследования) ─────────────────────
+# docs/superpowers/, docs/investigation-internal/, docs/integrations/ —
+# внутренний рабочий слой, не для публичного GitHub.
+docs/superpowers/
+docs/investigation-internal/
+docs/integrations/
+docs/httpstumenglazcentre/
+# Кириллические имена каталогов/файлов в docs/ — служебные черновики.
+docs/Чураков Тимур Касимович/
+docs/Независимая оценка качества Бланк.doc
+docs/ПРОГРАММА 2 (2).docx
+docs/ChatGPT Image 24 авг. 2026 г., 13_12_24.lnk
+
+# Windows-ярлыки и временные .lnk
+*.lnk

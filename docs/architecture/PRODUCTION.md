@@ -1,7 +1,7 @@
 # Production infrastructure
 
 > Статус: SSOT для production-инфраструктуры проекта.
-> Последняя проверка: 2026-08-17.
+> Последняя проверка: 2026-09-15.
 >
 > Этот документ описывает фактическое production-окружение. Перед деплоем и
 > инфраструктурными задачами агенты должны читать его вместо повторного поиска
@@ -30,34 +30,34 @@
 Production-приложение работает из:
 
 ```text
-/var/www/vysotsky.pro
+/var/www/oftalmologia.pro
 ```
 
 Рабочие каталоги и файлы:
 
 | Путь | Назначение |
 | --- | --- |
-| `/var/www/vysotsky.pro/src` | Next.js исходный код |
-| `/var/www/vysotsky.pro/prisma` | Prisma schema и seed |
-| `/var/www/vysotsky.pro/public` | Публичные изображения, PDF и документы |
-| `/var/www/vysotsky.pro/docs/architecture` | Каноническая архитектурная документация |
-| `/var/www/vysotsky.pro/.env` | Production env, секреты не выводить |
-| `/var/www/vysotsky.pro/.env.production.local` | Production env override, секреты не выводить |
-| `/var/www/vysotsky.pro/.next` | Результат `npm run build` |
-| `/var/www/vysotsky.pro/node_modules` | Production dependencies после `npm ci` |
+| `/var/www/oftalmologia.pro/src` | Next.js исходный код |
+| `/var/www/oftalmologia.pro/prisma` | Prisma schema и seed |
+| `/var/www/oftalmologia.pro/public` | Публичные изображения, PDF и документы |
+| `/var/www/oftalmologia.pro/docs/architecture` | Каноническая архитектурная документация |
+| `/var/www/oftalmologia.pro/.env` | Production env, секреты не выводить |
+| `/var/www/oftalmologia.pro/.env.production.local` | Production env override, секреты не выводить |
+| `/var/www/oftalmologia.pro/.next` | Результат production build |
+| `/var/www/oftalmologia.pro/node_modules` | Production dependencies после `npm ci` |
 | `/var/lib/ophthalmology/appeals` | Приватные вложения обращений; создаётся до первого релиза реестра, не входит в app root |
 | `/var/lib/ophthalmology/clinic-uploads` | Постоянные публичные изображения клиник; раздаётся nginx alias-ом, не входит в app root |
 
 Не изменять автоматически:
 
-- `/var/www/vysotsky.pro/.env`;
-- `/var/www/vysotsky.pro/.env.production.local`;
-- `/var/www/vysotsky.pro/.git`, если задача не про Git;
+- `/var/www/oftalmologia.pro/.env`;
+- `/var/www/oftalmologia.pro/.env.production.local`;
+- `/var/www/oftalmologia.pro/.git`, если задача не про Git;
 - `/etc/nginx/`, если задача не про nginx;
 - `/etc/letsencrypt/`, если задача не про SSL/certbot;
 - `/var/backups/ophthalmology/`, кроме создания нового rollback-артефакта.
 
-Не создавать staging/release-каталоги внутри `/var/www/vysotsky.pro`: ESLint
+Не создавать staging/release-каталоги внутри `/var/www/oftalmologia.pro`: ESLint
 рекурсивно видит вложенные `.next` и может начать проверять собранные файлы
 старого release. Для временной распаковки использовать `/tmp` или `/var/tmp`.
 
@@ -78,7 +78,7 @@ nginx alias/static и не копировать в `public/`.
 | npm | `11.12.1` |
 | pnpm | Не используется |
 | Установка зависимостей | `npm ci` |
-| Production build | `npm run build` |
+| Production build | `NODE_OPTIONS='--max-old-space-size=1536' npm run build -- --webpack` |
 
 `npm ci` может показывать `npm audit` warnings. Они не являются автоматическим
 основанием для `npm audit fix --force`: обновление зависимостей выполняется отдельной
@@ -90,15 +90,15 @@ nginx alias/static и не копировать в `public/`.
 
 | Параметр | Значение |
 | --- | --- |
-| Имя процесса | `ophthalmology` |
-| cwd | `/var/www/vysotsky.pro` |
+| Имя процесса | `ophthalmology-oftalmologia` |
+| cwd | `/var/www/oftalmologia.pro` |
 | script | `node_modules/.bin/next` |
 | args | `start` |
-| порт приложения | `3001` |
-| nginx upstream | `127.0.0.1:3001` |
+| порт приложения | `3002` |
+| nginx upstream | `127.0.0.1:3002` |
 
 Для сохранения заявок при временной недоступности SMTP используется отдельный
-PM2-процесс `ophthalmology-email-worker` из того же release-каталога. Он
+PM2-процесс `ophthalmology-email-worker-oftalmologia` из того же release-каталога. Он
 последовательно выбирает небольшие batch из `AppealNotification`,
 `CooperationApplicationNotification` и email-строк `EventRegistrationNotification`,
 использует lock lease и exponential backoff. Docker-контур `vizus_*` не является
@@ -108,9 +108,9 @@ PM2-процесс `ophthalmology-email-worker` из того же release-ка�
 
 ```bash
 pm2 status
-pm2 describe ophthalmology
-pm2 logs ophthalmology --lines 80 --nostream
-pm2 restart ophthalmology
+pm2 describe ophthalmology-oftalmologia
+pm2 logs ophthalmology-oftalmologia --lines 80 --nostream
+pm2 restart ophthalmology-oftalmologia
 pm2 save
 ```
 
@@ -133,7 +133,7 @@ Production PostgreSQL доступен локально на сервере.
 Проверка подключения без раскрытия секрета:
 
 ```bash
-cd /var/www/vysotsky.pro
+cd /var/www/oftalmologia.pro
 set -a; . ./.env; set +a
 psql "$DATABASE_URL" -Atc "select current_database(), current_user, inet_server_addr(), inet_server_port();"
 ```
@@ -155,7 +155,7 @@ psql "$DATABASE_URL" -Atc "select current_database(), current_user, inet_server_
 Правильная последовательность:
 
 ```bash
-cd /var/www/vysotsky.pro
+cd /var/www/oftalmologia.pro
 npm run prisma:generate
 npm run prisma:validate
 npx prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --script > /tmp/ophthalmology-migrate-<stamp>.sql
@@ -185,7 +185,7 @@ npx prisma migrate diff --from-config-datasource --to-schema prisma/schema.prism
 
 ```nginx
 upstream ophthalmology_app {
-    server 127.0.0.1:3001;
+    server 127.0.0.1:3002;
     keepalive 16;
 }
 ```
@@ -196,10 +196,13 @@ upstream ophthalmology_app {
 server_name oftalmologia.pro www.oftalmologia.pro;
 ```
 
-Бывший домен `vysotsky.pro` не является production-доменом и не перенаправляется
-на новый адрес. Для него включён отдельный retired-host guard
+Бывший домен `vysotsky.pro` не является production-доменом и не используется
+приложением. На VPS для него включён отдельный retired-host guard
 `/etc/nginx/sites-available/vysotsky.pro.retired.conf`, который возвращает `410 Gone`,
-чтобы старый host не попадал в default-конфигурацию другого сервиса.
+чтобы старый host не попадал в default-конфигурацию другого сервиса. Фактический
+внешний ответ DNS/провайдера на момент проверки 2026-09-15 — `302` на страницу
+Timeweb `noactive`; это не маршрут приложения. Старый Nginx-конфиг, каталог, PM2 и
+сертификат не удалять до отдельного аудита зависимостей и трафика.
 
 Для multipart-обращений требуется явный лимит тела запроса не ниже приложения:
 
@@ -299,8 +302,8 @@ nginx -t
 mkdir -p /var/backups/ophthalmology
 tar -czf /var/backups/ophthalmology/source-<stamp>.tar.gz \
   --exclude='./node_modules' --exclude='./.next' --exclude='./.git' \
-  -C /var/www/vysotsky.pro .
-cd /var/www/vysotsky.pro
+  -C /var/www/oftalmologia.pro .
+cd /var/www/oftalmologia.pro
 set -a; . ./.env; set +a
 pg_dump "$DATABASE_URL" -f /var/backups/ophthalmology/db-<stamp>.sql
 tar -czf /var/backups/ophthalmology/appeals-<stamp>.tar.gz \
@@ -311,16 +314,17 @@ tar -czf /var/backups/ophthalmology/appeals-<stamp>.tar.gz \
 и не должен попадать в deploy-архив или публичные каталоги.
 
 8. Распаковать архив во временный каталог вне app root, например
-   `/tmp/ophthalmology-release-<stamp>`.
+   `/tmp/oftalmologia-release-<stamp>`.
 9. Скопировать туда `.env` и `.env.production.local` только для server-side build.
 10. Выполнить `npm ci`, Prisma validate/generate, SQL diff, seed дважды,
     lint, typecheck и build во временном каталоге.
-11. Синхронизировать production-файлы в `/var/www/vysotsky.pro`, не трогая env.
+11. Синхронизировать production-файлы в `/var/www/oftalmologia.pro`, не трогая env.
 12. В production-корне выполнить `npm ci`, `npm run prisma:generate`,
     `npm run prisma:validate`, `npm run lint`, `npm run typecheck`,
-    `npm run build`.
+     `NODE_OPTIONS='--max-old-space-size=1536' npm run build -- --webpack`.
 13. Проверить `nginx -t`.
-14. Перезапустить `pm2 restart ophthalmology`.
+14. Перезапустить `pm2 restart ophthalmology-oftalmologia` и
+    `pm2 restart ophthalmology-email-worker-oftalmologia`.
 15. Выполнить `pm2 save`.
 16. Проверить PM2, логи и публичные маршруты.
 17. Удалить временные архивы из `/tmp`; rollback-артефакты оставить.
@@ -332,19 +336,19 @@ Rollback выполняется только при подтверждённой
 Файловый rollback:
 
 ```bash
-cd /var/www/vysotsky.pro
-tar -xzf /var/backups/ophthalmology/source-<stamp>.tar.gz -C /var/www/vysotsky.pro
+cd /var/www/oftalmologia.pro
+tar -xzf /var/backups/ophthalmology/source-<stamp>.tar.gz -C /var/www/oftalmologia.pro
 npm ci
 npm run prisma:generate
-npm run build
-pm2 restart ophthalmology
+NODE_OPTIONS='--max-old-space-size=1536' npm run build -- --webpack
+pm2 restart ophthalmology-oftalmologia
 pm2 save
 ```
 
 DB rollback:
 
 ```bash
-cd /var/www/vysotsky.pro
+cd /var/www/oftalmologia.pro
 set -a; . ./.env; set +a
 psql "$DATABASE_URL" < /var/backups/ophthalmology/db-<stamp>.sql
 ```
@@ -362,8 +366,8 @@ DB rollback потенциально destructive для данных, появи
 
 ```bash
 pm2 status
-pm2 describe ophthalmology
-pm2 logs ophthalmology --lines 80 --nostream
+pm2 describe ophthalmology-oftalmologia
+pm2 logs ophthalmology-oftalmologia --lines 80 --nostream
 nginx -t
 ```
 

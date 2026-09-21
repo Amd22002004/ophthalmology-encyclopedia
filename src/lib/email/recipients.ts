@@ -37,6 +37,16 @@ export function getInternalOrLegacyRecipients(
   ])];
 }
 
+export function getEventAssociationNotificationRecipients(
+  applicantEmail: string | null | undefined,
+  storedRecipients: string[] | null | undefined,
+  legacyRecipient: string | null | undefined,
+) {
+  const applicant = parseEmailRecipients(applicantEmail)[0];
+  return getInternalOrLegacyRecipients(storedRecipients, legacyRecipient)
+    .filter((recipient) => recipient !== applicant);
+}
+
 export function isValidEmail(value: string | null | undefined): value is string {
   return Boolean(value && EMAIL_PATTERN.test(value.trim().toLowerCase()));
 }

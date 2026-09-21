@@ -11,15 +11,17 @@ import {
   getSuccessfulDeliveryState,
   safeEmailError,
 } from "@/lib/email/delivery";
-import { getApplicantNotificationRecipients, getInternalOrLegacyRecipients } from "@/lib/email/recipients";
 import {
-  STO_2026_EVENT,
-  STO_2026_EVENT_PATH,
-  STO_2026_PUBLIC_ORIGIN,
-  STO_2026_REGISTER_PATH,
-} from "./sto-2026";
+  getApplicantNotificationRecipients,
+  getEventAssociationNotificationRecipients,
+} from "@/lib/email/recipients";
 import { buildEventIcs } from "./registration-ics";
 import { getEventEmailHeaders } from "./registration-sender";
+import { STO_2026_EVENT } from "./sto-2026";
+import {
+  buildApplicantEventEmail,
+  buildAssociationEventEmail,
+} from "./registration-email-format";
 
 const globalForEventMail = globalThis as unknown as {
   eventMailer?: ReturnType<typeof nodemailer.createTransport>;
@@ -53,10 +55,6 @@ export function safeEventEmailError(error: unknown) {
   return safeEmailError(error);
 }
 
-function line(label: string, value: string | null | undefined) {
-  return value ? `${label}: ${value}` : null;
-}
-
 export async function deliverEventRegistrationNotification(notificationId: string, workerId = createEmailWorkerId()) {
   const db = getPrisma();
   if (!db) return { sent: false as const, error: "Database unavailable" };
@@ -85,12 +83,34 @@ export async function deliverEventRegistrationNotification(notificationId: strin
   const registration = notification.registration;
   const recipients = notification.kind === "APPLICANT"
     ? (notification.recipients.length > 0 ? notification.recipients : getApplicantNotificationRecipients(registration.email))
-    : getInternalOrLegacyRecipients(notification.recipients, notification.recipient);
-  const deliveredRecipients = getSuccessfulDeliveryState([], notification.deliveredRecipients);
+    : getEventAssociationNotificationRecipients(registration.email, notification.recipients, notification.recipient);
+  const deliveredRecipients = getSuccessfulDeliveryState([], notification.deliveredRecipients)
+    .filter((deliveredRecipient) => recipients.includes(deliveredRecipient));
   const pendingRecipients = getPendingEmailRecipients(recipients, deliveredRecipients);
   const recipient = recipients.join(",");
   const from = process.env.EVENT_SMTP_FROM?.trim() || process.env.COOPERATION_SMTP_FROM?.trim() || process.env.APPEAL_SMTP_FROM?.trim();
   const attemptedAt = now;
+
+  if (notification.kind === "ASSOCIATION" && recipients.length === 0) {
+    await db.eventRegistrationNotification.update({
+      where: { id: notification.id },
+      data: {
+        status: "SENT",
+        recipient: null,
+        recipients: [],
+        deliveredRecipients: [],
+        attempts: { increment: 1 },
+        lastAttemptAt: attemptedAt,
+        sentAt: attemptedAt,
+        nextAttemptAt: null,
+        lockedAt: null,
+        lockedBy: null,
+        lastError: null,
+      },
+    });
+    return { sent: true as const, skipped: true as const };
+  }
+
   let mailer: ReturnType<typeof nodemailer.createTransport> | null;
   try {
     mailer = getEventMailer();
@@ -105,39 +125,26 @@ export async function deliverEventRegistrationNotification(notificationId: strin
     return { sent: false as const, error };
   }
 
-  const eventUrl = `${STO_2026_PUBLIC_ORIGIN}${STO_2026_EVENT_PATH}`;
-  const registerUrl = `${STO_2026_PUBLIC_ORIGIN}${STO_2026_REGISTER_PATH}`;
-  const applicantLines = [
-    `Ваша регистрация №${registration.publicNumber} получена.`,
-    "",
-    `${registration.event.title}.`,
-    `${STO_2026_EVENT.dateLabel}; ${STO_2026_EVENT.startLabel}.`,
-    `${STO_2026_EVENT.venueName}, ${STO_2026_EVENT.venueAddress}.`,
-    STO_2026_EVENT.registrationLabel,
-    "",
-    `Программа: ${eventUrl}`,
-    `Карта: ${STO_2026_EVENT.mapUrl}`,
-    `Контакт Ассоциации: ${STO_2026_EVENT.organizerEmail}`,
-    "",
-    "Сохраните это письмо; регистрация не создаёт личный кабинет и не является записью на медицинскую услугу.",
-  ];
-  const associationLines = [
-    `Новая регистрация на конференцию №${registration.publicNumber}`,
-    "",
-    line("Дата заявки", registration.createdAt.toLocaleString("ru-RU")),
-    line("ФИО", registration.fullName),
-    line("Телефон", registration.phone),
-    line("Email", registration.email),
-    line("Город", registration.city),
-    line("Специализация", registration.customSpecialty || registration.specialty),
-    line("Организация", registration.organization),
-    line("Должность", registration.position),
-    line("Источник", registration.source),
-    line("UTM campaign", registration.utmCampaign),
-    line("UTM content", registration.utmContent),
-    "",
-    `Карточка события: ${registerUrl}`,
-  ].filter((value): value is string => value !== null);
+  const email = notification.kind === "APPLICANT"
+    ? buildApplicantEventEmail({
+        fullName: registration.fullName,
+        publicNumber: registration.publicNumber,
+      })
+    : buildAssociationEventEmail({
+        fullName: registration.fullName,
+        publicNumber: registration.publicNumber,
+        phone: registration.phone,
+        email: registration.email,
+        city: registration.city,
+        specialty: registration.customSpecialty || registration.specialty,
+        organization: registration.organization,
+        position: registration.position,
+        source: registration.source,
+        utmCampaign: registration.utmCampaign,
+        utmContent: registration.utmContent,
+        comment: registration.comment,
+        createdAt: registration.createdAt,
+      });
 
   let delivered = deliveredRecipients;
   let messageId = notification.messageId;
@@ -145,13 +152,14 @@ export async function deliverEventRegistrationNotification(notificationId: strin
   for (const nextRecipient of pendingRecipients) {
     try {
       const info = await mailer.sendMail({
-        ...getEventEmailHeaders(from, notification.kind === "APPLICANT" ? from : registration.email, nextRecipient),
+        ...getEventEmailHeaders(from, notification.kind === "APPLICANT" ? STO_2026_EVENT.organizerEmail : registration.email, nextRecipient),
         to: nextRecipient,
-        subject: notification.kind === "APPLICANT"
-          ? `Регистрация на конференцию получена — №${registration.publicNumber}`
-          : `Новая регистрация на конференцию — №${registration.publicNumber}`,
-        text: (notification.kind === "APPLICANT" ? applicantLines : associationLines).join("\n"),
-        attachments: [{ filename: "sto-2026.ics", content: buildEventIcs(), contentType: "text/calendar; charset=utf-8" }],
+        subject: email.subject,
+        text: email.text,
+        html: email.html,
+        ...(notification.kind === "APPLICANT"
+          ? { attachments: [{ filename: "sto-2026.ics", content: buildEventIcs(), contentType: "text/calendar; charset=utf-8" }] }
+          : {}),
         disableFileAccess: true,
         disableUrlAccess: true,
       });
