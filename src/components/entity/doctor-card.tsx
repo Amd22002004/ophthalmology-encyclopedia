@@ -22,7 +22,9 @@ export function DoctorCard({ doctor }: { doctor: DoctorCatalogItem }) {
             <img
               alt={fullName}
               className="h-full w-full object-cover"
+              decoding="async"
               src={photoUrl}
+              style={{ objectPosition: "center 24%" }}
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">

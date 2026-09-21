@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Infrastructure"
+  short_description: "Production infrastructure SSOT"
+  default_prompt: "Use $project-infrastructure before deployment or infrastructure work."

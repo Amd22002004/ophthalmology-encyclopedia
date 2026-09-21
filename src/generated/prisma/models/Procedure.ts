@@ -213,6 +213,7 @@ export type ProcedureWhereInput = {
   publications?: Prisma.PublicationOnProcedureListRelationFilter
   clinics?: Prisma.ClinicOnProcedureListRelationFilter
   scientificWorks?: Prisma.ScientificWorkOnProcedureListRelationFilter
+  investigations?: Prisma.InvestigationOnProcedureListRelationFilter
 }
 
 export type ProcedureOrderByWithRelationInput = {
@@ -231,6 +232,7 @@ export type ProcedureOrderByWithRelationInput = {
   publications?: Prisma.PublicationOnProcedureOrderByRelationAggregateInput
   clinics?: Prisma.ClinicOnProcedureOrderByRelationAggregateInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureOrderByRelationAggregateInput
+  investigations?: Prisma.InvestigationOnProcedureOrderByRelationAggregateInput
 }
 
 export type ProcedureWhereUniqueInput = Prisma.AtLeast<{
@@ -252,6 +254,7 @@ export type ProcedureWhereUniqueInput = Prisma.AtLeast<{
   publications?: Prisma.PublicationOnProcedureListRelationFilter
   clinics?: Prisma.ClinicOnProcedureListRelationFilter
   scientificWorks?: Prisma.ScientificWorkOnProcedureListRelationFilter
+  investigations?: Prisma.InvestigationOnProcedureListRelationFilter
 }, "id" | "slug">
 
 export type ProcedureOrderByWithAggregationInput = {
@@ -297,6 +300,7 @@ export type ProcedureCreateInput = {
   publications?: Prisma.PublicationOnProcedureCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureUncheckedCreateInput = {
@@ -314,6 +318,7 @@ export type ProcedureUncheckedCreateInput = {
   publications?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureUpdateInput = {
@@ -331,6 +336,7 @@ export type ProcedureUpdateInput = {
   publications?: Prisma.PublicationOnProcedureUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureUncheckedUpdateInput = {
@@ -348,6 +354,7 @@ export type ProcedureUncheckedUpdateInput = {
   publications?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureCreateManyInput = {
@@ -556,6 +563,20 @@ export type ProcedureUpdateOneRequiredWithoutClinicsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProcedureUpdateToOneWithWhereWithoutClinicsInput, Prisma.ProcedureUpdateWithoutClinicsInput>, Prisma.ProcedureUncheckedUpdateWithoutClinicsInput>
 }
 
+export type ProcedureCreateNestedOneWithoutInvestigationsInput = {
+  create?: Prisma.XOR<Prisma.ProcedureCreateWithoutInvestigationsInput, Prisma.ProcedureUncheckedCreateWithoutInvestigationsInput>
+  connectOrCreate?: Prisma.ProcedureCreateOrConnectWithoutInvestigationsInput
+  connect?: Prisma.ProcedureWhereUniqueInput
+}
+
+export type ProcedureUpdateOneRequiredWithoutInvestigationsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProcedureCreateWithoutInvestigationsInput, Prisma.ProcedureUncheckedCreateWithoutInvestigationsInput>
+  connectOrCreate?: Prisma.ProcedureCreateOrConnectWithoutInvestigationsInput
+  upsert?: Prisma.ProcedureUpsertWithoutInvestigationsInput
+  connect?: Prisma.ProcedureWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProcedureUpdateToOneWithWhereWithoutInvestigationsInput, Prisma.ProcedureUpdateWithoutInvestigationsInput>, Prisma.ProcedureUncheckedUpdateWithoutInvestigationsInput>
+}
+
 export type ProcedureCreateWithoutScientificWorksInput = {
   id?: string
   slug: string
@@ -570,6 +591,7 @@ export type ProcedureCreateWithoutScientificWorksInput = {
   equipment?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutProcedureInput
   publications?: Prisma.PublicationOnProcedureCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureUncheckedCreateWithoutScientificWorksInput = {
@@ -586,6 +608,7 @@ export type ProcedureUncheckedCreateWithoutScientificWorksInput = {
   equipment?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutProcedureInput
   publications?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureCreateOrConnectWithoutScientificWorksInput = {
@@ -618,6 +641,7 @@ export type ProcedureUpdateWithoutScientificWorksInput = {
   equipment?: Prisma.ProcedureOnEquipmentUpdateManyWithoutProcedureNestedInput
   publications?: Prisma.PublicationOnProcedureUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureUncheckedUpdateWithoutScientificWorksInput = {
@@ -634,6 +658,7 @@ export type ProcedureUncheckedUpdateWithoutScientificWorksInput = {
   equipment?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutProcedureNestedInput
   publications?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureCreateWithoutCategoryInput = {
@@ -650,6 +675,7 @@ export type ProcedureCreateWithoutCategoryInput = {
   publications?: Prisma.PublicationOnProcedureCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureUncheckedCreateWithoutCategoryInput = {
@@ -666,6 +692,7 @@ export type ProcedureUncheckedCreateWithoutCategoryInput = {
   publications?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureCreateOrConnectWithoutCategoryInput = {
@@ -722,6 +749,7 @@ export type ProcedureCreateWithoutDiseasesInput = {
   publications?: Prisma.PublicationOnProcedureCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureUncheckedCreateWithoutDiseasesInput = {
@@ -738,6 +766,7 @@ export type ProcedureUncheckedCreateWithoutDiseasesInput = {
   publications?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureCreateOrConnectWithoutDiseasesInput = {
@@ -770,6 +799,7 @@ export type ProcedureUpdateWithoutDiseasesInput = {
   publications?: Prisma.PublicationOnProcedureUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureUncheckedUpdateWithoutDiseasesInput = {
@@ -786,6 +816,7 @@ export type ProcedureUncheckedUpdateWithoutDiseasesInput = {
   publications?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureCreateWithoutDoctorsInput = {
@@ -802,6 +833,7 @@ export type ProcedureCreateWithoutDoctorsInput = {
   publications?: Prisma.PublicationOnProcedureCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureUncheckedCreateWithoutDoctorsInput = {
@@ -818,6 +850,7 @@ export type ProcedureUncheckedCreateWithoutDoctorsInput = {
   publications?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureCreateOrConnectWithoutDoctorsInput = {
@@ -850,6 +883,7 @@ export type ProcedureUpdateWithoutDoctorsInput = {
   publications?: Prisma.PublicationOnProcedureUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureUncheckedUpdateWithoutDoctorsInput = {
@@ -866,6 +900,7 @@ export type ProcedureUncheckedUpdateWithoutDoctorsInput = {
   publications?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureCreateWithoutEquipmentInput = {
@@ -882,6 +917,7 @@ export type ProcedureCreateWithoutEquipmentInput = {
   publications?: Prisma.PublicationOnProcedureCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureUncheckedCreateWithoutEquipmentInput = {
@@ -898,6 +934,7 @@ export type ProcedureUncheckedCreateWithoutEquipmentInput = {
   publications?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureCreateOrConnectWithoutEquipmentInput = {
@@ -930,6 +967,7 @@ export type ProcedureUpdateWithoutEquipmentInput = {
   publications?: Prisma.PublicationOnProcedureUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureUncheckedUpdateWithoutEquipmentInput = {
@@ -946,6 +984,7 @@ export type ProcedureUncheckedUpdateWithoutEquipmentInput = {
   publications?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureCreateWithoutPublicationsInput = {
@@ -962,6 +1001,7 @@ export type ProcedureCreateWithoutPublicationsInput = {
   equipment?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureUncheckedCreateWithoutPublicationsInput = {
@@ -978,6 +1018,7 @@ export type ProcedureUncheckedCreateWithoutPublicationsInput = {
   equipment?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutProcedureInput
   clinics?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureCreateOrConnectWithoutPublicationsInput = {
@@ -1010,6 +1051,7 @@ export type ProcedureUpdateWithoutPublicationsInput = {
   equipment?: Prisma.ProcedureOnEquipmentUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureUncheckedUpdateWithoutPublicationsInput = {
@@ -1026,6 +1068,7 @@ export type ProcedureUncheckedUpdateWithoutPublicationsInput = {
   equipment?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureCreateWithoutClinicsInput = {
@@ -1042,6 +1085,7 @@ export type ProcedureCreateWithoutClinicsInput = {
   equipment?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutProcedureInput
   publications?: Prisma.PublicationOnProcedureCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureUncheckedCreateWithoutClinicsInput = {
@@ -1058,6 +1102,7 @@ export type ProcedureUncheckedCreateWithoutClinicsInput = {
   equipment?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutProcedureInput
   publications?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
 }
 
 export type ProcedureCreateOrConnectWithoutClinicsInput = {
@@ -1090,6 +1135,7 @@ export type ProcedureUpdateWithoutClinicsInput = {
   equipment?: Prisma.ProcedureOnEquipmentUpdateManyWithoutProcedureNestedInput
   publications?: Prisma.PublicationOnProcedureUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureUncheckedUpdateWithoutClinicsInput = {
@@ -1105,6 +1151,91 @@ export type ProcedureUncheckedUpdateWithoutClinicsInput = {
   doctors?: Prisma.DoctorOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   equipment?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutProcedureNestedInput
   publications?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+}
+
+export type ProcedureCreateWithoutInvestigationsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  category?: Prisma.ProcedureCategoryCreateNestedOneWithoutProceduresInput
+  diseases?: Prisma.DiseaseOnProcedureCreateNestedManyWithoutProcedureInput
+  doctors?: Prisma.DoctorOnProcedureCreateNestedManyWithoutProcedureInput
+  equipment?: Prisma.ProcedureOnEquipmentCreateNestedManyWithoutProcedureInput
+  publications?: Prisma.PublicationOnProcedureCreateNestedManyWithoutProcedureInput
+  clinics?: Prisma.ClinicOnProcedureCreateNestedManyWithoutProcedureInput
+  scientificWorks?: Prisma.ScientificWorkOnProcedureCreateNestedManyWithoutProcedureInput
+}
+
+export type ProcedureUncheckedCreateWithoutInvestigationsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  categoryId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  diseases?: Prisma.DiseaseOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  doctors?: Prisma.DoctorOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  equipment?: Prisma.ProcedureOnEquipmentUncheckedCreateNestedManyWithoutProcedureInput
+  publications?: Prisma.PublicationOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  clinics?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+  scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedCreateNestedManyWithoutProcedureInput
+}
+
+export type ProcedureCreateOrConnectWithoutInvestigationsInput = {
+  where: Prisma.ProcedureWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProcedureCreateWithoutInvestigationsInput, Prisma.ProcedureUncheckedCreateWithoutInvestigationsInput>
+}
+
+export type ProcedureUpsertWithoutInvestigationsInput = {
+  update: Prisma.XOR<Prisma.ProcedureUpdateWithoutInvestigationsInput, Prisma.ProcedureUncheckedUpdateWithoutInvestigationsInput>
+  create: Prisma.XOR<Prisma.ProcedureCreateWithoutInvestigationsInput, Prisma.ProcedureUncheckedCreateWithoutInvestigationsInput>
+  where?: Prisma.ProcedureWhereInput
+}
+
+export type ProcedureUpdateToOneWithWhereWithoutInvestigationsInput = {
+  where?: Prisma.ProcedureWhereInput
+  data: Prisma.XOR<Prisma.ProcedureUpdateWithoutInvestigationsInput, Prisma.ProcedureUncheckedUpdateWithoutInvestigationsInput>
+}
+
+export type ProcedureUpdateWithoutInvestigationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.ProcedureCategoryUpdateOneWithoutProceduresNestedInput
+  diseases?: Prisma.DiseaseOnProcedureUpdateManyWithoutProcedureNestedInput
+  doctors?: Prisma.DoctorOnProcedureUpdateManyWithoutProcedureNestedInput
+  equipment?: Prisma.ProcedureOnEquipmentUpdateManyWithoutProcedureNestedInput
+  publications?: Prisma.PublicationOnProcedureUpdateManyWithoutProcedureNestedInput
+  clinics?: Prisma.ClinicOnProcedureUpdateManyWithoutProcedureNestedInput
+  scientificWorks?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutProcedureNestedInput
+}
+
+export type ProcedureUncheckedUpdateWithoutInvestigationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  diseases?: Prisma.DiseaseOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  doctors?: Prisma.DoctorOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  equipment?: Prisma.ProcedureOnEquipmentUncheckedUpdateManyWithoutProcedureNestedInput
+  publications?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  clinics?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
 }
 
@@ -1132,6 +1263,7 @@ export type ProcedureUpdateWithoutCategoryInput = {
   publications?: Prisma.PublicationOnProcedureUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureUncheckedUpdateWithoutCategoryInput = {
@@ -1148,6 +1280,7 @@ export type ProcedureUncheckedUpdateWithoutCategoryInput = {
   publications?: Prisma.PublicationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   clinics?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
   scientificWorks?: Prisma.ScientificWorkOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
+  investigations?: Prisma.InvestigationOnProcedureUncheckedUpdateManyWithoutProcedureNestedInput
 }
 
 export type ProcedureUncheckedUpdateManyWithoutCategoryInput = {
@@ -1172,6 +1305,7 @@ export type ProcedureCountOutputType = {
   publications: number
   clinics: number
   scientificWorks: number
+  investigations: number
 }
 
 export type ProcedureCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1181,6 +1315,7 @@ export type ProcedureCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensi
   publications?: boolean | ProcedureCountOutputTypeCountPublicationsArgs
   clinics?: boolean | ProcedureCountOutputTypeCountClinicsArgs
   scientificWorks?: boolean | ProcedureCountOutputTypeCountScientificWorksArgs
+  investigations?: boolean | ProcedureCountOutputTypeCountInvestigationsArgs
 }
 
 /**
@@ -1235,6 +1370,13 @@ export type ProcedureCountOutputTypeCountScientificWorksArgs<ExtArgs extends run
   where?: Prisma.ScientificWorkOnProcedureWhereInput
 }
 
+/**
+ * ProcedureCountOutputType without action
+ */
+export type ProcedureCountOutputTypeCountInvestigationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvestigationOnProcedureWhereInput
+}
+
 
 export type ProcedureSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1252,6 +1394,7 @@ export type ProcedureSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   publications?: boolean | Prisma.Procedure$publicationsArgs<ExtArgs>
   clinics?: boolean | Prisma.Procedure$clinicsArgs<ExtArgs>
   scientificWorks?: boolean | Prisma.Procedure$scientificWorksArgs<ExtArgs>
+  investigations?: boolean | Prisma.Procedure$investigationsArgs<ExtArgs>
   _count?: boolean | Prisma.ProcedureCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["procedure"]>
 
@@ -1299,6 +1442,7 @@ export type ProcedureInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
   publications?: boolean | Prisma.Procedure$publicationsArgs<ExtArgs>
   clinics?: boolean | Prisma.Procedure$clinicsArgs<ExtArgs>
   scientificWorks?: boolean | Prisma.Procedure$scientificWorksArgs<ExtArgs>
+  investigations?: boolean | Prisma.Procedure$investigationsArgs<ExtArgs>
   _count?: boolean | Prisma.ProcedureCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProcedureIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1318,6 +1462,7 @@ export type $ProcedurePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     publications: Prisma.$PublicationOnProcedurePayload<ExtArgs>[]
     clinics: Prisma.$ClinicOnProcedurePayload<ExtArgs>[]
     scientificWorks: Prisma.$ScientificWorkOnProcedurePayload<ExtArgs>[]
+    investigations: Prisma.$InvestigationOnProcedurePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1729,6 +1874,7 @@ export interface Prisma__ProcedureClient<T, Null = never, ExtArgs extends runtim
   publications<T extends Prisma.Procedure$publicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Procedure$publicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicationOnProcedurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   clinics<T extends Prisma.Procedure$clinicsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Procedure$clinicsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicOnProcedurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   scientificWorks<T extends Prisma.Procedure$scientificWorksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Procedure$scientificWorksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScientificWorkOnProcedurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  investigations<T extends Prisma.Procedure$investigationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Procedure$investigationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvestigationOnProcedurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2327,6 +2473,30 @@ export type Procedure$scientificWorksArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.ScientificWorkOnProcedureScalarFieldEnum | Prisma.ScientificWorkOnProcedureScalarFieldEnum[]
+}
+
+/**
+ * Procedure.investigations
+ */
+export type Procedure$investigationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InvestigationOnProcedure
+   */
+  select?: Prisma.InvestigationOnProcedureSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InvestigationOnProcedure
+   */
+  omit?: Prisma.InvestigationOnProcedureOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvestigationOnProcedureInclude<ExtArgs> | null
+  where?: Prisma.InvestigationOnProcedureWhereInput
+  orderBy?: Prisma.InvestigationOnProcedureOrderByWithRelationInput | Prisma.InvestigationOnProcedureOrderByWithRelationInput[]
+  cursor?: Prisma.InvestigationOnProcedureWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvestigationOnProcedureScalarFieldEnum | Prisma.InvestigationOnProcedureScalarFieldEnum[]
 }
 
 /**

@@ -9,8 +9,8 @@ export const revalidate = 3600;
 export const metadata = createCatalogMetadata(config);
 
 export default async function PublicationsPage() {
-  // Каталог строится напрямую из ScientificWork: новая работа врача появляется здесь
-  // автоматически, без дополнительного кода.
+  // Каталог объединяет прошедшие свои публичные фильтры ScientificWork и
+  // существующие редакционные Publication без коллизий slug.
   const items = await getPublicationsCatalog();
 
   return (

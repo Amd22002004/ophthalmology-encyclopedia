@@ -20,8 +20,18 @@ export type AdminUserModel = runtime.Types.Result.DefaultSelection<Prisma.$Admin
 
 export type AggregateAdminUser = {
   _count: AdminUserCountAggregateOutputType | null
+  _avg: AdminUserAvgAggregateOutputType | null
+  _sum: AdminUserSumAggregateOutputType | null
   _min: AdminUserMinAggregateOutputType | null
   _max: AdminUserMaxAggregateOutputType | null
+}
+
+export type AdminUserAvgAggregateOutputType = {
+  sessionVersion: number | null
+}
+
+export type AdminUserSumAggregateOutputType = {
+  sessionVersion: number | null
 }
 
 export type AdminUserMinAggregateOutputType = {
@@ -30,6 +40,7 @@ export type AdminUserMinAggregateOutputType = {
   passwordHash: string | null
   name: string | null
   role: $Enums.AdminRole | null
+  sessionVersion: number | null
   lastLoginAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -41,6 +52,7 @@ export type AdminUserMaxAggregateOutputType = {
   passwordHash: string | null
   name: string | null
   role: $Enums.AdminRole | null
+  sessionVersion: number | null
   lastLoginAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -52,6 +64,7 @@ export type AdminUserCountAggregateOutputType = {
   passwordHash: number
   name: number
   role: number
+  sessionVersion: number
   lastLoginAt: number
   createdAt: number
   updatedAt: number
@@ -59,12 +72,21 @@ export type AdminUserCountAggregateOutputType = {
 }
 
 
+export type AdminUserAvgAggregateInputType = {
+  sessionVersion?: true
+}
+
+export type AdminUserSumAggregateInputType = {
+  sessionVersion?: true
+}
+
 export type AdminUserMinAggregateInputType = {
   id?: true
   email?: true
   passwordHash?: true
   name?: true
   role?: true
+  sessionVersion?: true
   lastLoginAt?: true
   createdAt?: true
   updatedAt?: true
@@ -76,6 +98,7 @@ export type AdminUserMaxAggregateInputType = {
   passwordHash?: true
   name?: true
   role?: true
+  sessionVersion?: true
   lastLoginAt?: true
   createdAt?: true
   updatedAt?: true
@@ -87,6 +110,7 @@ export type AdminUserCountAggregateInputType = {
   passwordHash?: true
   name?: true
   role?: true
+  sessionVersion?: true
   lastLoginAt?: true
   createdAt?: true
   updatedAt?: true
@@ -131,6 +155,18 @@ export type AdminUserAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: AdminUserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: AdminUserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: AdminUserMinAggregateInputType
@@ -161,6 +197,8 @@ export type AdminUserGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: AdminUserCountAggregateInputType | true
+  _avg?: AdminUserAvgAggregateInputType
+  _sum?: AdminUserSumAggregateInputType
   _min?: AdminUserMinAggregateInputType
   _max?: AdminUserMaxAggregateInputType
 }
@@ -171,10 +209,13 @@ export type AdminUserGroupByOutputType = {
   passwordHash: string
   name: string
   role: $Enums.AdminRole
+  sessionVersion: number
   lastLoginAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: AdminUserCountAggregateOutputType | null
+  _avg: AdminUserAvgAggregateOutputType | null
+  _sum: AdminUserSumAggregateOutputType | null
   _min: AdminUserMinAggregateOutputType | null
   _max: AdminUserMaxAggregateOutputType | null
 }
@@ -203,9 +244,23 @@ export type AdminUserWhereInput = {
   passwordHash?: Prisma.StringFilter<"AdminUser"> | string
   name?: Prisma.StringFilter<"AdminUser"> | string
   role?: Prisma.EnumAdminRoleFilter<"AdminUser"> | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFilter<"AdminUser"> | number
   lastLoginAt?: Prisma.DateTimeNullableFilter<"AdminUser"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
+  appealNotes?: Prisma.AppealNoteListRelationFilter
+  appealStatusHistory?: Prisma.AppealStatusHistoryListRelationFilter
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationListRelationFilter
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryListRelationFilter
+  cooperationNotes?: Prisma.CooperationApplicationNoteListRelationFilter
+  invitationsCreated?: Prisma.InvitationListRelationFilter
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchListRelationFilter
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkListRelationFilter
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessListRelationFilter
+  authAuditEvents?: Prisma.AuthAuditEventListRelationFilter
+  eventNotes?: Prisma.EventRegistrationNoteListRelationFilter
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryListRelationFilter
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenListRelationFilter
 }
 
 export type AdminUserOrderByWithRelationInput = {
@@ -214,9 +269,23 @@ export type AdminUserOrderByWithRelationInput = {
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  sessionVersion?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  appealNotes?: Prisma.AppealNoteOrderByRelationAggregateInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryOrderByRelationAggregateInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationOrderByRelationAggregateInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryOrderByRelationAggregateInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteOrderByRelationAggregateInput
+  invitationsCreated?: Prisma.InvitationOrderByRelationAggregateInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchOrderByRelationAggregateInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkOrderByRelationAggregateInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessOrderByRelationAggregateInput
+  authAuditEvents?: Prisma.AuthAuditEventOrderByRelationAggregateInput
+  eventNotes?: Prisma.EventRegistrationNoteOrderByRelationAggregateInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryOrderByRelationAggregateInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenOrderByRelationAggregateInput
 }
 
 export type AdminUserWhereUniqueInput = Prisma.AtLeast<{
@@ -228,9 +297,23 @@ export type AdminUserWhereUniqueInput = Prisma.AtLeast<{
   passwordHash?: Prisma.StringFilter<"AdminUser"> | string
   name?: Prisma.StringFilter<"AdminUser"> | string
   role?: Prisma.EnumAdminRoleFilter<"AdminUser"> | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFilter<"AdminUser"> | number
   lastLoginAt?: Prisma.DateTimeNullableFilter<"AdminUser"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdminUser"> | Date | string
+  appealNotes?: Prisma.AppealNoteListRelationFilter
+  appealStatusHistory?: Prisma.AppealStatusHistoryListRelationFilter
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationListRelationFilter
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryListRelationFilter
+  cooperationNotes?: Prisma.CooperationApplicationNoteListRelationFilter
+  invitationsCreated?: Prisma.InvitationListRelationFilter
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchListRelationFilter
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkListRelationFilter
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessListRelationFilter
+  authAuditEvents?: Prisma.AuthAuditEventListRelationFilter
+  eventNotes?: Prisma.EventRegistrationNoteListRelationFilter
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryListRelationFilter
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenListRelationFilter
 }, "id" | "email">
 
 export type AdminUserOrderByWithAggregationInput = {
@@ -239,12 +322,15 @@ export type AdminUserOrderByWithAggregationInput = {
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  sessionVersion?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AdminUserCountOrderByAggregateInput
+  _avg?: Prisma.AdminUserAvgOrderByAggregateInput
   _max?: Prisma.AdminUserMaxOrderByAggregateInput
   _min?: Prisma.AdminUserMinOrderByAggregateInput
+  _sum?: Prisma.AdminUserSumOrderByAggregateInput
 }
 
 export type AdminUserScalarWhereWithAggregatesInput = {
@@ -256,6 +342,7 @@ export type AdminUserScalarWhereWithAggregatesInput = {
   passwordHash?: Prisma.StringWithAggregatesFilter<"AdminUser"> | string
   name?: Prisma.StringWithAggregatesFilter<"AdminUser"> | string
   role?: Prisma.EnumAdminRoleWithAggregatesFilter<"AdminUser"> | $Enums.AdminRole
+  sessionVersion?: Prisma.IntWithAggregatesFilter<"AdminUser"> | number
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AdminUser"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AdminUser"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AdminUser"> | Date | string
@@ -267,9 +354,23 @@ export type AdminUserCreateInput = {
   passwordHash: string
   name: string
   role?: $Enums.AdminRole
+  sessionVersion?: number
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
 }
 
 export type AdminUserUncheckedCreateInput = {
@@ -278,9 +379,23 @@ export type AdminUserUncheckedCreateInput = {
   passwordHash: string
   name: string
   role?: $Enums.AdminRole
+  sessionVersion?: number
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
 }
 
 export type AdminUserUpdateInput = {
@@ -289,9 +404,23 @@ export type AdminUserUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
 }
 
 export type AdminUserUncheckedUpdateInput = {
@@ -300,9 +429,23 @@ export type AdminUserUncheckedUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
 }
 
 export type AdminUserCreateManyInput = {
@@ -311,6 +454,7 @@ export type AdminUserCreateManyInput = {
   passwordHash: string
   name: string
   role?: $Enums.AdminRole
+  sessionVersion?: number
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -322,6 +466,7 @@ export type AdminUserUpdateManyMutationInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -333,9 +478,20 @@ export type AdminUserUncheckedUpdateManyInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AdminUserScalarRelationFilter = {
+  is?: Prisma.AdminUserWhereInput
+  isNot?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserNullableScalarRelationFilter = {
+  is?: Prisma.AdminUserWhereInput | null
+  isNot?: Prisma.AdminUserWhereInput | null
 }
 
 export type AdminUserCountOrderByAggregateInput = {
@@ -344,9 +500,14 @@ export type AdminUserCountOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  sessionVersion?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type AdminUserAvgOrderByAggregateInput = {
+  sessionVersion?: Prisma.SortOrder
 }
 
 export type AdminUserMaxOrderByAggregateInput = {
@@ -355,6 +516,7 @@ export type AdminUserMaxOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  sessionVersion?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -366,15 +528,1811 @@ export type AdminUserMinOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  sessionVersion?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type AdminUserSumOrderByAggregateInput = {
+  sessionVersion?: Prisma.SortOrder
+}
+
+export type AdminUserCreateNestedOneWithoutAppealNotesInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealNotesInput, Prisma.AdminUserUncheckedCreateWithoutAppealNotesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutAppealNotesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutAppealNotesNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealNotesInput, Prisma.AdminUserUncheckedCreateWithoutAppealNotesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutAppealNotesInput
+  upsert?: Prisma.AdminUserUpsertWithoutAppealNotesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutAppealNotesInput, Prisma.AdminUserUpdateWithoutAppealNotesInput>, Prisma.AdminUserUncheckedUpdateWithoutAppealNotesInput>
+}
+
+export type AdminUserCreateNestedOneWithoutAppealStatusHistoryInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutAppealStatusHistoryInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutAppealStatusHistoryInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneWithoutAppealStatusHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutAppealStatusHistoryInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutAppealStatusHistoryInput
+  upsert?: Prisma.AdminUserUpsertWithoutAppealStatusHistoryInput
+  disconnect?: Prisma.AdminUserWhereInput | boolean
+  delete?: Prisma.AdminUserWhereInput | boolean
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutAppealStatusHistoryInput, Prisma.AdminUserUpdateWithoutAppealStatusHistoryInput>, Prisma.AdminUserUncheckedUpdateWithoutAppealStatusHistoryInput>
+}
+
+export type AdminUserCreateNestedOneWithoutCooperationResponsibleApplicationsInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationResponsibleApplicationsInput, Prisma.AdminUserUncheckedCreateWithoutCooperationResponsibleApplicationsInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutCooperationResponsibleApplicationsInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneWithoutCooperationResponsibleApplicationsNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationResponsibleApplicationsInput, Prisma.AdminUserUncheckedCreateWithoutCooperationResponsibleApplicationsInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutCooperationResponsibleApplicationsInput
+  upsert?: Prisma.AdminUserUpsertWithoutCooperationResponsibleApplicationsInput
+  disconnect?: Prisma.AdminUserWhereInput | boolean
+  delete?: Prisma.AdminUserWhereInput | boolean
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutCooperationResponsibleApplicationsInput, Prisma.AdminUserUpdateWithoutCooperationResponsibleApplicationsInput>, Prisma.AdminUserUncheckedUpdateWithoutCooperationResponsibleApplicationsInput>
+}
+
+export type AdminUserCreateNestedOneWithoutCooperationStatusHistoryInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutCooperationStatusHistoryInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutCooperationStatusHistoryInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneWithoutCooperationStatusHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutCooperationStatusHistoryInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutCooperationStatusHistoryInput
+  upsert?: Prisma.AdminUserUpsertWithoutCooperationStatusHistoryInput
+  disconnect?: Prisma.AdminUserWhereInput | boolean
+  delete?: Prisma.AdminUserWhereInput | boolean
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutCooperationStatusHistoryInput, Prisma.AdminUserUpdateWithoutCooperationStatusHistoryInput>, Prisma.AdminUserUncheckedUpdateWithoutCooperationStatusHistoryInput>
+}
+
+export type AdminUserCreateNestedOneWithoutCooperationNotesInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationNotesInput, Prisma.AdminUserUncheckedCreateWithoutCooperationNotesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutCooperationNotesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutCooperationNotesNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationNotesInput, Prisma.AdminUserUncheckedCreateWithoutCooperationNotesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutCooperationNotesInput
+  upsert?: Prisma.AdminUserUpsertWithoutCooperationNotesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutCooperationNotesInput, Prisma.AdminUserUpdateWithoutCooperationNotesInput>, Prisma.AdminUserUncheckedUpdateWithoutCooperationNotesInput>
+}
+
+export type AdminUserCreateNestedOneWithoutEntityMatchesConfirmedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutEntityMatchesConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutEntityMatchesConfirmedInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutEntityMatchesConfirmedInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneWithoutEntityMatchesConfirmedNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutEntityMatchesConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutEntityMatchesConfirmedInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutEntityMatchesConfirmedInput
+  upsert?: Prisma.AdminUserUpsertWithoutEntityMatchesConfirmedInput
+  disconnect?: Prisma.AdminUserWhereInput | boolean
+  delete?: Prisma.AdminUserWhereInput | boolean
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutEntityMatchesConfirmedInput, Prisma.AdminUserUpdateWithoutEntityMatchesConfirmedInput>, Prisma.AdminUserUncheckedUpdateWithoutEntityMatchesConfirmedInput>
+}
+
+export type AdminUserCreateNestedOneWithoutInvitationsCreatedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutInvitationsCreatedInput, Prisma.AdminUserUncheckedCreateWithoutInvitationsCreatedInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutInvitationsCreatedInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutInvitationsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutInvitationsCreatedInput, Prisma.AdminUserUncheckedCreateWithoutInvitationsCreatedInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutInvitationsCreatedInput
+  upsert?: Prisma.AdminUserUpsertWithoutInvitationsCreatedInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutInvitationsCreatedInput, Prisma.AdminUserUpdateWithoutInvitationsCreatedInput>, Prisma.AdminUserUncheckedUpdateWithoutInvitationsCreatedInput>
+}
+
+export type AdminUserCreateNestedOneWithoutDoctorLinksConfirmedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutDoctorLinksConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutDoctorLinksConfirmedInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutDoctorLinksConfirmedInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneWithoutDoctorLinksConfirmedNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutDoctorLinksConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutDoctorLinksConfirmedInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutDoctorLinksConfirmedInput
+  upsert?: Prisma.AdminUserUpsertWithoutDoctorLinksConfirmedInput
+  disconnect?: Prisma.AdminUserWhereInput | boolean
+  delete?: Prisma.AdminUserWhereInput | boolean
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutDoctorLinksConfirmedInput, Prisma.AdminUserUpdateWithoutDoctorLinksConfirmedInput>, Prisma.AdminUserUncheckedUpdateWithoutDoctorLinksConfirmedInput>
+}
+
+export type AdminUserCreateNestedOneWithoutClinicAccessesConfirmedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutClinicAccessesConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutClinicAccessesConfirmedInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutClinicAccessesConfirmedInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneWithoutClinicAccessesConfirmedNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutClinicAccessesConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutClinicAccessesConfirmedInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutClinicAccessesConfirmedInput
+  upsert?: Prisma.AdminUserUpsertWithoutClinicAccessesConfirmedInput
+  disconnect?: Prisma.AdminUserWhereInput | boolean
+  delete?: Prisma.AdminUserWhereInput | boolean
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutClinicAccessesConfirmedInput, Prisma.AdminUserUpdateWithoutClinicAccessesConfirmedInput>, Prisma.AdminUserUncheckedUpdateWithoutClinicAccessesConfirmedInput>
+}
+
+export type AdminUserCreateNestedOneWithoutAuthAuditEventsInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutAuthAuditEventsInput, Prisma.AdminUserUncheckedCreateWithoutAuthAuditEventsInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutAuthAuditEventsInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneWithoutAuthAuditEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutAuthAuditEventsInput, Prisma.AdminUserUncheckedCreateWithoutAuthAuditEventsInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutAuthAuditEventsInput
+  upsert?: Prisma.AdminUserUpsertWithoutAuthAuditEventsInput
+  disconnect?: Prisma.AdminUserWhereInput | boolean
+  delete?: Prisma.AdminUserWhereInput | boolean
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutAuthAuditEventsInput, Prisma.AdminUserUpdateWithoutAuthAuditEventsInput>, Prisma.AdminUserUncheckedUpdateWithoutAuthAuditEventsInput>
 }
 
 export type EnumAdminRoleFieldUpdateOperationsInput = {
   set?: $Enums.AdminRole
 }
 
+export type AdminUserCreateNestedOneWithoutPasswordResetTokensInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutPasswordResetTokensInput, Prisma.AdminUserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutPasswordResetTokensInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutPasswordResetTokensInput, Prisma.AdminUserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutPasswordResetTokensInput
+  upsert?: Prisma.AdminUserUpsertWithoutPasswordResetTokensInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.AdminUserUpdateWithoutPasswordResetTokensInput>, Prisma.AdminUserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type AdminUserCreateNestedOneWithoutEventStatusHistoryInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutEventStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutEventStatusHistoryInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutEventStatusHistoryInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneWithoutEventStatusHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutEventStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutEventStatusHistoryInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutEventStatusHistoryInput
+  upsert?: Prisma.AdminUserUpsertWithoutEventStatusHistoryInput
+  disconnect?: Prisma.AdminUserWhereInput | boolean
+  delete?: Prisma.AdminUserWhereInput | boolean
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutEventStatusHistoryInput, Prisma.AdminUserUpdateWithoutEventStatusHistoryInput>, Prisma.AdminUserUncheckedUpdateWithoutEventStatusHistoryInput>
+}
+
+export type AdminUserCreateNestedOneWithoutEventNotesInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutEventNotesInput, Prisma.AdminUserUncheckedCreateWithoutEventNotesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutEventNotesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+}
+
+export type AdminUserUpdateOneRequiredWithoutEventNotesNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminUserCreateWithoutEventNotesInput, Prisma.AdminUserUncheckedCreateWithoutEventNotesInput>
+  connectOrCreate?: Prisma.AdminUserCreateOrConnectWithoutEventNotesInput
+  upsert?: Prisma.AdminUserUpsertWithoutEventNotesInput
+  connect?: Prisma.AdminUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUserUpdateToOneWithWhereWithoutEventNotesInput, Prisma.AdminUserUpdateWithoutEventNotesInput>, Prisma.AdminUserUncheckedUpdateWithoutEventNotesInput>
+}
+
+export type AdminUserCreateWithoutAppealNotesInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutAppealNotesInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutAppealNotesInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealNotesInput, Prisma.AdminUserUncheckedCreateWithoutAppealNotesInput>
+}
+
+export type AdminUserUpsertWithoutAppealNotesInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutAppealNotesInput, Prisma.AdminUserUncheckedUpdateWithoutAppealNotesInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealNotesInput, Prisma.AdminUserUncheckedCreateWithoutAppealNotesInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutAppealNotesInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutAppealNotesInput, Prisma.AdminUserUncheckedUpdateWithoutAppealNotesInput>
+}
+
+export type AdminUserUpdateWithoutAppealNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutAppealNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutAppealStatusHistoryInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutAppealStatusHistoryInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutAppealStatusHistoryInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutAppealStatusHistoryInput>
+}
+
+export type AdminUserUpsertWithoutAppealStatusHistoryInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedUpdateWithoutAppealStatusHistoryInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutAppealStatusHistoryInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutAppealStatusHistoryInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutAppealStatusHistoryInput, Prisma.AdminUserUncheckedUpdateWithoutAppealStatusHistoryInput>
+}
+
+export type AdminUserUpdateWithoutAppealStatusHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutAppealStatusHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutCooperationResponsibleApplicationsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutCooperationResponsibleApplicationsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutCooperationResponsibleApplicationsInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationResponsibleApplicationsInput, Prisma.AdminUserUncheckedCreateWithoutCooperationResponsibleApplicationsInput>
+}
+
+export type AdminUserUpsertWithoutCooperationResponsibleApplicationsInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutCooperationResponsibleApplicationsInput, Prisma.AdminUserUncheckedUpdateWithoutCooperationResponsibleApplicationsInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationResponsibleApplicationsInput, Prisma.AdminUserUncheckedCreateWithoutCooperationResponsibleApplicationsInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutCooperationResponsibleApplicationsInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutCooperationResponsibleApplicationsInput, Prisma.AdminUserUncheckedUpdateWithoutCooperationResponsibleApplicationsInput>
+}
+
+export type AdminUserUpdateWithoutCooperationResponsibleApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutCooperationResponsibleApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutCooperationStatusHistoryInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutCooperationStatusHistoryInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutCooperationStatusHistoryInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutCooperationStatusHistoryInput>
+}
+
+export type AdminUserUpsertWithoutCooperationStatusHistoryInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutCooperationStatusHistoryInput, Prisma.AdminUserUncheckedUpdateWithoutCooperationStatusHistoryInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutCooperationStatusHistoryInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutCooperationStatusHistoryInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutCooperationStatusHistoryInput, Prisma.AdminUserUncheckedUpdateWithoutCooperationStatusHistoryInput>
+}
+
+export type AdminUserUpdateWithoutCooperationStatusHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutCooperationStatusHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutCooperationNotesInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutCooperationNotesInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutCooperationNotesInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationNotesInput, Prisma.AdminUserUncheckedCreateWithoutCooperationNotesInput>
+}
+
+export type AdminUserUpsertWithoutCooperationNotesInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutCooperationNotesInput, Prisma.AdminUserUncheckedUpdateWithoutCooperationNotesInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutCooperationNotesInput, Prisma.AdminUserUncheckedCreateWithoutCooperationNotesInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutCooperationNotesInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutCooperationNotesInput, Prisma.AdminUserUncheckedUpdateWithoutCooperationNotesInput>
+}
+
+export type AdminUserUpdateWithoutCooperationNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutCooperationNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutEntityMatchesConfirmedInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutEntityMatchesConfirmedInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutEntityMatchesConfirmedInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutEntityMatchesConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutEntityMatchesConfirmedInput>
+}
+
+export type AdminUserUpsertWithoutEntityMatchesConfirmedInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutEntityMatchesConfirmedInput, Prisma.AdminUserUncheckedUpdateWithoutEntityMatchesConfirmedInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutEntityMatchesConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutEntityMatchesConfirmedInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutEntityMatchesConfirmedInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutEntityMatchesConfirmedInput, Prisma.AdminUserUncheckedUpdateWithoutEntityMatchesConfirmedInput>
+}
+
+export type AdminUserUpdateWithoutEntityMatchesConfirmedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutEntityMatchesConfirmedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutInvitationsCreatedInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutInvitationsCreatedInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutInvitationsCreatedInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutInvitationsCreatedInput, Prisma.AdminUserUncheckedCreateWithoutInvitationsCreatedInput>
+}
+
+export type AdminUserUpsertWithoutInvitationsCreatedInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutInvitationsCreatedInput, Prisma.AdminUserUncheckedUpdateWithoutInvitationsCreatedInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutInvitationsCreatedInput, Prisma.AdminUserUncheckedCreateWithoutInvitationsCreatedInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutInvitationsCreatedInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutInvitationsCreatedInput, Prisma.AdminUserUncheckedUpdateWithoutInvitationsCreatedInput>
+}
+
+export type AdminUserUpdateWithoutInvitationsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutInvitationsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutDoctorLinksConfirmedInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutDoctorLinksConfirmedInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutDoctorLinksConfirmedInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutDoctorLinksConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutDoctorLinksConfirmedInput>
+}
+
+export type AdminUserUpsertWithoutDoctorLinksConfirmedInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutDoctorLinksConfirmedInput, Prisma.AdminUserUncheckedUpdateWithoutDoctorLinksConfirmedInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutDoctorLinksConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutDoctorLinksConfirmedInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutDoctorLinksConfirmedInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutDoctorLinksConfirmedInput, Prisma.AdminUserUncheckedUpdateWithoutDoctorLinksConfirmedInput>
+}
+
+export type AdminUserUpdateWithoutDoctorLinksConfirmedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutDoctorLinksConfirmedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutClinicAccessesConfirmedInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutClinicAccessesConfirmedInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutClinicAccessesConfirmedInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutClinicAccessesConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutClinicAccessesConfirmedInput>
+}
+
+export type AdminUserUpsertWithoutClinicAccessesConfirmedInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutClinicAccessesConfirmedInput, Prisma.AdminUserUncheckedUpdateWithoutClinicAccessesConfirmedInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutClinicAccessesConfirmedInput, Prisma.AdminUserUncheckedCreateWithoutClinicAccessesConfirmedInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutClinicAccessesConfirmedInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutClinicAccessesConfirmedInput, Prisma.AdminUserUncheckedUpdateWithoutClinicAccessesConfirmedInput>
+}
+
+export type AdminUserUpdateWithoutClinicAccessesConfirmedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutClinicAccessesConfirmedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutAuthAuditEventsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutAuthAuditEventsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutAuthAuditEventsInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutAuthAuditEventsInput, Prisma.AdminUserUncheckedCreateWithoutAuthAuditEventsInput>
+}
+
+export type AdminUserUpsertWithoutAuthAuditEventsInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutAuthAuditEventsInput, Prisma.AdminUserUncheckedUpdateWithoutAuthAuditEventsInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutAuthAuditEventsInput, Prisma.AdminUserUncheckedCreateWithoutAuthAuditEventsInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutAuthAuditEventsInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutAuthAuditEventsInput, Prisma.AdminUserUncheckedUpdateWithoutAuthAuditEventsInput>
+}
+
+export type AdminUserUpdateWithoutAuthAuditEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutAuthAuditEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+}
+
+export type AdminUserUncheckedCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+}
+
+export type AdminUserCreateOrConnectWithoutPasswordResetTokensInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutPasswordResetTokensInput, Prisma.AdminUserUncheckedCreateWithoutPasswordResetTokensInput>
+}
+
+export type AdminUserUpsertWithoutPasswordResetTokensInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutPasswordResetTokensInput, Prisma.AdminUserUncheckedUpdateWithoutPasswordResetTokensInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutPasswordResetTokensInput, Prisma.AdminUserUncheckedCreateWithoutPasswordResetTokensInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutPasswordResetTokensInput, Prisma.AdminUserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type AdminUserUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+}
+
+export type AdminUserCreateWithoutEventStatusHistoryInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteCreateNestedManyWithoutAuthorInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutEventStatusHistoryInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutEventStatusHistoryInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutEventStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutEventStatusHistoryInput>
+}
+
+export type AdminUserUpsertWithoutEventStatusHistoryInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutEventStatusHistoryInput, Prisma.AdminUserUncheckedUpdateWithoutEventStatusHistoryInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutEventStatusHistoryInput, Prisma.AdminUserUncheckedCreateWithoutEventStatusHistoryInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutEventStatusHistoryInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutEventStatusHistoryInput, Prisma.AdminUserUncheckedUpdateWithoutEventStatusHistoryInput>
+}
+
+export type AdminUserUpdateWithoutEventStatusHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUpdateManyWithoutAuthorNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutEventStatusHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventNotes?: Prisma.EventRegistrationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserCreateWithoutEventNotesInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutAdminUserInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserUncheckedCreateWithoutEventNotesInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  name: string
+  role?: $Enums.AdminRole
+  sessionVersion?: number
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedCreateNestedManyWithoutAuthorInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedCreateNestedManyWithoutResponsibleUserInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedCreateNestedManyWithoutAuthorInput
+  invitationsCreated?: Prisma.InvitationUncheckedCreateNestedManyWithoutCreatedByInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutConfirmedByInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutConfirmedByInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutConfirmedByInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutAdminUserInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedCreateNestedManyWithoutAdminUserInput
+}
+
+export type AdminUserCreateOrConnectWithoutEventNotesInput = {
+  where: Prisma.AdminUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutEventNotesInput, Prisma.AdminUserUncheckedCreateWithoutEventNotesInput>
+}
+
+export type AdminUserUpsertWithoutEventNotesInput = {
+  update: Prisma.XOR<Prisma.AdminUserUpdateWithoutEventNotesInput, Prisma.AdminUserUncheckedUpdateWithoutEventNotesInput>
+  create: Prisma.XOR<Prisma.AdminUserCreateWithoutEventNotesInput, Prisma.AdminUserUncheckedCreateWithoutEventNotesInput>
+  where?: Prisma.AdminUserWhereInput
+}
+
+export type AdminUserUpdateToOneWithWhereWithoutEventNotesInput = {
+  where?: Prisma.AdminUserWhereInput
+  data: Prisma.XOR<Prisma.AdminUserUpdateWithoutEventNotesInput, Prisma.AdminUserUncheckedUpdateWithoutEventNotesInput>
+}
+
+export type AdminUserUpdateWithoutEventNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutAdminUserNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUpdateManyWithoutAdminUserNestedInput
+}
+
+export type AdminUserUncheckedUpdateWithoutEventNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appealNotes?: Prisma.AppealNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  appealStatusHistory?: Prisma.AppealStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationResponsibleApplications?: Prisma.CooperationApplicationUncheckedUpdateManyWithoutResponsibleUserNestedInput
+  cooperationStatusHistory?: Prisma.CooperationApplicationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  cooperationNotes?: Prisma.CooperationApplicationNoteUncheckedUpdateManyWithoutAuthorNestedInput
+  invitationsCreated?: Prisma.InvitationUncheckedUpdateManyWithoutCreatedByNestedInput
+  entityMatchesConfirmed?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutConfirmedByNestedInput
+  doctorLinksConfirmed?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutConfirmedByNestedInput
+  clinicAccessesConfirmed?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutConfirmedByNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutAdminUserNestedInput
+  eventStatusHistory?: Prisma.EventRegistrationStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  passwordResetTokens?: Prisma.AdminPasswordResetTokenUncheckedUpdateManyWithoutAdminUserNestedInput
+}
+
+
+/**
+ * Count Type AdminUserCountOutputType
+ */
+
+export type AdminUserCountOutputType = {
+  appealNotes: number
+  appealStatusHistory: number
+  cooperationResponsibleApplications: number
+  cooperationStatusHistory: number
+  cooperationNotes: number
+  invitationsCreated: number
+  entityMatchesConfirmed: number
+  doctorLinksConfirmed: number
+  clinicAccessesConfirmed: number
+  authAuditEvents: number
+  eventNotes: number
+  eventStatusHistory: number
+  passwordResetTokens: number
+}
+
+export type AdminUserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  appealNotes?: boolean | AdminUserCountOutputTypeCountAppealNotesArgs
+  appealStatusHistory?: boolean | AdminUserCountOutputTypeCountAppealStatusHistoryArgs
+  cooperationResponsibleApplications?: boolean | AdminUserCountOutputTypeCountCooperationResponsibleApplicationsArgs
+  cooperationStatusHistory?: boolean | AdminUserCountOutputTypeCountCooperationStatusHistoryArgs
+  cooperationNotes?: boolean | AdminUserCountOutputTypeCountCooperationNotesArgs
+  invitationsCreated?: boolean | AdminUserCountOutputTypeCountInvitationsCreatedArgs
+  entityMatchesConfirmed?: boolean | AdminUserCountOutputTypeCountEntityMatchesConfirmedArgs
+  doctorLinksConfirmed?: boolean | AdminUserCountOutputTypeCountDoctorLinksConfirmedArgs
+  clinicAccessesConfirmed?: boolean | AdminUserCountOutputTypeCountClinicAccessesConfirmedArgs
+  authAuditEvents?: boolean | AdminUserCountOutputTypeCountAuthAuditEventsArgs
+  eventNotes?: boolean | AdminUserCountOutputTypeCountEventNotesArgs
+  eventStatusHistory?: boolean | AdminUserCountOutputTypeCountEventStatusHistoryArgs
+  passwordResetTokens?: boolean | AdminUserCountOutputTypeCountPasswordResetTokensArgs
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminUserCountOutputType
+   */
+  select?: Prisma.AdminUserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountAppealNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppealNoteWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountAppealStatusHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppealStatusHistoryWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountCooperationResponsibleApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CooperationApplicationWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountCooperationStatusHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CooperationApplicationStatusHistoryWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountCooperationNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CooperationApplicationNoteWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountInvitationsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvitationWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountEntityMatchesConfirmedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CooperationEntityMatchWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountDoctorLinksConfirmedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserDoctorLinkWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountClinicAccessesConfirmedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserClinicAccessWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountAuthAuditEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuthAuditEventWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountEventNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EventRegistrationNoteWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountEventStatusHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EventRegistrationStatusHistoryWhereInput
+}
+
+/**
+ * AdminUserCountOutputType without action
+ */
+export type AdminUserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdminPasswordResetTokenWhereInput
+}
 
 
 export type AdminUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -383,9 +2341,24 @@ export type AdminUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   passwordHash?: boolean
   name?: boolean
   role?: boolean
+  sessionVersion?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  appealNotes?: boolean | Prisma.AdminUser$appealNotesArgs<ExtArgs>
+  appealStatusHistory?: boolean | Prisma.AdminUser$appealStatusHistoryArgs<ExtArgs>
+  cooperationResponsibleApplications?: boolean | Prisma.AdminUser$cooperationResponsibleApplicationsArgs<ExtArgs>
+  cooperationStatusHistory?: boolean | Prisma.AdminUser$cooperationStatusHistoryArgs<ExtArgs>
+  cooperationNotes?: boolean | Prisma.AdminUser$cooperationNotesArgs<ExtArgs>
+  invitationsCreated?: boolean | Prisma.AdminUser$invitationsCreatedArgs<ExtArgs>
+  entityMatchesConfirmed?: boolean | Prisma.AdminUser$entityMatchesConfirmedArgs<ExtArgs>
+  doctorLinksConfirmed?: boolean | Prisma.AdminUser$doctorLinksConfirmedArgs<ExtArgs>
+  clinicAccessesConfirmed?: boolean | Prisma.AdminUser$clinicAccessesConfirmedArgs<ExtArgs>
+  authAuditEvents?: boolean | Prisma.AdminUser$authAuditEventsArgs<ExtArgs>
+  eventNotes?: boolean | Prisma.AdminUser$eventNotesArgs<ExtArgs>
+  eventStatusHistory?: boolean | Prisma.AdminUser$eventStatusHistoryArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.AdminUser$passwordResetTokensArgs<ExtArgs>
+  _count?: boolean | Prisma.AdminUserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["adminUser"]>
 
 export type AdminUserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -394,6 +2367,7 @@ export type AdminUserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   passwordHash?: boolean
   name?: boolean
   role?: boolean
+  sessionVersion?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -405,6 +2379,7 @@ export type AdminUserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   passwordHash?: boolean
   name?: boolean
   role?: boolean
+  sessionVersion?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -416,22 +2391,56 @@ export type AdminUserSelectScalar = {
   passwordHash?: boolean
   name?: boolean
   role?: boolean
+  sessionVersion?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AdminUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "name" | "role" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["adminUser"]>
+export type AdminUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "name" | "role" | "sessionVersion" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["adminUser"]>
+export type AdminUserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  appealNotes?: boolean | Prisma.AdminUser$appealNotesArgs<ExtArgs>
+  appealStatusHistory?: boolean | Prisma.AdminUser$appealStatusHistoryArgs<ExtArgs>
+  cooperationResponsibleApplications?: boolean | Prisma.AdminUser$cooperationResponsibleApplicationsArgs<ExtArgs>
+  cooperationStatusHistory?: boolean | Prisma.AdminUser$cooperationStatusHistoryArgs<ExtArgs>
+  cooperationNotes?: boolean | Prisma.AdminUser$cooperationNotesArgs<ExtArgs>
+  invitationsCreated?: boolean | Prisma.AdminUser$invitationsCreatedArgs<ExtArgs>
+  entityMatchesConfirmed?: boolean | Prisma.AdminUser$entityMatchesConfirmedArgs<ExtArgs>
+  doctorLinksConfirmed?: boolean | Prisma.AdminUser$doctorLinksConfirmedArgs<ExtArgs>
+  clinicAccessesConfirmed?: boolean | Prisma.AdminUser$clinicAccessesConfirmedArgs<ExtArgs>
+  authAuditEvents?: boolean | Prisma.AdminUser$authAuditEventsArgs<ExtArgs>
+  eventNotes?: boolean | Prisma.AdminUser$eventNotesArgs<ExtArgs>
+  eventStatusHistory?: boolean | Prisma.AdminUser$eventStatusHistoryArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.AdminUser$passwordResetTokensArgs<ExtArgs>
+  _count?: boolean | Prisma.AdminUserCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type AdminUserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type AdminUserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $AdminUserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AdminUser"
-  objects: {}
+  objects: {
+    appealNotes: Prisma.$AppealNotePayload<ExtArgs>[]
+    appealStatusHistory: Prisma.$AppealStatusHistoryPayload<ExtArgs>[]
+    cooperationResponsibleApplications: Prisma.$CooperationApplicationPayload<ExtArgs>[]
+    cooperationStatusHistory: Prisma.$CooperationApplicationStatusHistoryPayload<ExtArgs>[]
+    cooperationNotes: Prisma.$CooperationApplicationNotePayload<ExtArgs>[]
+    invitationsCreated: Prisma.$InvitationPayload<ExtArgs>[]
+    entityMatchesConfirmed: Prisma.$CooperationEntityMatchPayload<ExtArgs>[]
+    doctorLinksConfirmed: Prisma.$UserDoctorLinkPayload<ExtArgs>[]
+    clinicAccessesConfirmed: Prisma.$UserClinicAccessPayload<ExtArgs>[]
+    authAuditEvents: Prisma.$AuthAuditEventPayload<ExtArgs>[]
+    eventNotes: Prisma.$EventRegistrationNotePayload<ExtArgs>[]
+    eventStatusHistory: Prisma.$EventRegistrationStatusHistoryPayload<ExtArgs>[]
+    passwordResetTokens: Prisma.$AdminPasswordResetTokenPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
     passwordHash: string
     name: string
     role: $Enums.AdminRole
+    sessionVersion: number
     lastLoginAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -829,6 +2838,19 @@ readonly fields: AdminUserFieldRefs;
  */
 export interface Prisma__AdminUserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  appealNotes<T extends Prisma.AdminUser$appealNotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$appealNotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppealNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  appealStatusHistory<T extends Prisma.AdminUser$appealStatusHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$appealStatusHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppealStatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cooperationResponsibleApplications<T extends Prisma.AdminUser$cooperationResponsibleApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$cooperationResponsibleApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CooperationApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cooperationStatusHistory<T extends Prisma.AdminUser$cooperationStatusHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$cooperationStatusHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CooperationApplicationStatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cooperationNotes<T extends Prisma.AdminUser$cooperationNotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$cooperationNotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CooperationApplicationNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invitationsCreated<T extends Prisma.AdminUser$invitationsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$invitationsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  entityMatchesConfirmed<T extends Prisma.AdminUser$entityMatchesConfirmedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$entityMatchesConfirmedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CooperationEntityMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  doctorLinksConfirmed<T extends Prisma.AdminUser$doctorLinksConfirmedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$doctorLinksConfirmedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserDoctorLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  clinicAccessesConfirmed<T extends Prisma.AdminUser$clinicAccessesConfirmedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$clinicAccessesConfirmedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserClinicAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  authAuditEvents<T extends Prisma.AdminUser$authAuditEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$authAuditEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuthAuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  eventNotes<T extends Prisma.AdminUser$eventNotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$eventNotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventRegistrationNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  eventStatusHistory<T extends Prisma.AdminUser$eventStatusHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$eventStatusHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventRegistrationStatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  passwordResetTokens<T extends Prisma.AdminUser$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminUser$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminPasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -863,6 +2885,7 @@ export interface AdminUserFieldRefs {
   readonly passwordHash: Prisma.FieldRef<"AdminUser", 'String'>
   readonly name: Prisma.FieldRef<"AdminUser", 'String'>
   readonly role: Prisma.FieldRef<"AdminUser", 'AdminRole'>
+  readonly sessionVersion: Prisma.FieldRef<"AdminUser", 'Int'>
   readonly lastLoginAt: Prisma.FieldRef<"AdminUser", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"AdminUser", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"AdminUser", 'DateTime'>
@@ -883,6 +2906,10 @@ export type AdminUserFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * Filter, which AdminUser to fetch.
    */
   where: Prisma.AdminUserWhereUniqueInput
@@ -901,6 +2928,10 @@ export type AdminUserFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensi
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * Filter, which AdminUser to fetch.
    */
   where: Prisma.AdminUserWhereUniqueInput
@@ -918,6 +2949,10 @@ export type AdminUserFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the AdminUser
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
   /**
    * Filter, which AdminUser to fetch.
    */
@@ -967,6 +3002,10 @@ export type AdminUserFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * Filter, which AdminUser to fetch.
    */
   where?: Prisma.AdminUserWhereInput
@@ -1014,6 +3053,10 @@ export type AdminUserFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the AdminUser
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
   /**
    * Filter, which AdminUsers to fetch.
    */
@@ -1063,6 +3106,10 @@ export type AdminUserCreateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * The data needed to create a AdminUser.
    */
   data: Prisma.XOR<Prisma.AdminUserCreateInput, Prisma.AdminUserUncheckedCreateInput>
@@ -1110,6 +3157,10 @@ export type AdminUserUpdateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the AdminUser
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
   /**
    * The data needed to update a AdminUser.
    */
@@ -1177,6 +3228,10 @@ export type AdminUserUpsertArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * The filter to search for the AdminUser to update in case it exists.
    */
   where: Prisma.AdminUserWhereUniqueInput
@@ -1203,6 +3258,10 @@ export type AdminUserDeleteArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
+  /**
    * Filter which AdminUser to delete.
    */
   where: Prisma.AdminUserWhereUniqueInput
@@ -1223,6 +3282,318 @@ export type AdminUserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 /**
+ * AdminUser.appealNotes
+ */
+export type AdminUser$appealNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AppealNote
+   */
+  select?: Prisma.AppealNoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AppealNote
+   */
+  omit?: Prisma.AppealNoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppealNoteInclude<ExtArgs> | null
+  where?: Prisma.AppealNoteWhereInput
+  orderBy?: Prisma.AppealNoteOrderByWithRelationInput | Prisma.AppealNoteOrderByWithRelationInput[]
+  cursor?: Prisma.AppealNoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppealNoteScalarFieldEnum | Prisma.AppealNoteScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.appealStatusHistory
+ */
+export type AdminUser$appealStatusHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AppealStatusHistory
+   */
+  select?: Prisma.AppealStatusHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AppealStatusHistory
+   */
+  omit?: Prisma.AppealStatusHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppealStatusHistoryInclude<ExtArgs> | null
+  where?: Prisma.AppealStatusHistoryWhereInput
+  orderBy?: Prisma.AppealStatusHistoryOrderByWithRelationInput | Prisma.AppealStatusHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.AppealStatusHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppealStatusHistoryScalarFieldEnum | Prisma.AppealStatusHistoryScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.cooperationResponsibleApplications
+ */
+export type AdminUser$cooperationResponsibleApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CooperationApplication
+   */
+  select?: Prisma.CooperationApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CooperationApplication
+   */
+  omit?: Prisma.CooperationApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CooperationApplicationInclude<ExtArgs> | null
+  where?: Prisma.CooperationApplicationWhereInput
+  orderBy?: Prisma.CooperationApplicationOrderByWithRelationInput | Prisma.CooperationApplicationOrderByWithRelationInput[]
+  cursor?: Prisma.CooperationApplicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CooperationApplicationScalarFieldEnum | Prisma.CooperationApplicationScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.cooperationStatusHistory
+ */
+export type AdminUser$cooperationStatusHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CooperationApplicationStatusHistory
+   */
+  select?: Prisma.CooperationApplicationStatusHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CooperationApplicationStatusHistory
+   */
+  omit?: Prisma.CooperationApplicationStatusHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CooperationApplicationStatusHistoryInclude<ExtArgs> | null
+  where?: Prisma.CooperationApplicationStatusHistoryWhereInput
+  orderBy?: Prisma.CooperationApplicationStatusHistoryOrderByWithRelationInput | Prisma.CooperationApplicationStatusHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.CooperationApplicationStatusHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CooperationApplicationStatusHistoryScalarFieldEnum | Prisma.CooperationApplicationStatusHistoryScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.cooperationNotes
+ */
+export type AdminUser$cooperationNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CooperationApplicationNote
+   */
+  select?: Prisma.CooperationApplicationNoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CooperationApplicationNote
+   */
+  omit?: Prisma.CooperationApplicationNoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CooperationApplicationNoteInclude<ExtArgs> | null
+  where?: Prisma.CooperationApplicationNoteWhereInput
+  orderBy?: Prisma.CooperationApplicationNoteOrderByWithRelationInput | Prisma.CooperationApplicationNoteOrderByWithRelationInput[]
+  cursor?: Prisma.CooperationApplicationNoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CooperationApplicationNoteScalarFieldEnum | Prisma.CooperationApplicationNoteScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.invitationsCreated
+ */
+export type AdminUser$invitationsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invitation
+   */
+  select?: Prisma.InvitationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invitation
+   */
+  omit?: Prisma.InvitationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvitationInclude<ExtArgs> | null
+  where?: Prisma.InvitationWhereInput
+  orderBy?: Prisma.InvitationOrderByWithRelationInput | Prisma.InvitationOrderByWithRelationInput[]
+  cursor?: Prisma.InvitationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvitationScalarFieldEnum | Prisma.InvitationScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.entityMatchesConfirmed
+ */
+export type AdminUser$entityMatchesConfirmedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CooperationEntityMatch
+   */
+  select?: Prisma.CooperationEntityMatchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CooperationEntityMatch
+   */
+  omit?: Prisma.CooperationEntityMatchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CooperationEntityMatchInclude<ExtArgs> | null
+  where?: Prisma.CooperationEntityMatchWhereInput
+  orderBy?: Prisma.CooperationEntityMatchOrderByWithRelationInput | Prisma.CooperationEntityMatchOrderByWithRelationInput[]
+  cursor?: Prisma.CooperationEntityMatchWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CooperationEntityMatchScalarFieldEnum | Prisma.CooperationEntityMatchScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.doctorLinksConfirmed
+ */
+export type AdminUser$doctorLinksConfirmedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserDoctorLink
+   */
+  select?: Prisma.UserDoctorLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserDoctorLink
+   */
+  omit?: Prisma.UserDoctorLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDoctorLinkInclude<ExtArgs> | null
+  where?: Prisma.UserDoctorLinkWhereInput
+  orderBy?: Prisma.UserDoctorLinkOrderByWithRelationInput | Prisma.UserDoctorLinkOrderByWithRelationInput[]
+  cursor?: Prisma.UserDoctorLinkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserDoctorLinkScalarFieldEnum | Prisma.UserDoctorLinkScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.clinicAccessesConfirmed
+ */
+export type AdminUser$clinicAccessesConfirmedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserClinicAccess
+   */
+  select?: Prisma.UserClinicAccessSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserClinicAccess
+   */
+  omit?: Prisma.UserClinicAccessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserClinicAccessInclude<ExtArgs> | null
+  where?: Prisma.UserClinicAccessWhereInput
+  orderBy?: Prisma.UserClinicAccessOrderByWithRelationInput | Prisma.UserClinicAccessOrderByWithRelationInput[]
+  cursor?: Prisma.UserClinicAccessWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserClinicAccessScalarFieldEnum | Prisma.UserClinicAccessScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.authAuditEvents
+ */
+export type AdminUser$authAuditEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuthAuditEvent
+   */
+  select?: Prisma.AuthAuditEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuthAuditEvent
+   */
+  omit?: Prisma.AuthAuditEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuthAuditEventInclude<ExtArgs> | null
+  where?: Prisma.AuthAuditEventWhereInput
+  orderBy?: Prisma.AuthAuditEventOrderByWithRelationInput | Prisma.AuthAuditEventOrderByWithRelationInput[]
+  cursor?: Prisma.AuthAuditEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuthAuditEventScalarFieldEnum | Prisma.AuthAuditEventScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.eventNotes
+ */
+export type AdminUser$eventNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EventRegistrationNote
+   */
+  select?: Prisma.EventRegistrationNoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EventRegistrationNote
+   */
+  omit?: Prisma.EventRegistrationNoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EventRegistrationNoteInclude<ExtArgs> | null
+  where?: Prisma.EventRegistrationNoteWhereInput
+  orderBy?: Prisma.EventRegistrationNoteOrderByWithRelationInput | Prisma.EventRegistrationNoteOrderByWithRelationInput[]
+  cursor?: Prisma.EventRegistrationNoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EventRegistrationNoteScalarFieldEnum | Prisma.EventRegistrationNoteScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.eventStatusHistory
+ */
+export type AdminUser$eventStatusHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EventRegistrationStatusHistory
+   */
+  select?: Prisma.EventRegistrationStatusHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EventRegistrationStatusHistory
+   */
+  omit?: Prisma.EventRegistrationStatusHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EventRegistrationStatusHistoryInclude<ExtArgs> | null
+  where?: Prisma.EventRegistrationStatusHistoryWhereInput
+  orderBy?: Prisma.EventRegistrationStatusHistoryOrderByWithRelationInput | Prisma.EventRegistrationStatusHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.EventRegistrationStatusHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EventRegistrationStatusHistoryScalarFieldEnum | Prisma.EventRegistrationStatusHistoryScalarFieldEnum[]
+}
+
+/**
+ * AdminUser.passwordResetTokens
+ */
+export type AdminUser$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminPasswordResetToken
+   */
+  select?: Prisma.AdminPasswordResetTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AdminPasswordResetToken
+   */
+  omit?: Prisma.AdminPasswordResetTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminPasswordResetTokenInclude<ExtArgs> | null
+  where?: Prisma.AdminPasswordResetTokenWhereInput
+  orderBy?: Prisma.AdminPasswordResetTokenOrderByWithRelationInput | Prisma.AdminPasswordResetTokenOrderByWithRelationInput[]
+  cursor?: Prisma.AdminPasswordResetTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AdminPasswordResetTokenScalarFieldEnum | Prisma.AdminPasswordResetTokenScalarFieldEnum[]
+}
+
+/**
  * AdminUser without action
  */
 export type AdminUserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1234,4 +3605,8 @@ export type AdminUserDefaultArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the AdminUser
    */
   omit?: Prisma.AdminUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminUserInclude<ExtArgs> | null
 }

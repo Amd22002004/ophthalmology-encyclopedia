@@ -1,0 +1,4 @@
+interface:
+  display_name: "Medical SEO"
+  short_description: "SEO, Schema.org, and internal linking"
+  default_prompt: "Use $medical-seo to create or review a public page."

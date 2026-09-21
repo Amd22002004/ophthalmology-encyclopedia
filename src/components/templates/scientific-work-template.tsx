@@ -40,31 +40,150 @@ function Pill({ href, title }: { href: string; title: string }) {
   );
 }
 
+const SOURCE_STATUS_LABELS = {
+  FULL_TEXT: "Полный текст проверен",
+  EXTRACTED_PAGES: "Полный источник · страницы выпуска",
+  SCANNED_PAGES: "Полный источник · сканированные страницы",
+  BIBLIOGRAPHIC_ONLY: "Только библиографические данные",
+} as const;
+
+const CONTENT_SECTION_LABELS = {
+  ORIGINAL_RESEARCH: {
+    summary: "Краткое описание",
+    novelty: "Актуальность",
+    practical: "Материалы и методы",
+    results: "Результаты",
+    conclusions: "Вывод / практическое значение",
+  },
+  CLINICAL_CASE: {
+    summary: "Краткое описание",
+    novelty: "Актуальность",
+    practical: "Клинический случай и методика",
+    results: "Результаты",
+    conclusions: "Вывод / практическое значение",
+  },
+  REVIEW: {
+    summary: "Краткое описание",
+    novelty: "Актуальность",
+    practical: "Обзор и направления применения",
+    results: "Положения статьи",
+    conclusions: "Вывод / практическое значение",
+  },
+  THESIS: {
+    summary: "Аннотация",
+    novelty: "Научная новизна",
+    practical: "Материалы и методы",
+    results: "Основные результаты",
+    conclusions: "Вывод / практическое значение",
+  },
+  OTHER: {
+    summary: "Краткое описание",
+    novelty: "Актуальность",
+    practical: "Методика",
+    results: "Результаты",
+    conclusions: "Вывод / практическое значение",
+  },
+} as const;
+
+function getScientificWorkImageMeta(src: string, workTitle: string) {
+  const meta: Record<string, { alt: string; caption: string }> = {
+    "fundus-left-eye-before.png": {
+      alt: "Фото глазного дна левого глаза при ретинопатии Вальсальвы",
+      caption:
+        "Рис. 1. Фото глазного дна левого глаза: массивное кровоизлияние диаметром более трёх диаметров диска зрительного нерва.",
+    },
+    "oct-left-eye-before.png": {
+      alt: "ОКТ левого глаза до YAG лазерной гиалоидопунктуры",
+      caption:
+        "Рис. 2. ОКТ левого глаза: обширное кровоизлияние между гиалоидной мембраной и сетчаткой с захватом фовеа.",
+    },
+    "oct-after-yag-gialoidopunktura.png": {
+      alt: "ОКТ левого глаза после YAG лазерной гиалоидопунктуры",
+      caption: "Рис. 3. ОКТ левого глаза после проведённой YAG лазерной гиалоидопунктуры.",
+    },
+    "oct-day-1-after-treatment.png": {
+      alt: "ОКТ на первый день после YAG лазерной гиалоидопунктуры",
+      caption: "Рис. 4. ОКТ на 1-й день после проведённой YAG лазерной гиалоидопунктуры.",
+    },
+    "oct-day-5-after-treatment.png": {
+      alt: "ОКТ на пятые сутки после YAG лазерной гиалоидопунктуры и лечения",
+      caption:
+        "Рис. 5. ОКТ на 5-е сутки после YAG лазерной гиалоидопунктуры и курса медикаментозного лечения.",
+    },
+  };
+  const fileName = src.split("/").pop() ?? src;
+  return (
+    meta[fileName] ?? {
+      alt: `Иллюстрация к научной работе «${workTitle}»`,
+      caption: "Иллюстрация из первичного документа научной работы.",
+    }
+  );
+}
+
 export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail }) {
   const authorName = doctorFullName(data.doctor);
-  const badges = [data.type, data.year ? String(data.year) : null, data.speciality].filter(
-    Boolean,
-  ) as string[];
+  const sourceStatusLabel = SOURCE_STATUS_LABELS[data.sourceStatus];
+  const badges = [
+    data.type,
+    data.year ? String(data.year) : null,
+    data.journal,
+    sourceStatusLabel,
+  ].filter(Boolean) as string[];
   const supervisor = data.supervisor ? parseSupervisor(data.supervisor) : null;
   const org = data.organization ? parseOrganization(data.organization) : null;
   const summaryParagraphs = data.summary ? splitIntoParagraphs(data.summary) : [];
   const clinics = data.doctor.clinics.map((r) => r.clinic);
+  const sectionLabels = CONTENT_SECTION_LABELS[data.contentKind];
+  const bibliographicOnly = data.sourceStatus === "BIBLIOGRAPHIC_ONLY";
+  const canShowLocalAssets =
+    data.rightsVerifiedAt !== null && data.rightsBasis !== "UNVERIFIED";
+  const publicationAuthors = data.authors.length > 0 ? data.authors : [authorName];
+  const publicationMeta = [data.journal, data.year ? String(data.year) : null]
+    .filter(Boolean)
+    .join(" · ");
+  const documentsAvailable = Boolean(
+    data.sourcePageUrl ||
+      data.sourcePdfUrl ||
+      (canShowLocalAssets && (data.abstractUrl || data.pdfUrl)),
+  );
+  const periodical = data.journal
+    ? { "@type": "Periodical", name: data.journal }
+    : null;
+  const publicationVolume =
+    periodical && data.volume
+      ? {
+          "@type": "PublicationVolume",
+          volumeNumber: data.volume,
+          isPartOf: periodical,
+        }
+      : periodical;
+  const journalIsPartOf =
+    publicationVolume && data.issue
+      ? {
+          "@type": "PublicationIssue",
+          issueNumber: data.issue,
+          isPartOf: publicationVolume,
+        }
+      : publicationVolume;
 
   return (
     <TemplateShell
       badges={badges}
       breadcrumbs={[{ href: "/publications", label: "Научные работы" }, { label: data.title }]}
-      // Описание не дублируем в шапке — полный текст ниже, в блоке «Аннотация»
-      description={[authorName, data.organization].filter(Boolean).join(" · ")}
+      description={[publicationAuthors.join(", "), publicationMeta].filter(Boolean).join(" · ")}
       eyebrow="Научная деятельность"
       title={data.title}
     >
       <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <main className="space-y-4">
+        <article className="space-y-4">
           {/* ── Информационный блок ── */}
           <Section title="О работе">
             <div className="grid gap-[16px] sm:grid-cols-2">
-              <InfoField label="Автор">
+              <InfoField label="Авторы публикации">
+                <p className="font-semibold">{publicationAuthors.join(", ")}</p>
+              </InfoField>
+
+              <InfoField label="Автор в энциклопедии">
                 <Link
                   className="font-semibold hover:text-primary"
                   href={`/doctors/${data.doctor.slug}`}
@@ -77,11 +196,27 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
               </InfoField>
 
               <InfoField label="Тема исследования">
-                <p className="font-semibold">«{data.title}»</p>
+                <p className="font-semibold">{data.topic ?? data.title}</p>
               </InfoField>
 
-              {org && (
-                <InfoField label="Место защиты">
+              {data.journal && (
+                <InfoField label="Издание">
+                  <p className="font-semibold">{data.journal}</p>
+                  <p className="text-[12.5px] text-muted-foreground">
+                    {[
+                      data.year ? String(data.year) : null,
+                      data.volume ? `т. ${data.volume}` : null,
+                      data.issue ? `№ ${data.issue}` : null,
+                      data.pages ? `с. ${data.pages}` : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                </InfoField>
+              )}
+
+              {data.contentKind === "THESIS" && org && (
+                <InfoField label="Организация / место защиты">
                   {org.lines.map((line) => (
                     <p key={line}>{line}</p>
                   ))}
@@ -104,7 +239,9 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
               )}
 
               {data.speciality && (
-                <InfoField label="Специальность ВАК">
+                <InfoField
+                  label={data.contentKind === "THESIS" ? "Специальность" : "Научное направление"}
+                >
                   <p>{data.speciality}</p>
                 </InfoField>
               )}
@@ -114,6 +251,45 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
                   <p className="font-semibold">{data.publicationCount} публикаций</p>
                 </InfoField>
               )}
+
+              {data.bibliography && (
+                <div className="sm:col-span-2">
+                  <InfoField label="Библиографическая ссылка">
+                    <p>{data.bibliography}</p>
+                  </InfoField>
+                </div>
+              )}
+
+              {data.doi && (
+                <InfoField label="DOI">
+                  <a
+                    className="font-semibold text-primary hover:underline"
+                    href={`https://doi.org/${data.doi}`}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {data.doi}
+                  </a>
+                </InfoField>
+              )}
+            </div>
+          </Section>
+
+          <Section title="Статус и первичный источник">
+            <div className="space-y-[7px] text-[13.5px] leading-relaxed text-foreground/85">
+              <p className="font-semibold text-foreground">{sourceStatusLabel}</p>
+              {bibliographicOnly && (
+                <>
+                  <p>Источник полного текста не найден.</p>
+                  <p>Карточка подготовлена по библиографическим данным.</p>
+                </>
+              )}
+              {data.sourceNote && <p>{data.sourceNote}</p>}
+              {data.rightsNote?.trim() && (
+                <p className="text-[12.5px] text-muted-foreground">
+                  Права на локальные материалы: {data.rightsNote}
+                </p>
+              )}
             </div>
           </Section>
 
@@ -121,7 +297,7 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
           {summaryParagraphs.length > 0 && (
             <div className="rounded-[11px] border-l-[3px] border-primary bg-primary/[0.04] p-[16px_18px]">
               <h2 className="mb-[10px] text-[12px] font-bold uppercase tracking-[0.06em] text-primary">
-                Аннотация
+                {sectionLabels.summary}
               </h2>
               <div className="space-y-[10px]">
                 {summaryParagraphs.map((para, i) => (
@@ -133,9 +309,9 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
             </div>
           )}
 
-          {/* ── Научная новизна ── */}
-          {data.novelty.length > 0 && (
-            <Section title="Научная новизна">
+          {/* ── Научная новизна / актуальность ── */}
+          {!bibliographicOnly && data.novelty.length > 0 && (
+            <Section title={sectionLabels.novelty}>
               <div className="space-y-[8px]">
                 {data.novelty.map((n) => (
                   <NoveltyCard key={n} text={n} />
@@ -144,9 +320,9 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
             </Section>
           )}
 
-          {/* ── Практическая значимость ── */}
-          {data.practicalValue.length > 0 && (
-            <Section title="Практическая значимость">
+          {/* ── Практическая значимость / клинический случай ── */}
+          {!bibliographicOnly && data.practicalValue.length > 0 && (
+            <Section title={sectionLabels.practical}>
               <div className="space-y-[8px]">
                 {data.practicalValue.map((p) => (
                   <PracticalCard key={p} text={p} />
@@ -155,9 +331,9 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
             </Section>
           )}
 
-          {/* ── Основные результаты ── */}
-          {data.results.length > 0 && (
-            <Section title="Основные результаты">
+          {/* ── Основные результаты / выводы ── */}
+          {!bibliographicOnly && data.results.length > 0 && (
+            <Section title={sectionLabels.results}>
               <div className="grid gap-[10px] sm:grid-cols-2">
                 {data.results.map((r) => (
                   <ResultCard key={r} text={r} />
@@ -166,28 +342,91 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
             </Section>
           )}
 
+          {!bibliographicOnly && data.conclusions.length > 0 && (
+            <Section title={sectionLabels.conclusions}>
+              <div className="space-y-[8px]">
+                {data.conclusions.map((conclusion) => (
+                  <PracticalCard key={conclusion} text={conclusion} />
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {canShowLocalAssets && data.images.length > 0 && (
+            <Section title="Иллюстрации из статьи">
+              <div className="grid gap-[10px] sm:grid-cols-2">
+                {data.images.map((src) => {
+                  const image = getScientificWorkImageMeta(src, data.title);
+                  return (
+                    <figure key={src}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        alt={image.alt}
+                        className="aspect-[4/3] w-full rounded-[10px] border border-[#d8e3e1] object-cover"
+                        decoding="async"
+                        loading="lazy"
+                        src={src}
+                      />
+                      <figcaption className="mt-2 text-[11.5px] leading-snug text-muted-foreground">
+                        {image.caption}
+                      </figcaption>
+                    </figure>
+                  );
+                })}
+              </div>
+            </Section>
+          )}
+
           {/* ── Документы ── */}
-          {(data.abstractUrl || data.pdfUrl) && (
+          {documentsAvailable && (
             <Section title="Документы исследования">
               <div className="grid gap-[10px] sm:grid-cols-2">
-                {data.abstractUrl && (
+                {canShowLocalAssets && data.abstractUrl && (
                   <DocCard
                     description="PDF · Краткое изложение диссертации"
                     href={data.abstractUrl}
                     title="Автореферат"
+                    actionLabel="Скачать PDF"
+                    download
                   />
                 )}
-                {data.pdfUrl && (
+                {canShowLocalAssets && data.pdfUrl && (
                   <DocCard
-                    description="PDF · Полный текст научной работы"
+                    actionLabel="Скачать PDF"
+                    description="PDF · Локальная копия первичного документа"
+                    download
                     href={data.pdfUrl}
-                    title="Диссертация"
+                    title={data.contentKind === "THESIS" ? "Полный текст диссертации" : "Полный текст статьи"}
+                  />
+                )}
+                {data.sourcePageUrl && (
+                  <DocCard
+                    actionLabel="Открыть источник"
+                    description={
+                      bibliographicOnly
+                        ? "Страница, подтверждающая библиографические данные"
+                        : "Страница публикации на сайте первоисточника"
+                    }
+                    href={data.sourcePageUrl}
+                    title={
+                      bibliographicOnly
+                        ? "Библиографический источник"
+                        : "Страница первоисточника"
+                    }
+                  />
+                )}
+                {data.sourcePdfUrl && (
+                  <DocCard
+                    actionLabel="Открыть PDF"
+                    description="Внешний файл на сайте источника"
+                    href={data.sourcePdfUrl}
+                    title="PDF на сайте издателя"
                   />
                 )}
               </div>
             </Section>
           )}
-        </main>
+        </article>
 
         {/* ── SIDEBAR: граф связей ── */}
         <aside className="space-y-4">
@@ -250,6 +489,34 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
             </Section>
           )}
 
+          {data.equipment.length > 0 && (
+            <Section title="Оборудование в работе">
+              <div className="space-y-[8px]">
+                {data.equipment.map((r) => (
+                  <Link
+                    className="group flex items-center justify-between gap-[8px] rounded-[11px] border border-[#d8e3e1] bg-background p-[10px_11px] transition-colors hover:border-primary/50 hover:bg-primary/5"
+                    href={`/equipment/${r.equipment.slug}`}
+                    key={r.equipment.slug}
+                  >
+                    <span className="min-w-0">
+                      <span className="block text-[12.5px] font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+                        {r.equipment.title}
+                      </span>
+                      {r.equipment.manufacturer && (
+                        <span className="block text-[12px] text-muted-foreground">
+                          {r.equipment.manufacturer}
+                        </span>
+                      )}
+                    </span>
+                    <span aria-hidden className="text-muted-foreground">
+                      →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </Section>
+          )}
+
           {clinics.length > 0 && (
             <Section title="Клиники автора">
               <div className="space-y-[8px]">
@@ -274,6 +541,32 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
             </Section>
           )}
 
+          {data.relatedWorks.length > 0 && (
+            <Section title="Связанные научные работы">
+              <div className="space-y-[8px]">
+                {data.relatedWorks.map((work) => (
+                  <Link
+                    className="group flex items-center justify-between gap-[8px] rounded-[11px] border border-[#d8e3e1] bg-background p-[10px_11px] transition-colors hover:border-primary/50 hover:bg-primary/5"
+                    href={`/publications/${work.slug}`}
+                    key={work.slug}
+                  >
+                    <span className="min-w-0">
+                      <span className="block text-[12.5px] font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+                        {work.title}
+                      </span>
+                      <span className="block text-[12px] text-muted-foreground">
+                        {[work.type, work.year ? String(work.year) : null].filter(Boolean).join(" · ")}
+                      </span>
+                    </span>
+                    <span aria-hidden className="text-muted-foreground">
+                      →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </Section>
+          )}
+
         </aside>
       </div>
 
@@ -287,16 +580,54 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
       <SchemaOrg
         data={{
           "@context": "https://schema.org",
-          "@type": "ScholarlyArticle",
+          "@type": data.contentKind === "THESIS" ? "Thesis" : "ScholarlyArticle",
           headline: data.title,
           url: absoluteUrl(`/publications/${data.slug}`),
-          author: {
+          author: publicationAuthors.map((name, index) => ({
             "@type": "Person",
-            name: authorName,
-            url: absoluteUrl(`/doctors/${data.doctor.slug}`),
-          },
+            name,
+            ...(index === data.doctorAuthorIndex
+              ? { url: absoluteUrl(`/doctors/${data.doctor.slug}`) }
+              : {}),
+          })),
           ...(data.summary ? { abstract: data.summary } : {}),
           ...(data.year != null ? { datePublished: String(data.year) } : {}),
+          ...(data.bibliography ? { citation: data.bibliography } : {}),
+          ...(journalIsPartOf ? { isPartOf: journalIsPartOf } : {}),
+          ...(data.pages ? { pagination: data.pages } : {}),
+          ...(data.contentKind === "THESIS" && data.degree
+            ? { inSupportOf: data.degree }
+            : {}),
+          ...(data.doi
+            ? {
+                identifier: {
+                  "@type": "PropertyValue",
+                  propertyID: "DOI",
+                  value: data.doi,
+                },
+              }
+            : {}),
+          ...([data.sourcePageUrl, data.doi ? `https://doi.org/${data.doi}` : null].filter(Boolean)
+            .length > 0
+            ? {
+                sameAs: [
+                  data.sourcePageUrl,
+                  data.doi ? `https://doi.org/${data.doi}` : null,
+                ].filter(Boolean),
+              }
+            : {}),
+          ...(canShowLocalAssets && data.images.length > 0
+            ? { image: data.images.map((src) => absoluteUrl(src)) }
+            : {}),
+          ...(canShowLocalAssets && data.pdfUrl
+            ? {
+                encoding: {
+                  "@type": "MediaObject",
+                  contentUrl: absoluteUrl(data.pdfUrl),
+                  encodingFormat: "application/pdf",
+                },
+              }
+            : {}),
           ...(data.organization
             ? { publisher: { "@type": "Organization", name: data.organization } }
             : {}),

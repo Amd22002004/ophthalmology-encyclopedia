@@ -1,9 +1,8 @@
 "use server";
 
-import { promises as fs } from "node:fs";
-import path from "node:path";
 import { getPrisma } from "@/lib/prisma";
 import { requireAdminSession } from "@/lib/admin-auth";
+import { saveClinicImage } from "@/lib/clinic-image-storage";
 import { revalidatePath } from "next/cache";
 
 export type ClinicUpdateState = { error?: string; success?: boolean };
@@ -34,32 +33,9 @@ function dateOrNull(formData: FormData, key: string): Date | null {
   return Number.isNaN(value.getTime()) ? null : value;
 }
 
-const IMAGE_EXT_BY_TYPE: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-  "image/gif": "gif",
-  "image/svg+xml": "svg",
-};
-
-async function saveUploadedImage(
-  formData: FormData,
-  key: string,
-  slug: string,
-  prefix: string,
-): Promise<string | null> {
+function fileOrNull(formData: FormData, key: string): File | null {
   const file = formData.get(key);
-  if (!(file instanceof File) || file.size === 0) return null;
-
-  const ext = IMAGE_EXT_BY_TYPE[file.type] ?? "jpg";
-  const dir = path.join(process.cwd(), "public", "uploads", "clinics", slug);
-  await fs.mkdir(dir, { recursive: true });
-
-  const filename = `${prefix}-${Date.now()}.${ext}`;
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await fs.writeFile(path.join(dir, filename), buffer);
-
-  return `/uploads/clinics/${slug}/${filename}`;
+  return file instanceof File && file.size > 0 ? file : null;
 }
 
 export async function updateClinicAction(
@@ -88,9 +64,9 @@ export async function updateClinicAction(
   ].filter((p): p is string => Boolean(p));
 
   const [logoUrl, coverImageUrl, facadeImageUrl] = await Promise.all([
-    saveUploadedImage(formData, "logoFile", existing.slug, "logo"),
-    saveUploadedImage(formData, "coverFile", existing.slug, "cover"),
-    saveUploadedImage(formData, "facadeFile", existing.slug, "facade"),
+    saveClinicImage(fileOrNull(formData, "logoFile"), existing.slug, "logo"),
+    saveClinicImage(fileOrNull(formData, "coverFile"), existing.slug, "cover"),
+    saveClinicImage(fileOrNull(formData, "facadeFile"), existing.slug, "facade"),
   ]);
 
   await db.clinic.update({

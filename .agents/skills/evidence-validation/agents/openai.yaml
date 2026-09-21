@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evidence Validation"
+  short_description: "Check whether claims are publishable"
+  default_prompt: "Use $evidence-validation before publishing an investigation, legal claim, or violation statement."

@@ -6,14 +6,13 @@ import {
   FileCheck,
   FileText,
   FlaskConical,
-  Handshake,
   History,
   Microscope,
+  MessageSquareText,
   ShieldCheck,
   Stethoscope,
   Store,
   Syringe,
-  UserPlus,
   Users,
 } from "lucide-react";
 
@@ -167,10 +166,10 @@ export const catalogConfigs: Record<EntityKind, CatalogConfig> = {
     path: "/innovations",
     eyebrow: "Инновации в офтальмологии",
     description:
-      "Современные технологии, новые методы диагностики, лечения, хирургии и коррекции зрения.",
+      "Современные технологии, медицинские изделия, методы диагностики и лечения, которые расширяют возможности современной офтальмологии.",
     emptyTitle: "Инновации пока не опубликованы",
     emptyDescription:
-      "Раздел подготовлен для описания технологий и связей с процедурами, оборудованием и публикациями.",
+      "Раздел подготовлен для профессионального описания технологий, медицинских изделий, методов диагностики и лечения.",
     schemaType: "TechArticle",
   },
   publications: {
@@ -191,11 +190,11 @@ export const catalogConfigs: Record<EntityKind, CatalogConfig> = {
 export const topNavItems = [
   { href: "/about", label: "О нас" },
   { href: "/doctors", label: "Врачи" },
+  { href: "/clinics", label: "Клиники" },
   { href: "/cooperation", label: "Сотрудничество" },
-  { href: "/register/clinic", label: "Регистрация клиники" },
   { href: "/news", label: "Новости" },
   { href: "/questions", label: "Вопросы" },
-  { href: "/contact", label: "Оставить сообщение" },
+  { href: "/appeal", label: "Подать обращение" },
 ];
 
 export const sidebarSections = [
@@ -206,6 +205,7 @@ export const sidebarSections = [
       { href: "/diseases", label: "Заболевания", icon: Activity },
       { href: "/procedures", label: "Лечение и коррекция", icon: Syringe },
       { href: "/innovations", label: "Инновации", icon: FlaskConical },
+      { href: "/appeal", label: "Подать обращение", icon: MessageSquareText },
     ],
   },
   {
@@ -215,8 +215,7 @@ export const sidebarSections = [
       { href: "/doctors", label: "Врачи и специалисты", icon: Stethoscope },
       { href: "/guidelines", label: "Клинические рекомендации", icon: ClipboardList },
       { href: "/publications", label: "Научные работы", icon: BookOpen },
-      { href: "/cooperation", label: "Сотрудничество с врачами", icon: Handshake },
-      { href: "/register/doctor", label: "Регистрация врача", icon: UserPlus },
+      { href: "/cooperation/doctor", label: "Регистрация врача", icon: Users },
       { href: "/history", label: "История офтальмологии", icon: History },
     ],
   },
@@ -228,6 +227,8 @@ export const sidebarSections = [
       { href: "/clinics/oms", label: "Клиники по ОМС", icon: ShieldCheck },
       { href: "/clinics/contract", label: "Договорные клиники", icon: FileCheck },
       { href: "/regulations", label: "Законодательство", icon: FileText },
+      { href: "/independent-control", label: "Независимая оценка", icon: ClipboardList },
+      { href: "/investigations", label: "Расследования", icon: ShieldCheck },
     ],
   },
   {
@@ -236,7 +237,6 @@ export const sidebarSections = [
     links: [
       { href: "/suppliers", label: "Каталог поставщиков", icon: Store },
       { href: "/equipment", label: "Оборудование", icon: Microscope },
-      { href: "/register/supplier", label: "Регистрация поставщика", icon: UserPlus },
     ],
   },
 ];

@@ -12,9 +12,10 @@ export async function generateMetadata({ params }: Props) {
   const item = await getEquipmentItem(slug);
   if (!item) return {};
   return createPageMetadata({
-    title: item.title,
+    title: `${item.title} — характеристики, применение и документация`,
     description: item.summary ?? item.title,
     path: `/equipment/${slug}`,
+    image: item.images[0],
   });
 }
 

@@ -1,4 +1,5 @@
 import { LeftSidebar } from "@/components/layout/left-sidebar";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { TopNav } from "@/components/layout/top-nav";
 
 /** Максимальная ширина всей рабочей области (сайдбар + шапка + контент). */
@@ -24,6 +25,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="flex min-w-0 flex-1 flex-col">
           <TopNav />
           <main className="min-w-0 flex-1 px-3 py-5 sm:px-5 lg:px-7">{children}</main>
+          <SiteFooter />
         </div>
       </div>
     </div>

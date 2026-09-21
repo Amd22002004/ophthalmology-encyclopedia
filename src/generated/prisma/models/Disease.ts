@@ -242,6 +242,7 @@ export type DiseaseWhereInput = {
   publications?: Prisma.PublicationOnDiseaseListRelationFilter
   equipment?: Prisma.DiseaseOnEquipmentListRelationFilter
   scientificWorks?: Prisma.ScientificWorkOnDiseaseListRelationFilter
+  investigations?: Prisma.InvestigationOnDiseaseListRelationFilter
 }
 
 export type DiseaseOrderByWithRelationInput = {
@@ -265,6 +266,7 @@ export type DiseaseOrderByWithRelationInput = {
   publications?: Prisma.PublicationOnDiseaseOrderByRelationAggregateInput
   equipment?: Prisma.DiseaseOnEquipmentOrderByRelationAggregateInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseOrderByRelationAggregateInput
+  investigations?: Prisma.InvestigationOnDiseaseOrderByRelationAggregateInput
 }
 
 export type DiseaseWhereUniqueInput = Prisma.AtLeast<{
@@ -291,6 +293,7 @@ export type DiseaseWhereUniqueInput = Prisma.AtLeast<{
   publications?: Prisma.PublicationOnDiseaseListRelationFilter
   equipment?: Prisma.DiseaseOnEquipmentListRelationFilter
   scientificWorks?: Prisma.ScientificWorkOnDiseaseListRelationFilter
+  investigations?: Prisma.InvestigationOnDiseaseListRelationFilter
 }, "id" | "slug">
 
 export type DiseaseOrderByWithAggregationInput = {
@@ -349,6 +352,7 @@ export type DiseaseCreateInput = {
   publications?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseUncheckedCreateInput = {
@@ -371,6 +375,7 @@ export type DiseaseUncheckedCreateInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseUpdateInput = {
@@ -393,6 +398,7 @@ export type DiseaseUpdateInput = {
   publications?: Prisma.PublicationOnDiseaseUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseUncheckedUpdateInput = {
@@ -415,6 +421,7 @@ export type DiseaseUncheckedUpdateInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseCreateManyInput = {
@@ -688,6 +695,20 @@ export type DiseaseUpdateOneRequiredWithoutClinicsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DiseaseUpdateToOneWithWhereWithoutClinicsInput, Prisma.DiseaseUpdateWithoutClinicsInput>, Prisma.DiseaseUncheckedUpdateWithoutClinicsInput>
 }
 
+export type DiseaseCreateNestedOneWithoutInvestigationsInput = {
+  create?: Prisma.XOR<Prisma.DiseaseCreateWithoutInvestigationsInput, Prisma.DiseaseUncheckedCreateWithoutInvestigationsInput>
+  connectOrCreate?: Prisma.DiseaseCreateOrConnectWithoutInvestigationsInput
+  connect?: Prisma.DiseaseWhereUniqueInput
+}
+
+export type DiseaseUpdateOneRequiredWithoutInvestigationsNestedInput = {
+  create?: Prisma.XOR<Prisma.DiseaseCreateWithoutInvestigationsInput, Prisma.DiseaseUncheckedCreateWithoutInvestigationsInput>
+  connectOrCreate?: Prisma.DiseaseCreateOrConnectWithoutInvestigationsInput
+  upsert?: Prisma.DiseaseUpsertWithoutInvestigationsInput
+  connect?: Prisma.DiseaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DiseaseUpdateToOneWithWhereWithoutInvestigationsInput, Prisma.DiseaseUpdateWithoutInvestigationsInput>, Prisma.DiseaseUncheckedUpdateWithoutInvestigationsInput>
+}
+
 export type DiseaseCreateWithoutScientificWorksInput = {
   id?: string
   slug: string
@@ -707,6 +728,7 @@ export type DiseaseCreateWithoutScientificWorksInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineCreateNestedManyWithoutDiseaseInput
   publications?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseUncheckedCreateWithoutScientificWorksInput = {
@@ -728,6 +750,7 @@ export type DiseaseUncheckedCreateWithoutScientificWorksInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineUncheckedCreateNestedManyWithoutDiseaseInput
   publications?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseCreateOrConnectWithoutScientificWorksInput = {
@@ -765,6 +788,7 @@ export type DiseaseUpdateWithoutScientificWorksInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineUpdateManyWithoutDiseaseNestedInput
   publications?: Prisma.PublicationOnDiseaseUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseUncheckedUpdateWithoutScientificWorksInput = {
@@ -786,6 +810,7 @@ export type DiseaseUncheckedUpdateWithoutScientificWorksInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineUncheckedUpdateManyWithoutDiseaseNestedInput
   publications?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseCreateWithoutCategoryInput = {
@@ -807,6 +832,7 @@ export type DiseaseCreateWithoutCategoryInput = {
   publications?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseUncheckedCreateWithoutCategoryInput = {
@@ -828,6 +854,7 @@ export type DiseaseUncheckedCreateWithoutCategoryInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseCreateOrConnectWithoutCategoryInput = {
@@ -893,6 +920,7 @@ export type DiseaseCreateWithoutProceduresInput = {
   publications?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseUncheckedCreateWithoutProceduresInput = {
@@ -914,6 +942,7 @@ export type DiseaseUncheckedCreateWithoutProceduresInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseCreateOrConnectWithoutProceduresInput = {
@@ -951,6 +980,7 @@ export type DiseaseUpdateWithoutProceduresInput = {
   publications?: Prisma.PublicationOnDiseaseUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseUncheckedUpdateWithoutProceduresInput = {
@@ -972,6 +1002,7 @@ export type DiseaseUncheckedUpdateWithoutProceduresInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseCreateWithoutDoctorsInput = {
@@ -993,6 +1024,7 @@ export type DiseaseCreateWithoutDoctorsInput = {
   publications?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseUncheckedCreateWithoutDoctorsInput = {
@@ -1014,6 +1046,7 @@ export type DiseaseUncheckedCreateWithoutDoctorsInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseCreateOrConnectWithoutDoctorsInput = {
@@ -1051,6 +1084,7 @@ export type DiseaseUpdateWithoutDoctorsInput = {
   publications?: Prisma.PublicationOnDiseaseUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseUncheckedUpdateWithoutDoctorsInput = {
@@ -1072,6 +1106,7 @@ export type DiseaseUncheckedUpdateWithoutDoctorsInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseCreateWithoutEquipmentInput = {
@@ -1093,6 +1128,7 @@ export type DiseaseCreateWithoutEquipmentInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineCreateNestedManyWithoutDiseaseInput
   publications?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseUncheckedCreateWithoutEquipmentInput = {
@@ -1114,6 +1150,7 @@ export type DiseaseUncheckedCreateWithoutEquipmentInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineUncheckedCreateNestedManyWithoutDiseaseInput
   publications?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseCreateOrConnectWithoutEquipmentInput = {
@@ -1151,6 +1188,7 @@ export type DiseaseUpdateWithoutEquipmentInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineUpdateManyWithoutDiseaseNestedInput
   publications?: Prisma.PublicationOnDiseaseUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseUncheckedUpdateWithoutEquipmentInput = {
@@ -1172,6 +1210,7 @@ export type DiseaseUncheckedUpdateWithoutEquipmentInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineUncheckedUpdateManyWithoutDiseaseNestedInput
   publications?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseCreateWithoutPublicationsInput = {
@@ -1193,6 +1232,7 @@ export type DiseaseCreateWithoutPublicationsInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseUncheckedCreateWithoutPublicationsInput = {
@@ -1214,6 +1254,7 @@ export type DiseaseUncheckedCreateWithoutPublicationsInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineUncheckedCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseCreateOrConnectWithoutPublicationsInput = {
@@ -1251,6 +1292,7 @@ export type DiseaseUpdateWithoutPublicationsInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseUncheckedUpdateWithoutPublicationsInput = {
@@ -1272,6 +1314,7 @@ export type DiseaseUncheckedUpdateWithoutPublicationsInput = {
   guidelines?: Prisma.DiseaseOnClinicalGuidelineUncheckedUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseCreateWithoutGuidelinesInput = {
@@ -1293,6 +1336,7 @@ export type DiseaseCreateWithoutGuidelinesInput = {
   publications?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseUncheckedCreateWithoutGuidelinesInput = {
@@ -1314,6 +1358,7 @@ export type DiseaseUncheckedCreateWithoutGuidelinesInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseCreateOrConnectWithoutGuidelinesInput = {
@@ -1351,6 +1396,7 @@ export type DiseaseUpdateWithoutGuidelinesInput = {
   publications?: Prisma.PublicationOnDiseaseUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseUncheckedUpdateWithoutGuidelinesInput = {
@@ -1372,6 +1418,7 @@ export type DiseaseUncheckedUpdateWithoutGuidelinesInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseCreateWithoutClinicsInput = {
@@ -1393,6 +1440,7 @@ export type DiseaseCreateWithoutClinicsInput = {
   publications?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseUncheckedCreateWithoutClinicsInput = {
@@ -1414,6 +1462,7 @@ export type DiseaseUncheckedCreateWithoutClinicsInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutDiseaseInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
 }
 
 export type DiseaseCreateOrConnectWithoutClinicsInput = {
@@ -1451,6 +1500,7 @@ export type DiseaseUpdateWithoutClinicsInput = {
   publications?: Prisma.PublicationOnDiseaseUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseUncheckedUpdateWithoutClinicsInput = {
@@ -1468,6 +1518,111 @@ export type DiseaseUncheckedUpdateWithoutClinicsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   procedures?: Prisma.DiseaseOnProcedureUncheckedUpdateManyWithoutDiseaseNestedInput
   doctors?: Prisma.DoctorOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  guidelines?: Prisma.DiseaseOnClinicalGuidelineUncheckedUpdateManyWithoutDiseaseNestedInput
+  publications?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  equipment?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutDiseaseNestedInput
+  scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+}
+
+export type DiseaseCreateWithoutInvestigationsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  icdCode?: string | null
+  symptoms?: Prisma.DiseaseCreatesymptomsInput | string[]
+  diagnostics?: string | null
+  treatment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  category?: Prisma.DiseaseCategoryCreateNestedOneWithoutDiseasesInput
+  procedures?: Prisma.DiseaseOnProcedureCreateNestedManyWithoutDiseaseInput
+  doctors?: Prisma.DoctorOnDiseaseCreateNestedManyWithoutDiseaseInput
+  clinics?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutDiseaseInput
+  guidelines?: Prisma.DiseaseOnClinicalGuidelineCreateNestedManyWithoutDiseaseInput
+  publications?: Prisma.PublicationOnDiseaseCreateNestedManyWithoutDiseaseInput
+  equipment?: Prisma.DiseaseOnEquipmentCreateNestedManyWithoutDiseaseInput
+  scientificWorks?: Prisma.ScientificWorkOnDiseaseCreateNestedManyWithoutDiseaseInput
+}
+
+export type DiseaseUncheckedCreateWithoutInvestigationsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  icdCode?: string | null
+  symptoms?: Prisma.DiseaseCreatesymptomsInput | string[]
+  diagnostics?: string | null
+  treatment?: string | null
+  categoryId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  procedures?: Prisma.DiseaseOnProcedureUncheckedCreateNestedManyWithoutDiseaseInput
+  doctors?: Prisma.DoctorOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  clinics?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  guidelines?: Prisma.DiseaseOnClinicalGuidelineUncheckedCreateNestedManyWithoutDiseaseInput
+  publications?: Prisma.PublicationOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+  equipment?: Prisma.DiseaseOnEquipmentUncheckedCreateNestedManyWithoutDiseaseInput
+  scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedCreateNestedManyWithoutDiseaseInput
+}
+
+export type DiseaseCreateOrConnectWithoutInvestigationsInput = {
+  where: Prisma.DiseaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.DiseaseCreateWithoutInvestigationsInput, Prisma.DiseaseUncheckedCreateWithoutInvestigationsInput>
+}
+
+export type DiseaseUpsertWithoutInvestigationsInput = {
+  update: Prisma.XOR<Prisma.DiseaseUpdateWithoutInvestigationsInput, Prisma.DiseaseUncheckedUpdateWithoutInvestigationsInput>
+  create: Prisma.XOR<Prisma.DiseaseCreateWithoutInvestigationsInput, Prisma.DiseaseUncheckedCreateWithoutInvestigationsInput>
+  where?: Prisma.DiseaseWhereInput
+}
+
+export type DiseaseUpdateToOneWithWhereWithoutInvestigationsInput = {
+  where?: Prisma.DiseaseWhereInput
+  data: Prisma.XOR<Prisma.DiseaseUpdateWithoutInvestigationsInput, Prisma.DiseaseUncheckedUpdateWithoutInvestigationsInput>
+}
+
+export type DiseaseUpdateWithoutInvestigationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icdCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  symptoms?: Prisma.DiseaseUpdatesymptomsInput | string[]
+  diagnostics?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  treatment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.DiseaseCategoryUpdateOneWithoutDiseasesNestedInput
+  procedures?: Prisma.DiseaseOnProcedureUpdateManyWithoutDiseaseNestedInput
+  doctors?: Prisma.DoctorOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  clinics?: Prisma.ClinicOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  guidelines?: Prisma.DiseaseOnClinicalGuidelineUpdateManyWithoutDiseaseNestedInput
+  publications?: Prisma.PublicationOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  equipment?: Prisma.DiseaseOnEquipmentUpdateManyWithoutDiseaseNestedInput
+  scientificWorks?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutDiseaseNestedInput
+}
+
+export type DiseaseUncheckedUpdateWithoutInvestigationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icdCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  symptoms?: Prisma.DiseaseUpdatesymptomsInput | string[]
+  diagnostics?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  treatment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  procedures?: Prisma.DiseaseOnProcedureUncheckedUpdateManyWithoutDiseaseNestedInput
+  doctors?: Prisma.DoctorOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  clinics?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
   guidelines?: Prisma.DiseaseOnClinicalGuidelineUncheckedUpdateManyWithoutDiseaseNestedInput
   publications?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutDiseaseNestedInput
@@ -1507,6 +1662,7 @@ export type DiseaseUpdateWithoutCategoryInput = {
   publications?: Prisma.PublicationOnDiseaseUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseUncheckedUpdateWithoutCategoryInput = {
@@ -1528,6 +1684,7 @@ export type DiseaseUncheckedUpdateWithoutCategoryInput = {
   publications?: Prisma.PublicationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
   equipment?: Prisma.DiseaseOnEquipmentUncheckedUpdateManyWithoutDiseaseNestedInput
   scientificWorks?: Prisma.ScientificWorkOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
+  investigations?: Prisma.InvestigationOnDiseaseUncheckedUpdateManyWithoutDiseaseNestedInput
 }
 
 export type DiseaseUncheckedUpdateManyWithoutCategoryInput = {
@@ -1557,6 +1714,7 @@ export type DiseaseCountOutputType = {
   publications: number
   equipment: number
   scientificWorks: number
+  investigations: number
 }
 
 export type DiseaseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1567,6 +1725,7 @@ export type DiseaseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   publications?: boolean | DiseaseCountOutputTypeCountPublicationsArgs
   equipment?: boolean | DiseaseCountOutputTypeCountEquipmentArgs
   scientificWorks?: boolean | DiseaseCountOutputTypeCountScientificWorksArgs
+  investigations?: boolean | DiseaseCountOutputTypeCountInvestigationsArgs
 }
 
 /**
@@ -1628,6 +1787,13 @@ export type DiseaseCountOutputTypeCountScientificWorksArgs<ExtArgs extends runti
   where?: Prisma.ScientificWorkOnDiseaseWhereInput
 }
 
+/**
+ * DiseaseCountOutputType without action
+ */
+export type DiseaseCountOutputTypeCountInvestigationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvestigationOnDiseaseWhereInput
+}
+
 
 export type DiseaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1650,6 +1816,7 @@ export type DiseaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   publications?: boolean | Prisma.Disease$publicationsArgs<ExtArgs>
   equipment?: boolean | Prisma.Disease$equipmentArgs<ExtArgs>
   scientificWorks?: boolean | Prisma.Disease$scientificWorksArgs<ExtArgs>
+  investigations?: boolean | Prisma.Disease$investigationsArgs<ExtArgs>
   _count?: boolean | Prisma.DiseaseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["disease"]>
 
@@ -1710,6 +1877,7 @@ export type DiseaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   publications?: boolean | Prisma.Disease$publicationsArgs<ExtArgs>
   equipment?: boolean | Prisma.Disease$equipmentArgs<ExtArgs>
   scientificWorks?: boolean | Prisma.Disease$scientificWorksArgs<ExtArgs>
+  investigations?: boolean | Prisma.Disease$investigationsArgs<ExtArgs>
   _count?: boolean | Prisma.DiseaseCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DiseaseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1730,6 +1898,7 @@ export type $DiseasePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     publications: Prisma.$PublicationOnDiseasePayload<ExtArgs>[]
     equipment: Prisma.$DiseaseOnEquipmentPayload<ExtArgs>[]
     scientificWorks: Prisma.$ScientificWorkOnDiseasePayload<ExtArgs>[]
+    investigations: Prisma.$InvestigationOnDiseasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2146,6 +2315,7 @@ export interface Prisma__DiseaseClient<T, Null = never, ExtArgs extends runtime.
   publications<T extends Prisma.Disease$publicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Disease$publicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicationOnDiseasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   equipment<T extends Prisma.Disease$equipmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Disease$equipmentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DiseaseOnEquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   scientificWorks<T extends Prisma.Disease$scientificWorksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Disease$scientificWorksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScientificWorkOnDiseasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  investigations<T extends Prisma.Disease$investigationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Disease$investigationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvestigationOnDiseasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2772,6 +2942,30 @@ export type Disease$scientificWorksArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.ScientificWorkOnDiseaseScalarFieldEnum | Prisma.ScientificWorkOnDiseaseScalarFieldEnum[]
+}
+
+/**
+ * Disease.investigations
+ */
+export type Disease$investigationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InvestigationOnDisease
+   */
+  select?: Prisma.InvestigationOnDiseaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InvestigationOnDisease
+   */
+  omit?: Prisma.InvestigationOnDiseaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvestigationOnDiseaseInclude<ExtArgs> | null
+  where?: Prisma.InvestigationOnDiseaseWhereInput
+  orderBy?: Prisma.InvestigationOnDiseaseOrderByWithRelationInput | Prisma.InvestigationOnDiseaseOrderByWithRelationInput[]
+  cursor?: Prisma.InvestigationOnDiseaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvestigationOnDiseaseScalarFieldEnum | Prisma.InvestigationOnDiseaseScalarFieldEnum[]
 }
 
 /**

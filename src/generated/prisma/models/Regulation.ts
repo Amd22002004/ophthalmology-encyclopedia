@@ -32,7 +32,18 @@ export type RegulationMinAggregateOutputType = {
   content: string | null
   sourceUrl: string | null
   documentType: string | null
+  number: string | null
+  adoptedAt: Date | null
+  issuingAuthority: string | null
+  jurisdiction: string | null
+  officialPublicationUrl: string | null
+  legalStatus: $Enums.RegulationLegalStatus | null
   effectiveFrom: Date | null
+  effectiveTo: Date | null
+  isPublished: boolean | null
+  publishedAt: Date | null
+  seoTitle: string | null
+  seoDescription: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -45,7 +56,18 @@ export type RegulationMaxAggregateOutputType = {
   content: string | null
   sourceUrl: string | null
   documentType: string | null
+  number: string | null
+  adoptedAt: Date | null
+  issuingAuthority: string | null
+  jurisdiction: string | null
+  officialPublicationUrl: string | null
+  legalStatus: $Enums.RegulationLegalStatus | null
   effectiveFrom: Date | null
+  effectiveTo: Date | null
+  isPublished: boolean | null
+  publishedAt: Date | null
+  seoTitle: string | null
+  seoDescription: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -58,7 +80,18 @@ export type RegulationCountAggregateOutputType = {
   content: number
   sourceUrl: number
   documentType: number
+  number: number
+  adoptedAt: number
+  issuingAuthority: number
+  jurisdiction: number
+  officialPublicationUrl: number
+  legalStatus: number
   effectiveFrom: number
+  effectiveTo: number
+  isPublished: number
+  publishedAt: number
+  seoTitle: number
+  seoDescription: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -73,7 +106,18 @@ export type RegulationMinAggregateInputType = {
   content?: true
   sourceUrl?: true
   documentType?: true
+  number?: true
+  adoptedAt?: true
+  issuingAuthority?: true
+  jurisdiction?: true
+  officialPublicationUrl?: true
+  legalStatus?: true
   effectiveFrom?: true
+  effectiveTo?: true
+  isPublished?: true
+  publishedAt?: true
+  seoTitle?: true
+  seoDescription?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -86,7 +130,18 @@ export type RegulationMaxAggregateInputType = {
   content?: true
   sourceUrl?: true
   documentType?: true
+  number?: true
+  adoptedAt?: true
+  issuingAuthority?: true
+  jurisdiction?: true
+  officialPublicationUrl?: true
+  legalStatus?: true
   effectiveFrom?: true
+  effectiveTo?: true
+  isPublished?: true
+  publishedAt?: true
+  seoTitle?: true
+  seoDescription?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -99,7 +154,18 @@ export type RegulationCountAggregateInputType = {
   content?: true
   sourceUrl?: true
   documentType?: true
+  number?: true
+  adoptedAt?: true
+  issuingAuthority?: true
+  jurisdiction?: true
+  officialPublicationUrl?: true
+  legalStatus?: true
   effectiveFrom?: true
+  effectiveTo?: true
+  isPublished?: true
+  publishedAt?: true
+  seoTitle?: true
+  seoDescription?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -185,7 +251,18 @@ export type RegulationGroupByOutputType = {
   content: string | null
   sourceUrl: string | null
   documentType: string | null
+  number: string | null
+  adoptedAt: Date | null
+  issuingAuthority: string | null
+  jurisdiction: string
+  officialPublicationUrl: string | null
+  legalStatus: $Enums.RegulationLegalStatus
   effectiveFrom: Date | null
+  effectiveTo: Date | null
+  isPublished: boolean
+  publishedAt: Date | null
+  seoTitle: string | null
+  seoDescription: string | null
   createdAt: Date
   updatedAt: Date
   _count: RegulationCountAggregateOutputType | null
@@ -219,9 +296,25 @@ export type RegulationWhereInput = {
   content?: Prisma.StringNullableFilter<"Regulation"> | string | null
   sourceUrl?: Prisma.StringNullableFilter<"Regulation"> | string | null
   documentType?: Prisma.StringNullableFilter<"Regulation"> | string | null
+  number?: Prisma.StringNullableFilter<"Regulation"> | string | null
+  adoptedAt?: Prisma.DateTimeNullableFilter<"Regulation"> | Date | string | null
+  issuingAuthority?: Prisma.StringNullableFilter<"Regulation"> | string | null
+  jurisdiction?: Prisma.StringFilter<"Regulation"> | string
+  officialPublicationUrl?: Prisma.StringNullableFilter<"Regulation"> | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFilter<"Regulation"> | $Enums.RegulationLegalStatus
   effectiveFrom?: Prisma.DateTimeNullableFilter<"Regulation"> | Date | string | null
+  effectiveTo?: Prisma.DateTimeNullableFilter<"Regulation"> | Date | string | null
+  isPublished?: Prisma.BoolFilter<"Regulation"> | boolean
+  publishedAt?: Prisma.DateTimeNullableFilter<"Regulation"> | Date | string | null
+  seoTitle?: Prisma.StringNullableFilter<"Regulation"> | string | null
+  seoDescription?: Prisma.StringNullableFilter<"Regulation"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Regulation"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Regulation"> | Date | string
+  editions?: Prisma.RegulationEditionListRelationFilter
+  sources?: Prisma.RegulationSourceListRelationFilter
+  topics?: Prisma.RegulationOnTopicListRelationFilter
+  outgoingRelations?: Prisma.RegulationRelationListRelationFilter
+  incomingRelations?: Prisma.RegulationRelationListRelationFilter
 }
 
 export type RegulationOrderByWithRelationInput = {
@@ -232,9 +325,25 @@ export type RegulationOrderByWithRelationInput = {
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   documentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  number?: Prisma.SortOrderInput | Prisma.SortOrder
+  adoptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  issuingAuthority?: Prisma.SortOrderInput | Prisma.SortOrder
+  jurisdiction?: Prisma.SortOrder
+  officialPublicationUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  legalStatus?: Prisma.SortOrder
   effectiveFrom?: Prisma.SortOrderInput | Prisma.SortOrder
+  effectiveTo?: Prisma.SortOrderInput | Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  editions?: Prisma.RegulationEditionOrderByRelationAggregateInput
+  sources?: Prisma.RegulationSourceOrderByRelationAggregateInput
+  topics?: Prisma.RegulationOnTopicOrderByRelationAggregateInput
+  outgoingRelations?: Prisma.RegulationRelationOrderByRelationAggregateInput
+  incomingRelations?: Prisma.RegulationRelationOrderByRelationAggregateInput
 }
 
 export type RegulationWhereUniqueInput = Prisma.AtLeast<{
@@ -248,9 +357,25 @@ export type RegulationWhereUniqueInput = Prisma.AtLeast<{
   content?: Prisma.StringNullableFilter<"Regulation"> | string | null
   sourceUrl?: Prisma.StringNullableFilter<"Regulation"> | string | null
   documentType?: Prisma.StringNullableFilter<"Regulation"> | string | null
+  number?: Prisma.StringNullableFilter<"Regulation"> | string | null
+  adoptedAt?: Prisma.DateTimeNullableFilter<"Regulation"> | Date | string | null
+  issuingAuthority?: Prisma.StringNullableFilter<"Regulation"> | string | null
+  jurisdiction?: Prisma.StringFilter<"Regulation"> | string
+  officialPublicationUrl?: Prisma.StringNullableFilter<"Regulation"> | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFilter<"Regulation"> | $Enums.RegulationLegalStatus
   effectiveFrom?: Prisma.DateTimeNullableFilter<"Regulation"> | Date | string | null
+  effectiveTo?: Prisma.DateTimeNullableFilter<"Regulation"> | Date | string | null
+  isPublished?: Prisma.BoolFilter<"Regulation"> | boolean
+  publishedAt?: Prisma.DateTimeNullableFilter<"Regulation"> | Date | string | null
+  seoTitle?: Prisma.StringNullableFilter<"Regulation"> | string | null
+  seoDescription?: Prisma.StringNullableFilter<"Regulation"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Regulation"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Regulation"> | Date | string
+  editions?: Prisma.RegulationEditionListRelationFilter
+  sources?: Prisma.RegulationSourceListRelationFilter
+  topics?: Prisma.RegulationOnTopicListRelationFilter
+  outgoingRelations?: Prisma.RegulationRelationListRelationFilter
+  incomingRelations?: Prisma.RegulationRelationListRelationFilter
 }, "id" | "slug">
 
 export type RegulationOrderByWithAggregationInput = {
@@ -261,7 +386,18 @@ export type RegulationOrderByWithAggregationInput = {
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   documentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  number?: Prisma.SortOrderInput | Prisma.SortOrder
+  adoptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  issuingAuthority?: Prisma.SortOrderInput | Prisma.SortOrder
+  jurisdiction?: Prisma.SortOrder
+  officialPublicationUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  legalStatus?: Prisma.SortOrder
   effectiveFrom?: Prisma.SortOrderInput | Prisma.SortOrder
+  effectiveTo?: Prisma.SortOrderInput | Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.RegulationCountOrderByAggregateInput
@@ -280,7 +416,18 @@ export type RegulationScalarWhereWithAggregatesInput = {
   content?: Prisma.StringNullableWithAggregatesFilter<"Regulation"> | string | null
   sourceUrl?: Prisma.StringNullableWithAggregatesFilter<"Regulation"> | string | null
   documentType?: Prisma.StringNullableWithAggregatesFilter<"Regulation"> | string | null
+  number?: Prisma.StringNullableWithAggregatesFilter<"Regulation"> | string | null
+  adoptedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Regulation"> | Date | string | null
+  issuingAuthority?: Prisma.StringNullableWithAggregatesFilter<"Regulation"> | string | null
+  jurisdiction?: Prisma.StringWithAggregatesFilter<"Regulation"> | string
+  officialPublicationUrl?: Prisma.StringNullableWithAggregatesFilter<"Regulation"> | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusWithAggregatesFilter<"Regulation"> | $Enums.RegulationLegalStatus
   effectiveFrom?: Prisma.DateTimeNullableWithAggregatesFilter<"Regulation"> | Date | string | null
+  effectiveTo?: Prisma.DateTimeNullableWithAggregatesFilter<"Regulation"> | Date | string | null
+  isPublished?: Prisma.BoolWithAggregatesFilter<"Regulation"> | boolean
+  publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Regulation"> | Date | string | null
+  seoTitle?: Prisma.StringNullableWithAggregatesFilter<"Regulation"> | string | null
+  seoDescription?: Prisma.StringNullableWithAggregatesFilter<"Regulation"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Regulation"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Regulation"> | Date | string
 }
@@ -293,9 +440,25 @@ export type RegulationCreateInput = {
   content?: string | null
   sourceUrl?: string | null
   documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
   effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  editions?: Prisma.RegulationEditionCreateNestedManyWithoutRegulationInput
+  sources?: Prisma.RegulationSourceCreateNestedManyWithoutRegulationInput
+  topics?: Prisma.RegulationOnTopicCreateNestedManyWithoutRegulationInput
+  outgoingRelations?: Prisma.RegulationRelationCreateNestedManyWithoutSourceRegulationInput
+  incomingRelations?: Prisma.RegulationRelationCreateNestedManyWithoutTargetRegulationInput
 }
 
 export type RegulationUncheckedCreateInput = {
@@ -306,9 +469,25 @@ export type RegulationUncheckedCreateInput = {
   content?: string | null
   sourceUrl?: string | null
   documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
   effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  editions?: Prisma.RegulationEditionUncheckedCreateNestedManyWithoutRegulationInput
+  sources?: Prisma.RegulationSourceUncheckedCreateNestedManyWithoutRegulationInput
+  topics?: Prisma.RegulationOnTopicUncheckedCreateNestedManyWithoutRegulationInput
+  outgoingRelations?: Prisma.RegulationRelationUncheckedCreateNestedManyWithoutSourceRegulationInput
+  incomingRelations?: Prisma.RegulationRelationUncheckedCreateNestedManyWithoutTargetRegulationInput
 }
 
 export type RegulationUpdateInput = {
@@ -319,9 +498,25 @@ export type RegulationUpdateInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
   effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  editions?: Prisma.RegulationEditionUpdateManyWithoutRegulationNestedInput
+  sources?: Prisma.RegulationSourceUpdateManyWithoutRegulationNestedInput
+  topics?: Prisma.RegulationOnTopicUpdateManyWithoutRegulationNestedInput
+  outgoingRelations?: Prisma.RegulationRelationUpdateManyWithoutSourceRegulationNestedInput
+  incomingRelations?: Prisma.RegulationRelationUpdateManyWithoutTargetRegulationNestedInput
 }
 
 export type RegulationUncheckedUpdateInput = {
@@ -332,9 +527,25 @@ export type RegulationUncheckedUpdateInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
   effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  editions?: Prisma.RegulationEditionUncheckedUpdateManyWithoutRegulationNestedInput
+  sources?: Prisma.RegulationSourceUncheckedUpdateManyWithoutRegulationNestedInput
+  topics?: Prisma.RegulationOnTopicUncheckedUpdateManyWithoutRegulationNestedInput
+  outgoingRelations?: Prisma.RegulationRelationUncheckedUpdateManyWithoutSourceRegulationNestedInput
+  incomingRelations?: Prisma.RegulationRelationUncheckedUpdateManyWithoutTargetRegulationNestedInput
 }
 
 export type RegulationCreateManyInput = {
@@ -345,7 +556,18 @@ export type RegulationCreateManyInput = {
   content?: string | null
   sourceUrl?: string | null
   documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
   effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -358,7 +580,18 @@ export type RegulationUpdateManyMutationInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
   effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -371,7 +604,18 @@ export type RegulationUncheckedUpdateManyInput = {
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
   effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -384,7 +628,18 @@ export type RegulationCountOrderByAggregateInput = {
   content?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
+  number?: Prisma.SortOrder
+  adoptedAt?: Prisma.SortOrder
+  issuingAuthority?: Prisma.SortOrder
+  jurisdiction?: Prisma.SortOrder
+  officialPublicationUrl?: Prisma.SortOrder
+  legalStatus?: Prisma.SortOrder
   effectiveFrom?: Prisma.SortOrder
+  effectiveTo?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -397,7 +652,18 @@ export type RegulationMaxOrderByAggregateInput = {
   content?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
+  number?: Prisma.SortOrder
+  adoptedAt?: Prisma.SortOrder
+  issuingAuthority?: Prisma.SortOrder
+  jurisdiction?: Prisma.SortOrder
+  officialPublicationUrl?: Prisma.SortOrder
+  legalStatus?: Prisma.SortOrder
   effectiveFrom?: Prisma.SortOrder
+  effectiveTo?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -410,11 +676,806 @@ export type RegulationMinOrderByAggregateInput = {
   content?: Prisma.SortOrder
   sourceUrl?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
+  number?: Prisma.SortOrder
+  adoptedAt?: Prisma.SortOrder
+  issuingAuthority?: Prisma.SortOrder
+  jurisdiction?: Prisma.SortOrder
+  officialPublicationUrl?: Prisma.SortOrder
+  legalStatus?: Prisma.SortOrder
   effectiveFrom?: Prisma.SortOrder
+  effectiveTo?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
+export type RegulationScalarRelationFilter = {
+  is?: Prisma.RegulationWhereInput
+  isNot?: Prisma.RegulationWhereInput
+}
+
+export type EnumRegulationLegalStatusFieldUpdateOperationsInput = {
+  set?: $Enums.RegulationLegalStatus
+}
+
+export type RegulationCreateNestedOneWithoutEditionsInput = {
+  create?: Prisma.XOR<Prisma.RegulationCreateWithoutEditionsInput, Prisma.RegulationUncheckedCreateWithoutEditionsInput>
+  connectOrCreate?: Prisma.RegulationCreateOrConnectWithoutEditionsInput
+  connect?: Prisma.RegulationWhereUniqueInput
+}
+
+export type RegulationUpdateOneRequiredWithoutEditionsNestedInput = {
+  create?: Prisma.XOR<Prisma.RegulationCreateWithoutEditionsInput, Prisma.RegulationUncheckedCreateWithoutEditionsInput>
+  connectOrCreate?: Prisma.RegulationCreateOrConnectWithoutEditionsInput
+  upsert?: Prisma.RegulationUpsertWithoutEditionsInput
+  connect?: Prisma.RegulationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RegulationUpdateToOneWithWhereWithoutEditionsInput, Prisma.RegulationUpdateWithoutEditionsInput>, Prisma.RegulationUncheckedUpdateWithoutEditionsInput>
+}
+
+export type RegulationCreateNestedOneWithoutOutgoingRelationsInput = {
+  create?: Prisma.XOR<Prisma.RegulationCreateWithoutOutgoingRelationsInput, Prisma.RegulationUncheckedCreateWithoutOutgoingRelationsInput>
+  connectOrCreate?: Prisma.RegulationCreateOrConnectWithoutOutgoingRelationsInput
+  connect?: Prisma.RegulationWhereUniqueInput
+}
+
+export type RegulationCreateNestedOneWithoutIncomingRelationsInput = {
+  create?: Prisma.XOR<Prisma.RegulationCreateWithoutIncomingRelationsInput, Prisma.RegulationUncheckedCreateWithoutIncomingRelationsInput>
+  connectOrCreate?: Prisma.RegulationCreateOrConnectWithoutIncomingRelationsInput
+  connect?: Prisma.RegulationWhereUniqueInput
+}
+
+export type RegulationUpdateOneRequiredWithoutOutgoingRelationsNestedInput = {
+  create?: Prisma.XOR<Prisma.RegulationCreateWithoutOutgoingRelationsInput, Prisma.RegulationUncheckedCreateWithoutOutgoingRelationsInput>
+  connectOrCreate?: Prisma.RegulationCreateOrConnectWithoutOutgoingRelationsInput
+  upsert?: Prisma.RegulationUpsertWithoutOutgoingRelationsInput
+  connect?: Prisma.RegulationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RegulationUpdateToOneWithWhereWithoutOutgoingRelationsInput, Prisma.RegulationUpdateWithoutOutgoingRelationsInput>, Prisma.RegulationUncheckedUpdateWithoutOutgoingRelationsInput>
+}
+
+export type RegulationUpdateOneRequiredWithoutIncomingRelationsNestedInput = {
+  create?: Prisma.XOR<Prisma.RegulationCreateWithoutIncomingRelationsInput, Prisma.RegulationUncheckedCreateWithoutIncomingRelationsInput>
+  connectOrCreate?: Prisma.RegulationCreateOrConnectWithoutIncomingRelationsInput
+  upsert?: Prisma.RegulationUpsertWithoutIncomingRelationsInput
+  connect?: Prisma.RegulationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RegulationUpdateToOneWithWhereWithoutIncomingRelationsInput, Prisma.RegulationUpdateWithoutIncomingRelationsInput>, Prisma.RegulationUncheckedUpdateWithoutIncomingRelationsInput>
+}
+
+export type RegulationCreateNestedOneWithoutSourcesInput = {
+  create?: Prisma.XOR<Prisma.RegulationCreateWithoutSourcesInput, Prisma.RegulationUncheckedCreateWithoutSourcesInput>
+  connectOrCreate?: Prisma.RegulationCreateOrConnectWithoutSourcesInput
+  connect?: Prisma.RegulationWhereUniqueInput
+}
+
+export type RegulationUpdateOneRequiredWithoutSourcesNestedInput = {
+  create?: Prisma.XOR<Prisma.RegulationCreateWithoutSourcesInput, Prisma.RegulationUncheckedCreateWithoutSourcesInput>
+  connectOrCreate?: Prisma.RegulationCreateOrConnectWithoutSourcesInput
+  upsert?: Prisma.RegulationUpsertWithoutSourcesInput
+  connect?: Prisma.RegulationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RegulationUpdateToOneWithWhereWithoutSourcesInput, Prisma.RegulationUpdateWithoutSourcesInput>, Prisma.RegulationUncheckedUpdateWithoutSourcesInput>
+}
+
+export type RegulationCreateNestedOneWithoutTopicsInput = {
+  create?: Prisma.XOR<Prisma.RegulationCreateWithoutTopicsInput, Prisma.RegulationUncheckedCreateWithoutTopicsInput>
+  connectOrCreate?: Prisma.RegulationCreateOrConnectWithoutTopicsInput
+  connect?: Prisma.RegulationWhereUniqueInput
+}
+
+export type RegulationUpdateOneRequiredWithoutTopicsNestedInput = {
+  create?: Prisma.XOR<Prisma.RegulationCreateWithoutTopicsInput, Prisma.RegulationUncheckedCreateWithoutTopicsInput>
+  connectOrCreate?: Prisma.RegulationCreateOrConnectWithoutTopicsInput
+  upsert?: Prisma.RegulationUpsertWithoutTopicsInput
+  connect?: Prisma.RegulationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RegulationUpdateToOneWithWhereWithoutTopicsInput, Prisma.RegulationUpdateWithoutTopicsInput>, Prisma.RegulationUncheckedUpdateWithoutTopicsInput>
+}
+
+export type RegulationCreateWithoutEditionsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  content?: string | null
+  sourceUrl?: string | null
+  documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
+  effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sources?: Prisma.RegulationSourceCreateNestedManyWithoutRegulationInput
+  topics?: Prisma.RegulationOnTopicCreateNestedManyWithoutRegulationInput
+  outgoingRelations?: Prisma.RegulationRelationCreateNestedManyWithoutSourceRegulationInput
+  incomingRelations?: Prisma.RegulationRelationCreateNestedManyWithoutTargetRegulationInput
+}
+
+export type RegulationUncheckedCreateWithoutEditionsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  content?: string | null
+  sourceUrl?: string | null
+  documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
+  effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sources?: Prisma.RegulationSourceUncheckedCreateNestedManyWithoutRegulationInput
+  topics?: Prisma.RegulationOnTopicUncheckedCreateNestedManyWithoutRegulationInput
+  outgoingRelations?: Prisma.RegulationRelationUncheckedCreateNestedManyWithoutSourceRegulationInput
+  incomingRelations?: Prisma.RegulationRelationUncheckedCreateNestedManyWithoutTargetRegulationInput
+}
+
+export type RegulationCreateOrConnectWithoutEditionsInput = {
+  where: Prisma.RegulationWhereUniqueInput
+  create: Prisma.XOR<Prisma.RegulationCreateWithoutEditionsInput, Prisma.RegulationUncheckedCreateWithoutEditionsInput>
+}
+
+export type RegulationUpsertWithoutEditionsInput = {
+  update: Prisma.XOR<Prisma.RegulationUpdateWithoutEditionsInput, Prisma.RegulationUncheckedUpdateWithoutEditionsInput>
+  create: Prisma.XOR<Prisma.RegulationCreateWithoutEditionsInput, Prisma.RegulationUncheckedCreateWithoutEditionsInput>
+  where?: Prisma.RegulationWhereInput
+}
+
+export type RegulationUpdateToOneWithWhereWithoutEditionsInput = {
+  where?: Prisma.RegulationWhereInput
+  data: Prisma.XOR<Prisma.RegulationUpdateWithoutEditionsInput, Prisma.RegulationUncheckedUpdateWithoutEditionsInput>
+}
+
+export type RegulationUpdateWithoutEditionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
+  effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sources?: Prisma.RegulationSourceUpdateManyWithoutRegulationNestedInput
+  topics?: Prisma.RegulationOnTopicUpdateManyWithoutRegulationNestedInput
+  outgoingRelations?: Prisma.RegulationRelationUpdateManyWithoutSourceRegulationNestedInput
+  incomingRelations?: Prisma.RegulationRelationUpdateManyWithoutTargetRegulationNestedInput
+}
+
+export type RegulationUncheckedUpdateWithoutEditionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
+  effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sources?: Prisma.RegulationSourceUncheckedUpdateManyWithoutRegulationNestedInput
+  topics?: Prisma.RegulationOnTopicUncheckedUpdateManyWithoutRegulationNestedInput
+  outgoingRelations?: Prisma.RegulationRelationUncheckedUpdateManyWithoutSourceRegulationNestedInput
+  incomingRelations?: Prisma.RegulationRelationUncheckedUpdateManyWithoutTargetRegulationNestedInput
+}
+
+export type RegulationCreateWithoutOutgoingRelationsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  content?: string | null
+  sourceUrl?: string | null
+  documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
+  effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  editions?: Prisma.RegulationEditionCreateNestedManyWithoutRegulationInput
+  sources?: Prisma.RegulationSourceCreateNestedManyWithoutRegulationInput
+  topics?: Prisma.RegulationOnTopicCreateNestedManyWithoutRegulationInput
+  incomingRelations?: Prisma.RegulationRelationCreateNestedManyWithoutTargetRegulationInput
+}
+
+export type RegulationUncheckedCreateWithoutOutgoingRelationsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  content?: string | null
+  sourceUrl?: string | null
+  documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
+  effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  editions?: Prisma.RegulationEditionUncheckedCreateNestedManyWithoutRegulationInput
+  sources?: Prisma.RegulationSourceUncheckedCreateNestedManyWithoutRegulationInput
+  topics?: Prisma.RegulationOnTopicUncheckedCreateNestedManyWithoutRegulationInput
+  incomingRelations?: Prisma.RegulationRelationUncheckedCreateNestedManyWithoutTargetRegulationInput
+}
+
+export type RegulationCreateOrConnectWithoutOutgoingRelationsInput = {
+  where: Prisma.RegulationWhereUniqueInput
+  create: Prisma.XOR<Prisma.RegulationCreateWithoutOutgoingRelationsInput, Prisma.RegulationUncheckedCreateWithoutOutgoingRelationsInput>
+}
+
+export type RegulationCreateWithoutIncomingRelationsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  content?: string | null
+  sourceUrl?: string | null
+  documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
+  effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  editions?: Prisma.RegulationEditionCreateNestedManyWithoutRegulationInput
+  sources?: Prisma.RegulationSourceCreateNestedManyWithoutRegulationInput
+  topics?: Prisma.RegulationOnTopicCreateNestedManyWithoutRegulationInput
+  outgoingRelations?: Prisma.RegulationRelationCreateNestedManyWithoutSourceRegulationInput
+}
+
+export type RegulationUncheckedCreateWithoutIncomingRelationsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  content?: string | null
+  sourceUrl?: string | null
+  documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
+  effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  editions?: Prisma.RegulationEditionUncheckedCreateNestedManyWithoutRegulationInput
+  sources?: Prisma.RegulationSourceUncheckedCreateNestedManyWithoutRegulationInput
+  topics?: Prisma.RegulationOnTopicUncheckedCreateNestedManyWithoutRegulationInput
+  outgoingRelations?: Prisma.RegulationRelationUncheckedCreateNestedManyWithoutSourceRegulationInput
+}
+
+export type RegulationCreateOrConnectWithoutIncomingRelationsInput = {
+  where: Prisma.RegulationWhereUniqueInput
+  create: Prisma.XOR<Prisma.RegulationCreateWithoutIncomingRelationsInput, Prisma.RegulationUncheckedCreateWithoutIncomingRelationsInput>
+}
+
+export type RegulationUpsertWithoutOutgoingRelationsInput = {
+  update: Prisma.XOR<Prisma.RegulationUpdateWithoutOutgoingRelationsInput, Prisma.RegulationUncheckedUpdateWithoutOutgoingRelationsInput>
+  create: Prisma.XOR<Prisma.RegulationCreateWithoutOutgoingRelationsInput, Prisma.RegulationUncheckedCreateWithoutOutgoingRelationsInput>
+  where?: Prisma.RegulationWhereInput
+}
+
+export type RegulationUpdateToOneWithWhereWithoutOutgoingRelationsInput = {
+  where?: Prisma.RegulationWhereInput
+  data: Prisma.XOR<Prisma.RegulationUpdateWithoutOutgoingRelationsInput, Prisma.RegulationUncheckedUpdateWithoutOutgoingRelationsInput>
+}
+
+export type RegulationUpdateWithoutOutgoingRelationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
+  effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  editions?: Prisma.RegulationEditionUpdateManyWithoutRegulationNestedInput
+  sources?: Prisma.RegulationSourceUpdateManyWithoutRegulationNestedInput
+  topics?: Prisma.RegulationOnTopicUpdateManyWithoutRegulationNestedInput
+  incomingRelations?: Prisma.RegulationRelationUpdateManyWithoutTargetRegulationNestedInput
+}
+
+export type RegulationUncheckedUpdateWithoutOutgoingRelationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
+  effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  editions?: Prisma.RegulationEditionUncheckedUpdateManyWithoutRegulationNestedInput
+  sources?: Prisma.RegulationSourceUncheckedUpdateManyWithoutRegulationNestedInput
+  topics?: Prisma.RegulationOnTopicUncheckedUpdateManyWithoutRegulationNestedInput
+  incomingRelations?: Prisma.RegulationRelationUncheckedUpdateManyWithoutTargetRegulationNestedInput
+}
+
+export type RegulationUpsertWithoutIncomingRelationsInput = {
+  update: Prisma.XOR<Prisma.RegulationUpdateWithoutIncomingRelationsInput, Prisma.RegulationUncheckedUpdateWithoutIncomingRelationsInput>
+  create: Prisma.XOR<Prisma.RegulationCreateWithoutIncomingRelationsInput, Prisma.RegulationUncheckedCreateWithoutIncomingRelationsInput>
+  where?: Prisma.RegulationWhereInput
+}
+
+export type RegulationUpdateToOneWithWhereWithoutIncomingRelationsInput = {
+  where?: Prisma.RegulationWhereInput
+  data: Prisma.XOR<Prisma.RegulationUpdateWithoutIncomingRelationsInput, Prisma.RegulationUncheckedUpdateWithoutIncomingRelationsInput>
+}
+
+export type RegulationUpdateWithoutIncomingRelationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
+  effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  editions?: Prisma.RegulationEditionUpdateManyWithoutRegulationNestedInput
+  sources?: Prisma.RegulationSourceUpdateManyWithoutRegulationNestedInput
+  topics?: Prisma.RegulationOnTopicUpdateManyWithoutRegulationNestedInput
+  outgoingRelations?: Prisma.RegulationRelationUpdateManyWithoutSourceRegulationNestedInput
+}
+
+export type RegulationUncheckedUpdateWithoutIncomingRelationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
+  effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  editions?: Prisma.RegulationEditionUncheckedUpdateManyWithoutRegulationNestedInput
+  sources?: Prisma.RegulationSourceUncheckedUpdateManyWithoutRegulationNestedInput
+  topics?: Prisma.RegulationOnTopicUncheckedUpdateManyWithoutRegulationNestedInput
+  outgoingRelations?: Prisma.RegulationRelationUncheckedUpdateManyWithoutSourceRegulationNestedInput
+}
+
+export type RegulationCreateWithoutSourcesInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  content?: string | null
+  sourceUrl?: string | null
+  documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
+  effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  editions?: Prisma.RegulationEditionCreateNestedManyWithoutRegulationInput
+  topics?: Prisma.RegulationOnTopicCreateNestedManyWithoutRegulationInput
+  outgoingRelations?: Prisma.RegulationRelationCreateNestedManyWithoutSourceRegulationInput
+  incomingRelations?: Prisma.RegulationRelationCreateNestedManyWithoutTargetRegulationInput
+}
+
+export type RegulationUncheckedCreateWithoutSourcesInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  content?: string | null
+  sourceUrl?: string | null
+  documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
+  effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  editions?: Prisma.RegulationEditionUncheckedCreateNestedManyWithoutRegulationInput
+  topics?: Prisma.RegulationOnTopicUncheckedCreateNestedManyWithoutRegulationInput
+  outgoingRelations?: Prisma.RegulationRelationUncheckedCreateNestedManyWithoutSourceRegulationInput
+  incomingRelations?: Prisma.RegulationRelationUncheckedCreateNestedManyWithoutTargetRegulationInput
+}
+
+export type RegulationCreateOrConnectWithoutSourcesInput = {
+  where: Prisma.RegulationWhereUniqueInput
+  create: Prisma.XOR<Prisma.RegulationCreateWithoutSourcesInput, Prisma.RegulationUncheckedCreateWithoutSourcesInput>
+}
+
+export type RegulationUpsertWithoutSourcesInput = {
+  update: Prisma.XOR<Prisma.RegulationUpdateWithoutSourcesInput, Prisma.RegulationUncheckedUpdateWithoutSourcesInput>
+  create: Prisma.XOR<Prisma.RegulationCreateWithoutSourcesInput, Prisma.RegulationUncheckedCreateWithoutSourcesInput>
+  where?: Prisma.RegulationWhereInput
+}
+
+export type RegulationUpdateToOneWithWhereWithoutSourcesInput = {
+  where?: Prisma.RegulationWhereInput
+  data: Prisma.XOR<Prisma.RegulationUpdateWithoutSourcesInput, Prisma.RegulationUncheckedUpdateWithoutSourcesInput>
+}
+
+export type RegulationUpdateWithoutSourcesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
+  effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  editions?: Prisma.RegulationEditionUpdateManyWithoutRegulationNestedInput
+  topics?: Prisma.RegulationOnTopicUpdateManyWithoutRegulationNestedInput
+  outgoingRelations?: Prisma.RegulationRelationUpdateManyWithoutSourceRegulationNestedInput
+  incomingRelations?: Prisma.RegulationRelationUpdateManyWithoutTargetRegulationNestedInput
+}
+
+export type RegulationUncheckedUpdateWithoutSourcesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
+  effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  editions?: Prisma.RegulationEditionUncheckedUpdateManyWithoutRegulationNestedInput
+  topics?: Prisma.RegulationOnTopicUncheckedUpdateManyWithoutRegulationNestedInput
+  outgoingRelations?: Prisma.RegulationRelationUncheckedUpdateManyWithoutSourceRegulationNestedInput
+  incomingRelations?: Prisma.RegulationRelationUncheckedUpdateManyWithoutTargetRegulationNestedInput
+}
+
+export type RegulationCreateWithoutTopicsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  content?: string | null
+  sourceUrl?: string | null
+  documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
+  effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  editions?: Prisma.RegulationEditionCreateNestedManyWithoutRegulationInput
+  sources?: Prisma.RegulationSourceCreateNestedManyWithoutRegulationInput
+  outgoingRelations?: Prisma.RegulationRelationCreateNestedManyWithoutSourceRegulationInput
+  incomingRelations?: Prisma.RegulationRelationCreateNestedManyWithoutTargetRegulationInput
+}
+
+export type RegulationUncheckedCreateWithoutTopicsInput = {
+  id?: string
+  slug: string
+  title: string
+  summary?: string | null
+  content?: string | null
+  sourceUrl?: string | null
+  documentType?: string | null
+  number?: string | null
+  adoptedAt?: Date | string | null
+  issuingAuthority?: string | null
+  jurisdiction?: string
+  officialPublicationUrl?: string | null
+  legalStatus?: $Enums.RegulationLegalStatus
+  effectiveFrom?: Date | string | null
+  effectiveTo?: Date | string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  editions?: Prisma.RegulationEditionUncheckedCreateNestedManyWithoutRegulationInput
+  sources?: Prisma.RegulationSourceUncheckedCreateNestedManyWithoutRegulationInput
+  outgoingRelations?: Prisma.RegulationRelationUncheckedCreateNestedManyWithoutSourceRegulationInput
+  incomingRelations?: Prisma.RegulationRelationUncheckedCreateNestedManyWithoutTargetRegulationInput
+}
+
+export type RegulationCreateOrConnectWithoutTopicsInput = {
+  where: Prisma.RegulationWhereUniqueInput
+  create: Prisma.XOR<Prisma.RegulationCreateWithoutTopicsInput, Prisma.RegulationUncheckedCreateWithoutTopicsInput>
+}
+
+export type RegulationUpsertWithoutTopicsInput = {
+  update: Prisma.XOR<Prisma.RegulationUpdateWithoutTopicsInput, Prisma.RegulationUncheckedUpdateWithoutTopicsInput>
+  create: Prisma.XOR<Prisma.RegulationCreateWithoutTopicsInput, Prisma.RegulationUncheckedCreateWithoutTopicsInput>
+  where?: Prisma.RegulationWhereInput
+}
+
+export type RegulationUpdateToOneWithWhereWithoutTopicsInput = {
+  where?: Prisma.RegulationWhereInput
+  data: Prisma.XOR<Prisma.RegulationUpdateWithoutTopicsInput, Prisma.RegulationUncheckedUpdateWithoutTopicsInput>
+}
+
+export type RegulationUpdateWithoutTopicsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
+  effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  editions?: Prisma.RegulationEditionUpdateManyWithoutRegulationNestedInput
+  sources?: Prisma.RegulationSourceUpdateManyWithoutRegulationNestedInput
+  outgoingRelations?: Prisma.RegulationRelationUpdateManyWithoutSourceRegulationNestedInput
+  incomingRelations?: Prisma.RegulationRelationUpdateManyWithoutTargetRegulationNestedInput
+}
+
+export type RegulationUncheckedUpdateWithoutTopicsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adoptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  issuingAuthority?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdiction?: Prisma.StringFieldUpdateOperationsInput | string
+  officialPublicationUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  legalStatus?: Prisma.EnumRegulationLegalStatusFieldUpdateOperationsInput | $Enums.RegulationLegalStatus
+  effectiveFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  editions?: Prisma.RegulationEditionUncheckedUpdateManyWithoutRegulationNestedInput
+  sources?: Prisma.RegulationSourceUncheckedUpdateManyWithoutRegulationNestedInput
+  outgoingRelations?: Prisma.RegulationRelationUncheckedUpdateManyWithoutSourceRegulationNestedInput
+  incomingRelations?: Prisma.RegulationRelationUncheckedUpdateManyWithoutTargetRegulationNestedInput
+}
+
+
+/**
+ * Count Type RegulationCountOutputType
+ */
+
+export type RegulationCountOutputType = {
+  editions: number
+  sources: number
+  topics: number
+  outgoingRelations: number
+  incomingRelations: number
+}
+
+export type RegulationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  editions?: boolean | RegulationCountOutputTypeCountEditionsArgs
+  sources?: boolean | RegulationCountOutputTypeCountSourcesArgs
+  topics?: boolean | RegulationCountOutputTypeCountTopicsArgs
+  outgoingRelations?: boolean | RegulationCountOutputTypeCountOutgoingRelationsArgs
+  incomingRelations?: boolean | RegulationCountOutputTypeCountIncomingRelationsArgs
+}
+
+/**
+ * RegulationCountOutputType without action
+ */
+export type RegulationCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RegulationCountOutputType
+   */
+  select?: Prisma.RegulationCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * RegulationCountOutputType without action
+ */
+export type RegulationCountOutputTypeCountEditionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RegulationEditionWhereInput
+}
+
+/**
+ * RegulationCountOutputType without action
+ */
+export type RegulationCountOutputTypeCountSourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RegulationSourceWhereInput
+}
+
+/**
+ * RegulationCountOutputType without action
+ */
+export type RegulationCountOutputTypeCountTopicsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RegulationOnTopicWhereInput
+}
+
+/**
+ * RegulationCountOutputType without action
+ */
+export type RegulationCountOutputTypeCountOutgoingRelationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RegulationRelationWhereInput
+}
+
+/**
+ * RegulationCountOutputType without action
+ */
+export type RegulationCountOutputTypeCountIncomingRelationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RegulationRelationWhereInput
+}
 
 
 export type RegulationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -425,9 +1486,26 @@ export type RegulationSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   content?: boolean
   sourceUrl?: boolean
   documentType?: boolean
+  number?: boolean
+  adoptedAt?: boolean
+  issuingAuthority?: boolean
+  jurisdiction?: boolean
+  officialPublicationUrl?: boolean
+  legalStatus?: boolean
   effectiveFrom?: boolean
+  effectiveTo?: boolean
+  isPublished?: boolean
+  publishedAt?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  editions?: boolean | Prisma.Regulation$editionsArgs<ExtArgs>
+  sources?: boolean | Prisma.Regulation$sourcesArgs<ExtArgs>
+  topics?: boolean | Prisma.Regulation$topicsArgs<ExtArgs>
+  outgoingRelations?: boolean | Prisma.Regulation$outgoingRelationsArgs<ExtArgs>
+  incomingRelations?: boolean | Prisma.Regulation$incomingRelationsArgs<ExtArgs>
+  _count?: boolean | Prisma.RegulationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["regulation"]>
 
 export type RegulationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -438,7 +1516,18 @@ export type RegulationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   content?: boolean
   sourceUrl?: boolean
   documentType?: boolean
+  number?: boolean
+  adoptedAt?: boolean
+  issuingAuthority?: boolean
+  jurisdiction?: boolean
+  officialPublicationUrl?: boolean
+  legalStatus?: boolean
   effectiveFrom?: boolean
+  effectiveTo?: boolean
+  isPublished?: boolean
+  publishedAt?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["regulation"]>
@@ -451,7 +1540,18 @@ export type RegulationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   content?: boolean
   sourceUrl?: boolean
   documentType?: boolean
+  number?: boolean
+  adoptedAt?: boolean
+  issuingAuthority?: boolean
+  jurisdiction?: boolean
+  officialPublicationUrl?: boolean
+  legalStatus?: boolean
   effectiveFrom?: boolean
+  effectiveTo?: boolean
+  isPublished?: boolean
+  publishedAt?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["regulation"]>
@@ -464,16 +1564,43 @@ export type RegulationSelectScalar = {
   content?: boolean
   sourceUrl?: boolean
   documentType?: boolean
+  number?: boolean
+  adoptedAt?: boolean
+  issuingAuthority?: boolean
+  jurisdiction?: boolean
+  officialPublicationUrl?: boolean
+  legalStatus?: boolean
   effectiveFrom?: boolean
+  effectiveTo?: boolean
+  isPublished?: boolean
+  publishedAt?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type RegulationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "summary" | "content" | "sourceUrl" | "documentType" | "effectiveFrom" | "createdAt" | "updatedAt", ExtArgs["result"]["regulation"]>
+export type RegulationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "summary" | "content" | "sourceUrl" | "documentType" | "number" | "adoptedAt" | "issuingAuthority" | "jurisdiction" | "officialPublicationUrl" | "legalStatus" | "effectiveFrom" | "effectiveTo" | "isPublished" | "publishedAt" | "seoTitle" | "seoDescription" | "createdAt" | "updatedAt", ExtArgs["result"]["regulation"]>
+export type RegulationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  editions?: boolean | Prisma.Regulation$editionsArgs<ExtArgs>
+  sources?: boolean | Prisma.Regulation$sourcesArgs<ExtArgs>
+  topics?: boolean | Prisma.Regulation$topicsArgs<ExtArgs>
+  outgoingRelations?: boolean | Prisma.Regulation$outgoingRelationsArgs<ExtArgs>
+  incomingRelations?: boolean | Prisma.Regulation$incomingRelationsArgs<ExtArgs>
+  _count?: boolean | Prisma.RegulationCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type RegulationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type RegulationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $RegulationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Regulation"
-  objects: {}
+  objects: {
+    editions: Prisma.$RegulationEditionPayload<ExtArgs>[]
+    sources: Prisma.$RegulationSourcePayload<ExtArgs>[]
+    topics: Prisma.$RegulationOnTopicPayload<ExtArgs>[]
+    outgoingRelations: Prisma.$RegulationRelationPayload<ExtArgs>[]
+    incomingRelations: Prisma.$RegulationRelationPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     slug: string
@@ -482,7 +1609,18 @@ export type $RegulationPayload<ExtArgs extends runtime.Types.Extensions.Internal
     content: string | null
     sourceUrl: string | null
     documentType: string | null
+    number: string | null
+    adoptedAt: Date | null
+    issuingAuthority: string | null
+    jurisdiction: string
+    officialPublicationUrl: string | null
+    legalStatus: $Enums.RegulationLegalStatus
     effectiveFrom: Date | null
+    effectiveTo: Date | null
+    isPublished: boolean
+    publishedAt: Date | null
+    seoTitle: string | null
+    seoDescription: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["regulation"]>
@@ -879,6 +2017,11 @@ readonly fields: RegulationFieldRefs;
  */
 export interface Prisma__RegulationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  editions<T extends Prisma.Regulation$editionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Regulation$editionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RegulationEditionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sources<T extends Prisma.Regulation$sourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Regulation$sourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RegulationSourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  topics<T extends Prisma.Regulation$topicsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Regulation$topicsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RegulationOnTopicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  outgoingRelations<T extends Prisma.Regulation$outgoingRelationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Regulation$outgoingRelationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RegulationRelationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  incomingRelations<T extends Prisma.Regulation$incomingRelationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Regulation$incomingRelationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RegulationRelationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -915,7 +2058,18 @@ export interface RegulationFieldRefs {
   readonly content: Prisma.FieldRef<"Regulation", 'String'>
   readonly sourceUrl: Prisma.FieldRef<"Regulation", 'String'>
   readonly documentType: Prisma.FieldRef<"Regulation", 'String'>
+  readonly number: Prisma.FieldRef<"Regulation", 'String'>
+  readonly adoptedAt: Prisma.FieldRef<"Regulation", 'DateTime'>
+  readonly issuingAuthority: Prisma.FieldRef<"Regulation", 'String'>
+  readonly jurisdiction: Prisma.FieldRef<"Regulation", 'String'>
+  readonly officialPublicationUrl: Prisma.FieldRef<"Regulation", 'String'>
+  readonly legalStatus: Prisma.FieldRef<"Regulation", 'RegulationLegalStatus'>
   readonly effectiveFrom: Prisma.FieldRef<"Regulation", 'DateTime'>
+  readonly effectiveTo: Prisma.FieldRef<"Regulation", 'DateTime'>
+  readonly isPublished: Prisma.FieldRef<"Regulation", 'Boolean'>
+  readonly publishedAt: Prisma.FieldRef<"Regulation", 'DateTime'>
+  readonly seoTitle: Prisma.FieldRef<"Regulation", 'String'>
+  readonly seoDescription: Prisma.FieldRef<"Regulation", 'String'>
   readonly createdAt: Prisma.FieldRef<"Regulation", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Regulation", 'DateTime'>
 }
@@ -935,6 +2089,10 @@ export type RegulationFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.RegulationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationInclude<ExtArgs> | null
+  /**
    * Filter, which Regulation to fetch.
    */
   where: Prisma.RegulationWhereUniqueInput
@@ -953,6 +2111,10 @@ export type RegulationFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extens
    */
   omit?: Prisma.RegulationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationInclude<ExtArgs> | null
+  /**
    * Filter, which Regulation to fetch.
    */
   where: Prisma.RegulationWhereUniqueInput
@@ -970,6 +2132,10 @@ export type RegulationFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the Regulation
    */
   omit?: Prisma.RegulationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationInclude<ExtArgs> | null
   /**
    * Filter, which Regulation to fetch.
    */
@@ -1019,6 +2185,10 @@ export type RegulationFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensi
    */
   omit?: Prisma.RegulationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationInclude<ExtArgs> | null
+  /**
    * Filter, which Regulation to fetch.
    */
   where?: Prisma.RegulationWhereInput
@@ -1066,6 +2236,10 @@ export type RegulationFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the Regulation
    */
   omit?: Prisma.RegulationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationInclude<ExtArgs> | null
   /**
    * Filter, which Regulations to fetch.
    */
@@ -1115,6 +2289,10 @@ export type RegulationCreateArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   omit?: Prisma.RegulationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationInclude<ExtArgs> | null
+  /**
    * The data needed to create a Regulation.
    */
   data: Prisma.XOR<Prisma.RegulationCreateInput, Prisma.RegulationUncheckedCreateInput>
@@ -1162,6 +2340,10 @@ export type RegulationUpdateArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the Regulation
    */
   omit?: Prisma.RegulationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationInclude<ExtArgs> | null
   /**
    * The data needed to update a Regulation.
    */
@@ -1229,6 +2411,10 @@ export type RegulationUpsertArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   omit?: Prisma.RegulationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationInclude<ExtArgs> | null
+  /**
    * The filter to search for the Regulation to update in case it exists.
    */
   where: Prisma.RegulationWhereUniqueInput
@@ -1255,6 +2441,10 @@ export type RegulationDeleteArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   omit?: Prisma.RegulationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationInclude<ExtArgs> | null
+  /**
    * Filter which Regulation to delete.
    */
   where: Prisma.RegulationWhereUniqueInput
@@ -1275,6 +2465,126 @@ export type RegulationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
 }
 
 /**
+ * Regulation.editions
+ */
+export type Regulation$editionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RegulationEdition
+   */
+  select?: Prisma.RegulationEditionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RegulationEdition
+   */
+  omit?: Prisma.RegulationEditionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationEditionInclude<ExtArgs> | null
+  where?: Prisma.RegulationEditionWhereInput
+  orderBy?: Prisma.RegulationEditionOrderByWithRelationInput | Prisma.RegulationEditionOrderByWithRelationInput[]
+  cursor?: Prisma.RegulationEditionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RegulationEditionScalarFieldEnum | Prisma.RegulationEditionScalarFieldEnum[]
+}
+
+/**
+ * Regulation.sources
+ */
+export type Regulation$sourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RegulationSource
+   */
+  select?: Prisma.RegulationSourceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RegulationSource
+   */
+  omit?: Prisma.RegulationSourceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationSourceInclude<ExtArgs> | null
+  where?: Prisma.RegulationSourceWhereInput
+  orderBy?: Prisma.RegulationSourceOrderByWithRelationInput | Prisma.RegulationSourceOrderByWithRelationInput[]
+  cursor?: Prisma.RegulationSourceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RegulationSourceScalarFieldEnum | Prisma.RegulationSourceScalarFieldEnum[]
+}
+
+/**
+ * Regulation.topics
+ */
+export type Regulation$topicsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RegulationOnTopic
+   */
+  select?: Prisma.RegulationOnTopicSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RegulationOnTopic
+   */
+  omit?: Prisma.RegulationOnTopicOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationOnTopicInclude<ExtArgs> | null
+  where?: Prisma.RegulationOnTopicWhereInput
+  orderBy?: Prisma.RegulationOnTopicOrderByWithRelationInput | Prisma.RegulationOnTopicOrderByWithRelationInput[]
+  cursor?: Prisma.RegulationOnTopicWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RegulationOnTopicScalarFieldEnum | Prisma.RegulationOnTopicScalarFieldEnum[]
+}
+
+/**
+ * Regulation.outgoingRelations
+ */
+export type Regulation$outgoingRelationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RegulationRelation
+   */
+  select?: Prisma.RegulationRelationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RegulationRelation
+   */
+  omit?: Prisma.RegulationRelationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationRelationInclude<ExtArgs> | null
+  where?: Prisma.RegulationRelationWhereInput
+  orderBy?: Prisma.RegulationRelationOrderByWithRelationInput | Prisma.RegulationRelationOrderByWithRelationInput[]
+  cursor?: Prisma.RegulationRelationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RegulationRelationScalarFieldEnum | Prisma.RegulationRelationScalarFieldEnum[]
+}
+
+/**
+ * Regulation.incomingRelations
+ */
+export type Regulation$incomingRelationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RegulationRelation
+   */
+  select?: Prisma.RegulationRelationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RegulationRelation
+   */
+  omit?: Prisma.RegulationRelationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationRelationInclude<ExtArgs> | null
+  where?: Prisma.RegulationRelationWhereInput
+  orderBy?: Prisma.RegulationRelationOrderByWithRelationInput | Prisma.RegulationRelationOrderByWithRelationInput[]
+  cursor?: Prisma.RegulationRelationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RegulationRelationScalarFieldEnum | Prisma.RegulationRelationScalarFieldEnum[]
+}
+
+/**
  * Regulation without action
  */
 export type RegulationDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1286,4 +2596,8 @@ export type RegulationDefaultArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the Regulation
    */
   omit?: Prisma.RegulationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegulationInclude<ExtArgs> | null
 }

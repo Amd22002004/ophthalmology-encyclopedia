@@ -354,7 +354,7 @@ export default function ClinicEditForm({ clinic }: { clinic: Clinic }) {
             <Field label="Регион" name="region" defaultValue={clinic.region ?? ""} />
             <Field label="Город" name="city" defaultValue={clinic.city ?? ""} />
           </div>
-          <Field label="Полный адрес" name="address" defaultValue={clinic.address ?? ""} />
+          <Field label="Адрес" name="address" defaultValue={clinic.address ?? ""} />
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <Field
               label="Широта (latitude)"

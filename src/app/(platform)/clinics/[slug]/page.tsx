@@ -12,12 +12,17 @@ export async function generateMetadata({ params }: Props) {
   const clinic = await getClinic(slug);
   if (!clinic) return {};
 
-  const title = clinic.seoTitle || clinic.title;
+  const hasPublishedInvestigation = clinic.investigations.length > 0;
+  const title =
+    clinic.seoTitle ||
+    (hasPublishedInvestigation
+      ? `${clinic.title} — сведения, документы и материалы проверки`
+      : `${clinic.title}${clinic.city ? ` — ${clinic.city}` : clinic.region ? ` — ${clinic.region}` : ""}`);
   const description =
     clinic.seoDescription ||
-    (clinic.city
-      ? `Офтальмологическая клиника в ${clinic.city}${clinic.region ? `, ${clinic.region}` : ""}`
-      : "Офтальмологическая организация");
+    (hasPublishedInvestigation
+      ? `Сведения о ${clinic.title}, опубликованные документы, оборудование и материалы проверки с обозначенными границами выводов.`
+      : `${clinic.title}: сведения о медицинской организации${clinic.city ? ` в ${clinic.city}` : ""}${clinic.region ? `, ${clinic.region}` : ""}.`);
 
   const metadata = createPageMetadata({ title, description, path: `/clinics/${slug}` });
 

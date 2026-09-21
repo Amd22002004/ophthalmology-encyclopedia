@@ -1,0 +1,4 @@
+interface:
+  display_name: "Production Deployment"
+  short_description: "Production release preflight and checks"
+  default_prompt: "Use $production-deployment to prepare a production release."

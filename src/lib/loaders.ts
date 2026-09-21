@@ -1,5 +1,42 @@
 import type { CatalogGridItem } from "@/components/catalog/catalog-grid";
+import { getDiseaseContent } from "@/lib/disease-content";
+import { getInnovationContent } from "@/lib/innovation-content";
 import { getPrisma } from "@/lib/prisma";
+import { getEquipmentEditorial } from "@/lib/equipment-editorial";
+import {
+  GLAZCENTR_INVESTIGATION_SLUG,
+  PUBLICLY_HIDDEN_INVESTIGATION_DOCUMENT_SLUGS,
+} from "@/lib/investigation-documents";
+import {
+  evidenceValidatedContentWhere,
+  isPubliclyVisibleAt,
+  publishedContentWhere,
+} from "@/lib/publication-gate";
+import {
+  publicInvestigationEquipmentInstanceWhere,
+  publicInvestigationRelationWhere,
+  publicRegulatoryCheckWhere,
+  publicRegulationWhere,
+  publicRegulationSourceWhere,
+} from "@/lib/regulations/public-filters";
+import {
+  canPublishInvestigationAssessment,
+  canPublishRegulationProvision,
+} from "@/lib/regulations/publication";
+import { publicScientificWorkWhere } from "@/lib/scientific-work-publication";
+import {
+  publicIndependentControlAssessmentWhere,
+  publicIndependentControlCriterionNormWhere,
+  publicIndependentControlCriterionWhere,
+  publicIndependentControlMethodologyWhere,
+  publicIndependentControlSourceWhere,
+  sanitizeIndependentControlSource,
+} from "@/lib/independent-control/public-filters";
+import {
+  canPublishIndependentControlAssessment,
+  canPublishIndependentControlMethodology,
+  filterPublishableIndependentControlCriteria,
+} from "@/lib/independent-control/publication";
 
 // ─── Inferred detail types (used in template props) ───────────────────────────
 
@@ -14,11 +51,21 @@ export type GuidelineDetail = NonNullable<Awaited<ReturnType<typeof getGuideline
 export type RegulationDetail = NonNullable<Awaited<ReturnType<typeof getRegulation>>>;
 export type HistoryEntryDetail = NonNullable<Awaited<ReturnType<typeof getHistoryEntry>>>;
 export type InnovationDetail = NonNullable<Awaited<ReturnType<typeof getInnovation>>>;
+export type InvestigationDetail = NonNullable<Awaited<ReturnType<typeof getInvestigation>>>;
+export type NewsDetail = NonNullable<Awaited<ReturnType<typeof getNewsItem>>>;
 
 // ─── Helper ───────────────────────────────────────────────────────────────────
 
 export function doctorFullName(d: { firstName: string; lastName: string; middleName?: string | null }) {
   return [d.lastName, d.firstName, d.middleName].filter(Boolean).join(" ");
+}
+
+function independentControlNormRole(
+  role: "DIRECT_BASIS" | "SUPPORTING_BASIS" | "HISTORICAL_BASIS",
+) {
+  if (role === "DIRECT_BASIS") return "DIRECT_REQUIREMENT" as const;
+  if (role === "HISTORICAL_BASIS") return "HISTORICAL_CONTEXT" as const;
+  return "CONTEXT" as const;
 }
 
 // ─── Diseases ─────────────────────────────────────────────────────────────────
@@ -40,14 +87,16 @@ export async function getDiseases(opts?: {
   return rows.map((r) => ({
     href: `/diseases/${r.slug}`,
     title: r.title,
-    description: r.summary ?? (r.icdCode ? `МКБ: ${r.icdCode}` : ""),
+    description:
+      getDiseaseContent(r.slug)?.summary ?? (r.summary ?? (r.icdCode ? `МКБ: ${r.icdCode}` : "")),
   }));
 }
 
 export async function getDisease(slug: string) {
   const db = getPrisma();
   if (!db) return null;
-  return db.disease.findUnique({
+  const editorial = getDiseaseContent(slug);
+  const diseaseQuery = db.disease.findUnique({
     where: { slug },
     include: {
       category: { select: { slug: true, title: true } },
@@ -58,6 +107,10 @@ export async function getDisease(slug: string) {
       doctors: {
         take: 6,
         include: { doctor: { select: { slug: true, firstName: true, lastName: true } } },
+      },
+      clinics: {
+        take: 6,
+        include: { clinic: { select: { slug: true, title: true, city: true } } },
       },
       guidelines: {
         take: 4,
@@ -72,6 +125,7 @@ export async function getDisease(slug: string) {
       },
       // Заболевание → Научные работы (прямая связь по теме работы)
       scientificWorks: {
+        where: { work: publicScientificWorkWhere() },
         include: {
           work: {
             select: {
@@ -84,8 +138,87 @@ export async function getDisease(slug: string) {
           },
         },
       },
+      investigations: {
+        where: {
+          ...publicInvestigationRelationWhere(),
+          investigation: evidenceValidatedContentWhere(),
+        },
+        orderBy: { investigation: { publishedAt: "desc" } },
+        include: {
+          investigation: {
+            select: {
+              slug: true,
+              title: true,
+              summary: true,
+              status: true,
+              documents: {
+                where: {
+                  isEvidence: true,
+                  ...evidenceValidatedContentWhere(),
+                },
+                orderBy: { sortOrder: "asc" },
+                select: {
+                  slug: true,
+                  kind: true,
+                  title: true,
+                  summary: true,
+                  source: true,
+                  documentDate: true,
+                  mimeType: true,
+                },
+              },
+              clinics: {
+                where: publicInvestigationRelationWhere(),
+                select: { clinic: { select: { slug: true, title: true, city: true } } },
+              },
+              equipment: {
+                where: publicInvestigationRelationWhere(),
+                select: {
+                  equipment: { select: { slug: true, title: true, manufacturer: true } },
+                },
+              },
+              procedures: {
+                where: publicInvestigationRelationWhere(),
+                select: { procedure: { select: { slug: true, title: true } } },
+              },
+              diseases: {
+                where: publicInvestigationRelationWhere(),
+                select: { disease: { select: { slug: true, title: true } } },
+              },
+            },
+          },
+        },
+      },
     },
   });
+
+  const relatedDiseaseQuery = editorial
+    ? db.disease.findMany({
+        where: { slug: { in: editorial.relatedDiseaseSlugs } },
+        select: { slug: true, title: true, summary: true },
+      })
+    : Promise.resolve([] as { slug: string; title: string; summary: string | null }[]);
+
+  const [disease, relatedDiseaseRows] = await Promise.all([
+    diseaseQuery,
+    relatedDiseaseQuery,
+  ]);
+  if (!disease) return null;
+
+  const relatedDiseaseBySlug = new Map(
+    relatedDiseaseRows.map((relatedDisease) => [relatedDisease.slug, relatedDisease] as const),
+  );
+
+  return {
+    ...disease,
+    editorial,
+    relatedDiseases: editorial
+      ? editorial.relatedDiseaseSlugs.flatMap((relatedSlug) => {
+          const relatedDisease = relatedDiseaseBySlug.get(relatedSlug);
+          return relatedDisease ? [relatedDisease] : [];
+        })
+      : [],
+  };
 }
 
 // ─── Procedures ───────────────────────────────────────────────────────────────
@@ -117,7 +250,7 @@ export async function getProcedures(opts?: {
 export async function getProcedure(slug: string) {
   const db = getPrisma();
   if (!db) return null;
-  return db.procedure.findUnique({
+  const procedure = await db.procedure.findUnique({
     where: { slug },
     include: {
       category: { select: { slug: true, title: true } },
@@ -129,26 +262,104 @@ export async function getProcedure(slug: string) {
         take: 6,
         include: { doctor: { select: { slug: true, firstName: true, lastName: true } } },
       },
+      clinics: {
+        take: 6,
+        include: { clinic: { select: { slug: true, title: true, city: true } } },
+      },
       equipment: {
         take: 4,
         include: { equipment: { select: { slug: true, title: true } } },
       },
-      // Процедура → Научные работы (прямая связь по теме работы)
-      scientificWorks: {
+      publications: {
+        take: 4,
         include: {
-          work: {
+          publication: {
+            select: { slug: true, title: true, publicationType: true, authorName: true },
+          },
+        },
+      },
+      investigations: {
+        where: {
+          ...publicInvestigationRelationWhere(),
+          investigation: evidenceValidatedContentWhere(),
+        },
+        orderBy: { investigation: { publishedAt: "desc" } },
+        include: {
+          investigation: {
             select: {
               slug: true,
               title: true,
-              type: true,
-              year: true,
-              doctor: { select: { slug: true, firstName: true, lastName: true, middleName: true } },
+              summary: true,
+              status: true,
+              documents: {
+                where: {
+                  isEvidence: true,
+                  ...evidenceValidatedContentWhere(),
+                },
+                orderBy: { sortOrder: "asc" },
+                select: {
+                  slug: true,
+                  kind: true,
+                  title: true,
+                  summary: true,
+                  source: true,
+                  documentDate: true,
+                  mimeType: true,
+                },
+              },
+              clinics: {
+                where: publicInvestigationRelationWhere(),
+                select: { clinic: { select: { slug: true, title: true, city: true } } },
+              },
+              equipment: {
+                where: publicInvestigationRelationWhere(),
+                select: { equipment: { select: { slug: true, title: true, manufacturer: true } } },
+              },
+              procedures: {
+                where: publicInvestigationRelationWhere(),
+                select: { procedure: { select: { slug: true, title: true } } },
+              },
+              diseases: {
+                where: publicInvestigationRelationWhere(),
+                select: { disease: { select: { slug: true, title: true } } },
+              },
             },
           },
         },
       },
     },
   });
+
+  if (!procedure) return null;
+
+  // ScientificWork — необязательная связь. Если таблица или её relation ещё
+  // недоступны в dev-базе, сама страница процедуры остаётся рабочей.
+  const scientificWorks = await db.procedure
+    .findUnique({
+      where: { slug },
+      select: {
+        scientificWorks: {
+          where: { work: publicScientificWorkWhere() },
+          include: {
+            work: {
+              select: {
+                slug: true,
+                title: true,
+                type: true,
+                year: true,
+                doctor: {
+                  select: { slug: true, firstName: true, lastName: true, middleName: true },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+    .then((row) => row?.scientificWorks ?? [])
+    .catch(() => []);
+
+  return { ...procedure, scientificWorks };
 }
 
 // ─── Doctors ──────────────────────────────────────────────────────────────────
@@ -263,7 +474,23 @@ export async function getDoctor(slug: string) {
         select: { slug: true, title: true, publishedAt: true },
       },
       scientificWorks: {
+        where: publicScientificWorkWhere(),
         orderBy: [{ sortOrder: "asc" }, { year: "desc" }],
+        include: {
+          diseases: {
+            include: { disease: { select: { slug: true, title: true } } },
+          },
+          procedures: {
+            include: { procedure: { select: { slug: true, title: true } } },
+          },
+          equipment: {
+            include: {
+              equipment: {
+                select: { slug: true, title: true, manufacturer: true, images: true },
+              },
+            },
+          },
+        },
       },
       equipment: {
         include: {
@@ -277,6 +504,13 @@ export async function getDoctor(slug: string) {
 }
 
 // ─── Clinics ──────────────────────────────────────────────────────────────────
+
+export type PublishedInvestigationReference = {
+  slug: string;
+  title: string;
+  summary: string;
+  status: string;
+};
 
 export type ClinicCardData = {
   slug: string;
@@ -296,12 +530,13 @@ export type ClinicCardData = {
   license: string | null;
   logoUrl: string | null;
   specializationTags: string[];
+  investigations: PublishedInvestigationReference[];
 };
 
 export async function getClinicsCatalog(): Promise<ClinicCardData[]> {
   const db = getPrisma();
   if (!db) return [];
-  return db.clinic.findMany({
+  const rows = await db.clinic.findMany({
     where: { status: "active" },
     select: {
       slug: true,
@@ -321,9 +556,26 @@ export async function getClinicsCatalog(): Promise<ClinicCardData[]> {
       license: true,
       logoUrl: true,
       specializationTags: true,
+      investigations: {
+        where: {
+          ...publicInvestigationRelationWhere(),
+          investigation: evidenceValidatedContentWhere(),
+        },
+        orderBy: { investigation: { publishedAt: "desc" } },
+        select: {
+          investigation: {
+            select: { slug: true, title: true, summary: true, status: true },
+          },
+        },
+      },
     },
     orderBy: { title: "asc" },
   });
+
+  return rows.map(({ investigations, ...clinic }) => ({
+    ...clinic,
+    investigations: investigations.map((relation) => relation.investigation),
+  }));
 }
 
 export async function getClinics(opts?: {
@@ -377,7 +629,7 @@ export async function getClinic(slug: string) {
               category: true,
               // Клиника → Научные работы: через врачей, работающих в клинике
               scientificWorks: {
-                where: { slug: { not: null } },
+                where: publicScientificWorkWhere(),
                 select: { slug: true, title: true, type: true, year: true },
                 orderBy: { year: "desc" },
               },
@@ -405,6 +657,66 @@ export async function getClinic(slug: string) {
         include: {
           equipment: {
             select: { slug: true, title: true, manufacturer: true, country: true, images: true },
+          },
+        },
+      },
+      investigations: {
+        where: {
+          ...publicInvestigationRelationWhere(),
+          investigation: evidenceValidatedContentWhere(),
+        },
+        orderBy: { investigation: { publishedAt: "desc" } },
+        include: {
+          investigation: {
+            select: {
+              slug: true,
+              title: true,
+              summary: true,
+              status: true,
+              documents: {
+                where: {
+                  isEvidence: true,
+                  ...evidenceValidatedContentWhere(),
+                },
+                orderBy: { sortOrder: "asc" },
+                select: {
+                  slug: true,
+                  kind: true,
+                  title: true,
+                  summary: true,
+                  source: true,
+                  documentDate: true,
+                  mimeType: true,
+                  fileUrl: true,
+                  previewImageUrl: true,
+                },
+              },
+              clinics: {
+                where: publicInvestigationRelationWhere(),
+                select: { clinic: { select: { slug: true, title: true, city: true } } },
+              },
+              equipment: {
+                where: publicInvestigationRelationWhere(),
+                select: { equipment: { select: { slug: true, title: true, manufacturer: true } } },
+              },
+              procedures: {
+                where: publicInvestigationRelationWhere(),
+                select: { procedure: { select: { slug: true, title: true } } },
+              },
+              diseases: {
+                where: publicInvestigationRelationWhere(),
+                select: { disease: { select: { slug: true, title: true } } },
+              },
+              news: {
+                where: {
+                  news: {
+                    isPublished: true,
+                    publishedAt: { not: null, lte: new Date() },
+                  },
+                },
+                select: { news: { select: { slug: true, title: true, publishedAt: true } } },
+              },
+            },
           },
         },
       },
@@ -483,7 +795,7 @@ export async function getEquipmentList(opts?: {
 export async function getEquipmentItem(slug: string) {
   const db = getPrisma();
   if (!db) return null;
-  return db.equipment.findUnique({
+  const item = await db.equipment.findUnique({
     where: { slug },
     include: {
       category: { select: { slug: true, title: true } },
@@ -517,6 +829,981 @@ export async function getEquipmentItem(slug: string) {
           },
         },
       },
+      investigations: {
+        where: {
+          ...publicInvestigationRelationWhere(),
+          investigation: evidenceValidatedContentWhere(),
+        },
+        orderBy: { investigation: { publishedAt: "desc" } },
+        include: {
+          investigation: {
+            select: {
+              slug: true,
+              title: true,
+              summary: true,
+              status: true,
+              news: {
+                where: { news: publishedContentWhere() },
+                orderBy: { news: { publishedAt: "desc" } },
+                select: {
+                  news: { select: { slug: true, title: true, summary: true, publishedAt: true } },
+                },
+              },
+            },
+          },
+        },
+      },
+      scientificWorks: {
+        where: { work: publicScientificWorkWhere() },
+        include: {
+          work: {
+            select: {
+              slug: true,
+              title: true,
+              type: true,
+              year: true,
+              summary: true,
+              doctor: {
+                select: { slug: true, firstName: true, lastName: true, middleName: true },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!item) return null;
+
+  // Серия и позиция в линии хранятся как характеристики EquipmentSpec. Это
+  // позволяет выводить эволюцию для любой линейки без self-relation, нового
+  // поля или привязки к конкретному производителю. Год остаётся fallback для
+  // линии, у которой пока не задана редакционная позиция.
+  const series = item.specs.find(
+    (spec) => spec.group === "Идентификация линейки" && spec.label === "Серия",
+  )?.value;
+  const editorial = getEquipmentEditorial(item.slug);
+  const comparisonTitles = editorial?.comparisonTargets?.map((target) => target.title) ?? [];
+
+  const [evolutionRows, comparisonEquipment] = await Promise.all([
+    series
+      ? db.equipment.findMany({
+          where: {
+            categoryId: item.categoryId,
+            specs: {
+              some: {
+                group: "Идентификация линейки",
+                label: "Серия",
+                value: series,
+              },
+            },
+          },
+          select: {
+            slug: true,
+            title: true,
+            summary: true,
+            year: true,
+            images: true,
+            specs: {
+              where: { group: "Идентификация линейки", label: "Позиция в линии" },
+              select: { value: true },
+            },
+          },
+        })
+      : Promise.resolve([]),
+    comparisonTitles.length > 0
+      ? db.equipment.findMany({
+          where: { title: { in: comparisonTitles } },
+          select: { slug: true, title: true, summary: true, year: true, images: true },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  const evolution = evolutionRows
+    .sort((left, right) => {
+      const leftPosition = Number(left.specs[0]?.value);
+      const rightPosition = Number(right.specs[0]?.value);
+      const normalizedLeft = Number.isFinite(leftPosition) ? leftPosition : Number.MAX_SAFE_INTEGER;
+      const normalizedRight = Number.isFinite(rightPosition) ? rightPosition : Number.MAX_SAFE_INTEGER;
+      return normalizedLeft - normalizedRight || (left.year ?? Number.MAX_SAFE_INTEGER) - (right.year ?? Number.MAX_SAFE_INTEGER) || left.title.localeCompare(right.title, "ru");
+    })
+    .map((equipment) => ({
+      slug: equipment.slug,
+      title: equipment.title,
+      summary: equipment.summary,
+      year: equipment.year,
+      images: equipment.images,
+    }));
+
+  return { ...item, evolution, comparisonEquipment };
+}
+// ─── Investigations and news ─────────────────────────────────────────────────
+
+export type InvestigationCatalogItem = {
+  slug: string;
+  title: string;
+  summary: string;
+  status: string;
+  publishedAt: Date | null;
+  clinicCount: number;
+  equipmentCount: number;
+  appealCount: number;
+};
+
+export async function getInvestigations(opts?: { take?: number; skip?: number }): Promise<InvestigationCatalogItem[]> {
+  const db = getPrisma();
+  if (!db) return [];
+  const rows = await db.investigation.findMany({
+    where: evidenceValidatedContentWhere(),
+    orderBy: [{ publishedAt: "desc" }, { updatedAt: "desc" }],
+    take: opts?.take ?? 100,
+    skip: opts?.skip ?? 0,
+    select: {
+      slug: true,
+      title: true,
+      summary: true,
+      status: true,
+      publishedAt: true,
+      _count: {
+        select: {
+          clinics: { where: publicInvestigationRelationWhere() },
+          equipment: { where: publicInvestigationRelationWhere() },
+          appeals: true,
+        },
+      },
+    },
+  });
+  return rows.map((row) => ({
+    slug: row.slug,
+    title: row.title,
+    summary: row.summary,
+    status: row.status,
+    publishedAt: row.publishedAt,
+    clinicCount: row._count.clinics,
+    equipmentCount: row._count.equipment,
+    appealCount: row._count.appeals,
+  }));
+}
+
+export async function getInvestigation(slug: string) {
+  const db = getPrisma();
+  if (!db) return null;
+  const now = new Date();
+  const published = publishedContentWhere(now);
+  const publicDocumentFilter = slug === GLAZCENTR_INVESTIGATION_SLUG
+    ? { slug: { notIn: [...PUBLICLY_HIDDEN_INVESTIGATION_DOCUMENT_SLUGS] } }
+    : {};
+  const investigation = await db.investigation.findFirst({
+    where: { slug, ...evidenceValidatedContentWhere(now) },
+    include: {
+      sections: {
+        where: { evidenceValidatedAt: { not: null }, ...published },
+        orderBy: { sortOrder: "asc" },
+      },
+      timeline: {
+        where: { evidenceValidatedAt: { not: null }, ...published },
+        orderBy: { sortOrder: "asc" },
+        select: {
+          id: true,
+          equipmentInstanceId: true,
+          date: true,
+          dateLabel: true,
+          title: true,
+          description: true,
+          equipmentInstance: {
+            select: {
+              id: true,
+              model: true,
+              serialNumber: true,
+            },
+          },
+        },
+      },
+      documents: {
+        where: {
+          isEvidence: true,
+          evidenceValidatedAt: { not: null },
+          ...published,
+          ...publicDocumentFilter,
+        },
+        orderBy: { sortOrder: "asc" },
+        select: {
+          id: true,
+          slug: true,
+          kind: true,
+          title: true,
+          summary: true,
+          source: true,
+          documentDate: true,
+          fileUrl: true,
+          previewImageUrl: true,
+          mimeType: true,
+          content: true,
+          isEvidence: true,
+        },
+      },
+      clinics: {
+        where: publicInvestigationRelationWhere(now),
+        include: { clinic: { select: { slug: true, title: true, city: true, legalName: true } } },
+      },
+      equipment: {
+        where: publicInvestigationRelationWhere(now),
+        include: { equipment: { select: { slug: true, title: true, manufacturer: true } } },
+      },
+      equipmentInstances: {
+        where: publicInvestigationEquipmentInstanceWhere(now),
+        orderBy: [{ manufactureYear: "asc" }, { model: "asc" }],
+        include: {
+          equipment: { select: { slug: true, title: true, manufacturer: true } },
+          identificationEvidence: {
+            where: {
+              ...evidenceValidatedContentWhere(now),
+              document: {
+                isEvidence: true,
+                ...evidenceValidatedContentWhere(now),
+              },
+            },
+            include: {
+              document: {
+                select: {
+                  slug: true,
+                  kind: true,
+                  title: true,
+                  source: true,
+                  documentDate: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      regulatoryAssessments: {
+        where: {
+          ...published,
+          evidenceValidatedAt: { not: null },
+          applicabilityStatus: "APPLICABLE",
+          supportingEvidenceSearchCompleted: true,
+          refutingEvidenceSearchCompleted: true,
+          appliedEdition: published,
+          regulatoryCheck: {
+            ...published,
+            provision: {
+              ...published,
+              edition: { ...published, regulation: published },
+            },
+          },
+          AND: [
+            {
+              OR: [
+                { clinicId: null },
+                {
+                  investigationClinic: {
+                    is: publicInvestigationRelationWhere(now),
+                  },
+                },
+              ],
+            },
+            {
+              OR: [
+                { procedureId: null },
+                {
+                  investigationProcedure: {
+                    is: publicInvestigationRelationWhere(now),
+                  },
+                },
+              ],
+            },
+            {
+              OR: [
+                { equipmentInstanceId: null },
+                {
+                  equipmentInstance: {
+                    is: publicInvestigationEquipmentInstanceWhere(now),
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        orderBy: [{ eventFrom: "asc" }, { createdAt: "asc" }],
+        include: {
+          regulatoryCheck: {
+            include: {
+              provision: {
+                include: {
+                  edition: { include: { regulation: true } },
+                  topic: true,
+                },
+              },
+            },
+          },
+          appliedEdition: true,
+          investigationClinic: {
+            include: { clinic: { select: { slug: true, title: true } } },
+          },
+          investigationProcedure: {
+            include: { procedure: { select: { slug: true, title: true } } },
+          },
+          equipmentInstance: {
+            select: {
+              equipmentId: true,
+              isPublished: true,
+              publishedAt: true,
+              identificationEvidence: {
+                where: {
+                  ...evidenceValidatedContentWhere(now),
+                  document: {
+                    isEvidence: true,
+                    ...evidenceValidatedContentWhere(now),
+                  },
+                },
+                select: { documentId: true },
+                take: 1,
+              },
+            },
+          },
+          evidence: {
+            where: {
+              provenanceVerifiedAt: { not: null },
+              document: {
+                isEvidence: true,
+                evidenceValidatedAt: { not: null },
+                ...published,
+              },
+            },
+            select: {
+              documentId: true,
+              role: true,
+              isPrimary: true,
+              provenanceVerifiedAt: true,
+              note: true,
+              document: { select: { slug: true, title: true, source: true, documentDate: true } },
+            },
+          },
+          registryChecks: {
+            where: {
+              ...published,
+              snapshotDocument: {
+                is: {
+                  isEvidence: true,
+                  evidenceValidatedAt: { not: null },
+                  ...published,
+                },
+              },
+            },
+            orderBy: { searchedAt: "desc" },
+            select: {
+              id: true,
+              registryName: true,
+              query: true,
+              searchedAt: true,
+              officialUrl: true,
+              result: true,
+              resultSummary: true,
+            },
+          },
+        },
+      },
+      independentControlAssessments: {
+        where: publicIndependentControlAssessmentWhere(now),
+        orderBy: [{ eventFrom: "asc" }, { createdAt: "asc" }],
+        select: {
+          key: true,
+          appliedCriterionNormId: true,
+          clinicId: true,
+          eventFrom: true,
+          eventTo: true,
+          eventDateLabel: true,
+          status: true,
+          applicabilityStatus: true,
+          restrictedSignals: true,
+          neutralConclusion: true,
+          alternativeVersion: true,
+          evidenceGaps: true,
+          supportingEvidenceSearchCompleted: true,
+          refutingEvidenceSearchCompleted: true,
+          isPublished: true,
+          evidenceValidatedAt: true,
+          publishedAt: true,
+          appliedCriterionNorm: { select: { id: true } },
+          investigationClinic: {
+            select: {
+              isPublished: true,
+              publishedAt: true,
+              evidenceValidatedAt: true,
+              clinic: { select: { slug: true, title: true } },
+            },
+          },
+          criterion: {
+            select: {
+              key: true,
+              sourceLocator: true,
+              sectionKey: true,
+              sectionTitle: true,
+              title: true,
+              statement: true,
+              whatIsChecked: true,
+              checkQuestion: true,
+              factToEstablish: true,
+              confirmingDocument: true,
+              evidenceRequired: true,
+              evidenceThreshold: true,
+              applicabilityNote: true,
+              sourceDivergenceNote: true,
+              basisKind: true,
+              allowedStatuses: true,
+              isSourceCriterion: true,
+              effectiveFrom: true,
+              effectiveTo: true,
+              isPublished: true,
+              evidenceValidatedAt: true,
+              publishedAt: true,
+              sortOrder: true,
+              methodology: {
+                select: {
+                  slug: true,
+                  title: true,
+                  summary: true,
+                  legalStatusNote: true,
+                  bibliographicCitation: true,
+                  officialMethodologyUrl: true,
+                },
+              },
+              normLinks: {
+                where: publicIndependentControlCriterionNormWhere(now),
+                orderBy: [{ role: "asc" }, { verifiedAt: "desc" }],
+                select: {
+                  id: true,
+                  role: true,
+                  verifiedAt: true,
+                  note: true,
+                  isPublished: true,
+                  evidenceValidatedAt: true,
+                  publishedAt: true,
+                  regulatoryCheck: {
+                    select: {
+                      key: true,
+                      question: true,
+                      factToEstablish: true,
+                      primaryEvidenceType: true,
+                      evidenceThreshold: true,
+                      applicabilityNote: true,
+                      officialSearchUrl: true,
+                      officialSearchLabel: true,
+                      nonCompliancePattern: true,
+                      isPublished: true,
+                      publishedAt: true,
+                      provision: {
+                        select: {
+                          key: true,
+                          locator: true,
+                          title: true,
+                          requirement: true,
+                          applicability: true,
+                          effectiveFrom: true,
+                          effectiveTo: true,
+                          isPublished: true,
+                          publishedAt: true,
+                          edition: {
+                            select: {
+                              key: true,
+                              title: true,
+                              effectiveFrom: true,
+                              effectiveTo: true,
+                              verifiedAt: true,
+                              historicalUseAllowed: true,
+                              isPublished: true,
+                              publishedAt: true,
+                              regulation: {
+                                select: {
+                                  slug: true,
+                                  title: true,
+                                  isPublished: true,
+                                  publishedAt: true,
+                                  sources: {
+                                    where: publicRegulationSourceWhere(now),
+                                    orderBy: [{ sortOrder: "asc" }, { title: "asc" }],
+                                    select: { title: true, url: true, kind: true },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          evidence: {
+            where: {
+              document: {
+                isEvidence: true,
+                ...evidenceValidatedContentWhere(now),
+              },
+            },
+            orderBy: [{ role: "asc" }, { createdAt: "asc" }],
+            select: {
+              role: true,
+              isPrimary: true,
+              provenanceVerifiedAt: true,
+              note: true,
+              document: {
+                select: {
+                  slug: true,
+                  title: true,
+                  source: true,
+                  documentDate: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      registryChecks: {
+        where: {
+          ...published,
+          snapshotDocument: {
+            is: {
+              isEvidence: true,
+              evidenceValidatedAt: { not: null },
+              ...published,
+            },
+          },
+        },
+        orderBy: { searchedAt: "desc" },
+        select: {
+          id: true,
+          registryName: true,
+          query: true,
+          searchedAt: true,
+          officialUrl: true,
+          result: true,
+          resultSummary: true,
+        },
+      },
+      diseases: {
+        where: publicInvestigationRelationWhere(now),
+        include: { disease: { select: { slug: true, title: true } } },
+      },
+      procedures: {
+        where: publicInvestigationRelationWhere(now),
+        include: { procedure: { select: { slug: true, title: true } } },
+      },
+      news: {
+        where: { news: publishedContentWhere(now) },
+        orderBy: { news: { publishedAt: "desc" } },
+        include: { news: { select: { slug: true, title: true, summary: true, publishedAt: true } } },
+      },
+      _count: { select: { appeals: true } },
+    },
+  });
+
+  if (!investigation) return null;
+
+  const publicEquipmentIds = new Set(
+    investigation.equipment.map((relation) => relation.equipmentId),
+  );
+  const equipmentInstances = investigation.equipmentInstances.filter(
+    (instance) =>
+      instance.equipmentId == null || publicEquipmentIds.has(instance.equipmentId),
+  );
+  const publicEquipmentInstanceIds = new Set(
+    equipmentInstances.map((instance) => instance.id),
+  );
+  const timeline = investigation.timeline.filter(
+    (event) =>
+      event.equipmentInstanceId == null ||
+      publicEquipmentInstanceIds.has(event.equipmentInstanceId),
+  );
+  const independentControlAssessments =
+    investigation.independentControlAssessments.flatMap((assessment) => {
+      const publicNormLinks = assessment.criterion.normLinks.map((link) => {
+        const provision = link.regulatoryCheck.provision;
+        const edition = provision.edition;
+        const regulation = edition.regulation;
+        const editionBound =
+          link.evidenceValidatedAt != null &&
+          isPubliclyVisibleAt(link, now) &&
+          isPubliclyVisibleAt(link.regulatoryCheck, now) &&
+          isPubliclyVisibleAt(provision, now) &&
+          isPubliclyVisibleAt(edition, now) &&
+          isPubliclyVisibleAt(regulation, now) &&
+          regulation.sources.length > 0;
+
+        return {
+          id: link.id,
+          regulationKey: regulation.slug,
+          editionKey: edition.key,
+          provisionKey: provision.key,
+          checkKey: link.regulatoryCheck.key,
+          role: independentControlNormRole(link.role),
+          editionBound,
+          verifiedAt: link.verifiedAt,
+          note: link.note,
+          regulatoryCheck: {
+            key: link.regulatoryCheck.key,
+            question: link.regulatoryCheck.question,
+            factToEstablish: link.regulatoryCheck.factToEstablish,
+            primaryEvidenceType: link.regulatoryCheck.primaryEvidenceType,
+            evidenceThreshold: link.regulatoryCheck.evidenceThreshold,
+            applicabilityNote: link.regulatoryCheck.applicabilityNote,
+            officialSearchUrl: link.regulatoryCheck.officialSearchUrl,
+            officialSearchLabel: link.regulatoryCheck.officialSearchLabel,
+            nonCompliancePattern: link.regulatoryCheck.nonCompliancePattern,
+          },
+          provision: {
+            key: provision.key,
+            locator: provision.locator,
+            title: provision.title,
+            requirement: provision.requirement,
+            applicability: provision.applicability,
+            effectiveFrom: provision.effectiveFrom,
+            effectiveTo: provision.effectiveTo,
+          },
+          edition: {
+            key: edition.key,
+            title: edition.title,
+            effectiveFrom: edition.effectiveFrom,
+            effectiveTo: edition.effectiveTo,
+            verifiedAt: edition.verifiedAt,
+            historicalUseAllowed: edition.historicalUseAllowed,
+          },
+          regulation: {
+            slug: regulation.slug,
+            title: regulation.title,
+            sources: regulation.sources,
+          },
+        };
+      });
+      const criterionForPublication = {
+        stableKey: assessment.criterion.key,
+        sourceLocator: assessment.criterion.sourceLocator,
+        sectionKey: assessment.criterion.sectionKey,
+        sectionTitle: assessment.criterion.sectionTitle,
+        statement: assessment.criterion.statement,
+        title: assessment.criterion.title,
+        whatIsChecked: assessment.criterion.whatIsChecked,
+        checkQuestion: assessment.criterion.checkQuestion,
+        factToEstablish: assessment.criterion.factToEstablish,
+        confirmingPrimaryDocument: assessment.criterion.confirmingDocument,
+        evidenceRequired: assessment.criterion.evidenceRequired,
+        evidenceThreshold: assessment.criterion.evidenceThreshold,
+        applicabilityNote: assessment.criterion.applicabilityNote,
+        sourceDivergenceNote: assessment.criterion.sourceDivergenceNote ?? "",
+        basisKind: assessment.criterion.basisKind,
+        allowedStatuses: assessment.criterion.allowedStatuses,
+        normLinks: publicNormLinks.map((link) => ({
+          id: link.id,
+          regulationKey: link.regulationKey,
+          editionKey: link.editionKey,
+          provisionKey: link.provisionKey,
+          checkKey: link.checkKey,
+          role: link.role,
+          editionBound: link.editionBound,
+        })),
+        isSourceCriterion: assessment.criterion.isSourceCriterion,
+        isPublished: assessment.criterion.isPublished,
+        publishedAt: assessment.criterion.publishedAt,
+        evidenceValidatedAt: assessment.criterion.evidenceValidatedAt,
+        sortOrder: assessment.criterion.sortOrder,
+      };
+      const conclusive = assessment.status !== "REQUIRES_VERIFICATION";
+      const appliedPublicNormLinks = criterionForPublication.normLinks.filter(
+        (link) =>
+          link.id === assessment.appliedCriterionNorm?.id && link.editionBound,
+      );
+      const publication = canPublishIndependentControlAssessment(
+        {
+          status: assessment.status,
+          isPublished: assessment.isPublished,
+          publishedAt: assessment.publishedAt,
+          evidenceValidatedAt: assessment.evidenceValidatedAt,
+          investigationPublished: isPubliclyVisibleAt(investigation, now),
+          investigationEvidenceValidatedAt: investigation.evidenceValidatedAt,
+          criterion: {
+            ...criterionForPublication,
+            normLinks: conclusive
+              ? appliedPublicNormLinks
+              : criterionForPublication.normLinks,
+          },
+          neutralConclusion: assessment.neutralConclusion,
+          alternativeVersion: assessment.alternativeVersion,
+          evidenceGaps: assessment.evidenceGaps ?? "",
+          temporalApplicability: assessment.applicabilityStatus,
+          legalNonApplicabilityProven: false,
+          supportingEvidenceSearchCompleted:
+            assessment.supportingEvidenceSearchCompleted,
+          refutingEvidenceSearchCompleted:
+            assessment.refutingEvidenceSearchCompleted,
+          primaryEvidence: assessment.evidence.map((item) => ({
+            role: item.role,
+            isPrimary: item.isPrimary,
+            provenanceVerifiedAt: item.provenanceVerifiedAt,
+            isRestrictedSignal: assessment.restrictedSignals.length > 0,
+          })),
+          restrictedSignals: assessment.restrictedSignals,
+        },
+        now,
+      );
+      const hasAppliedDirectNorm = appliedPublicNormLinks.some(
+        (link) => link.role === "DIRECT_REQUIREMENT",
+      );
+
+      if (
+        !publication.allowed ||
+        (conclusive &&
+          (appliedPublicNormLinks.length === 0 || !hasAppliedDirectNorm))
+      ) {
+        return [];
+      }
+
+      const appliedCriterionNorm = publicNormLinks.find(
+        (link) => link.id === assessment.appliedCriterionNorm?.id,
+      );
+      return [{
+        key: assessment.key,
+        eventFrom: assessment.eventFrom,
+        eventTo: assessment.eventTo,
+        eventDateLabel: assessment.eventDateLabel,
+        status: assessment.status,
+        applicabilityStatus: assessment.applicabilityStatus,
+        restrictedSignals: assessment.restrictedSignals,
+        neutralConclusion: assessment.neutralConclusion,
+        alternativeVersion: assessment.alternativeVersion,
+        evidenceGaps: assessment.evidenceGaps,
+        supportingEvidenceSearchCompleted:
+          assessment.supportingEvidenceSearchCompleted,
+        refutingEvidenceSearchCompleted:
+          assessment.refutingEvidenceSearchCompleted,
+        clinic: assessment.investigationClinic?.clinic ?? null,
+        methodology: assessment.criterion.methodology,
+        criterion: {
+          key: assessment.criterion.key,
+          sourceLocator: assessment.criterion.sourceLocator,
+          sectionKey: assessment.criterion.sectionKey,
+          sectionTitle: assessment.criterion.sectionTitle,
+          title: assessment.criterion.title,
+          statement: assessment.criterion.statement,
+          whatIsChecked: assessment.criterion.whatIsChecked,
+          checkQuestion: assessment.criterion.checkQuestion,
+          factToEstablish: assessment.criterion.factToEstablish,
+          confirmingDocument: assessment.criterion.confirmingDocument,
+          evidenceRequired: assessment.criterion.evidenceRequired,
+          evidenceThreshold: assessment.criterion.evidenceThreshold,
+          applicabilityNote: assessment.criterion.applicabilityNote,
+          sourceDivergenceNote: assessment.criterion.sourceDivergenceNote,
+          basisKind: assessment.criterion.basisKind,
+          allowedStatuses: assessment.criterion.allowedStatuses,
+          isSourceCriterion: assessment.criterion.isSourceCriterion,
+          effectiveFrom: assessment.criterion.effectiveFrom,
+          effectiveTo: assessment.criterion.effectiveTo,
+          normLinks: publicNormLinks.map(({ id, ...link }) => ({
+            ...link,
+            isApplied: id === assessment.appliedCriterionNorm?.id,
+          })),
+        },
+        appliedCriterionNorm: appliedCriterionNorm
+          ? {
+              regulationKey: appliedCriterionNorm.regulationKey,
+              editionKey: appliedCriterionNorm.editionKey,
+              provisionKey: appliedCriterionNorm.provisionKey,
+              checkKey: appliedCriterionNorm.checkKey,
+              role: appliedCriterionNorm.role,
+              editionBound: appliedCriterionNorm.editionBound,
+              verifiedAt: appliedCriterionNorm.verifiedAt,
+              note: appliedCriterionNorm.note,
+              regulatoryCheck: appliedCriterionNorm.regulatoryCheck,
+              provision: appliedCriterionNorm.provision,
+              edition: appliedCriterionNorm.edition,
+              regulation: appliedCriterionNorm.regulation,
+            }
+          : null,
+        evidence: assessment.evidence,
+      }];
+    });
+
+  return {
+    ...investigation,
+    equipmentInstances,
+    timeline,
+    independentControlAssessments,
+    regulatoryAssessments: investigation.regulatoryAssessments.flatMap(
+      (assessment) => {
+        const {
+          equipmentInstance,
+          equipmentInstanceId,
+          investigationClinic,
+          investigationProcedure,
+          ...publicAssessment
+        } = assessment;
+        const edition = assessment.appliedEdition;
+        const primaryEvidence = assessment.evidence
+          .filter((item) => item.isPrimary)
+          .map((item) => ({
+            role: item.role,
+            provenanceVerifiedAt: item.provenanceVerifiedAt,
+          }));
+
+        return canPublishInvestigationAssessment({
+          status: assessment.status,
+          isPublished: assessment.isPublished,
+          publishedAt: assessment.publishedAt,
+          evidenceValidatedAt: assessment.evidenceValidatedAt,
+          investigationPublished: isPubliclyVisibleAt(investigation, now),
+          regulationPublished: isPubliclyVisibleAt(
+            assessment.regulatoryCheck.provision.edition.regulation,
+            now,
+          ),
+          editionPublished: isPubliclyVisibleAt(
+            assessment.regulatoryCheck.provision.edition,
+            now,
+          ),
+          provisionPublished: isPubliclyVisibleAt(
+            assessment.regulatoryCheck.provision,
+            now,
+          ),
+          regulatoryCheckPublished: isPubliclyVisibleAt(
+            assessment.regulatoryCheck,
+            now,
+          ),
+          applicabilityStatus: assessment.applicabilityStatus,
+          appliedEdition: edition,
+          provisionEffectiveFrom:
+            assessment.regulatoryCheck.provision.effectiveFrom ??
+            assessment.regulatoryCheck.provision.edition.effectiveFrom,
+          provisionEffectiveTo:
+            assessment.regulatoryCheck.provision.effectiveTo ??
+            assessment.regulatoryCheck.provision.edition.effectiveTo,
+          eventFrom: assessment.eventFrom,
+          eventTo: assessment.eventTo,
+          restrictedSignals: assessment.restrictedSignals,
+          primaryEvidence,
+          appliedEditionPublished: edition
+            ? isPubliclyVisibleAt(edition, now)
+            : false,
+          appliedEditionMatchesProvision:
+            assessment.appliedEditionId ===
+            assessment.regulatoryCheck.provision.editionId,
+          supportingEvidenceSearchCompleted:
+            assessment.supportingEvidenceSearchCompleted,
+          refutingEvidenceSearchCompleted:
+            assessment.refutingEvidenceSearchCompleted,
+          subjectRelationsPublished:
+            (assessment.clinicId == null ||
+              (investigationClinic?.evidenceValidatedAt != null &&
+                isPubliclyVisibleAt(investigationClinic, now))) &&
+            (assessment.procedureId == null ||
+              (investigationProcedure?.evidenceValidatedAt != null &&
+                isPubliclyVisibleAt(investigationProcedure, now))) &&
+            (equipmentInstanceId == null ||
+              (equipmentInstance != null &&
+                isPubliclyVisibleAt(equipmentInstance, now) &&
+                (equipmentInstance.equipmentId == null ||
+                  publicEquipmentIds.has(equipmentInstance.equipmentId)) &&
+                equipmentInstance.identificationEvidence.length > 0)),
+          neutralConclusion: assessment.neutralConclusion,
+          alternativeVersion: assessment.alternativeVersion,
+        }, now).allowed
+          ? [
+              {
+                ...publicAssessment,
+                clinic: investigationClinic?.clinic ?? null,
+                procedure: investigationProcedure?.procedure ?? null,
+              },
+            ]
+          : [];
+      },
+    ),
+  };
+}
+
+export type NewsCatalogItem = {
+  slug: string;
+  title: string;
+  summary: string;
+  publishedAt: Date | null;
+  investigationSlugs: string[];
+};
+
+export async function getNews(opts?: { take?: number; skip?: number }): Promise<NewsCatalogItem[]> {
+  const db = getPrisma();
+  if (!db) return [];
+  const rows = await db.news.findMany({
+    where: publishedContentWhere(),
+    orderBy: [{ publishedAt: "desc" }, { updatedAt: "desc" }],
+    take: opts?.take ?? 100,
+    skip: opts?.skip ?? 0,
+    include: {
+      investigations: {
+        where: { investigation: evidenceValidatedContentWhere() },
+        select: { investigation: { select: { slug: true } } },
+      },
+    },
+  });
+  return rows.map((row) => ({
+    slug: row.slug,
+    title: row.title,
+    summary: row.summary,
+    publishedAt: row.publishedAt,
+    investigationSlugs: row.investigations.map((relation) => relation.investigation.slug),
+  }));
+}
+
+export async function getNewsItem(slug: string) {
+  const db = getPrisma();
+  if (!db) return null;
+  return db.news.findFirst({
+    where: { slug, ...publishedContentWhere() },
+    include: {
+      investigations: {
+        where: { investigation: evidenceValidatedContentWhere() },
+        orderBy: { investigation: { publishedAt: "desc" } },
+        include: {
+          investigation: {
+            select: {
+              slug: true,
+              title: true,
+              summary: true,
+              status: true,
+              documents: {
+                where: {
+                  isEvidence: true,
+                  ...evidenceValidatedContentWhere(),
+                },
+                orderBy: { sortOrder: "asc" },
+                select: {
+                  slug: true,
+                  kind: true,
+                  title: true,
+                  summary: true,
+                  source: true,
+                  documentDate: true,
+                  mimeType: true,
+                },
+              },
+              clinics: {
+                where: publicInvestigationRelationWhere(),
+                select: { clinic: { select: { slug: true, title: true, city: true } } },
+              },
+              equipment: {
+                where: publicInvestigationRelationWhere(),
+                select: { equipment: { select: { slug: true, title: true, manufacturer: true } } },
+              },
+              procedures: {
+                where: publicInvestigationRelationWhere(),
+                select: { procedure: { select: { slug: true, title: true } } },
+              },
+              diseases: {
+                where: publicInvestigationRelationWhere(),
+                select: { disease: { select: { slug: true, title: true } } },
+              },
+            },
+          },
+        },
+      },
     },
   });
 }
@@ -527,9 +1814,8 @@ export async function getEquipmentItem(slug: string) {
 
 /**
  * Единый элемент каталога научных публикаций.
- * `kind` разделяет типы контента: сейчас наполняется только научными работами
- * (ScientificWork), но структура готова принять редакционные статьи (Publication)
- * в тот же каталог, не смешивая их семантику.
+ * `kind` разделяет научные работы (ScientificWork) и редакционные материалы
+ * (Publication), не смешивая их семантику на общем маршруте.
  */
 export type PublicationCatalogItem = {
   kind: "scientific" | "editorial";
@@ -544,20 +1830,34 @@ export type PublicationCatalogItem = {
   procedures: { slug: string; title: string }[];
 };
 
-/** Каталог /publications. Новая работа врача попадает сюда автоматически. */
+/** Каталог /publications показывает только прошедшие свой публичный workflow записи. */
 export async function getPublicationsCatalog(): Promise<PublicationCatalogItem[]> {
   const db = getPrisma();
   if (!db) return [];
-  const works = await db.scientificWork.findMany({
-    where: { slug: { not: null } },
-    orderBy: [{ year: "desc" }, { sortOrder: "asc" }],
-    include: {
-      doctor: { select: { slug: true, firstName: true, lastName: true, middleName: true } },
-      diseases: { include: { disease: { select: { slug: true, title: true } } } },
-      procedures: { include: { procedure: { select: { slug: true, title: true } } } },
-    },
-  });
-  return works.map((w) => ({
+  const [works, editorialPublications, reservedScientificSlugs] = await Promise.all([
+    db.scientificWork.findMany({
+      where: publicScientificWorkWhere(),
+      orderBy: [{ year: "desc" }, { sortOrder: "asc" }],
+      include: {
+        doctor: { select: { slug: true, firstName: true, lastName: true, middleName: true } },
+        diseases: { include: { disease: { select: { slug: true, title: true } } } },
+        procedures: { include: { procedure: { select: { slug: true, title: true } } } },
+      },
+    }),
+    db.publication.findMany({
+      include: {
+        doctor: { select: { slug: true, firstName: true, lastName: true, middleName: true } },
+        diseases: { include: { disease: { select: { slug: true, title: true } } } },
+        procedures: { include: { procedure: { select: { slug: true, title: true } } } },
+      },
+    }),
+    db.scientificWork.findMany({
+      where: { slug: { not: null } },
+      select: { slug: true },
+    }),
+  ]);
+
+  const scientificItems = works.map((w) => ({
     kind: "scientific" as const,
     slug: w.slug as string,
     type: w.type,
@@ -565,18 +1865,42 @@ export async function getPublicationsCatalog(): Promise<PublicationCatalogItem[]
     authorName: doctorFullName(w.doctor),
     authorSlug: w.doctor.slug,
     year: w.year,
-    organization: w.organization,
+    organization: w.journal ?? w.organization,
     diseases: w.diseases.map((r) => r.disease),
     procedures: w.procedures.map((r) => r.procedure),
   }));
+
+  const reserved = new Set(reservedScientificSlugs.flatMap((item) => item.slug ?? []));
+  const editorialItems = editorialPublications
+    .filter((publication) => !reserved.has(publication.slug))
+    .map((publication) => ({
+      kind: "editorial" as const,
+      slug: publication.slug,
+      type: publication.publicationType ?? "Публикация",
+      title: publication.title,
+      authorName:
+        publication.authorName ??
+        (publication.doctor ? doctorFullName(publication.doctor) : "Редакция энциклопедии"),
+      authorSlug: publication.doctor?.slug ?? null,
+      year: publication.publishedAt?.getFullYear() ?? null,
+      organization: null,
+      diseases: publication.diseases.map((relation) => relation.disease),
+      procedures: publication.procedures.map((relation) => relation.procedure),
+    }));
+
+  return [...scientificItems, ...editorialItems].sort(
+    (left, right) =>
+      (right.year ?? Number.NEGATIVE_INFINITY) -
+        (left.year ?? Number.NEGATIVE_INFINITY) || left.title.localeCompare(right.title, "ru"),
+  );
 }
 
 /** Детальная страница /publications/[slug] для научной работы. */
 export async function getScientificWork(slug: string) {
   const db = getPrisma();
   if (!db) return null;
-  return db.scientificWork.findUnique({
-    where: { slug },
+  const work = await db.scientificWork.findFirst({
+    where: { ...publicScientificWorkWhere(), slug },
     include: {
       doctor: {
         select: {
@@ -595,11 +1919,70 @@ export async function getScientificWork(slug: string) {
       },
       diseases: { include: { disease: { select: { slug: true, title: true, summary: true } } } },
       procedures: { include: { procedure: { select: { slug: true, title: true, summary: true } } } },
+      equipment: {
+        include: {
+          equipment: {
+            select: {
+              slug: true,
+              title: true,
+              summary: true,
+              manufacturer: true,
+              images: true,
+            },
+          },
+        },
+      },
     },
   });
+
+  if (!work) return null;
+
+  const relatedWorks = await db.scientificWork.findMany({
+    where: {
+      ...publicScientificWorkWhere(),
+      id: { not: work.id },
+      OR: [
+        { doctorId: work.doctorId },
+        ...work.diseases.map((relation) => ({
+          diseases: { some: { diseaseId: relation.diseaseId } },
+        })),
+        ...work.procedures.map((relation) => ({
+          procedures: { some: { procedureId: relation.procedureId } },
+        })),
+        ...work.equipment.map((relation) => ({
+          equipment: { some: { equipmentId: relation.equipmentId } },
+        })),
+      ],
+    },
+    orderBy: [{ year: "desc" }, { sortOrder: "asc" }],
+    take: 4,
+    select: {
+      slug: true,
+      title: true,
+      type: true,
+      year: true,
+      doctor: { select: { slug: true, firstName: true, lastName: true, middleName: true } },
+    },
+  });
+
+  return { ...work, relatedWorks };
 }
 
 export type ScientificWorkDetail = NonNullable<Awaited<ReturnType<typeof getScientificWork>>>;
+
+/**
+ * Резервирует slug за ScientificWork даже когда запись скрыта publication gate.
+ * Это не даёт одноимённой editorial Publication подменить черновик на общем URL.
+ */
+export async function hasScientificWorkSlug(slug: string) {
+  const db = getPrisma();
+  if (!db) return false;
+  const work = await db.scientificWork.findFirst({
+    where: { slug },
+    select: { id: true },
+  });
+  return work !== null;
+}
 
 export async function getPublications(opts?: {
   take?: number;
@@ -607,7 +1990,12 @@ export async function getPublications(opts?: {
 }): Promise<CatalogGridItem[]> {
   const db = getPrisma();
   if (!db) return [];
+  const reserved = await db.scientificWork.findMany({
+    where: { slug: { not: null } },
+    select: { slug: true },
+  });
   const rows = await db.publication.findMany({
+    where: { slug: { notIn: reserved.flatMap((record) => record.slug ?? []) } },
     select: { slug: true, title: true, abstract: true, authorName: true, publishedAt: true },
     orderBy: { publishedAt: "desc" },
     take: opts?.take ?? 100,
@@ -674,31 +2062,545 @@ export async function getGuideline(slug: string) {
   });
 }
 
+// ─── Independent control methodology ────────────────────────────────────────
+
+export async function getIndependentControlMethodologies() {
+  const db = getPrisma();
+  if (!db) return [];
+  const now = new Date();
+  const rows = await db.independentControlMethodology.findMany({
+    where: publicIndependentControlMethodologyWhere(now),
+    orderBy: [{ publishedAt: "desc" }, { title: "asc" }],
+    select: {
+      slug: true,
+      title: true,
+      summary: true,
+      description: true,
+      legalStatusNote: true,
+      bibliographicCitation: true,
+      officialMethodologyUrl: true,
+      isPublished: true,
+      evidenceValidatedAt: true,
+      publishedAt: true,
+      seoTitle: true,
+      seoDescription: true,
+      sources: {
+        where: publicIndependentControlSourceWhere(now),
+        orderBy: [{ sortOrder: "asc" }, { title: "asc" }],
+        select: {
+          key: true,
+          kind: true,
+          title: true,
+          bibliographicCitation: true,
+          sourceUrl: true,
+          sha256: true,
+          rightsBasis: true,
+          rightsVerifiedAt: true,
+          publicFileUrl: true,
+        },
+      },
+      criteria: {
+        where: publicIndependentControlCriterionWhere(now),
+        orderBy: [
+          { sortOrder: "asc" },
+          { sectionKey: "asc" },
+          { sourceLocator: "asc" },
+        ],
+        select: {
+          key: true,
+          sourceLocator: true,
+          sectionKey: true,
+          sectionTitle: true,
+          title: true,
+          statement: true,
+          whatIsChecked: true,
+          checkQuestion: true,
+          factToEstablish: true,
+          confirmingDocument: true,
+          evidenceRequired: true,
+          evidenceThreshold: true,
+          applicabilityNote: true,
+          sourceDivergenceNote: true,
+          basisKind: true,
+          allowedStatuses: true,
+          isSourceCriterion: true,
+          effectiveFrom: true,
+          effectiveTo: true,
+          isPublished: true,
+          evidenceValidatedAt: true,
+          publishedAt: true,
+          sortOrder: true,
+          normLinks: {
+            where: publicIndependentControlCriterionNormWhere(now),
+            orderBy: [{ role: "asc" }, { verifiedAt: "desc" }],
+            select: {
+              role: true,
+              verifiedAt: true,
+              note: true,
+              regulatoryCheck: {
+                select: {
+                  key: true,
+                  question: true,
+                  factToEstablish: true,
+                  primaryEvidenceType: true,
+                  evidenceThreshold: true,
+                  applicabilityNote: true,
+                  officialSearchUrl: true,
+                  officialSearchLabel: true,
+                  nonCompliancePattern: true,
+                  provision: {
+                    select: {
+                      key: true,
+                      locator: true,
+                      title: true,
+                      requirement: true,
+                      applicability: true,
+                      effectiveFrom: true,
+                      effectiveTo: true,
+                      edition: {
+                        select: {
+                          key: true,
+                          title: true,
+                          effectiveFrom: true,
+                          effectiveTo: true,
+                          verifiedAt: true,
+                          historicalUseAllowed: true,
+                          regulation: {
+                            select: {
+                              slug: true,
+                              title: true,
+                              sources: {
+                                where: publicRegulationSourceWhere(now),
+                                orderBy: [{ sortOrder: "asc" }, { title: "asc" }],
+                                select: { title: true, url: true, kind: true },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return rows.flatMap((row) => {
+    const sourceContract = row.sources.map((source) => ({
+      key: source.key,
+      title: source.title,
+      kind: source.kind === "LOCAL_DOCUMENT"
+        ? "LOCAL_BIBLIOGRAPHIC" as const
+        : "OFFICIAL_METHODOLOGY" as const,
+      url: source.sourceUrl,
+      sha256: source.sha256 ?? "",
+      rightsStatus: source.rightsBasis,
+      rightsNote: source.publicFileUrl == null
+        ? "Публичный файл отсутствует."
+        : "Право публичного размещения файла подтверждено.",
+      rightsVerifiedAt: source.rightsVerifiedAt,
+      publicFileUrl: source.publicFileUrl,
+    }));
+    const criterionContract = row.criteria.map((criterion) => ({
+      stableKey: criterion.key,
+      sourceLocator: criterion.sourceLocator,
+      sectionKey: criterion.sectionKey,
+      sectionTitle: criterion.sectionTitle,
+      statement: criterion.statement,
+      title: criterion.title,
+      whatIsChecked: criterion.whatIsChecked,
+      checkQuestion: criterion.checkQuestion,
+      factToEstablish: criterion.factToEstablish,
+      confirmingPrimaryDocument: criterion.confirmingDocument,
+      evidenceRequired: criterion.evidenceRequired,
+      evidenceThreshold: criterion.evidenceThreshold,
+      applicabilityNote: criterion.applicabilityNote,
+      sourceDivergenceNote: criterion.sourceDivergenceNote ?? "",
+      basisKind: criterion.basisKind,
+      allowedStatuses: criterion.allowedStatuses,
+      normLinks: criterion.normLinks.map((link) => ({
+        regulationKey: link.regulatoryCheck.provision.edition.regulation.slug,
+        editionKey: link.regulatoryCheck.provision.edition.key,
+        provisionKey: link.regulatoryCheck.provision.key,
+        checkKey: link.regulatoryCheck.key,
+        role: independentControlNormRole(link.role),
+        editionBound:
+          link.regulatoryCheck.provision.edition.regulation.sources.length > 0,
+      })),
+      isSourceCriterion: criterion.isSourceCriterion,
+      isPublished: criterion.isPublished,
+      publishedAt: criterion.publishedAt,
+      evidenceValidatedAt: criterion.evidenceValidatedAt,
+      sortOrder: criterion.sortOrder,
+    }));
+    const publishableCriterionContract =
+      filterPublishableIndependentControlCriteria(criterionContract, now);
+    const publishableCriterionKeys = new Set(
+      publishableCriterionContract.map((criterion) => criterion.stableKey),
+    );
+    const publication = canPublishIndependentControlMethodology({
+      slug: row.slug,
+      title: row.title,
+      summary: row.summary,
+      legalStatusNote: row.legalStatusNote,
+      bibliographicDetails: row.bibliographicCitation,
+      officialMethodologyUrl: row.officialMethodologyUrl,
+      rightsNote: row.description ?? "",
+      sources: sourceContract,
+      criteria: publishableCriterionContract,
+      seo: {
+        title: row.seoTitle ?? "",
+        description: row.seoDescription ?? "",
+      },
+      isPublished: row.isPublished,
+      publishedAt: row.publishedAt,
+      evidenceValidatedAt: row.evidenceValidatedAt,
+    }, now);
+    if (!publication.allowed) return [];
+
+    return [{
+      slug: row.slug,
+      title: row.title,
+      summary: row.summary,
+      description: row.description,
+      legalStatusNote: row.legalStatusNote,
+      bibliographicCitation: row.bibliographicCitation,
+      officialMethodologyUrl: row.officialMethodologyUrl,
+      seoTitle: row.seoTitle,
+      seoDescription: row.seoDescription,
+      sources: row.sources.map((source) =>
+        sanitizeIndependentControlSource(source),
+      ),
+      criteria: row.criteria
+        .filter((criterion) => publishableCriterionKeys.has(criterion.key))
+        .map((criterion) => ({
+        key: criterion.key,
+        sourceLocator: criterion.sourceLocator,
+        sectionKey: criterion.sectionKey,
+        sectionTitle: criterion.sectionTitle,
+        title: criterion.title,
+        statement: criterion.statement,
+        whatIsChecked: criterion.whatIsChecked,
+        checkQuestion: criterion.checkQuestion,
+        factToEstablish: criterion.factToEstablish,
+        confirmingDocument: criterion.confirmingDocument,
+        evidenceRequired: criterion.evidenceRequired,
+        evidenceThreshold: criterion.evidenceThreshold,
+        applicabilityNote: criterion.applicabilityNote,
+        sourceDivergenceNote: criterion.sourceDivergenceNote,
+        basisKind: criterion.basisKind,
+        allowedStatuses: criterion.allowedStatuses,
+        isSourceCriterion: criterion.isSourceCriterion,
+        effectiveFrom: criterion.effectiveFrom,
+        effectiveTo: criterion.effectiveTo,
+        normLinks: criterion.normLinks.map((link) => ({
+          role: independentControlNormRole(link.role),
+          verifiedAt: link.verifiedAt,
+          note: link.note,
+          regulatoryCheck: {
+            key: link.regulatoryCheck.key,
+            question: link.regulatoryCheck.question,
+            factToEstablish: link.regulatoryCheck.factToEstablish,
+            primaryEvidenceType: link.regulatoryCheck.primaryEvidenceType,
+            evidenceThreshold: link.regulatoryCheck.evidenceThreshold,
+            applicabilityNote: link.regulatoryCheck.applicabilityNote,
+            officialSearchUrl: link.regulatoryCheck.officialSearchUrl,
+            officialSearchLabel: link.regulatoryCheck.officialSearchLabel,
+            nonCompliancePattern: link.regulatoryCheck.nonCompliancePattern,
+          },
+          provision: {
+            key: link.regulatoryCheck.provision.key,
+            locator: link.regulatoryCheck.provision.locator,
+            title: link.regulatoryCheck.provision.title,
+            requirement: link.regulatoryCheck.provision.requirement,
+            applicability: link.regulatoryCheck.provision.applicability,
+            effectiveFrom: link.regulatoryCheck.provision.effectiveFrom,
+            effectiveTo: link.regulatoryCheck.provision.effectiveTo,
+          },
+          edition: {
+            key: link.regulatoryCheck.provision.edition.key,
+            title: link.regulatoryCheck.provision.edition.title,
+            effectiveFrom: link.regulatoryCheck.provision.edition.effectiveFrom,
+            effectiveTo: link.regulatoryCheck.provision.edition.effectiveTo,
+            verifiedAt: link.regulatoryCheck.provision.edition.verifiedAt,
+            historicalUseAllowed:
+              link.regulatoryCheck.provision.edition.historicalUseAllowed,
+          },
+          regulation: {
+            slug: link.regulatoryCheck.provision.edition.regulation.slug,
+            title: link.regulatoryCheck.provision.edition.regulation.title,
+            sources: link.regulatoryCheck.provision.edition.regulation.sources,
+          },
+        })),
+        })),
+    }];
+  });
+}
+
 // ─── Regulations ──────────────────────────────────────────────────────────────
 
 export async function getRegulations(opts?: {
+  topicSlug?: string;
+  legalStatus?: "IN_FORCE" | "FUTURE" | "EXPIRED";
+  effectiveOn?: Date;
   take?: number;
   skip?: number;
-}): Promise<CatalogGridItem[]> {
+}) {
   const db = getPrisma();
   if (!db) return [];
+  const now = new Date();
+  const published = publishedContentWhere(now);
+  const publicCheck = publicRegulatoryCheckWhere(now);
+  const applicableEdition = opts?.effectiveOn
+    ? {
+        effectiveFrom: { lte: opts.effectiveOn },
+        OR: [
+          { effectiveTo: null },
+          { effectiveTo: { gte: opts.effectiveOn } },
+        ],
+      }
+    : {};
+  const hasWorkingProvision = {
+    editions: {
+      some: {
+        ...published,
+        ...applicableEdition,
+        provisions: {
+          some: {
+            ...published,
+            checks: { some: publicCheck },
+          },
+        },
+      },
+    },
+  } as const;
   const rows = await db.regulation.findMany({
-    select: { slug: true, title: true, summary: true, documentType: true },
-    orderBy: { title: "asc" },
+    where: {
+      ...publicRegulationWhere(now),
+      ...hasWorkingProvision,
+      ...(opts?.topicSlug
+        ? { topics: { some: { topic: { slug: opts.topicSlug, isPublished: true } } } }
+        : {}),
+      ...(opts?.legalStatus ? { legalStatus: opts.legalStatus } : {}),
+    },
+    select: {
+      slug: true,
+      title: true,
+      summary: true,
+      documentType: true,
+      number: true,
+      issuingAuthority: true,
+      legalStatus: true,
+      effectiveFrom: true,
+      effectiveTo: true,
+      officialPublicationUrl: true,
+      topics: {
+        where: { topic: { isPublished: true } },
+        select: { topic: { select: { slug: true, title: true } } },
+      },
+      editions: {
+        where: { ...published, ...applicableEdition },
+        select: {
+          provisions: {
+            where: { ...published, checks: { some: publicCheck } },
+            select: {
+              isPublished: true,
+              publishedAt: true,
+              checks: {
+                where: publicCheck,
+                select: {
+                  isPublished: true,
+                  publishedAt: true,
+                  question: true,
+                  factToEstablish: true,
+                  primaryEvidenceType: true,
+                  officialSearchUrl: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    orderBy: [{ legalStatus: "asc" }, { title: "asc" }],
     take: opts?.take ?? 100,
     skip: opts?.skip ?? 0,
   });
-  return rows.map((r) => ({
-    href: `/regulations/${r.slug}`,
-    title: r.title,
-    description: r.summary ?? r.documentType ?? "",
+  return rows.flatMap((row) => {
+    const provisions = row.editions
+      .flatMap((edition) => edition.provisions)
+      .filter((provision) =>
+        canPublishRegulationProvision(
+          {
+            ...provision,
+            editionPublished: true,
+            regulationPublished: true,
+          },
+          now,
+        ).allowed,
+      );
+    return provisions.length > 0 ? [{
+      slug: row.slug,
+      title: row.title,
+      summary: row.summary,
+      documentType: row.documentType,
+      number: row.number,
+      issuingAuthority: row.issuingAuthority,
+      legalStatus: row.legalStatus,
+      effectiveFrom: row.effectiveFrom,
+      effectiveTo: row.effectiveTo,
+      officialPublicationUrl: row.officialPublicationUrl,
+      topics: row.topics.map(({ topic }) => topic),
+      provisionCount: provisions.length,
+      checkCount: provisions.reduce((total, provision) => total + provision.checks.length, 0),
+    }] : [];
+  });
+}
+
+export async function getRegulationTopics() {
+  const db = getPrisma();
+  if (!db) return [];
+  const now = new Date();
+  const published = publishedContentWhere(now);
+  const publicCheck = publicRegulatoryCheckWhere(now);
+  const topics = await db.regulationTopic.findMany({
+    where: { isPublished: true },
+    select: {
+      slug: true,
+      title: true,
+      description: true,
+      regulations: {
+        where: {
+          regulation: {
+            ...publicRegulationWhere(now),
+            editions: {
+              some: {
+                ...published,
+                provisions: {
+                  some: { ...published, checks: { some: publicCheck } },
+                },
+              },
+            },
+          },
+        },
+        select: { regulationId: true },
+      },
+    },
+    orderBy: [{ sortOrder: "asc" }, { title: "asc" }],
+  });
+
+  return topics.map(({ regulations, ...topic }) => ({
+    ...topic,
+    count: regulations.length,
   }));
 }
 
 export async function getRegulation(slug: string) {
   const db = getPrisma();
   if (!db) return null;
-  return db.regulation.findUnique({ where: { slug } });
+  const now = new Date();
+  const published = publishedContentWhere(now);
+  const publicCheck = publicRegulatoryCheckWhere(now);
+  const regulation = await db.regulation.findFirst({
+    where: {
+      slug,
+      ...publicRegulationWhere(now),
+      editions: {
+        some: {
+          ...published,
+          provisions: { some: { ...published, checks: { some: publicCheck } } },
+        },
+      },
+    },
+    include: {
+      sources: {
+        where: {
+          ...publicRegulationSourceWhere(now),
+          OR: [
+            { editionId: null },
+            { edition: published },
+          ],
+        },
+        orderBy: [{ sortOrder: "asc" }, { title: "asc" }],
+      },
+      topics: {
+        where: { topic: { isPublished: true } },
+        include: { topic: true },
+      },
+      editions: {
+        where: {
+          ...published,
+          provisions: { some: { ...published, checks: { some: publicCheck } } },
+        },
+        orderBy: { effectiveFrom: "desc" },
+        include: {
+          sources: {
+            where: publicRegulationSourceWhere(now),
+            orderBy: [{ sortOrder: "asc" }, { title: "asc" }],
+          },
+          provisions: {
+            where: { ...published, checks: { some: publicCheck } },
+            orderBy: [{ sortOrder: "asc" }, { locator: "asc" }],
+            include: {
+              topic: true,
+              checks: {
+                where: publicCheck,
+                orderBy: [{ sortOrder: "asc" }, { question: "asc" }],
+              },
+              equipmentRequirements: {
+                where: published,
+                orderBy: [{ sortOrder: "asc" }, { position: "asc" }],
+              },
+            },
+          },
+        },
+      },
+      outgoingRelations: {
+        where: {
+          isPublished: true,
+          targetRegulation: publicRegulationWhere(now),
+        },
+        orderBy: { legalEffectFrom: "desc" },
+        include: { targetRegulation: true },
+      },
+      incomingRelations: {
+        where: {
+          isPublished: true,
+          sourceRegulation: publicRegulationWhere(now),
+        },
+        orderBy: { legalEffectFrom: "desc" },
+        include: { sourceRegulation: true },
+      },
+    },
+  });
+  if (!regulation) return null;
+
+  const editions = regulation.editions
+    .map((edition) => ({
+      ...edition,
+      provisions: edition.provisions.filter((provision) =>
+        canPublishRegulationProvision(
+          {
+            ...provision,
+            editionPublished: isPubliclyVisibleAt(edition, now),
+            regulationPublished: isPubliclyVisibleAt(regulation, now),
+          },
+          now,
+        ).allowed,
+      ),
+    }))
+    .filter((edition) => edition.provisions.length > 0);
+  if (editions.length === 0) return null;
+
+  return {
+    ...regulation,
+    topics: regulation.topics.map(({ topic }) => topic),
+    editions,
+  };
 }
 
 // ─── History ──────────────────────────────────────────────────────────────────
@@ -742,11 +2644,20 @@ export async function getInnovations(opts?: {
     take: opts?.take ?? 100,
     skip: opts?.skip ?? 0,
   });
-  return rows.map((r) => ({
-    href: `/innovations/${r.slug}`,
-    title: r.title,
-    description: r.summary ?? "",
-  }));
+  return rows.map((r) => {
+    const editorial = getInnovationContent(r.slug);
+    return {
+      href: `/innovations/${r.slug}`,
+      title: editorial?.title ?? r.title,
+      description: editorial?.summary ?? r.summary ?? "",
+      ...(editorial
+        ? {
+            badges: [editorial.type, editorial.manufacturer],
+            image: { ...editorial.images[0], loading: "eager" },
+          }
+        : {}),
+    };
+  });
 }
 
 export async function getInnovation(slug: string) {
@@ -811,6 +2722,16 @@ export async function getEntityCounts() {
   }
   // Раздел /publications наполняется научными работами (ScientificWork) и, в перспективе,
   // редакционными материалами (Publication). Счётчик = сумма обоих типов контента.
+  const reservedScientificSlugs = await db.scientificWork
+    .findMany({
+      where: { slug: { not: null } },
+      select: { slug: true },
+    })
+    .catch(() => []);
+  const reservedSlugs = reservedScientificSlugs.flatMap((record) => record.slug ?? []);
+  const scientificCount = db.scientificWork
+    .count({ where: publicScientificWorkWhere() })
+    .catch(() => 0);
   const [diseases, procedures, doctors, clinics, suppliers, equipment, editorial, scientific] =
     await Promise.all([
       db.disease.count(),
@@ -819,8 +2740,8 @@ export async function getEntityCounts() {
       db.clinic.count(),
       db.supplier.count(),
       db.equipment.count(),
-      db.publication.count(),
-      db.scientificWork.count({ where: { slug: { not: null } } }),
+      db.publication.count({ where: { slug: { notIn: reservedSlugs } } }),
+      scientificCount,
     ]);
   return {
     diseases,

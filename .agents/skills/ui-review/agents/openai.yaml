@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Review"
+  short_description: "Interface hierarchy and design-system review"
+  default_prompt: "Use $ui-review to review a proposed interface change."

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { InvestigationNotice } from "@/components/investigations/investigation-notice";
 import { ClinicCard } from "@/components/entity/clinic-card";
 import { Button } from "@/components/ui/button";
 import type { ClinicCardData } from "@/lib/loaders";
@@ -70,9 +71,26 @@ export function ClinicsFilteredGrid({ clinics }: { clinics: ClinicCardData[] }) 
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((c) => (
-            <ClinicCard key={c.slug} clinic={c} />
-          ))}
+          {filtered.map((c) => {
+            const hasInvestigation = c.investigations.length > 0;
+
+            if (!hasInvestigation) {
+              return <ClinicCard key={c.slug} clinic={c} />;
+            }
+
+            return (
+              <div
+                className="overflow-hidden rounded-lg border-2 border-red-400 bg-card shadow-[0_0_0_3px_rgba(248,113,113,0.12)]"
+                key={c.slug}
+              >
+                <InvestigationNotice
+                  items={c.investigations}
+                  variant="catalog"
+                />
+                <ClinicCard className="rounded-none border-0 shadow-none" clinic={c} />
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

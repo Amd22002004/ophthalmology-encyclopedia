@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Audit"
+  short_description: "Publication and post-release audit"
+  default_prompt: "Use $release-audit to make a publication readiness or post-release audit report."

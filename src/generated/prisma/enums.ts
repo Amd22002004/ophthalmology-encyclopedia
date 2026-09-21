@@ -9,8 +9,351 @@
 * 🟢 You can import this file directly.
 */
 
+export const ScientificWorkSourceStatus = {
+  FULL_TEXT: 'FULL_TEXT',
+  EXTRACTED_PAGES: 'EXTRACTED_PAGES',
+  SCANNED_PAGES: 'SCANNED_PAGES',
+  BIBLIOGRAPHIC_ONLY: 'BIBLIOGRAPHIC_ONLY'
+} as const
+
+export type ScientificWorkSourceStatus = (typeof ScientificWorkSourceStatus)[keyof typeof ScientificWorkSourceStatus]
+
+
+export const ScientificWorkContentKind = {
+  ORIGINAL_RESEARCH: 'ORIGINAL_RESEARCH',
+  CLINICAL_CASE: 'CLINICAL_CASE',
+  REVIEW: 'REVIEW',
+  THESIS: 'THESIS',
+  OTHER: 'OTHER'
+} as const
+
+export type ScientificWorkContentKind = (typeof ScientificWorkContentKind)[keyof typeof ScientificWorkContentKind]
+
+
+export const ScientificWorkRightsBasis = {
+  UNVERIFIED: 'UNVERIFIED',
+  OPEN_LICENSE: 'OPEN_LICENSE',
+  AUTHOR_PERMISSION: 'AUTHOR_PERMISSION',
+  PUBLISHER_PERMISSION: 'PUBLISHER_PERMISSION',
+  USER_CONFIRMED_PERMISSION: 'USER_CONFIRMED_PERMISSION',
+  PUBLIC_DOMAIN: 'PUBLIC_DOMAIN'
+} as const
+
+export type ScientificWorkRightsBasis = (typeof ScientificWorkRightsBasis)[keyof typeof ScientificWorkRightsBasis]
+
+
+export const RegulationLegalStatus = {
+  DRAFT: 'DRAFT',
+  IN_FORCE: 'IN_FORCE',
+  FUTURE: 'FUTURE',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type RegulationLegalStatus = (typeof RegulationLegalStatus)[keyof typeof RegulationLegalStatus]
+
+
+export const RegulationRelationType = {
+  AMENDS: 'AMENDS',
+  REPEALS: 'REPEALS',
+  REPLACES: 'REPLACES',
+  EXTENDS: 'EXTENDS',
+  IMPLEMENTS: 'IMPLEMENTS'
+} as const
+
+export type RegulationRelationType = (typeof RegulationRelationType)[keyof typeof RegulationRelationType]
+
+
+export const RegulationSourceKind = {
+  OFFICIAL_PUBLICATION: 'OFFICIAL_PUBLICATION',
+  OFFICIAL_CONSOLIDATED_TEXT: 'OFFICIAL_CONSOLIDATED_TEXT',
+  OFFICIAL_REGISTER: 'OFFICIAL_REGISTER',
+  OFFICIAL_GUIDANCE: 'OFFICIAL_GUIDANCE'
+} as const
+
+export type RegulationSourceKind = (typeof RegulationSourceKind)[keyof typeof RegulationSourceKind]
+
+
+export const RegulatoryAssessmentStatus = {
+  CONFIRMED: 'CONFIRMED',
+  LIKELY_NON_COMPLIANCE: 'LIKELY_NON_COMPLIANCE',
+  REQUIRES_VERIFICATION: 'REQUIRES_VERIFICATION',
+  NOT_CONFIRMED: 'NOT_CONFIRMED',
+  COMPLIANT: 'COMPLIANT'
+} as const
+
+export type RegulatoryAssessmentStatus = (typeof RegulatoryAssessmentStatus)[keyof typeof RegulatoryAssessmentStatus]
+
+
+export const RegulationApplicabilityStatus = {
+  APPLICABLE: 'APPLICABLE',
+  NOT_APPLICABLE: 'NOT_APPLICABLE',
+  REQUIRES_VERIFICATION: 'REQUIRES_VERIFICATION'
+} as const
+
+export type RegulationApplicabilityStatus = (typeof RegulationApplicabilityStatus)[keyof typeof RegulationApplicabilityStatus]
+
+
+export const InvestigationEvidenceRole = {
+  SUPPORTS: 'SUPPORTS',
+  REFUTES: 'REFUTES',
+  CONTEXT: 'CONTEXT'
+} as const
+
+export type InvestigationEvidenceRole = (typeof InvestigationEvidenceRole)[keyof typeof InvestigationEvidenceRole]
+
+
+export const RestrictedInferenceSignal = {
+  DOCUMENT_NOT_FOUND: 'DOCUMENT_NOT_FOUND',
+  REGISTRY_NO_MATCH: 'REGISTRY_NO_MATCH',
+  OLD_MANUFACTURE_YEAR: 'OLD_MANUFACTURE_YEAR',
+  MODEL_DISCONTINUED: 'MODEL_DISCONTINUED',
+  THIRD_PARTY_STATEMENT: 'THIRD_PARTY_STATEMENT'
+} as const
+
+export type RestrictedInferenceSignal = (typeof RestrictedInferenceSignal)[keyof typeof RestrictedInferenceSignal]
+
+
+export const RegistryCheckResult = {
+  MATCH: 'MATCH',
+  NO_MATCH: 'NO_MATCH',
+  AMBIGUOUS: 'AMBIGUOUS',
+  UNAVAILABLE: 'UNAVAILABLE'
+} as const
+
+export type RegistryCheckResult = (typeof RegistryCheckResult)[keyof typeof RegistryCheckResult]
+
+
+export const IndependentControlBasisKind = {
+  DIRECT_NORM: 'DIRECT_NORM',
+  METHODOLOGY_DERIVED: 'METHODOLOGY_DERIVED',
+  LOCAL_FORM_ONLY: 'LOCAL_FORM_ONLY'
+} as const
+
+export type IndependentControlBasisKind = (typeof IndependentControlBasisKind)[keyof typeof IndependentControlBasisKind]
+
+
+export const IndependentControlSourceKind = {
+  LOCAL_DOCUMENT: 'LOCAL_DOCUMENT',
+  OFFICIAL_METHODOLOGY: 'OFFICIAL_METHODOLOGY',
+  OFFICIAL_GUIDANCE: 'OFFICIAL_GUIDANCE'
+} as const
+
+export type IndependentControlSourceKind = (typeof IndependentControlSourceKind)[keyof typeof IndependentControlSourceKind]
+
+
+export const IndependentControlRightsBasis = {
+  UNVERIFIED: 'UNVERIFIED',
+  OPEN_LICENSE: 'OPEN_LICENSE',
+  AUTHOR_PERMISSION: 'AUTHOR_PERMISSION',
+  PUBLISHER_PERMISSION: 'PUBLISHER_PERMISSION',
+  USER_CONFIRMED_PERMISSION: 'USER_CONFIRMED_PERMISSION',
+  PUBLIC_DOMAIN: 'PUBLIC_DOMAIN'
+} as const
+
+export type IndependentControlRightsBasis = (typeof IndependentControlRightsBasis)[keyof typeof IndependentControlRightsBasis]
+
+
+export const IndependentControlNormRole = {
+  DIRECT_BASIS: 'DIRECT_BASIS',
+  SUPPORTING_BASIS: 'SUPPORTING_BASIS',
+  HISTORICAL_BASIS: 'HISTORICAL_BASIS'
+} as const
+
+export type IndependentControlNormRole = (typeof IndependentControlNormRole)[keyof typeof IndependentControlNormRole]
+
+
 export const AdminRole = {
   OWNER: 'OWNER'
 } as const
 
 export type AdminRole = (typeof AdminRole)[keyof typeof AdminRole]
+
+
+export const AppealStatus = {
+  NEW: 'NEW',
+  IN_REVIEW: 'IN_REVIEW',
+  VERIFIED: 'VERIFIED',
+  CLOSED: 'CLOSED'
+} as const
+
+export type AppealStatus = (typeof AppealStatus)[keyof typeof AppealStatus]
+
+
+export const AppealNotificationStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type AppealNotificationStatus = (typeof AppealNotificationStatus)[keyof typeof AppealNotificationStatus]
+
+
+export const CooperationParticipantType = {
+  CLINIC: 'CLINIC',
+  DOCTOR: 'DOCTOR',
+  PARTNER: 'PARTNER'
+} as const
+
+export type CooperationParticipantType = (typeof CooperationParticipantType)[keyof typeof CooperationParticipantType]
+
+
+export const CooperationApplicationStatus = {
+  NEW: 'NEW',
+  IN_REVIEW: 'IN_REVIEW',
+  NEED_INFO: 'NEED_INFO',
+  APPROVED: 'APPROVED',
+  INVITED: 'INVITED',
+  PROFILE_REVIEW: 'PROFILE_REVIEW',
+  ACTIVE: 'ACTIVE',
+  REJECTED: 'REJECTED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type CooperationApplicationStatus = (typeof CooperationApplicationStatus)[keyof typeof CooperationApplicationStatus]
+
+
+export const CooperationNotificationKind = {
+  APPLICANT: 'APPLICANT',
+  ASSOCIATION: 'ASSOCIATION'
+} as const
+
+export type CooperationNotificationKind = (typeof CooperationNotificationKind)[keyof typeof CooperationNotificationKind]
+
+
+export const CooperationNotificationStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type CooperationNotificationStatus = (typeof CooperationNotificationStatus)[keyof typeof CooperationNotificationStatus]
+
+
+export const ParticipantUserStatus = {
+  ACTIVE: 'ACTIVE',
+  SUSPENDED: 'SUSPENDED'
+} as const
+
+export type ParticipantUserStatus = (typeof ParticipantUserStatus)[keyof typeof ParticipantUserStatus]
+
+
+export const EntityMatchStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type EntityMatchStatus = (typeof EntityMatchStatus)[keyof typeof EntityMatchStatus]
+
+
+export const UserEntityLinkStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type UserEntityLinkStatus = (typeof UserEntityLinkStatus)[keyof typeof UserEntityLinkStatus]
+
+
+export const InvitationDeliveryStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type InvitationDeliveryStatus = (typeof InvitationDeliveryStatus)[keyof typeof InvitationDeliveryStatus]
+
+
+export const AuthAuditEventType = {
+  INVITATION_CREATED: 'INVITATION_CREATED',
+  INVITATION_SENT: 'INVITATION_SENT',
+  INVITATION_SEND_FAILED: 'INVITATION_SEND_FAILED',
+  INVITATION_REISSUED: 'INVITATION_REISSUED',
+  INVITATION_REVOKED: 'INVITATION_REVOKED',
+  INVITATION_ACCEPTED: 'INVITATION_ACCEPTED',
+  USER_CREATED: 'USER_CREATED',
+  EXISTING_USER_LINKED: 'EXISTING_USER_LINKED',
+  DOCTOR_LINK_PENDING: 'DOCTOR_LINK_PENDING',
+  DOCTOR_LINK_CONFIRMED: 'DOCTOR_LINK_CONFIRMED',
+  CLINIC_ACCESS_PENDING: 'CLINIC_ACCESS_PENDING',
+  CLINIC_ACCESS_CONFIRMED: 'CLINIC_ACCESS_CONFIRMED',
+  PASSWORD_RESET_REQUESTED: 'PASSWORD_RESET_REQUESTED',
+  PASSWORD_RESET_COMPLETED: 'PASSWORD_RESET_COMPLETED',
+  ADMIN_PASSWORD_RESET_REQUESTED: 'ADMIN_PASSWORD_RESET_REQUESTED',
+  ADMIN_PASSWORD_RESET_SENT: 'ADMIN_PASSWORD_RESET_SENT',
+  ADMIN_PASSWORD_RESET_SEND_FAILED: 'ADMIN_PASSWORD_RESET_SEND_FAILED',
+  ADMIN_PASSWORD_RESET_COMPLETED: 'ADMIN_PASSWORD_RESET_COMPLETED'
+} as const
+
+export type AuthAuditEventType = (typeof AuthAuditEventType)[keyof typeof AuthAuditEventType]
+
+
+export const EventTalkKind = {
+  TALK: 'TALK',
+  BREAK: 'BREAK'
+} as const
+
+export type EventTalkKind = (typeof EventTalkKind)[keyof typeof EventTalkKind]
+
+
+export const EventRegistrationStatus = {
+  NEW: 'NEW',
+  CONTACTED: 'CONTACTED',
+  CONFIRMED: 'CONFIRMED',
+  ATTENDED: 'ATTENDED',
+  CANCELLED: 'CANCELLED',
+  NO_SHOW: 'NO_SHOW',
+  SPAM: 'SPAM'
+} as const
+
+export type EventRegistrationStatus = (typeof EventRegistrationStatus)[keyof typeof EventRegistrationStatus]
+
+
+export const EventRegistrationNotificationKind = {
+  APPLICANT: 'APPLICANT',
+  ASSOCIATION: 'ASSOCIATION'
+} as const
+
+export type EventRegistrationNotificationKind = (typeof EventRegistrationNotificationKind)[keyof typeof EventRegistrationNotificationKind]
+
+
+export const EventRegistrationNotificationChannel = {
+  EMAIL: 'EMAIL',
+  TELEGRAM: 'TELEGRAM',
+  GOOGLE_SHEETS: 'GOOGLE_SHEETS'
+} as const
+
+export type EventRegistrationNotificationChannel = (typeof EventRegistrationNotificationChannel)[keyof typeof EventRegistrationNotificationChannel]
+
+
+export const EventRegistrationNotificationType = {
+  EVENT_REGISTRATION_CREATED: 'EVENT_REGISTRATION_CREATED'
+} as const
+
+export type EventRegistrationNotificationType = (typeof EventRegistrationNotificationType)[keyof typeof EventRegistrationNotificationType]
+
+
+export const EventRegistrationNotificationStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type EventRegistrationNotificationStatus = (typeof EventRegistrationNotificationStatus)[keyof typeof EventRegistrationNotificationStatus]
+
+
+export const EventTelegramJobKind = {
+  FULL_EXPORT: 'FULL_EXPORT'
+} as const
+
+export type EventTelegramJobKind = (typeof EventTelegramJobKind)[keyof typeof EventTelegramJobKind]
+
+
+export const EventTelegramJobStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type EventTelegramJobStatus = (typeof EventTelegramJobStatus)[keyof typeof EventTelegramJobStatus]

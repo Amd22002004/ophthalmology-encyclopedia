@@ -1,0 +1,4 @@
+interface:
+  display_name: "Entity Consistency"
+  short_description: "Prevent duplicate knowledge entities"
+  default_prompt: "Use $entity-consistency before adding a knowledge entity."

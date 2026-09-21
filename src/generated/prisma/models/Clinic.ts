@@ -528,6 +528,11 @@ export type ClinicWhereInput = {
   procedures?: Prisma.ClinicOnProcedureListRelationFilter
   publications?: Prisma.ClinicOnPublicationListRelationFilter
   equipment?: Prisma.ClinicOnEquipmentListRelationFilter
+  investigations?: Prisma.InvestigationOnClinicListRelationFilter
+  appeals?: Prisma.AppealListRelationFilter
+  accountAccesses?: Prisma.UserClinicAccessListRelationFilter
+  entityMatches?: Prisma.CooperationEntityMatchListRelationFilter
+  authAuditEvents?: Prisma.AuthAuditEventListRelationFilter
 }
 
 export type ClinicOrderByWithRelationInput = {
@@ -582,6 +587,11 @@ export type ClinicOrderByWithRelationInput = {
   procedures?: Prisma.ClinicOnProcedureOrderByRelationAggregateInput
   publications?: Prisma.ClinicOnPublicationOrderByRelationAggregateInput
   equipment?: Prisma.ClinicOnEquipmentOrderByRelationAggregateInput
+  investigations?: Prisma.InvestigationOnClinicOrderByRelationAggregateInput
+  appeals?: Prisma.AppealOrderByRelationAggregateInput
+  accountAccesses?: Prisma.UserClinicAccessOrderByRelationAggregateInput
+  entityMatches?: Prisma.CooperationEntityMatchOrderByRelationAggregateInput
+  authAuditEvents?: Prisma.AuthAuditEventOrderByRelationAggregateInput
 }
 
 export type ClinicWhereUniqueInput = Prisma.AtLeast<{
@@ -639,6 +649,11 @@ export type ClinicWhereUniqueInput = Prisma.AtLeast<{
   procedures?: Prisma.ClinicOnProcedureListRelationFilter
   publications?: Prisma.ClinicOnPublicationListRelationFilter
   equipment?: Prisma.ClinicOnEquipmentListRelationFilter
+  investigations?: Prisma.InvestigationOnClinicListRelationFilter
+  appeals?: Prisma.AppealListRelationFilter
+  accountAccesses?: Prisma.UserClinicAccessListRelationFilter
+  entityMatches?: Prisma.CooperationEntityMatchListRelationFilter
+  authAuditEvents?: Prisma.AuthAuditEventListRelationFilter
 }, "id" | "slug">
 
 export type ClinicOrderByWithAggregationInput = {
@@ -792,6 +807,11 @@ export type ClinicCreateInput = {
   procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateInput = {
@@ -845,6 +865,11 @@ export type ClinicUncheckedCreateInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUpdateInput = {
@@ -898,6 +923,11 @@ export type ClinicUpdateInput = {
   procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateInput = {
@@ -951,6 +981,11 @@ export type ClinicUncheckedUpdateInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateManyInput = {
@@ -1251,6 +1286,11 @@ export type ClinicScalarRelationFilter = {
   isNot?: Prisma.ClinicWhereInput
 }
 
+export type ClinicNullableScalarRelationFilter = {
+  is?: Prisma.ClinicWhereInput | null
+  isNot?: Prisma.ClinicWhereInput | null
+}
+
 export type ClinicCreatephonesInput = {
   set: string[]
 }
@@ -1264,20 +1304,12 @@ export type ClinicUpdatephonesInput = {
   push?: string | string[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type NullableFloatFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type ClinicUpdatespecializationTagsInput = {
@@ -1425,6 +1457,82 @@ export type ClinicUpdateOneRequiredWithoutPublicationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ClinicUpdateToOneWithWhereWithoutPublicationsInput, Prisma.ClinicUpdateWithoutPublicationsInput>, Prisma.ClinicUncheckedUpdateWithoutPublicationsInput>
 }
 
+export type ClinicCreateNestedOneWithoutInvestigationsInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutInvestigationsInput, Prisma.ClinicUncheckedCreateWithoutInvestigationsInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutInvestigationsInput
+  connect?: Prisma.ClinicWhereUniqueInput
+}
+
+export type ClinicUpdateOneRequiredWithoutInvestigationsNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutInvestigationsInput, Prisma.ClinicUncheckedCreateWithoutInvestigationsInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutInvestigationsInput
+  upsert?: Prisma.ClinicUpsertWithoutInvestigationsInput
+  connect?: Prisma.ClinicWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClinicUpdateToOneWithWhereWithoutInvestigationsInput, Prisma.ClinicUpdateWithoutInvestigationsInput>, Prisma.ClinicUncheckedUpdateWithoutInvestigationsInput>
+}
+
+export type ClinicCreateNestedOneWithoutAppealsInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutAppealsInput, Prisma.ClinicUncheckedCreateWithoutAppealsInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutAppealsInput
+  connect?: Prisma.ClinicWhereUniqueInput
+}
+
+export type ClinicUpdateOneWithoutAppealsNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutAppealsInput, Prisma.ClinicUncheckedCreateWithoutAppealsInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutAppealsInput
+  upsert?: Prisma.ClinicUpsertWithoutAppealsInput
+  disconnect?: Prisma.ClinicWhereInput | boolean
+  delete?: Prisma.ClinicWhereInput | boolean
+  connect?: Prisma.ClinicWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClinicUpdateToOneWithWhereWithoutAppealsInput, Prisma.ClinicUpdateWithoutAppealsInput>, Prisma.ClinicUncheckedUpdateWithoutAppealsInput>
+}
+
+export type ClinicCreateNestedOneWithoutEntityMatchesInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutEntityMatchesInput, Prisma.ClinicUncheckedCreateWithoutEntityMatchesInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutEntityMatchesInput
+  connect?: Prisma.ClinicWhereUniqueInput
+}
+
+export type ClinicUpdateOneWithoutEntityMatchesNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutEntityMatchesInput, Prisma.ClinicUncheckedCreateWithoutEntityMatchesInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutEntityMatchesInput
+  upsert?: Prisma.ClinicUpsertWithoutEntityMatchesInput
+  disconnect?: Prisma.ClinicWhereInput | boolean
+  delete?: Prisma.ClinicWhereInput | boolean
+  connect?: Prisma.ClinicWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClinicUpdateToOneWithWhereWithoutEntityMatchesInput, Prisma.ClinicUpdateWithoutEntityMatchesInput>, Prisma.ClinicUncheckedUpdateWithoutEntityMatchesInput>
+}
+
+export type ClinicCreateNestedOneWithoutAccountAccessesInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutAccountAccessesInput, Prisma.ClinicUncheckedCreateWithoutAccountAccessesInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutAccountAccessesInput
+  connect?: Prisma.ClinicWhereUniqueInput
+}
+
+export type ClinicUpdateOneRequiredWithoutAccountAccessesNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutAccountAccessesInput, Prisma.ClinicUncheckedCreateWithoutAccountAccessesInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutAccountAccessesInput
+  upsert?: Prisma.ClinicUpsertWithoutAccountAccessesInput
+  connect?: Prisma.ClinicWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClinicUpdateToOneWithWhereWithoutAccountAccessesInput, Prisma.ClinicUpdateWithoutAccountAccessesInput>, Prisma.ClinicUncheckedUpdateWithoutAccountAccessesInput>
+}
+
+export type ClinicCreateNestedOneWithoutAuthAuditEventsInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutAuthAuditEventsInput, Prisma.ClinicUncheckedCreateWithoutAuthAuditEventsInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutAuthAuditEventsInput
+  connect?: Prisma.ClinicWhereUniqueInput
+}
+
+export type ClinicUpdateOneWithoutAuthAuditEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutAuthAuditEventsInput, Prisma.ClinicUncheckedCreateWithoutAuthAuditEventsInput>
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutAuthAuditEventsInput
+  upsert?: Prisma.ClinicUpsertWithoutAuthAuditEventsInput
+  disconnect?: Prisma.ClinicWhereInput | boolean
+  delete?: Prisma.ClinicWhereInput | boolean
+  connect?: Prisma.ClinicWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClinicUpdateToOneWithWhereWithoutAuthAuditEventsInput, Prisma.ClinicUpdateWithoutAuthAuditEventsInput>, Prisma.ClinicUncheckedUpdateWithoutAuthAuditEventsInput>
+}
+
 export type ClinicCreateWithoutRegionEntityInput = {
   id?: string
   slug: string
@@ -1475,6 +1583,11 @@ export type ClinicCreateWithoutRegionEntityInput = {
   procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutRegionEntityInput = {
@@ -1527,6 +1640,11 @@ export type ClinicUncheckedCreateWithoutRegionEntityInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutRegionEntityInput = {
@@ -1654,6 +1772,11 @@ export type ClinicCreateWithoutDoctorsInput = {
   procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutDoctorsInput = {
@@ -1706,6 +1829,11 @@ export type ClinicUncheckedCreateWithoutDoctorsInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutDoctorsInput = {
@@ -1774,6 +1902,11 @@ export type ClinicUpdateWithoutDoctorsInput = {
   procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutDoctorsInput = {
@@ -1826,6 +1959,11 @@ export type ClinicUncheckedUpdateWithoutDoctorsInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateWithoutSpecialtiesInput = {
@@ -1878,6 +2016,11 @@ export type ClinicCreateWithoutSpecialtiesInput = {
   procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutSpecialtiesInput = {
@@ -1930,6 +2073,11 @@ export type ClinicUncheckedCreateWithoutSpecialtiesInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutSpecialtiesInput = {
@@ -1998,6 +2146,11 @@ export type ClinicUpdateWithoutSpecialtiesInput = {
   procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutSpecialtiesInput = {
@@ -2050,6 +2203,11 @@ export type ClinicUncheckedUpdateWithoutSpecialtiesInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateWithoutSuppliersInput = {
@@ -2102,6 +2260,11 @@ export type ClinicCreateWithoutSuppliersInput = {
   procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutSuppliersInput = {
@@ -2154,6 +2317,11 @@ export type ClinicUncheckedCreateWithoutSuppliersInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutSuppliersInput = {
@@ -2222,6 +2390,11 @@ export type ClinicUpdateWithoutSuppliersInput = {
   procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutSuppliersInput = {
@@ -2274,6 +2447,11 @@ export type ClinicUncheckedUpdateWithoutSuppliersInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateWithoutEquipmentInput = {
@@ -2326,6 +2504,11 @@ export type ClinicCreateWithoutEquipmentInput = {
   diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
   procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutEquipmentInput = {
@@ -2378,6 +2561,11 @@ export type ClinicUncheckedCreateWithoutEquipmentInput = {
   diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
   procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutEquipmentInput = {
@@ -2446,6 +2634,11 @@ export type ClinicUpdateWithoutEquipmentInput = {
   diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
   procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutEquipmentInput = {
@@ -2498,6 +2691,11 @@ export type ClinicUncheckedUpdateWithoutEquipmentInput = {
   diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
   procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateWithoutDiseasesInput = {
@@ -2550,6 +2748,11 @@ export type ClinicCreateWithoutDiseasesInput = {
   procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutDiseasesInput = {
@@ -2602,6 +2805,11 @@ export type ClinicUncheckedCreateWithoutDiseasesInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutDiseasesInput = {
@@ -2670,6 +2878,11 @@ export type ClinicUpdateWithoutDiseasesInput = {
   procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutDiseasesInput = {
@@ -2722,6 +2935,11 @@ export type ClinicUncheckedUpdateWithoutDiseasesInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateWithoutProceduresInput = {
@@ -2774,6 +2992,11 @@ export type ClinicCreateWithoutProceduresInput = {
   diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutProceduresInput = {
@@ -2826,6 +3049,11 @@ export type ClinicUncheckedCreateWithoutProceduresInput = {
   diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
   publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutProceduresInput = {
@@ -2894,6 +3122,11 @@ export type ClinicUpdateWithoutProceduresInput = {
   diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutProceduresInput = {
@@ -2946,6 +3179,11 @@ export type ClinicUncheckedUpdateWithoutProceduresInput = {
   diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateWithoutPublicationsInput = {
@@ -2998,6 +3236,11 @@ export type ClinicCreateWithoutPublicationsInput = {
   diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
   procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicUncheckedCreateWithoutPublicationsInput = {
@@ -3050,6 +3293,11 @@ export type ClinicUncheckedCreateWithoutPublicationsInput = {
   diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
   procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
 }
 
 export type ClinicCreateOrConnectWithoutPublicationsInput = {
@@ -3118,6 +3366,11 @@ export type ClinicUpdateWithoutPublicationsInput = {
   diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
   procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutPublicationsInput = {
@@ -3170,6 +3423,1231 @@ export type ClinicUncheckedUpdateWithoutPublicationsInput = {
   diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
   procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicCreateWithoutInvestigationsInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
+  specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
+  equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicUncheckedCreateWithoutInvestigationsInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
+  equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicCreateOrConnectWithoutInvestigationsInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutInvestigationsInput, Prisma.ClinicUncheckedCreateWithoutInvestigationsInput>
+}
+
+export type ClinicUpsertWithoutInvestigationsInput = {
+  update: Prisma.XOR<Prisma.ClinicUpdateWithoutInvestigationsInput, Prisma.ClinicUncheckedUpdateWithoutInvestigationsInput>
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutInvestigationsInput, Prisma.ClinicUncheckedCreateWithoutInvestigationsInput>
+  where?: Prisma.ClinicWhereInput
+}
+
+export type ClinicUpdateToOneWithWhereWithoutInvestigationsInput = {
+  where?: Prisma.ClinicWhereInput
+  data: Prisma.XOR<Prisma.ClinicUpdateWithoutInvestigationsInput, Prisma.ClinicUncheckedUpdateWithoutInvestigationsInput>
+}
+
+export type ClinicUpdateWithoutInvestigationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
+  specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
+  equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicUncheckedUpdateWithoutInvestigationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
+  equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicCreateWithoutAppealsInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
+  specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
+  equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicUncheckedCreateWithoutAppealsInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
+  equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicCreateOrConnectWithoutAppealsInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutAppealsInput, Prisma.ClinicUncheckedCreateWithoutAppealsInput>
+}
+
+export type ClinicUpsertWithoutAppealsInput = {
+  update: Prisma.XOR<Prisma.ClinicUpdateWithoutAppealsInput, Prisma.ClinicUncheckedUpdateWithoutAppealsInput>
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutAppealsInput, Prisma.ClinicUncheckedCreateWithoutAppealsInput>
+  where?: Prisma.ClinicWhereInput
+}
+
+export type ClinicUpdateToOneWithWhereWithoutAppealsInput = {
+  where?: Prisma.ClinicWhereInput
+  data: Prisma.XOR<Prisma.ClinicUpdateWithoutAppealsInput, Prisma.ClinicUncheckedUpdateWithoutAppealsInput>
+}
+
+export type ClinicUpdateWithoutAppealsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
+  specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
+  equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicUncheckedUpdateWithoutAppealsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
+  equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicCreateWithoutEntityMatchesInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
+  specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
+  equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicUncheckedCreateWithoutEntityMatchesInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
+  equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicCreateOrConnectWithoutEntityMatchesInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutEntityMatchesInput, Prisma.ClinicUncheckedCreateWithoutEntityMatchesInput>
+}
+
+export type ClinicUpsertWithoutEntityMatchesInput = {
+  update: Prisma.XOR<Prisma.ClinicUpdateWithoutEntityMatchesInput, Prisma.ClinicUncheckedUpdateWithoutEntityMatchesInput>
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutEntityMatchesInput, Prisma.ClinicUncheckedCreateWithoutEntityMatchesInput>
+  where?: Prisma.ClinicWhereInput
+}
+
+export type ClinicUpdateToOneWithWhereWithoutEntityMatchesInput = {
+  where?: Prisma.ClinicWhereInput
+  data: Prisma.XOR<Prisma.ClinicUpdateWithoutEntityMatchesInput, Prisma.ClinicUncheckedUpdateWithoutEntityMatchesInput>
+}
+
+export type ClinicUpdateWithoutEntityMatchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
+  specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
+  equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicUncheckedUpdateWithoutEntityMatchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
+  equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicCreateWithoutAccountAccessesInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
+  specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
+  equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicUncheckedCreateWithoutAccountAccessesInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
+  equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicCreateOrConnectWithoutAccountAccessesInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutAccountAccessesInput, Prisma.ClinicUncheckedCreateWithoutAccountAccessesInput>
+}
+
+export type ClinicUpsertWithoutAccountAccessesInput = {
+  update: Prisma.XOR<Prisma.ClinicUpdateWithoutAccountAccessesInput, Prisma.ClinicUncheckedUpdateWithoutAccountAccessesInput>
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutAccountAccessesInput, Prisma.ClinicUncheckedCreateWithoutAccountAccessesInput>
+  where?: Prisma.ClinicWhereInput
+}
+
+export type ClinicUpdateToOneWithWhereWithoutAccountAccessesInput = {
+  where?: Prisma.ClinicWhereInput
+  data: Prisma.XOR<Prisma.ClinicUpdateWithoutAccountAccessesInput, Prisma.ClinicUncheckedUpdateWithoutAccountAccessesInput>
+}
+
+export type ClinicUpdateWithoutAccountAccessesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
+  specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
+  equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicUncheckedUpdateWithoutAccountAccessesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
+  equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicCreateWithoutAuthAuditEventsInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutClinicsInput
+  specialties?: Prisma.ClinicOnSpecialtyCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationCreateNestedManyWithoutClinicInput
+  equipment?: Prisma.ClinicOnEquipmentCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicUncheckedCreateWithoutAuthAuditEventsInput = {
+  id?: string
+  slug: string
+  title: string
+  legalName?: string | null
+  description?: string | null
+  city?: string | null
+  region?: string | null
+  regionId?: string | null
+  clinicType?: string | null
+  networkName?: string | null
+  status?: string
+  phones?: Prisma.ClinicCreatephonesInput | string[]
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  address?: string | null
+  inn?: string | null
+  kpp?: string | null
+  ogrn?: string | null
+  license?: string | null
+  licenseStatus?: string | null
+  licenseDate?: Date | string | null
+  logoUrl?: string | null
+  coverImageUrl?: string | null
+  facadeImageUrl?: string | null
+  workingHours?: string | null
+  directorName?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  mapEmbed?: string | null
+  appointmentUrl?: string | null
+  vkUrl?: string | null
+  telegramUrl?: string | null
+  youtubeUrl?: string | null
+  foundedYear?: number | null
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: string | null
+  omsEnabled?: boolean
+  contractBased?: boolean
+  specializationTags?: Prisma.ClinicCreatespecializationTagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedCreateNestedManyWithoutClinicInput
+  doctors?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedCreateNestedManyWithoutClinicInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedCreateNestedManyWithoutClinicInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedCreateNestedManyWithoutClinicInput
+  publications?: Prisma.ClinicOnPublicationUncheckedCreateNestedManyWithoutClinicInput
+  equipment?: Prisma.ClinicOnEquipmentUncheckedCreateNestedManyWithoutClinicInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedCreateNestedManyWithoutClinicInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutClinicInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedCreateNestedManyWithoutClinicInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutClinicInput
+}
+
+export type ClinicCreateOrConnectWithoutAuthAuditEventsInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutAuthAuditEventsInput, Prisma.ClinicUncheckedCreateWithoutAuthAuditEventsInput>
+}
+
+export type ClinicUpsertWithoutAuthAuditEventsInput = {
+  update: Prisma.XOR<Prisma.ClinicUpdateWithoutAuthAuditEventsInput, Prisma.ClinicUncheckedUpdateWithoutAuthAuditEventsInput>
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutAuthAuditEventsInput, Prisma.ClinicUncheckedCreateWithoutAuthAuditEventsInput>
+  where?: Prisma.ClinicWhereInput
+}
+
+export type ClinicUpdateToOneWithWhereWithoutAuthAuditEventsInput = {
+  where?: Prisma.ClinicWhereInput
+  data: Prisma.XOR<Prisma.ClinicUpdateWithoutAuthAuditEventsInput, Prisma.ClinicUncheckedUpdateWithoutAuthAuditEventsInput>
+}
+
+export type ClinicUpdateWithoutAuthAuditEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutClinicsNestedInput
+  specialties?: Prisma.ClinicOnSpecialtyUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
+  equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+}
+
+export type ClinicUncheckedUpdateWithoutAuthAuditEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clinicType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  networkName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  phones?: Prisma.ClinicUpdatephonesInput | string[]
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kpp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ogrn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  licenseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facadeImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workingHours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  mapEmbed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vkUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telegramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  youtubeUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  foundedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  omsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  contractBased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specializationTags?: Prisma.ClinicUpdatespecializationTagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.ClinicOnSpecialtyUncheckedUpdateManyWithoutClinicNestedInput
+  doctors?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  suppliers?: Prisma.ClinicOnSupplierUncheckedUpdateManyWithoutClinicNestedInput
+  diseases?: Prisma.ClinicOnDiseaseUncheckedUpdateManyWithoutClinicNestedInput
+  procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
+  publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
+  equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicCreateManyRegionEntityInput = {
@@ -3267,6 +4745,11 @@ export type ClinicUpdateWithoutRegionEntityInput = {
   procedures?: Prisma.ClinicOnProcedureUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateWithoutRegionEntityInput = {
@@ -3319,6 +4802,11 @@ export type ClinicUncheckedUpdateWithoutRegionEntityInput = {
   procedures?: Prisma.ClinicOnProcedureUncheckedUpdateManyWithoutClinicNestedInput
   publications?: Prisma.ClinicOnPublicationUncheckedUpdateManyWithoutClinicNestedInput
   equipment?: Prisma.ClinicOnEquipmentUncheckedUpdateManyWithoutClinicNestedInput
+  investigations?: Prisma.InvestigationOnClinicUncheckedUpdateManyWithoutClinicNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutClinicNestedInput
+  accountAccesses?: Prisma.UserClinicAccessUncheckedUpdateManyWithoutClinicNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutClinicNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutClinicNestedInput
 }
 
 export type ClinicUncheckedUpdateManyWithoutRegionEntityInput = {
@@ -3379,6 +4867,11 @@ export type ClinicCountOutputType = {
   procedures: number
   publications: number
   equipment: number
+  investigations: number
+  appeals: number
+  accountAccesses: number
+  entityMatches: number
+  authAuditEvents: number
 }
 
 export type ClinicCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3389,6 +4882,11 @@ export type ClinicCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   procedures?: boolean | ClinicCountOutputTypeCountProceduresArgs
   publications?: boolean | ClinicCountOutputTypeCountPublicationsArgs
   equipment?: boolean | ClinicCountOutputTypeCountEquipmentArgs
+  investigations?: boolean | ClinicCountOutputTypeCountInvestigationsArgs
+  appeals?: boolean | ClinicCountOutputTypeCountAppealsArgs
+  accountAccesses?: boolean | ClinicCountOutputTypeCountAccountAccessesArgs
+  entityMatches?: boolean | ClinicCountOutputTypeCountEntityMatchesArgs
+  authAuditEvents?: boolean | ClinicCountOutputTypeCountAuthAuditEventsArgs
 }
 
 /**
@@ -3450,6 +4948,41 @@ export type ClinicCountOutputTypeCountEquipmentArgs<ExtArgs extends runtime.Type
   where?: Prisma.ClinicOnEquipmentWhereInput
 }
 
+/**
+ * ClinicCountOutputType without action
+ */
+export type ClinicCountOutputTypeCountInvestigationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvestigationOnClinicWhereInput
+}
+
+/**
+ * ClinicCountOutputType without action
+ */
+export type ClinicCountOutputTypeCountAppealsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppealWhereInput
+}
+
+/**
+ * ClinicCountOutputType without action
+ */
+export type ClinicCountOutputTypeCountAccountAccessesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserClinicAccessWhereInput
+}
+
+/**
+ * ClinicCountOutputType without action
+ */
+export type ClinicCountOutputTypeCountEntityMatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CooperationEntityMatchWhereInput
+}
+
+/**
+ * ClinicCountOutputType without action
+ */
+export type ClinicCountOutputTypeCountAuthAuditEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuthAuditEventWhereInput
+}
+
 
 export type ClinicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3503,6 +5036,11 @@ export type ClinicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   procedures?: boolean | Prisma.Clinic$proceduresArgs<ExtArgs>
   publications?: boolean | Prisma.Clinic$publicationsArgs<ExtArgs>
   equipment?: boolean | Prisma.Clinic$equipmentArgs<ExtArgs>
+  investigations?: boolean | Prisma.Clinic$investigationsArgs<ExtArgs>
+  appeals?: boolean | Prisma.Clinic$appealsArgs<ExtArgs>
+  accountAccesses?: boolean | Prisma.Clinic$accountAccessesArgs<ExtArgs>
+  entityMatches?: boolean | Prisma.Clinic$entityMatchesArgs<ExtArgs>
+  authAuditEvents?: boolean | Prisma.Clinic$authAuditEventsArgs<ExtArgs>
   _count?: boolean | Prisma.ClinicCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["clinic"]>
 
@@ -3656,6 +5194,11 @@ export type ClinicInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   procedures?: boolean | Prisma.Clinic$proceduresArgs<ExtArgs>
   publications?: boolean | Prisma.Clinic$publicationsArgs<ExtArgs>
   equipment?: boolean | Prisma.Clinic$equipmentArgs<ExtArgs>
+  investigations?: boolean | Prisma.Clinic$investigationsArgs<ExtArgs>
+  appeals?: boolean | Prisma.Clinic$appealsArgs<ExtArgs>
+  accountAccesses?: boolean | Prisma.Clinic$accountAccessesArgs<ExtArgs>
+  entityMatches?: boolean | Prisma.Clinic$entityMatchesArgs<ExtArgs>
+  authAuditEvents?: boolean | Prisma.Clinic$authAuditEventsArgs<ExtArgs>
   _count?: boolean | Prisma.ClinicCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ClinicIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3676,6 +5219,11 @@ export type $ClinicPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     procedures: Prisma.$ClinicOnProcedurePayload<ExtArgs>[]
     publications: Prisma.$ClinicOnPublicationPayload<ExtArgs>[]
     equipment: Prisma.$ClinicOnEquipmentPayload<ExtArgs>[]
+    investigations: Prisma.$InvestigationOnClinicPayload<ExtArgs>[]
+    appeals: Prisma.$AppealPayload<ExtArgs>[]
+    accountAccesses: Prisma.$UserClinicAccessPayload<ExtArgs>[]
+    entityMatches: Prisma.$CooperationEntityMatchPayload<ExtArgs>[]
+    authAuditEvents: Prisma.$AuthAuditEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4123,6 +5671,11 @@ export interface Prisma__ClinicClient<T, Null = never, ExtArgs extends runtime.T
   procedures<T extends Prisma.Clinic$proceduresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$proceduresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicOnProcedurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   publications<T extends Prisma.Clinic$publicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$publicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicOnPublicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   equipment<T extends Prisma.Clinic$equipmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$equipmentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicOnEquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  investigations<T extends Prisma.Clinic$investigationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$investigationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvestigationOnClinicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  appeals<T extends Prisma.Clinic$appealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$appealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  accountAccesses<T extends Prisma.Clinic$accountAccessesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$accountAccessesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserClinicAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  entityMatches<T extends Prisma.Clinic$entityMatchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$entityMatchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CooperationEntityMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  authAuditEvents<T extends Prisma.Clinic$authAuditEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$authAuditEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuthAuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4780,6 +6333,126 @@ export type Clinic$equipmentArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.ClinicOnEquipmentScalarFieldEnum | Prisma.ClinicOnEquipmentScalarFieldEnum[]
+}
+
+/**
+ * Clinic.investigations
+ */
+export type Clinic$investigationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InvestigationOnClinic
+   */
+  select?: Prisma.InvestigationOnClinicSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InvestigationOnClinic
+   */
+  omit?: Prisma.InvestigationOnClinicOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvestigationOnClinicInclude<ExtArgs> | null
+  where?: Prisma.InvestigationOnClinicWhereInput
+  orderBy?: Prisma.InvestigationOnClinicOrderByWithRelationInput | Prisma.InvestigationOnClinicOrderByWithRelationInput[]
+  cursor?: Prisma.InvestigationOnClinicWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvestigationOnClinicScalarFieldEnum | Prisma.InvestigationOnClinicScalarFieldEnum[]
+}
+
+/**
+ * Clinic.appeals
+ */
+export type Clinic$appealsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Appeal
+   */
+  select?: Prisma.AppealSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Appeal
+   */
+  omit?: Prisma.AppealOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppealInclude<ExtArgs> | null
+  where?: Prisma.AppealWhereInput
+  orderBy?: Prisma.AppealOrderByWithRelationInput | Prisma.AppealOrderByWithRelationInput[]
+  cursor?: Prisma.AppealWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppealScalarFieldEnum | Prisma.AppealScalarFieldEnum[]
+}
+
+/**
+ * Clinic.accountAccesses
+ */
+export type Clinic$accountAccessesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserClinicAccess
+   */
+  select?: Prisma.UserClinicAccessSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserClinicAccess
+   */
+  omit?: Prisma.UserClinicAccessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserClinicAccessInclude<ExtArgs> | null
+  where?: Prisma.UserClinicAccessWhereInput
+  orderBy?: Prisma.UserClinicAccessOrderByWithRelationInput | Prisma.UserClinicAccessOrderByWithRelationInput[]
+  cursor?: Prisma.UserClinicAccessWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserClinicAccessScalarFieldEnum | Prisma.UserClinicAccessScalarFieldEnum[]
+}
+
+/**
+ * Clinic.entityMatches
+ */
+export type Clinic$entityMatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CooperationEntityMatch
+   */
+  select?: Prisma.CooperationEntityMatchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CooperationEntityMatch
+   */
+  omit?: Prisma.CooperationEntityMatchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CooperationEntityMatchInclude<ExtArgs> | null
+  where?: Prisma.CooperationEntityMatchWhereInput
+  orderBy?: Prisma.CooperationEntityMatchOrderByWithRelationInput | Prisma.CooperationEntityMatchOrderByWithRelationInput[]
+  cursor?: Prisma.CooperationEntityMatchWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CooperationEntityMatchScalarFieldEnum | Prisma.CooperationEntityMatchScalarFieldEnum[]
+}
+
+/**
+ * Clinic.authAuditEvents
+ */
+export type Clinic$authAuditEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuthAuditEvent
+   */
+  select?: Prisma.AuthAuditEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuthAuditEvent
+   */
+  omit?: Prisma.AuthAuditEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuthAuditEventInclude<ExtArgs> | null
+  where?: Prisma.AuthAuditEventWhereInput
+  orderBy?: Prisma.AuthAuditEventOrderByWithRelationInput | Prisma.AuthAuditEventOrderByWithRelationInput[]
+  cursor?: Prisma.AuthAuditEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuthAuditEventScalarFieldEnum | Prisma.AuthAuditEventScalarFieldEnum[]
 }
 
 /**

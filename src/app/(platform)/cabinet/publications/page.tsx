@@ -1,11 +1,14 @@
 import { CabinetSectionTemplate } from "@/components/templates/cabinet-section-template";
 import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = createPageMetadata({
-  title: "Публикации в кабинете",
-  description: "Будущий список публикаций автора в приватной зоне.",
-  path: "/cabinet/publications",
-});
+export const metadata = {
+  ...createPageMetadata({
+    title: "Публикации в кабинете",
+    description: "Будущий список публикаций автора в приватной зоне.",
+    path: "/cabinet/publications",
+  }),
+  robots: { index: false, follow: false },
+};
 
 export default function CabinetPublicationsPage() {
   return (

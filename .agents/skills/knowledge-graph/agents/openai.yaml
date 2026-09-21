@@ -1,0 +1,4 @@
+interface:
+  display_name: "Knowledge Graph"
+  short_description: "Create and verify graph links"
+  default_prompt: "Use $knowledge-graph to add or audit entity relationships."

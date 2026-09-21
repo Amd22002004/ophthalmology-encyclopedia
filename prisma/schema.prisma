@@ -21,14 +21,15 @@ model Disease {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  category   DiseaseCategory?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  procedures DiseaseOnProcedure[]
-  doctors    DoctorOnDisease[]
-  clinics    ClinicOnDisease[]
-  guidelines DiseaseOnClinicalGuideline[]
-  publications PublicationOnDisease[]
-  equipment  DiseaseOnEquipment[]
+  category        DiseaseCategory?             @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  procedures      DiseaseOnProcedure[]
+  doctors         DoctorOnDisease[]
+  clinics         ClinicOnDisease[]
+  guidelines      DiseaseOnClinicalGuideline[]
+  publications    PublicationOnDisease[]
+  equipment       DiseaseOnEquipment[]
   scientificWorks ScientificWorkOnDisease[]
+  investigations  InvestigationOnDisease[]
 
   @@index([categoryId])
   @@index([title])
@@ -44,13 +45,14 @@ model Procedure {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  category     ProcedureCategory?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  diseases     DiseaseOnProcedure[]
-  doctors      DoctorOnProcedure[]
-  equipment    ProcedureOnEquipment[]
-  publications PublicationOnProcedure[]
-  clinics      ClinicOnProcedure[]
+  category        ProcedureCategory?          @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  diseases        DiseaseOnProcedure[]
+  doctors         DoctorOnProcedure[]
+  equipment       ProcedureOnEquipment[]
+  publications    PublicationOnProcedure[]
+  clinics         ClinicOnProcedure[]
   scientificWorks ScientificWorkOnProcedure[]
+  investigations  InvestigationOnProcedure[]
 
   @@index([categoryId])
   @@index([title])
@@ -63,11 +65,11 @@ model Doctor {
   lastName        String
   middleName      String?
   photoUrl        String?
-  position        String?  // Публичная должность / специализация (для UI-заголовка)
-  category        String?  // Группа специализации (для фильтрации)
-  credo           String?  // Краткое резюме: ключевые операции и направления
-  prodoctorovUrl  String?  // Ссылка на профиль на prodoctorov.ru
-  siteUrl         String?  // Ссылка на профиль на официальном сайте клиники
+  position        String? // Публичная должность / специализация (для UI-заголовка)
+  category        String? // Группа специализации (для фильтрации)
+  credo           String? // Краткое резюме: ключевые операции и направления
+  prodoctorovUrl  String? // Ссылка на профиль на prodoctorov.ru
+  siteUrl         String? // Ссылка на профиль на официальном сайте клиники
   bio             String?
   career          String?
   experienceYears Int?
@@ -76,14 +78,18 @@ model Doctor {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  regionEntity Region?             @relation(fields: [regionId], references: [id], onDelete: SetNull)
-  specialties  DoctorOnSpecialty[]
-  clinics      DoctorOnClinic[]
-  diseases     DoctorOnDisease[]
-  procedures   DoctorOnProcedure[]
-  publications Publication[]
+  regionEntity    Region?                  @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  specialties     DoctorOnSpecialty[]
+  clinics         DoctorOnClinic[]
+  diseases        DoctorOnDisease[]
+  procedures      DoctorOnProcedure[]
+  publications    Publication[]
   scientificWorks ScientificWork[]
-  equipment    DoctorOnEquipment[]
+  equipment       DoctorOnEquipment[]
+  accountLinks    UserDoctorLink[]
+  entityMatches   CooperationEntityMatch[]
+  authAuditEvents AuthAuditEvent[]
+  eventSpeakers   EventSpeaker[]
 
   @@index([regionId])
   @@index([lastName, firstName])
@@ -92,39 +98,102 @@ model Doctor {
 /// Научная работа врача: диссертация, автореферат, статья, патент,
 /// методические рекомендации, монография. Полный текст в БД не хранится —
 /// только структурированные данные; сам документ отдаётся файлом (pdfUrl).
+enum ScientificWorkSourceStatus {
+  FULL_TEXT
+  EXTRACTED_PAGES
+  SCANNED_PAGES
+  BIBLIOGRAPHIC_ONLY
+}
+
+enum ScientificWorkContentKind {
+  ORIGINAL_RESEARCH
+  CLINICAL_CASE
+  REVIEW
+  THESIS
+  OTHER
+}
+
+/// Проверенное правовое основание локального размещения файлов. Дата сама по
+/// себе недостаточна: публичный gate требует ненулевую категорию основания.
+enum ScientificWorkRightsBasis {
+  UNVERIFIED
+  OPEN_LICENSE
+  AUTHOR_PERMISSION
+  PUBLISHER_PERMISSION
+  USER_CONFIRMED_PERMISSION
+  PUBLIC_DOMAIN
+}
+
 model ScientificWork {
-  id               String   @id @default(cuid())
+  id                     String                     @id @default(cuid())
   /// Человекочитаемый идентификатор для страницы /publications/[slug].
   /// Nullable намеренно: добавление NOT NULL-колонки к непустой таблице потребовало бы
   /// деструктивной миграции. Значение всегда проставляется seed'ом; каталог
   /// показывает только работы со slug.
-  slug             String?  @unique
-  doctorId         String
-  type             String   // Тип работы: «Кандидатская диссертация», «Патент», ...
-  title            String
-  degree           String?  // Учёная степень, напр. «Кандидат медицинских наук»
-  speciality       String?  // Специальность ВАК, напр. «14.01.07 — глазные болезни»
-  year             Int?     // Год защиты / публикации
-  organization     String?  // Место защиты
-  supervisor       String?  // Научный руководитель
-  summary          String?  // Краткое описание простым языком (3–5 предложений)
-  novelty          String[] @default([]) // Научная новизна
-  practicalValue   String[] @default([]) // Практическая значимость
-  results          String[] @default([]) // Основные результаты
-  publicationCount Int?     // Число публикаций по теме работы
-  pdfUrl           String?  // Полный текст (PDF)
-  abstractUrl      String?  // Автореферат (PDF)
-  sortOrder        Int      @default(0)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  slug                   String?                    @unique
+  doctorId               String
+  type                   String // Тип работы: «Кандидатская диссертация», «Патент», ...
+  title                  String
+  /// Полный список авторов в порядке первичного источника. doctorId остаётся
+  /// владельцем работы в графе и не подменяет библиографическое авторство.
+  authors                String[]                   @default([])
+  /// Индекс связанного врача в упорядоченном authors[]. Нужен для однозначной
+  /// Schema.org-ссылки и не выводится сравнением фамилий.
+  doctorAuthorIndex      Int?
+  bibliography           String?
+  journal                String?
+  volume                 String?
+  issue                  String?
+  pages                  String?
+  doi                    String?                    @unique
+  sourcePageUrl          String?
+  sourcePdfUrl           String?
+  sourceStatus           ScientificWorkSourceStatus @default(BIBLIOGRAPHIC_ONLY)
+  sourceNote             String?
+  contentKind            ScientificWorkContentKind  @default(ORIGINAL_RESEARCH)
+  topic                  String? // Тема исследования из первичного документа
+  degree                 String? // Учёная степень, напр. «Кандидат медицинских наук»
+  speciality             String? // Специальность ВАК, напр. «14.01.07 — глазные болезни»
+  year                   Int? // Год защиты / публикации
+  organization           String? // Место защиты
+  supervisor             String? // Научный руководитель
+  summary                String? // Краткое описание простым языком (3–5 предложений)
+  novelty                String[]                   @default([]) // Научная новизна
+  practicalValue         String[]                   @default([]) // Практическая значимость
+  results                String[]                   @default([]) // Основные результаты
+  conclusions            String[]                   @default([]) // Выводы / практическое значение
+  publicationCount       Int? // Число публикаций по теме работы
+  pdfUrl                 String? // Полный текст (PDF)
+  abstractUrl            String? // Автореферат (PDF)
+  images                 String[]                   @default([]) // Иллюстрации из первичного документа
+  /// Стабильный slug не означает публикацию. Публичность требует всех трёх
+  /// признаков: isPublished, наступивший publishedAt и evidenceValidatedAt.
+  isPublished            Boolean                    @default(false)
+  evidenceValidatedAt    DateTime?
+  publishedAt            DateTime?
+  /// Явный редакционный блокер, который нельзя обойти одним переключением
+  /// isPublished. Снимается только после устранения указанного противоречия.
+  publicationBlockReason String?
+  /// Локальные PDF и изображения выводятся только после проверки прав.
+  rightsVerifiedAt       DateTime?
+  rightsBasis            ScientificWorkRightsBasis  @default(UNVERIFIED)
+  rightsNote             String?
+  seoTitle               String?
+  seoDescription         String?
+  sortOrder              Int                        @default(0)
+  createdAt              DateTime                   @default(now())
+  updatedAt              DateTime                   @updatedAt
 
-  doctor    Doctor                      @relation(fields: [doctorId], references: [id], onDelete: Cascade)
-  diseases  ScientificWorkOnDisease[]
+  doctor     Doctor                      @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  diseases   ScientificWorkOnDisease[]
   procedures ScientificWorkOnProcedure[]
+  equipment  ScientificWorkOnEquipment[]
 
   @@unique([doctorId, title])
   @@index([doctorId, sortOrder])
   @@index([year])
+  @@index([isPublished, evidenceValidatedAt, publishedAt, publicationBlockReason])
+  @@index([sourceStatus])
 }
 
 /// Заболевание, которое РЕАЛЬНО исследуется в научной работе.
@@ -154,60 +223,79 @@ model ScientificWorkOnProcedure {
   @@index([procedureId])
 }
 
-model Clinic {
-  id            String   @id @default(cuid())
-  slug          String   @unique
-  title         String
-  legalName     String?
-  description   String?
-  city          String?
-  region        String?
-  regionId      String?
-  clinicType    String?
-  networkName   String?
-  status        String   @default("active")
-  phones        String[] @default([])
-  phone         String?
-  email         String?
-  website       String?
-  address       String?
-  inn           String?
-  kpp           String?
-  ogrn          String?
-  license       String?
-  licenseStatus String?
-  licenseDate   DateTime?
-  logoUrl       String?
-  coverImageUrl String?
-  facadeImageUrl String?
-  workingHours  String?
-  directorName  String?
-  latitude      Float?
-  longitude     Float?
-  mapEmbed      String?
-  appointmentUrl String?
-  vkUrl         String?
-  telegramUrl   String?
-  youtubeUrl    String?
-  foundedYear   Int?
-  seoTitle       String?
-  seoDescription String?
-  seoKeywords    String?
-  omsEnabled    Boolean  @default(false)
-  contractBased Boolean  @default(false)
-  specializationTags String[] @default([])
-  // Tech Debt: Migrate specializationTags (String[]) to Specialization model + ClinicOnSpecialization relation (Этап 2)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+/// Оборудование, прямо указанное в научной работе как использованное в методике
+/// или клиническом случае. Прямая связь, а не вывод через процедуру.
+model ScientificWorkOnEquipment {
+  workId      String
+  equipmentId String
+  createdAt   DateTime @default(now())
 
-  regionEntity Region?             @relation(fields: [regionId], references: [id], onDelete: SetNull)
-  specialties  ClinicOnSpecialty[]
-  doctors      DoctorOnClinic[]
-  suppliers    ClinicOnSupplier[]
-  diseases     ClinicOnDisease[]
-  procedures   ClinicOnProcedure[]
-  publications ClinicOnPublication[]
-  equipment    ClinicOnEquipment[]
+  work      ScientificWork @relation(fields: [workId], references: [id], onDelete: Cascade)
+  equipment Equipment      @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@id([workId, equipmentId])
+  @@index([equipmentId])
+}
+
+model Clinic {
+  id                 String    @id @default(cuid())
+  slug               String    @unique
+  title              String
+  legalName          String?
+  description        String?
+  city               String?
+  region             String?
+  regionId           String?
+  clinicType         String?
+  networkName        String?
+  status             String    @default("active")
+  phones             String[]  @default([])
+  phone              String?
+  email              String?
+  website            String?
+  address            String?
+  inn                String?
+  kpp                String?
+  ogrn               String?
+  license            String?
+  licenseStatus      String?
+  licenseDate        DateTime?
+  logoUrl            String?
+  coverImageUrl      String?
+  facadeImageUrl     String?
+  workingHours       String?
+  directorName       String?
+  latitude           Float?
+  longitude          Float?
+  mapEmbed           String?
+  appointmentUrl     String?
+  vkUrl              String?
+  telegramUrl        String?
+  youtubeUrl         String?
+  foundedYear        Int?
+  seoTitle           String?
+  seoDescription     String?
+  seoKeywords        String?
+  omsEnabled         Boolean   @default(false)
+  contractBased      Boolean   @default(false)
+  specializationTags String[]  @default([])
+  // Tech Debt: Migrate specializationTags (String[]) to Specialization model + ClinicOnSpecialization relation (Этап 2)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  regionEntity    Region?                  @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  specialties     ClinicOnSpecialty[]
+  doctors         DoctorOnClinic[]
+  suppliers       ClinicOnSupplier[]
+  diseases        ClinicOnDisease[]
+  procedures      ClinicOnProcedure[]
+  publications    ClinicOnPublication[]
+  equipment       ClinicOnEquipment[]
+  investigations  InvestigationOnClinic[]
+  appeals         Appeal[]
+  accountAccesses UserClinicAccess[]
+  entityMatches   CooperationEntityMatch[]
+  authAuditEvents AuthAuditEvent[]
 
   @@index([regionId])
   @@index([title])
@@ -239,10 +327,10 @@ model Equipment {
   title        String
   summary      String?
   description  String?
-  manufacturer String?  // Производитель, напр. «Carl Zeiss Meditec AG»
-  country      String?  // Страна производства, напр. «Германия»
-  year         Int?     // Год появления модели (если достоверно известен)
-  principle    String?  // Принцип работы
+  manufacturer String? // Производитель, напр. «Carl Zeiss Meditec AG»
+  country      String? // Страна производства, напр. «Германия»
+  year         Int? // Год появления модели (если достоверно известен)
+  principle    String? // Принцип работы
   advantages   String[] @default([]) // Преимущества
   indications  String[] @default([]) // Показания
   limitations  String[] @default([]) // Ограничения / противопоказания
@@ -253,13 +341,16 @@ model Equipment {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  category   EquipmentCategory?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  supplier   Supplier?              @relation(fields: [supplierId], references: [id], onDelete: SetNull)
-  specs      EquipmentSpec[]
-  procedures ProcedureOnEquipment[]
-  clinics    ClinicOnEquipment[]
-  doctors    DoctorOnEquipment[]
-  diseases   DiseaseOnEquipment[]
+  category               EquipmentCategory?               @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  supplier               Supplier?                        @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  specs                  EquipmentSpec[]
+  procedures             ProcedureOnEquipment[]
+  clinics                ClinicOnEquipment[]
+  doctors                DoctorOnEquipment[]
+  diseases               DiseaseOnEquipment[]
+  investigations         InvestigationOnEquipment[]
+  investigationInstances InvestigationEquipmentInstance[]
+  scientificWorks        ScientificWorkOnEquipment[]
 
   @@index([categoryId])
   @@index([supplierId])
@@ -271,9 +362,9 @@ model Equipment {
 model EquipmentSpec {
   id          String   @id @default(cuid())
   equipmentId String
-  group       String?  // Группа, напр. «Оптические данные»
-  label       String   // Параметр, напр. «Длина волны»
-  value       String   // Значение, напр. «1043 нм»
+  group       String? // Группа, напр. «Оптические данные»
+  label       String // Параметр, напр. «Длина волны»
+  value       String // Значение, напр. «1043 нм»
   sortOrder   Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -307,16 +398,163 @@ model Publication {
   @@index([title])
 }
 
+/// Независимое расследование Ассоциации. Содержимое вынесено в отдельные
+/// блоки, события и документы, чтобы новые расследования не требовали
+/// изменения маршрутов или шаблонов.
+model Investigation {
+  id                  String    @id @default(cuid())
+  slug                String    @unique
+  title               String
+  summary             String
+  status              String
+  statusNote          String?
+  isPublished         Boolean   @default(false)
+  evidenceValidatedAt DateTime?
+  publishedAt         DateTime?
+  seoTitle            String?
+  seoDescription      String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  sections                      InvestigationSection[]
+  timeline                      InvestigationTimelineEvent[]
+  documents                     InvestigationDocument[]
+  clinics                       InvestigationOnClinic[]
+  equipment                     InvestigationOnEquipment[]
+  diseases                      InvestigationOnDisease[]
+  procedures                    InvestigationOnProcedure[]
+  news                          NewsOnInvestigation[]
+  equipmentInstances            InvestigationEquipmentInstance[]
+  regulatoryAssessments         InvestigationRegulatoryAssessment[]
+  independentControlAssessments InvestigationIndependentControlAssessment[]
+  registryChecks                InvestigationRegistryCheck[]
+  appeals                       Appeal[]
+
+  @@index([isPublished, publishedAt])
+  @@index([title])
+}
+
+/// Смысловой блок расследования: краткое описание, официальные документы,
+/// нормативная база, выводы, статус и другие типы для будущих материалов.
+model InvestigationSection {
+  id                  String    @id @default(cuid())
+  investigationId     String
+  key                 String
+  title               String
+  content             String
+  isPublished         Boolean   @default(false)
+  evidenceValidatedAt DateTime?
+  publishedAt         DateTime?
+  sortOrder           Int       @default(0)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  investigation Investigation @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+
+  @@unique([investigationId, key])
+  @@index([investigationId, sortOrder])
+  @@index([investigationId, isPublished, publishedAt, sortOrder])
+}
+
+/// Элемент хронологии с отдельной подписью даты: она допускает указание
+/// неопределённой или частичной даты без подмены её техническим значением.
+model InvestigationTimelineEvent {
+  id                  String    @id @default(cuid())
+  investigationId     String
+  equipmentInstanceId String?
+  key                 String
+  date                DateTime?
+  dateLabel           String
+  title               String
+  description         String
+  isPublished         Boolean   @default(false)
+  evidenceValidatedAt DateTime?
+  publishedAt         DateTime?
+  sortOrder           Int       @default(0)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  investigation     Investigation                   @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  equipmentInstance InvestigationEquipmentInstance? @relation(fields: [equipmentInstanceId, investigationId], references: [id, investigationId], onDelete: Restrict)
+
+  @@unique([investigationId, key])
+  @@unique([id, investigationId])
+  @@index([investigationId, sortOrder])
+  @@index([investigationId, isPublished, publishedAt, sortOrder])
+  @@index([equipmentInstanceId])
+}
+
+/// Первичный документ или доказательная фотография, опубликованные в составе
+/// расследования. Техническое имя файла остаётся внутренней метаинформацией и
+/// никогда не передаётся в публичный шаблон.
+/// `content` хранит доступную текстовую расшифровку для документов, которые
+/// браузер не умеет показать встроенно, например DOCX.
+model InvestigationDocument {
+  id                  String    @id @default(cuid())
+  investigationId     String
+  slug                String
+  kind                String
+  title               String
+  summary             String?
+  source              String?
+  documentDate        DateTime?
+  storageFileName     String?   @map("sourceFileName")
+  fileUrl             String?
+  previewImageUrl     String?
+  mimeType            String?
+  content             String?
+  isEvidence          Boolean   @default(true)
+  isPublished         Boolean   @default(false)
+  evidenceValidatedAt DateTime?
+  publishedAt         DateTime?
+  sortOrder           Int       @default(0)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  investigation              Investigation                             @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  assessmentEvidence         InvestigationAssessmentEvidence[]
+  independentControlEvidence InvestigationIndependentControlEvidence[]
+  equipmentInstanceEvidence  InvestigationEquipmentInstanceEvidence[]
+  registrySnapshots          InvestigationRegistryCheck[]              @relation("InvestigationRegistrySnapshot")
+
+  @@unique([investigationId, slug])
+  @@unique([id, investigationId])
+  @@index([investigationId, sortOrder])
+  @@index([investigationId, isPublished, publishedAt, sortOrder])
+  @@index([kind])
+}
+
+/// Короткая редакционная новость. Связь вынесена в отдельную таблицу: одна
+/// новость может указывать на несколько расследований и наоборот.
+model News {
+  id             String    @id @default(cuid())
+  slug           String    @unique
+  title          String
+  summary        String
+  content        String?
+  isPublished    Boolean   @default(false)
+  publishedAt    DateTime?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  investigations NewsOnInvestigation[]
+
+  @@index([isPublished, publishedAt])
+  @@index([title])
+}
+
 model ClinicalGuideline {
-  id          String   @id @default(cuid())
-  slug        String   @unique
+  id          String    @id @default(cuid())
+  slug        String    @unique
   title       String
   summary     String?
   content     String?
   sourceUrl   String?
   publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   diseases DiseaseOnClinicalGuideline[]
 
@@ -325,20 +563,645 @@ model ClinicalGuideline {
 }
 
 model Regulation {
-  id            String   @id @default(cuid())
-  slug          String   @unique
-  title         String
-  summary       String?
-  content       String?
-  sourceUrl     String?
-  documentType  String?
-  effectiveFrom DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                     String                @id @default(cuid())
+  slug                   String                @unique
+  title                  String
+  summary                String?
+  content                String?
+  sourceUrl              String?
+  documentType           String?
+  number                 String?
+  adoptedAt              DateTime?
+  issuingAuthority       String?
+  jurisdiction           String                @default("Российская Федерация")
+  officialPublicationUrl String?
+  legalStatus            RegulationLegalStatus @default(DRAFT)
+  effectiveFrom          DateTime?
+  effectiveTo            DateTime?
+  isPublished            Boolean               @default(false)
+  publishedAt            DateTime?
+  seoTitle               String?
+  seoDescription         String?
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+
+  editions          RegulationEdition[]
+  sources           RegulationSource[]
+  topics            RegulationOnTopic[]
+  outgoingRelations RegulationRelation[] @relation("RegulationRelationSource")
+  incomingRelations RegulationRelation[] @relation("RegulationRelationTarget")
 
   @@index([documentType])
+  @@index([legalStatus, isPublished])
   @@index([effectiveFrom])
+  @@index([effectiveFrom, effectiveTo])
+  @@index([publishedAt])
   @@index([title])
+}
+
+enum RegulationLegalStatus {
+  DRAFT
+  IN_FORCE
+  FUTURE
+  EXPIRED
+}
+
+enum RegulationRelationType {
+  AMENDS
+  REPEALS
+  REPLACES
+  EXTENDS
+  IMPLEMENTS
+}
+
+enum RegulationSourceKind {
+  OFFICIAL_PUBLICATION
+  OFFICIAL_CONSOLIDATED_TEXT
+  OFFICIAL_REGISTER
+  OFFICIAL_GUIDANCE
+}
+
+enum RegulatoryAssessmentStatus {
+  CONFIRMED
+  LIKELY_NON_COMPLIANCE
+  REQUIRES_VERIFICATION
+  NOT_CONFIRMED
+  COMPLIANT
+}
+
+enum RegulationApplicabilityStatus {
+  APPLICABLE
+  NOT_APPLICABLE
+  REQUIRES_VERIFICATION
+}
+
+enum InvestigationEvidenceRole {
+  SUPPORTS
+  REFUTES
+  CONTEXT
+}
+
+/// Сигналы, которые требуют проверки, но сами по себе не доказывают нарушение.
+enum RestrictedInferenceSignal {
+  DOCUMENT_NOT_FOUND
+  REGISTRY_NO_MATCH
+  OLD_MANUFACTURE_YEAR
+  MODEL_DISCONTINUED
+  THIRD_PARTY_STATEMENT
+}
+
+enum RegistryCheckResult {
+  MATCH
+  NO_MATCH
+  AMBIGUOUS
+  UNAVAILABLE
+}
+
+enum IndependentControlBasisKind {
+  DIRECT_NORM
+  METHODOLOGY_DERIVED
+  LOCAL_FORM_ONLY
+}
+
+enum IndependentControlSourceKind {
+  LOCAL_DOCUMENT
+  OFFICIAL_METHODOLOGY
+  OFFICIAL_GUIDANCE
+}
+
+enum IndependentControlRightsBasis {
+  UNVERIFIED
+  OPEN_LICENSE
+  AUTHOR_PERMISSION
+  PUBLISHER_PERMISSION
+  USER_CONFIRMED_PERMISSION
+  PUBLIC_DOMAIN
+}
+
+enum IndependentControlNormRole {
+  DIRECT_BASIS
+  SUPPORTING_BASIS
+  HISTORICAL_BASIS
+}
+
+/// Конкретная редакция акта. Период хранится независимо от времени обновления
+/// карточки, чтобы текущая норма не применялась к историческому событию.
+model RegulationEdition {
+  id                   String                @id @default(cuid())
+  regulationId         String
+  key                  String
+  title                String?
+  effectiveFrom        DateTime
+  effectiveTo          DateTime?
+  legalStatus          RegulationLegalStatus
+  transitionNote       String?
+  officialTextUrl      String?
+  verifiedAt           DateTime?
+  historicalUseAllowed Boolean               @default(false)
+  verificationNote     String?
+  isPublished          Boolean               @default(false)
+  publishedAt          DateTime?
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+
+  regulation  Regulation                          @relation(fields: [regulationId], references: [id], onDelete: Cascade)
+  provisions  RegulationProvision[]
+  sources     RegulationSource[]
+  assessments InvestigationRegulatoryAssessment[]
+
+  @@unique([regulationId, key])
+  @@unique([id, regulationId])
+  @@index([regulationId, effectiveFrom, effectiveTo])
+  @@index([legalStatus, isPublished])
+}
+
+/// Направленная правовая связь: акт-источник изменяет, отменяет, заменяет,
+/// продлевает либо реализует акт-цель с указанной датой правового эффекта.
+model RegulationRelation {
+  id                 String                 @id @default(cuid())
+  sourceRegulationId String
+  targetRegulationId String
+  type               RegulationRelationType
+  legalEffectFrom    DateTime?
+  note               String?
+  officialSourceUrl  String?
+  isPublished        Boolean                @default(false)
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+
+  sourceRegulation Regulation @relation("RegulationRelationSource", fields: [sourceRegulationId], references: [id], onDelete: Cascade)
+  targetRegulation Regulation @relation("RegulationRelationTarget", fields: [targetRegulationId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceRegulationId, targetRegulationId, type, legalEffectFrom])
+  @@index([targetRegulationId, type])
+}
+
+/// Официальный источник акта или отдельной редакции. Неофициальные пересказы
+/// не становятся нормативным основанием расследования.
+model RegulationSource {
+  id           String               @id @default(cuid())
+  regulationId String
+  editionId    String?
+  kind         RegulationSourceKind
+  title        String
+  url          String
+  isOfficial   Boolean              @default(true)
+  isPublished  Boolean              @default(false)
+  publishedAt  DateTime?
+  sourceDate   DateTime?
+  accessedAt   DateTime?
+  sortOrder    Int                  @default(0)
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  regulation Regulation         @relation(fields: [regulationId], references: [id], onDelete: Cascade)
+  edition    RegulationEdition? @relation(fields: [editionId, regulationId], references: [id, regulationId], onDelete: Cascade)
+
+  @@unique([regulationId, url])
+  @@index([editionId])
+  @@index([kind, isOfficial])
+}
+
+/// Контролируемая тематическая категория нормативного графа.
+model RegulationTopic {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  regulations RegulationOnTopic[]
+  provisions  RegulationProvision[]
+
+  @@index([isPublished, sortOrder])
+  @@index([title])
+}
+
+model RegulationOnTopic {
+  regulationId String
+  topicId      String
+  createdAt    DateTime @default(now())
+
+  regulation Regulation      @relation(fields: [regulationId], references: [id], onDelete: Cascade)
+  topic      RegulationTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@id([regulationId, topicId])
+  @@index([topicId])
+}
+
+/// Атомарное требование конкретной редакции с точным структурным указателем.
+model RegulationProvision {
+  id            String    @id @default(cuid())
+  editionId     String
+  topicId       String
+  key           String
+  locator       String
+  title         String
+  requirement   String
+  applicability String
+  effectiveFrom DateTime?
+  effectiveTo   DateTime?
+  isPublished   Boolean   @default(false)
+  publishedAt   DateTime?
+  sortOrder     Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  edition               RegulationEdition                @relation(fields: [editionId], references: [id], onDelete: Cascade)
+  topic                 RegulationTopic                  @relation(fields: [topicId], references: [id], onDelete: Restrict)
+  checks                RegulatoryCheck[]
+  equipmentRequirements RegulationEquipmentRequirement[]
+
+  @@unique([editionId, key])
+  @@index([editionId, sortOrder])
+  @@index([topicId, isPublished])
+  @@index([effectiveFrom, effectiveTo])
+}
+
+/// Проверочный вопрос превращает норму в рабочую единицу аудита и обязательно
+/// указывает, какой факт и каким первичным документом необходимо подтвердить.
+model RegulatoryCheck {
+  id                   String    @id @default(cuid())
+  provisionId          String
+  key                  String
+  question             String
+  factToEstablish      String
+  primaryEvidenceType  String
+  officialSearchUrl    String?
+  officialSearchLabel  String?
+  nonCompliancePattern String?
+  evidenceThreshold    String?
+  applicabilityNote    String?
+  isPublished          Boolean   @default(false)
+  publishedAt          DateTime?
+  sortOrder            Int       @default(0)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  provision                  RegulationProvision                 @relation(fields: [provisionId], references: [id], onDelete: Cascade)
+  assessments                InvestigationRegulatoryAssessment[]
+  independentControlCriteria IndependentControlCriterionNorm[]
+
+  @@unique([provisionId, key])
+  @@index([provisionId, isPublished, sortOrder])
+}
+
+/// Методика независимого контроля — отдельный ненормативный рабочий инструмент,
+/// а не нормативный правовой акт и не замена точной норме RegulatoryCheck.
+model IndependentControlMethodology {
+  id                     String    @id @default(cuid())
+  slug                   String    @unique
+  title                  String
+  summary                String
+  description            String?
+  legalStatusNote        String
+  bibliographicCitation  String
+  officialMethodologyUrl String
+  isPublished            Boolean   @default(false)
+  evidenceValidatedAt    DateTime?
+  publishedAt            DateTime?
+  seoTitle               String?
+  seoDescription         String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  sources  IndependentControlSource[]
+  criteria IndependentControlCriterion[]
+
+  @@index([isPublished, evidenceValidatedAt, publishedAt])
+  @@index([title])
+}
+
+model IndependentControlSource {
+  id                    String                        @id @default(cuid())
+  methodologyId         String
+  key                   String
+  kind                  IndependentControlSourceKind
+  title                 String
+  bibliographicCitation String?
+  sourceUrl             String?
+  internalFileName      String?
+  sha256                String?
+  rightsBasis           IndependentControlRightsBasis @default(UNVERIFIED)
+  rightsVerifiedAt      DateTime?
+  rightsNote            String?
+  publicFileUrl         String?
+  isPublished           Boolean                       @default(false)
+  evidenceValidatedAt   DateTime?
+  publishedAt           DateTime?
+  sortOrder             Int                           @default(0)
+  createdAt             DateTime                      @default(now())
+  updatedAt             DateTime                      @updatedAt
+
+  methodology IndependentControlMethodology @relation(fields: [methodologyId], references: [id], onDelete: Cascade)
+
+  @@unique([methodologyId, key])
+  @@index([methodologyId, sortOrder])
+  @@index([isPublished, evidenceValidatedAt, publishedAt])
+}
+
+model IndependentControlCriterion {
+  id                   String                       @id @default(cuid())
+  methodologyId        String
+  key                  String
+  sourceLocator        String
+  sectionKey           String
+  sectionTitle         String
+  title                String
+  statement            String
+  whatIsChecked        String
+  checkQuestion        String
+  factToEstablish      String
+  confirmingDocument   String
+  evidenceRequired     String
+  evidenceThreshold    String
+  applicabilityNote    String
+  sourceDivergenceNote String?
+  basisKind            IndependentControlBasisKind
+  allowedStatuses      RegulatoryAssessmentStatus[] @default([])
+  isSourceCriterion    Boolean                      @default(true)
+  effectiveFrom        DateTime?
+  effectiveTo          DateTime?
+  isPublished          Boolean                      @default(false)
+  evidenceValidatedAt  DateTime?
+  publishedAt          DateTime?
+  sortOrder            Int                          @default(0)
+  createdAt            DateTime                     @default(now())
+  updatedAt            DateTime                     @updatedAt
+
+  methodology IndependentControlMethodology               @relation(fields: [methodologyId], references: [id], onDelete: Cascade)
+  normLinks   IndependentControlCriterionNorm[]
+  assessments InvestigationIndependentControlAssessment[]
+
+  @@unique([methodologyId, key])
+  @@unique([methodologyId, sourceLocator])
+  @@index([isPublished, evidenceValidatedAt, publishedAt])
+  @@index([methodologyId, sectionKey, sortOrder])
+  @@index([basisKind])
+  @@index([effectiveFrom, effectiveTo])
+}
+
+model IndependentControlCriterionNorm {
+  id                  String                     @id @default(cuid())
+  criterionId         String
+  regulatoryCheckId   String
+  role                IndependentControlNormRole
+  verifiedAt          DateTime
+  note                String?
+  isPublished         Boolean                    @default(false)
+  evidenceValidatedAt DateTime?
+  publishedAt         DateTime?
+  createdAt           DateTime                   @default(now())
+  updatedAt           DateTime                   @updatedAt
+
+  criterion       IndependentControlCriterion                 @relation(fields: [criterionId], references: [id], onDelete: Cascade)
+  regulatoryCheck RegulatoryCheck                             @relation(fields: [regulatoryCheckId], references: [id], onDelete: Restrict)
+  assessments     InvestigationIndependentControlAssessment[]
+
+  @@unique([criterionId, regulatoryCheckId])
+  @@unique([id, criterionId])
+  @@index([regulatoryCheckId, role])
+  @@index([isPublished, evidenceValidatedAt, publishedAt])
+}
+
+/// Одна строка стандарта оснащения без обобщения на другие подразделения.
+model RegulationEquipmentRequirement {
+  id                     String    @id @default(cuid())
+  provisionId            String
+  stableKey              String
+  appendix               String
+  subsection             String?
+  tableTitle             String?
+  position               String
+  deviceTypeCode         String?
+  regulatoryName         String
+  displayName            String?
+  quantity               String
+  applicabilityCondition String?
+  isPublished            Boolean   @default(false)
+  publishedAt            DateTime?
+  sortOrder              Int       @default(0)
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  provision RegulationProvision @relation(fields: [provisionId], references: [id], onDelete: Cascade)
+
+  @@unique([provisionId, stableKey])
+  @@index([provisionId, sortOrder])
+  @@index([deviceTypeCode])
+}
+
+/// Конкретный экземпляр оборудования существует только в контексте
+/// расследования и не меняет свойства каталожной модели Equipment.
+model InvestigationEquipmentInstance {
+  id                    String    @id @default(cuid())
+  investigationId       String
+  equipmentId           String?
+  key                   String
+  manufacturer          String?
+  model                 String
+  serialNumber          String?
+  manufactureYear       Int?
+  acquiredAt            DateTime?
+  commissionedAt        DateTime?
+  useFrom               DateTime?
+  useTo                 DateTime?
+  decommissionedAt      DateTime?
+  identificationSummary String?
+  isPublished           Boolean   @default(false)
+  publishedAt           DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  investigation          Investigation                            @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  equipment              Equipment?                               @relation(fields: [equipmentId], references: [id], onDelete: SetNull)
+  assessments            InvestigationRegulatoryAssessment[]
+  registryChecks         InvestigationRegistryCheck[]
+  identificationEvidence InvestigationEquipmentInstanceEvidence[]
+  timelineEvents         InvestigationTimelineEvent[]
+
+  @@unique([investigationId, key])
+  @@unique([id, investigationId])
+  @@index([equipmentId])
+  @@index([serialNumber])
+  @@index([investigationId, isPublished, publishedAt])
+}
+
+/// Применение одного проверочного вопроса к конкретному факту расследования.
+/// Публичный вывод допускается только после отдельного evidence-validation.
+model InvestigationRegulatoryAssessment {
+  id                                String                        @id @default(cuid())
+  investigationId                   String
+  regulatoryCheckId                 String
+  appliedEditionId                  String?
+  clinicId                          String?
+  procedureId                       String?
+  equipmentInstanceId               String?
+  key                               String
+  eventFrom                         DateTime?
+  eventTo                           DateTime?
+  eventDateLabel                    String?
+  status                            RegulatoryAssessmentStatus
+  applicabilityStatus               RegulationApplicabilityStatus @default(REQUIRES_VERIFICATION)
+  restrictedSignals                 RestrictedInferenceSignal[]   @default([])
+  neutralConclusion                 String
+  alternativeVersion                String
+  evidenceGaps                      String?
+  supportingEvidenceSearchCompleted Boolean                       @default(false)
+  refutingEvidenceSearchCompleted   Boolean                       @default(false)
+  isPublished                       Boolean                       @default(false)
+  evidenceValidatedAt               DateTime?
+  publishedAt                       DateTime?
+  createdAt                         DateTime                      @default(now())
+  updatedAt                         DateTime                      @updatedAt
+
+  investigation          Investigation                     @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  regulatoryCheck        RegulatoryCheck                   @relation(fields: [regulatoryCheckId], references: [id], onDelete: Restrict)
+  appliedEdition         RegulationEdition?                @relation(fields: [appliedEditionId], references: [id], onDelete: SetNull)
+  investigationClinic    InvestigationOnClinic?            @relation(fields: [investigationId, clinicId], references: [investigationId, clinicId], onDelete: Restrict)
+  investigationProcedure InvestigationOnProcedure?         @relation(fields: [investigationId, procedureId], references: [investigationId, procedureId], onDelete: Restrict)
+  equipmentInstance      InvestigationEquipmentInstance?   @relation(fields: [equipmentInstanceId, investigationId], references: [id, investigationId], onDelete: Restrict)
+  evidence               InvestigationAssessmentEvidence[]
+  registryChecks         InvestigationRegistryCheck[]
+
+  @@unique([investigationId, key])
+  @@unique([id, investigationId])
+  @@index([regulatoryCheckId, status])
+  @@index([appliedEditionId])
+  @@index([clinicId])
+  @@index([procedureId])
+  @@index([equipmentInstanceId])
+  @@index([isPublished, evidenceValidatedAt, publishedAt])
+}
+
+model InvestigationAssessmentEvidence {
+  investigationId      String
+  assessmentId         String
+  documentId           String
+  role                 InvestigationEvidenceRole
+  isPrimary            Boolean                   @default(false)
+  provenanceVerifiedAt DateTime?
+  note                 String?
+  createdAt            DateTime                  @default(now())
+
+  assessment InvestigationRegulatoryAssessment @relation(fields: [assessmentId, investigationId], references: [id, investigationId], onDelete: Cascade)
+  document   InvestigationDocument             @relation(fields: [documentId, investigationId], references: [id, investigationId], onDelete: Cascade)
+
+  @@id([assessmentId, documentId])
+  @@index([documentId, role])
+}
+
+model InvestigationIndependentControlAssessment {
+  id                                String                        @id @default(cuid())
+  investigationId                   String
+  criterionId                       String
+  appliedCriterionNormId            String?
+  clinicId                          String?
+  key                               String
+  eventFrom                         DateTime?
+  eventTo                           DateTime?
+  eventDateLabel                    String?
+  status                            RegulatoryAssessmentStatus
+  applicabilityStatus               RegulationApplicabilityStatus @default(REQUIRES_VERIFICATION)
+  restrictedSignals                 RestrictedInferenceSignal[]   @default([])
+  neutralConclusion                 String
+  alternativeVersion                String
+  evidenceGaps                      String?
+  supportingEvidenceSearchCompleted Boolean                       @default(false)
+  refutingEvidenceSearchCompleted   Boolean                       @default(false)
+  isPublished                       Boolean                       @default(false)
+  evidenceValidatedAt               DateTime?
+  publishedAt                       DateTime?
+  createdAt                         DateTime                      @default(now())
+  updatedAt                         DateTime                      @updatedAt
+
+  investigation        Investigation                             @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  criterion            IndependentControlCriterion               @relation(fields: [criterionId], references: [id], onDelete: Restrict)
+  appliedCriterionNorm IndependentControlCriterionNorm?          @relation(fields: [appliedCriterionNormId, criterionId], references: [id, criterionId], onDelete: Restrict)
+  investigationClinic  InvestigationOnClinic?                    @relation(fields: [investigationId, clinicId], references: [investigationId, clinicId], onDelete: Restrict)
+  evidence             InvestigationIndependentControlEvidence[]
+
+  @@unique([investigationId, key])
+  @@unique([id, investigationId])
+  @@index([criterionId, status])
+  @@index([appliedCriterionNormId])
+  @@index([clinicId])
+  @@index([isPublished, evidenceValidatedAt, publishedAt])
+}
+
+/// Доказательная связь использует составные FK с investigationId и тем самым
+/// запрещает смешивать оценку и документ из разных Investigation.
+model InvestigationIndependentControlEvidence {
+  investigationId      String
+  assessmentId         String
+  documentId           String
+  role                 InvestigationEvidenceRole
+  isPrimary            Boolean                   @default(false)
+  provenanceVerifiedAt DateTime?
+  note                 String?
+  createdAt            DateTime                  @default(now())
+
+  assessment InvestigationIndependentControlAssessment @relation(fields: [assessmentId, investigationId], references: [id, investigationId], onDelete: Cascade)
+  document   InvestigationDocument                     @relation(fields: [documentId, investigationId], references: [id, investigationId], onDelete: Cascade)
+
+  @@id([assessmentId, documentId])
+  @@index([documentId, role])
+}
+
+/// Первичный документ, которым подтверждены только идентификаторы конкретного
+/// экземпляра. Эта связь не переносит на экземпляр правовую оценку.
+model InvestigationEquipmentInstanceEvidence {
+  investigationId     String
+  equipmentInstanceId String
+  documentId          String
+  note                String?
+  evidenceValidatedAt DateTime?
+  isPublished         Boolean   @default(false)
+  publishedAt         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  equipmentInstance InvestigationEquipmentInstance @relation(fields: [equipmentInstanceId, investigationId], references: [id, investigationId], onDelete: Cascade)
+  document          InvestigationDocument          @relation(fields: [documentId, investigationId], references: [id, investigationId], onDelete: Cascade)
+
+  @@id([equipmentInstanceId, documentId])
+  @@index([documentId])
+  @@index([isPublished, publishedAt, evidenceValidatedAt])
+}
+
+/// Воспроизводимая попытка поиска в официальном реестре. NO_MATCH означает
+/// только отсутствие результата по сохранённому запросу, а не отсутствие РУ.
+model InvestigationRegistryCheck {
+  id                  String              @id @default(cuid())
+  investigationId     String
+  assessmentId        String?
+  equipmentInstanceId String?
+  snapshotDocumentId  String?
+  key                 String
+  registryName        String
+  query               String
+  searchedAt          DateTime
+  officialUrl         String
+  result              RegistryCheckResult
+  resultSummary       String
+  isPublished         Boolean             @default(false)
+  publishedAt         DateTime?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  investigation     Investigation                      @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  assessment        InvestigationRegulatoryAssessment? @relation(fields: [assessmentId, investigationId], references: [id, investigationId], onDelete: Restrict)
+  equipmentInstance InvestigationEquipmentInstance?    @relation(fields: [equipmentInstanceId, investigationId], references: [id, investigationId], onDelete: Restrict)
+  snapshotDocument  InvestigationDocument?             @relation("InvestigationRegistrySnapshot", fields: [snapshotDocumentId, investigationId], references: [id, investigationId], onDelete: Restrict)
+
+  @@unique([investigationId, key])
+  @@index([assessmentId])
+  @@index([equipmentInstanceId])
+  @@index([snapshotDocumentId])
+  @@index([result, searchedAt])
 }
 
 model HistoryEntry {
@@ -357,15 +1220,15 @@ model HistoryEntry {
 }
 
 model Innovation {
-  id          String   @id @default(cuid())
-  slug        String   @unique
+  id          String    @id @default(cuid())
+  slug        String    @unique
   title       String
   summary     String?
   content     String?
   sourceUrl   String?
   publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([publishedAt])
   @@index([title])
@@ -525,9 +1388,9 @@ model ClinicOnSupplier {
 }
 
 model SupplierOnEquipmentCategory {
-  supplierId  String
-  categoryId  String
-  createdAt   DateTime @default(now())
+  supplierId String
+  categoryId String
+  createdAt  DateTime @default(now())
 
   supplier Supplier          @relation(fields: [supplierId], references: [id], onDelete: Cascade)
   category EquipmentCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -659,8 +1522,652 @@ model ClinicOnPublication {
   @@index([publicationId])
 }
 
+model InvestigationOnClinic {
+  investigationId     String
+  clinicId            String
+  isPublished         Boolean   @default(false)
+  evidenceValidatedAt DateTime?
+  publishedAt         DateTime?
+  createdAt           DateTime  @default(now())
+
+  investigation                 Investigation                               @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  clinic                        Clinic                                      @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  assessments                   InvestigationRegulatoryAssessment[]
+  independentControlAssessments InvestigationIndependentControlAssessment[]
+
+  @@id([investigationId, clinicId])
+  @@index([clinicId])
+  @@index([isPublished, evidenceValidatedAt, publishedAt])
+}
+
+model InvestigationOnEquipment {
+  investigationId     String
+  equipmentId         String
+  isPublished         Boolean   @default(false)
+  evidenceValidatedAt DateTime?
+  publishedAt         DateTime?
+  createdAt           DateTime  @default(now())
+
+  investigation Investigation @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  equipment     Equipment     @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@id([investigationId, equipmentId])
+  @@index([equipmentId])
+  @@index([isPublished, evidenceValidatedAt, publishedAt])
+}
+
+model InvestigationOnDisease {
+  investigationId     String
+  diseaseId           String
+  isPublished         Boolean   @default(false)
+  evidenceValidatedAt DateTime?
+  publishedAt         DateTime?
+  createdAt           DateTime  @default(now())
+
+  investigation Investigation @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  disease       Disease       @relation(fields: [diseaseId], references: [id], onDelete: Cascade)
+
+  @@id([investigationId, diseaseId])
+  @@index([diseaseId])
+  @@index([isPublished, evidenceValidatedAt, publishedAt])
+}
+
+model InvestigationOnProcedure {
+  investigationId     String
+  procedureId         String
+  isPublished         Boolean   @default(false)
+  evidenceValidatedAt DateTime?
+  publishedAt         DateTime?
+  createdAt           DateTime  @default(now())
+
+  investigation Investigation                       @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  procedure     Procedure                           @relation(fields: [procedureId], references: [id], onDelete: Cascade)
+  assessments   InvestigationRegulatoryAssessment[]
+
+  @@id([investigationId, procedureId])
+  @@index([procedureId])
+  @@index([isPublished, evidenceValidatedAt, publishedAt])
+}
+
+model NewsOnInvestigation {
+  newsId          String
+  investigationId String
+  createdAt       DateTime @default(now())
+
+  news          News          @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  investigation Investigation @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+
+  @@id([newsId, investigationId])
+  @@index([investigationId])
+}
+
 enum AdminRole {
   OWNER
+}
+
+enum AppealStatus {
+  NEW
+  IN_REVIEW
+  VERIFIED
+  CLOSED
+}
+
+enum AppealNotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum CooperationParticipantType {
+  CLINIC
+  DOCTOR
+  PARTNER
+}
+
+enum CooperationApplicationStatus {
+  NEW
+  IN_REVIEW
+  NEED_INFO
+  APPROVED
+  INVITED
+  PROFILE_REVIEW
+  ACTIVE
+  REJECTED
+  ARCHIVED
+}
+
+enum CooperationNotificationKind {
+  APPLICANT
+  ASSOCIATION
+}
+
+enum CooperationNotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum ParticipantUserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum EntityMatchStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
+enum UserEntityLinkStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
+enum InvitationDeliveryStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum AuthAuditEventType {
+  INVITATION_CREATED
+  INVITATION_SENT
+  INVITATION_SEND_FAILED
+  INVITATION_REISSUED
+  INVITATION_REVOKED
+  INVITATION_ACCEPTED
+  USER_CREATED
+  EXISTING_USER_LINKED
+  DOCTOR_LINK_PENDING
+  DOCTOR_LINK_CONFIRMED
+  CLINIC_ACCESS_PENDING
+  CLINIC_ACCESS_CONFIRMED
+  PASSWORD_RESET_REQUESTED
+  PASSWORD_RESET_COMPLETED
+  ADMIN_PASSWORD_RESET_REQUESTED
+  ADMIN_PASSWORD_RESET_SENT
+  ADMIN_PASSWORD_RESET_SEND_FAILED
+  ADMIN_PASSWORD_RESET_COMPLETED
+}
+
+/// Приватное обращение гражданина в Ассоциацию. Это операционная сущность:
+/// она не имеет публичной карточки и не превращает сообщённые заявителем
+/// сведения о враче или оборудовании в подтверждённые связи графа знаний.
+model Appeal {
+  id                    String       @id @default(cuid())
+  publicNumber          String       @unique
+  investigationId       String?
+  clinicId              String?
+  consentTemplateId     String
+  name                  String
+  phone                 String?
+  email                 String?
+  city                  String?
+  reporterRoles         String[]     @default([])
+  categories            String[]     @default([])
+  requestedActions      String[]     @default([])
+  description           String
+  operationDate         DateTime?
+  reportedClinicName    String?
+  reportedDoctorName    String?
+  reportedEquipmentName String?
+  collectiveInterest    Boolean      @default(false)
+  consentAcceptedAt     DateTime
+  status                AppealStatus @default(NEW)
+  statusChangedAt       DateTime     @default(now())
+  requestFingerprint    String?
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+
+  investigation Investigation?        @relation(fields: [investigationId], references: [id], onDelete: SetNull)
+  clinic        Clinic?               @relation(fields: [clinicId], references: [id], onDelete: SetNull)
+  consent       AppealConsentTemplate @relation(fields: [consentTemplateId], references: [id], onDelete: Restrict)
+  attachments   AppealAttachment[]
+  notes         AppealNote[]
+  statusHistory AppealStatusHistory[]
+  notifications AppealNotification[]
+
+  @@index([status, createdAt])
+  @@index([investigationId, createdAt])
+  @@index([clinicId, createdAt])
+  @@index([city])
+  @@index([collectiveInterest])
+  @@index([requestFingerprint, createdAt])
+}
+
+/// Метаданные приватного вложения. storageKey разрешается только относительно
+/// APPEAL_UPLOAD_DIR; файл никогда не размещается в public/.
+model AppealAttachment {
+  id               String   @id @default(cuid())
+  appealId         String
+  displayName      String
+  originalFileName String
+  storageKey       String   @unique
+  mimeType         String
+  sizeBytes        Int
+  sha256           String
+  securityStatus   String   @default("unscanned")
+  createdAt        DateTime @default(now())
+
+  appeal Appeal @relation(fields: [appealId], references: [id], onDelete: Cascade)
+
+  @@index([appealId, createdAt])
+}
+
+/// Внутренний комментарий сотрудника. Комментарии доступны только в admin.
+model AppealNote {
+  id          String   @id @default(cuid())
+  appealId    String
+  adminUserId String
+  text        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  appeal Appeal    @relation(fields: [appealId], references: [id], onDelete: Cascade)
+  author AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Restrict)
+
+  @@index([appealId, createdAt])
+  @@index([adminUserId])
+}
+
+/// Неизменяемая история переходов между статусами обращения.
+model AppealStatusHistory {
+  id          String        @id @default(cuid())
+  appealId    String
+  adminUserId String?
+  fromStatus  AppealStatus?
+  toStatus    AppealStatus
+  comment     String?
+  createdAt   DateTime      @default(now())
+
+  appeal    Appeal     @relation(fields: [appealId], references: [id], onDelete: Cascade)
+  changedBy AdminUser? @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+
+  @@index([appealId, createdAt])
+  @@index([adminUserId])
+}
+
+/// Outbox попыток доставки копии обращения на официальный email.
+model AppealNotification {
+  id            String                   @id @default(cuid())
+  appealId      String
+  status        AppealNotificationStatus @default(PENDING)
+  recipient     String?
+  recipients    String[]                 @default([])
+  deliveredRecipients String[]           @default([])
+  attempts      Int                      @default(0)
+  lastAttemptAt DateTime?
+  nextAttemptAt DateTime?
+  lockedAt      DateTime?
+  lockedBy      String?
+  sentAt        DateTime?
+  messageId     String?
+  lastError     String?
+  createdAt     DateTime                 @default(now())
+  updatedAt     DateTime                 @updatedAt
+
+  appeal Appeal @relation(fields: [appealId], references: [id], onDelete: Cascade)
+
+  @@index([appealId, createdAt])
+  @@index([status, createdAt])
+  @@index([status, nextAttemptAt])
+}
+
+/// Версионируемая конфигурация согласия. Текст редактируется в admin без
+/// изменения кода; обращения сохраняют связь с той версией, которую видел заявитель.
+model AppealConsentTemplate {
+  id               String   @id @default(cuid())
+  version          String   @unique
+  title            String
+  body             String
+  isActive         Boolean  @default(false)
+  requiresApproval Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  appeals Appeal[]
+
+  @@index([isActive, updatedAt])
+}
+
+/// Операционная заявка на участие или сотрудничество. Это не публичная
+/// сущность графа и не создаёт автоматически Doctor, Clinic или membership.
+model CooperationApplication {
+  id                  String                       @id @default(cuid())
+  applicationNumber   String                       @unique
+  participantType     CooperationParticipantType
+  applicationType     String?
+  status              CooperationApplicationStatus @default(NEW)
+  organizationName    String?
+  inn                 String?
+  firstName           String?
+  lastName            String?
+  middleName          String?
+  contactName         String?
+  contactPosition     String?
+  phone               String
+  email               String
+  city                String?
+  region              String?
+  website             String?
+  workplace           String?
+  customWorkplace     String?
+  specialties         String[]                     @default([])
+  academicDegree      String?
+  professionalUrl     String?
+  partnerType         String?
+  interests           String[]                     @default([])
+  message             String?
+  consentPersonalData Boolean
+  consentMarketing    Boolean                      @default(false)
+  source              String?
+  landingUrl          String?
+  pageTitle           String?
+  referrer            String?
+  utmSource           String?
+  utmMedium           String?
+  utmCampaign         String?
+  utmContent          String?
+  requestFingerprint  String?
+  idempotencyKey      String?                      @unique
+  responsibleUserId   String?
+  userId              String?
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+
+  responsibleUser AdminUser?                            @relation("CooperationResponsible", fields: [responsibleUserId], references: [id], onDelete: SetNull)
+  statusHistory   CooperationApplicationStatusHistory[]
+  notes           CooperationApplicationNote[]
+  notifications   CooperationApplicationNotification[]
+  attachment      CooperationApplicationAttachment?
+  participantUser User?                                 @relation("ApplicationParticipant", fields: [userId], references: [id], onDelete: SetNull)
+  invitations     Invitation[]
+  entityMatch     CooperationEntityMatch?
+  doctorLinks     UserDoctorLink[]
+  clinicAccesses  UserClinicAccess[]
+  authAuditEvents AuthAuditEvent[]
+
+  @@index([status, createdAt])
+  @@index([participantType, createdAt])
+  @@index([city, region])
+  @@index([source, utmCampaign])
+  @@index([requestFingerprint, createdAt])
+  @@index([email])
+  @@index([phone])
+  @@index([inn])
+  @@index([lastName, firstName])
+  @@index([organizationName])
+}
+
+/// Неизменяемая история переходов заявки между операционными статусами.
+model CooperationApplicationStatusHistory {
+  id            String                        @id @default(cuid())
+  applicationId String
+  fromStatus    CooperationApplicationStatus?
+  toStatus      CooperationApplicationStatus
+  adminUserId   String?
+  comment       String?
+  createdAt     DateTime                      @default(now())
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  changedBy   AdminUser?             @relation("CooperationStatusChangedBy", fields: [adminUserId], references: [id], onDelete: SetNull)
+
+  @@index([applicationId, createdAt])
+  @@index([adminUserId])
+}
+
+/// Внутренняя заметка по заявке; никогда не отправляется заявителю.
+model CooperationApplicationNote {
+  id            String   @id @default(cuid())
+  applicationId String
+  adminUserId   String
+  text          String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  author      AdminUser              @relation("CooperationNoteAuthor", fields: [adminUserId], references: [id], onDelete: Restrict)
+
+  @@index([applicationId, createdAt])
+  @@index([adminUserId])
+}
+
+/// Outbox уведомлений по заявке. Ошибка SMTP не отменяет запись заявки.
+model CooperationApplicationNotification {
+  id            String                        @id @default(cuid())
+  applicationId String
+  kind          CooperationNotificationKind
+  status        CooperationNotificationStatus @default(PENDING)
+  recipient     String?
+  recipients    String[]                      @default([])
+  deliveredRecipients String[]                @default([])
+  attempts      Int                           @default(0)
+  lastAttemptAt DateTime?
+  nextAttemptAt DateTime?
+  lockedAt      DateTime?
+  lockedBy      String?
+  sentAt        DateTime?
+  messageId     String?
+  lastError     String?
+  createdAt     DateTime                      @default(now())
+  updatedAt     DateTime                      @updatedAt
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@unique([applicationId, kind])
+  @@index([status, createdAt])
+  @@index([status, nextAttemptAt])
+  @@index([applicationId, createdAt])
+}
+
+/// Безопасное метаописание одного необязательного файла заявки партнёра.
+/// Файл хранится вне public и получает случайный storageKey.
+model CooperationApplicationAttachment {
+  id            String   @id @default(cuid())
+  applicationId String   @unique
+  displayName   String
+  originalName  String
+  storageKey    String   @unique
+  mimeType      String
+  sizeBytes     Int
+  sha256        String
+  createdAt     DateTime @default(now())
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+/// Участник личного кабинета. Это не публичная сущность графа и не AdminUser.
+model User {
+  id              String                @id @default(cuid())
+  email           String                @unique
+  passwordHash    String
+  displayName     String
+  status          ParticipantUserStatus @default(ACTIVE)
+  emailVerifiedAt DateTime?
+  sessionVersion  Int                   @default(0)
+  lastLoginAt     DateTime?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  applications   CooperationApplication[] @relation("ApplicationParticipant")
+  doctorLinks    UserDoctorLink[]
+  clinicAccesses UserClinicAccess[]
+  resetTokens    PasswordResetToken[]
+  auditEvents    AuthAuditEvent[]
+
+  @@index([status, createdAt])
+}
+
+/// Административно выбранное соответствие заявки существующей сущности каталога.
+/// Отсутствие строки означает, что подтверждённого кандидата нет.
+model CooperationEntityMatch {
+  id            String            @id @default(cuid())
+  applicationId String            @unique
+  doctorId      String?
+  clinicId      String?
+  status        EntityMatchStatus
+  confirmedById String?
+  confirmedAt   DateTime?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  doctor      Doctor?                @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  clinic      Clinic?                @relation(fields: [clinicId], references: [id], onDelete: SetNull)
+  confirmedBy AdminUser?             @relation("EntityMatchConfirmedBy", fields: [confirmedById], references: [id], onDelete: SetNull)
+
+  @@index([doctorId, status])
+  @@index([clinicId, status])
+}
+
+/// Одноразовое приглашение. В БД хранится только hash токена.
+model Invitation {
+  id            String    @id @default(cuid())
+  applicationId String
+  invitedEmail  String
+  tokenHash     String    @unique
+  expiresAt     DateTime
+  usedAt        DateTime?
+  revokedAt     DateTime?
+  createdById   String
+  createdAt     DateTime  @default(now())
+
+  application CooperationApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  createdBy   AdminUser              @relation("InvitationCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  delivery    InvitationDelivery?
+  auditEvents AuthAuditEvent[]
+
+  @@index([applicationId, createdAt])
+  @@index([invitedEmail, expiresAt])
+  @@index([revokedAt, usedAt, expiresAt])
+}
+
+/// Outbox состояния приглашения. Raw token намеренно не хранится; повторная
+/// отправка выполняется только через безопасный reissue нового токена.
+model InvitationDelivery {
+  id            String                   @id @default(cuid())
+  invitationId  String                   @unique
+  status        InvitationDeliveryStatus @default(PENDING)
+  recipient     String
+  attempts      Int                      @default(0)
+  lastAttemptAt DateTime?
+  sentAt        DateTime?
+  messageId     String?
+  lastError     String?
+  createdAt     DateTime                 @default(now())
+  updatedAt     DateTime                 @updatedAt
+
+  invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+
+  @@index([status, createdAt])
+}
+
+/// Связь кабинета с существующим профилем врача. Это access-control relation,
+/// а не медицинская связь графа.
+model UserDoctorLink {
+  id            String               @id @default(cuid())
+  userId        String
+  doctorId      String
+  applicationId String?
+  status        UserEntityLinkStatus @default(PENDING)
+  confirmedById String?
+  confirmedAt   DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  user        User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  doctor      Doctor                  @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  application CooperationApplication? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  confirmedBy AdminUser?              @relation("DoctorLinkConfirmedBy", fields: [confirmedById], references: [id], onDelete: SetNull)
+
+  @@unique([userId, doctorId])
+  @@index([doctorId, status])
+  @@index([applicationId])
+}
+
+/// Доступ представителя к существующей клинике. Несколько пользователей могут
+/// иметь подтверждённый доступ к одной Clinic.
+model UserClinicAccess {
+  id            String               @id @default(cuid())
+  userId        String
+  clinicId      String
+  applicationId String?
+  role          String               @default("REPRESENTATIVE")
+  status        UserEntityLinkStatus @default(PENDING)
+  confirmedById String?
+  confirmedAt   DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  user        User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clinic      Clinic                  @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  application CooperationApplication? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  confirmedBy AdminUser?              @relation("ClinicAccessConfirmedBy", fields: [confirmedById], references: [id], onDelete: SetNull)
+
+  @@unique([userId, clinicId])
+  @@index([clinicId, status])
+  @@index([applicationId])
+}
+
+/// Hash-only одноразовый парольный reset token.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  revokedAt DateTime?
+  attempts  Int       @default(0)
+  sentAt    DateTime?
+  lastError String?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([revokedAt, usedAt, expiresAt])
+}
+
+/// DB-backed rate-limit bucket. В fingerprint хранится только HMAC, не IP/email.
+model AuthRateLimitBucket {
+  id              String   @id @default(cuid())
+  scope           String
+  fingerprint     String
+  windowStartedAt DateTime
+  expiresAt       DateTime
+  attempts        Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([scope, fingerprint])
+  @@index([expiresAt])
+}
+
+/// Аудит auth/invitation/access событий без секретов и credential material.
+model AuthAuditEvent {
+  id            String             @id @default(cuid())
+  eventType     AuthAuditEventType
+  userId        String?
+  adminUserId   String?
+  applicationId String?
+  invitationId  String?
+  doctorId      String?
+  clinicId      String?
+  details       Json?
+  createdAt     DateTime           @default(now())
+
+  user        User?                   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  adminUser   AdminUser?              @relation("AuthAuditActor", fields: [adminUserId], references: [id], onDelete: SetNull)
+  application CooperationApplication? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  invitation  Invitation?             @relation(fields: [invitationId], references: [id], onDelete: SetNull)
+  doctor      Doctor?                 @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  clinic      Clinic?                 @relation(fields: [clinicId], references: [id], onDelete: SetNull)
+
+  @@index([eventType, createdAt])
+  @@index([userId, createdAt])
+  @@index([applicationId, createdAt])
+  @@index([invitationId, createdAt])
 }
 
 model AdminUser {
@@ -669,7 +2176,365 @@ model AdminUser {
   passwordHash String
   name         String
   role         AdminRole @default(OWNER)
+  sessionVersion Int      @default(0)
   lastLoginAt  DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+
+  appealNotes                        AppealNote[]
+  appealStatusHistory                AppealStatusHistory[]
+  cooperationResponsibleApplications CooperationApplication[]              @relation("CooperationResponsible")
+  cooperationStatusHistory           CooperationApplicationStatusHistory[] @relation("CooperationStatusChangedBy")
+  cooperationNotes                   CooperationApplicationNote[]          @relation("CooperationNoteAuthor")
+  invitationsCreated                 Invitation[]                          @relation("InvitationCreatedBy")
+  entityMatchesConfirmed             CooperationEntityMatch[]              @relation("EntityMatchConfirmedBy")
+  doctorLinksConfirmed               UserDoctorLink[]                      @relation("DoctorLinkConfirmedBy")
+  clinicAccessesConfirmed            UserClinicAccess[]                    @relation("ClinicAccessConfirmedBy")
+  authAuditEvents                    AuthAuditEvent[]                      @relation("AuthAuditActor")
+  eventNotes                         EventRegistrationNote[]
+  eventStatusHistory                 EventRegistrationStatusHistory[]
+  passwordResetTokens                AdminPasswordResetToken[]
+}
+
+/// Одноразовый hash-only токен восстановления доступа к AdminUser.
+/// Это приватная auth-инфраструктура; raw token никогда не сохраняется.
+model AdminPasswordResetToken {
+  id          String    @id @default(cuid())
+  adminUserId String
+  tokenHash   String    @unique
+  expiresAt   DateTime
+  usedAt      DateTime?
+  revokedAt   DateTime?
+  attempts    Int       @default(0)
+  sentAt      DateTime?
+  lastError   String?
+  createdAt   DateTime  @default(now())
+
+  adminUser AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+
+  @@index([adminUserId, createdAt])
+  @@index([revokedAt, usedAt, expiresAt])
+}
+
+enum EventTalkKind {
+  TALK
+  BREAK
+}
+
+enum EventRegistrationStatus {
+  NEW
+  CONTACTED
+  CONFIRMED
+  ATTENDED
+  CANCELLED
+  NO_SHOW
+  SPAM
+}
+
+enum EventRegistrationNotificationKind {
+  APPLICANT
+  ASSOCIATION
+}
+
+enum EventRegistrationNotificationChannel {
+  EMAIL
+  TELEGRAM
+  GOOGLE_SHEETS
+}
+
+enum EventRegistrationNotificationType {
+  EVENT_REGISTRATION_CREATED
+}
+
+enum EventRegistrationNotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+/// Операционная конференция и её публичный контент. Event не является
+/// сущностью медицинского графа и не создаёт Doctor/Clinic автоматически.
+model Event {
+  id                   String   @id @default(cuid())
+  slug                 String   @unique
+  title                String
+  description          String
+  organizerName        String
+  organizerEmail       String?
+  startsAt             DateTime
+  registrationStartsAt DateTime
+  venueName            String
+  venueAddress         String
+  city                 String
+  registrationOpen     Boolean  @default(false)
+  programPublished     Boolean  @default(true)
+  speakersPublished    Boolean  @default(true)
+  registrationSequence Int      @default(0)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  speakers          EventSpeaker[]
+  talks             EventTalk[]
+  consentTemplates  EventConsentTemplate[]
+  registrations     EventRegistration[]
+  telegramAuditEvents EventTelegramAuditEvent[]
+  telegramJobs      EventTelegramJob[]
+
+  @@index([registrationOpen, startsAt])
+  @@index([programPublished, speakersPublished])
+}
+
+/// Снимок спикера на момент утверждения программы с обратной ссылкой на
+/// существующего Doctor; публичный текст не зависит от будущей редакции профиля.
+model EventSpeaker {
+  id                   String   @id @default(cuid())
+  eventId              String
+  doctorId             String?
+  order                Int
+  fullNameSnapshot     String
+  credentialsSnapshot  String
+  organizationRole     String?
+  photoUrlSnapshot     String?
+  published            Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  event  Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  doctor Doctor? @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  talks  EventTalk[]
+
+  @@unique([eventId, order])
+  @@unique([eventId, doctorId])
+  @@index([eventId, published, order])
+}
+
+/// Один пункт утверждённой программы. Время доклада nullable: отсутствие
+/// времени не превращается в выдуманное расписание.
+model EventTalk {
+  id                   String        @id @default(cuid())
+  eventId              String
+  speakerId            String?
+  kind                 EventTalkKind  @default(TALK)
+  title                String
+  description          String?
+  speakerNameSnapshot  String?
+  moderatorSnapshot    String?
+  startAt              DateTime?
+  endAt                DateTime?
+  published            Boolean       @default(true)
+  sortOrder            Int
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  event   Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  speaker EventSpeaker? @relation(fields: [speakerId], references: [id], onDelete: SetNull)
+
+  @@unique([eventId, sortOrder])
+  @@index([eventId, published, sortOrder])
+  @@index([speakerId])
+}
+
+/// Отдельная версия согласия для регистрации на мероприятие; AppealConsent
+/// намеренно не переиспользуется, поскольку у доменов разные цели обработки.
+model EventConsentTemplate {
+  id               String   @id @default(cuid())
+  eventId          String
+  version          String
+  title            String
+  body             String
+  isActive         Boolean  @default(false)
+  requiresApproval Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  event          Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  registrations EventRegistration[]
+
+  @@unique([eventId, version])
+  @@index([eventId, isActive, requiresApproval])
+}
+
+/// Приватная заявка на участие. Не создаёт User, CooperationApplication,
+/// membership или профиль врача; персональные поля остаются только здесь.
+model EventRegistration {
+  id                    String                         @id @default(cuid())
+  eventId               String
+  publicNumber          String                         @unique
+  consentTemplateId     String
+  status                EventRegistrationStatus       @default(NEW)
+  fullName              String
+  phone                 String
+  email                 String
+  city                  String?
+  specialty             String?
+  customSpecialty       String?
+  organization          String?
+  position              String?
+  comment               String?
+  consentAcceptedAt     DateTime
+  source                String?
+  landingUrl            String?
+  pageTitle             String?
+  referrer              String?
+  utmSource             String?
+  utmMedium             String?
+  utmCampaign           String?
+  utmContent            String?
+  requestFingerprint    String?
+  idempotencyKey        String?
+  createdAt             DateTime                       @default(now())
+  updatedAt             DateTime                       @updatedAt
+
+  event          Event                         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  consent        EventConsentTemplate          @relation(fields: [consentTemplateId], references: [id], onDelete: Restrict)
+  notes          EventRegistrationNote[]
+  statusHistory  EventRegistrationStatusHistory[]
+  notifications  EventRegistrationNotification[]
+  telegramAuditEvents EventTelegramAuditEvent[]
+
+  @@unique([eventId, email])
+  @@unique([eventId, phone])
+  @@unique([eventId, idempotencyKey])
+  @@index([eventId, status, createdAt])
+  @@index([eventId, city])
+  @@index([eventId, specialty])
+  @@index([eventId, source, utmCampaign])
+  @@index([requestFingerprint, createdAt])
+  @@index([fullName])
+}
+
+/// Неизменяемая история операционного статуса регистрации.
+model EventRegistrationStatusHistory {
+  id             String                   @id @default(cuid())
+  registrationId String
+  adminUserId    String?
+  fromStatus     EventRegistrationStatus?
+  toStatus       EventRegistrationStatus
+  comment        String?
+  createdAt      DateTime                 @default(now())
+
+  registration EventRegistration       @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  changedBy    AdminUser?              @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+
+  @@index([registrationId, createdAt])
+  @@index([adminUserId])
+}
+
+/// Внутренняя заметка администратора; никогда не попадает в публичный DTO.
+model EventRegistrationNote {
+  id             String   @id @default(cuid())
+  registrationId String
+  adminUserId    String
+  text           String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  registration EventRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  author       AdminUser          @relation(fields: [adminUserId], references: [id], onDelete: Restrict)
+
+  @@index([registrationId, createdAt])
+  @@index([adminUserId])
+}
+
+/// Outbox для email участнику и уведомления Ассоциации. Ошибка SMTP не
+/// отменяет сохранённую регистрацию.
+model EventRegistrationNotification {
+  id             String                              @id @default(cuid())
+  registrationId String
+  kind           EventRegistrationNotificationKind
+  channel        EventRegistrationNotificationChannel @default(EMAIL)
+  type           EventRegistrationNotificationType  @default(EVENT_REGISTRATION_CREATED)
+  idempotencyKey String?                             @unique
+  status         EventRegistrationNotificationStatus @default(PENDING)
+  recipient      String?
+  recipients     String[]                            @default([])
+  deliveredRecipients String[]                       @default([])
+  attempts       Int                                 @default(0)
+  lastAttemptAt  DateTime?
+  nextAttemptAt  DateTime?
+  lockedAt       DateTime?
+  lockedBy       String?
+  sentAt         DateTime?
+  messageId      String?
+  lastError      String?
+  createdAt      DateTime                            @default(now())
+  updatedAt      DateTime                            @updatedAt
+
+  registration EventRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  // PostgreSQL truncates the generated 67-character identifier to this 63-character name.
+  // Keep Prisma aligned with the existing production index without issuing a rename.
+  @@unique([registrationId, channel, kind, type], map: "EventRegistrationNotification_registrationId_channel_kind_type_")
+  @@index([status, createdAt])
+  @@index([registrationId, createdAt])
+  @@index([channel, status, nextAttemptAt])
+}
+
+/// Telegram update idempotency marker. Raw Telegram payload is intentionally
+/// not stored; only the numeric update id is retained.
+model EventTelegramUpdate {
+  id          String   @id @default(cuid())
+  updateId    BigInt   @unique
+  receivedAt  DateTime @default(now())
+  processedAt DateTime?
+}
+
+/// Security/audit record for Telegram commands and deliveries. It stores IDs
+/// and action outcome, never bot secrets, callback payloads or XLSX contents.
+model EventTelegramAuditEvent {
+  id                String   @id @default(cuid())
+  eventId           String?
+  registrationId    String?
+  telegramUserId    String?
+  telegramChatId    String?
+  updateId          BigInt?
+  action            String
+  deliveryStatus    String?
+  createdAt         DateTime @default(now())
+
+  event        Event?             @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  registration EventRegistration? @relation(fields: [registrationId], references: [id], onDelete: SetNull)
+
+  @@index([eventId, createdAt])
+  @@index([registrationId, createdAt])
+  @@index([telegramUserId, createdAt])
+  @@index([telegramChatId, createdAt])
+  @@index([action, createdAt])
+}
+
+enum EventTelegramJobKind {
+  FULL_EXPORT
+}
+
+enum EventTelegramJobStatus {
+  PENDING
+  PROCESSING
+  SENT
+  FAILED
+}
+
+/// Short-lived asynchronous Telegram jobs. XLSX generation is deliberately
+/// outside the webhook request; no participant data is duplicated here.
+model EventTelegramJob {
+  id            String                @id @default(cuid())
+  eventId       String
+  kind          EventTelegramJobKind
+  status        EventTelegramJobStatus @default(PENDING)
+  dedupeKey     String                @unique
+  telegramChatId String
+  telegramUserId String
+  requestedAt   DateTime              @default(now())
+  attempts      Int                   @default(0)
+  nextAttemptAt DateTime?
+  lockedAt      DateTime?
+  lockedBy      String?
+  sentAt        DateTime?
+  lastError     String?
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, kind, status, requestedAt])
+  @@index([status, nextAttemptAt])
 }

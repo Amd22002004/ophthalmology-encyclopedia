@@ -4,17 +4,18 @@ import {
   Globe,
   Mail,
   MapPin,
-  Phone,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ClinicLogo, getClinicInitial } from "@/components/entity/clinic-logo";
 import { EntityBlock } from "@/components/entity/entity-block";
 import { RelatedBlock } from "@/components/entity/related-block";
+import { InvestigationNotice } from "@/components/investigations/investigation-notice";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { SchemaOrg } from "@/components/seo/schema-org";
+import { formatClinicAddress, removeLeadingClinicCity } from "@/lib/clinic-address";
 import type { ClinicDbDetail } from "@/lib/loaders";
-import { breadcrumbJsonLd, clinicJsonLd, faqPageJsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, clinicJsonLd, faqPageJsonLd } from "@/lib/seo";
 
 const CLINIC_TYPE_LABEL: Record<string, string> = {
   centre: "Центр",
@@ -58,16 +59,19 @@ function formatLicenseDate(date: Date | null) {
 }
 
 function mapHref(data: ClinicDbDetail) {
+  const address = formatClinicAddress(data.city, data.address);
+
   if (data.latitude != null && data.longitude != null) {
     return `https://yandex.ru/maps/?pt=${data.longitude},${data.latitude}&z=16&l=map`;
   }
-  if (data.address) {
-    return `https://yandex.ru/maps/?text=${encodeURIComponent(data.address)}`;
+  if (address) {
+    return `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`;
   }
   return null;
 }
 
 function buildFaqItems(data: ClinicDbDetail): { question: string; answer: string }[] {
+  const address = formatClinicAddress(data.city, data.address);
   const items: { question: string; answer: string }[] = [
     {
       question: `Принимает ли клиника «${data.title}» пациентов по полису ОМС?`,
@@ -84,10 +88,10 @@ function buildFaqItems(data: ClinicDbDetail): { question: string; answer: string
     });
   }
 
-  if (data.address) {
+  if (address) {
     items.push({
       question: `Где находится клиника «${data.title}»?`,
-      answer: `Клиника расположена по адресу: ${data.address}.`,
+      answer: `Клиника расположена по адресу: ${address}.`,
     });
   }
 
@@ -107,7 +111,11 @@ function buildFaqItems(data: ClinicDbDetail): { question: string; answer: string
 
 export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
   const cityRegion = [data.city, data.region].filter(Boolean).join(" · ");
-  const headerAddress = data.address ? `${cityRegion} — ${data.address}` : cityRegion;
+  const cleanedAddress = removeLeadingClinicCity(data.address, data.city)?.trim() || null;
+  const publicAddress = formatClinicAddress(data.city, data.address);
+  const headerAddress = cityRegion && cleanedAddress
+    ? `${cityRegion} — ${cleanedAddress}`
+    : cityRegion || cleanedAddress;
 
   const badges = [
     data.omsEnabled ? { label: "ОМС", variant: "oms" as const } : null,
@@ -158,6 +166,21 @@ export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
   const map = mapHref(data);
   const licenseDateLabel = formatLicenseDate(data.licenseDate);
   const faqItems = buildFaqItems(data);
+  const investigations = data.investigations.map((relation) => relation.investigation);
+  const investigationNews = Array.from(
+    new Map(
+      investigations.flatMap((investigation) =>
+        investigation.news.map(({ news }) => [news.slug, news]),
+      ),
+    ).values(),
+  );
+  const hasPublishedInvestigation = investigations.length > 0;
+  const pageTitle = hasPublishedInvestigation
+    ? `${data.title} — сведения, документы и материалы проверки`
+    : data.title;
+  const pageDescription = hasPublishedInvestigation
+    ? `Сведения о ${data.title}, опубликованные документы, оборудование и материалы проверки с обозначенными границами выводов.`
+    : data.description ?? `${data.title}: сведения о медицинской организации.`;
 
   const hasRequisites = Boolean(
     data.inn ||
@@ -174,6 +197,10 @@ export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
   return (
     <div className="space-y-5">
       <Breadcrumbs items={[{ href: "/clinics", label: "Клиники" }, { label: data.title }]} />
+      <InvestigationNotice
+        items={investigations}
+        message="По данной клинике опубликовано расследование Ассоциации."
+      />
 
       {/* Header: identity left + CTA right */}
       <header className="overflow-hidden rounded-lg border bg-card">
@@ -206,7 +233,7 @@ export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
                   ))}
                 </div>
               )}
-              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{data.title}</h1>
+              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{pageTitle}</h1>
               {data.legalName && data.legalName !== data.title && (
                 <p className="mt-1 text-sm text-muted-foreground">{data.legalName}</p>
               )}
@@ -327,6 +354,43 @@ export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
             </EntityBlock>
           )}
 
+          {hasPublishedInvestigation && (
+            <EntityBlock title="Материалы и документы клиники">
+              <p className="mb-3 text-sm leading-6 text-muted-foreground">
+                Публичные сведения разделены по типу источника. Материалы проверки относятся к обстоятельствам и конкретным объектам, указанным в документах, а не к каталожным моделям в целом.
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <Link className="rounded-md border bg-background p-3 text-sm font-semibold text-primary hover:border-primary/50 hover:bg-primary/5" href={`/clinics/${data.slug}/equipment`}>
+                  Оборудование и модели →
+                </Link>
+                <Link className="rounded-md border bg-background p-3 text-sm font-semibold text-primary hover:border-primary/50 hover:bg-primary/5" href={`/clinics/${data.slug}/documents`}>
+                  Документы клиники →
+                </Link>
+                <Link className="rounded-md border bg-background p-3 text-sm font-semibold text-primary hover:border-primary/50 hover:bg-primary/5" href={`/clinics/${data.slug}/license`}>
+                  Лицензионные сведения →
+                </Link>
+                {investigations.map((investigation) => (
+                  <Link className="rounded-md border bg-background p-3 text-sm font-semibold text-primary hover:border-primary/50 hover:bg-primary/5" href={`/investigations/${investigation.slug}`} key={investigation.slug}>
+                    Материалы проверки: {investigation.title} →
+                  </Link>
+                ))}
+                {investigationNews.map((news) => (
+                  <Link className="rounded-md border bg-background p-3 text-sm font-semibold text-primary hover:border-primary/50 hover:bg-primary/5" href={`/news/${news.slug}`} key={news.slug}>
+                    Публикация Ассоциации: {news.title} →
+                  </Link>
+                ))}
+                {investigations.length === 1 && (
+                  <Link className="rounded-md border bg-background p-3 text-sm font-semibold text-primary hover:border-primary/50 hover:bg-primary/5" href={`/appeal?investigation=${investigations[0].slug}`}>
+                    Сообщить информацию по проверке →
+                  </Link>
+                )}
+                <Link className="rounded-md border bg-background p-3 text-sm font-semibold text-primary hover:border-primary/50 hover:bg-primary/5" href="/regulations">
+                  Нормативная база проекта →
+                </Link>
+              </div>
+            </EntityBlock>
+          )}
+
           {/* Doctors */}
           {data.doctors.length > 0 && (
             <EntityBlock title={`Врачи клиники · ${data.doctors.length}`}>
@@ -434,10 +498,10 @@ export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
 
         {/* Sidebar */}
         <div className="space-y-5">
-          {(data.address || map) && (
+          {(publicAddress || map) && (
             <EntityBlock title="Адрес и карта">
               <div className="space-y-3">
-                {data.address && <p className="text-sm text-foreground">{data.address}</p>}
+                {publicAddress && <p className="text-sm text-foreground">{publicAddress}</p>}
                 {data.mapEmbed ? (
                   <div className="overflow-hidden rounded-md border">
                     <iframe
@@ -522,6 +586,19 @@ export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
         </div>
       </div>
 
+      {faqItems.length > 0 && (
+        <EntityBlock title="Частые вопросы">
+          <div className="space-y-4">
+            {faqItems.map((item) => (
+              <div className="border-b pb-4 last:border-b-0 last:pb-0" key={item.question}>
+                <h2 className="font-semibold text-foreground">{item.question}</h2>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </EntityBlock>
+      )}
+
       <SchemaOrg
         data={breadcrumbJsonLd([
           { href: "/", label: "Главная" },
@@ -530,6 +607,16 @@ export function ClinicDbTemplate({ data }: { data: ClinicDbDetail }) {
         ])}
       />
       <SchemaOrg data={clinicJsonLd(data)} />
+      <SchemaOrg
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: pageTitle,
+          description: pageDescription,
+          url: absoluteUrl(`/clinics/${data.slug}`),
+          about: { "@type": "MedicalOrganization", name: data.title, url: absoluteUrl(`/clinics/${data.slug}`) },
+        }}
+      />
       {faqItems.length > 0 && <SchemaOrg data={faqPageJsonLd(faqItems)} />}
     </div>
   );

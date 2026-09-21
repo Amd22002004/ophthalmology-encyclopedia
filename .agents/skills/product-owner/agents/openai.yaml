@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Owner"
+  short_description: "Review product value before delivery"
+  default_prompt: "Use $product-owner to check whether this change improves the product before delivery."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Нормативный комплаенс"
+  short_description: "Нормативный аудит медицинских организаций"
+  default_prompt: "Use $regulatory-compliance to audit a medical organization against time-applicable Russian requirements without inferring violations from missing evidence."

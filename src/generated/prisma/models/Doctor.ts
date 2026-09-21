@@ -328,6 +328,10 @@ export type DoctorWhereInput = {
   publications?: Prisma.PublicationListRelationFilter
   scientificWorks?: Prisma.ScientificWorkListRelationFilter
   equipment?: Prisma.DoctorOnEquipmentListRelationFilter
+  accountLinks?: Prisma.UserDoctorLinkListRelationFilter
+  entityMatches?: Prisma.CooperationEntityMatchListRelationFilter
+  authAuditEvents?: Prisma.AuthAuditEventListRelationFilter
+  eventSpeakers?: Prisma.EventSpeakerListRelationFilter
 }
 
 export type DoctorOrderByWithRelationInput = {
@@ -357,6 +361,10 @@ export type DoctorOrderByWithRelationInput = {
   publications?: Prisma.PublicationOrderByRelationAggregateInput
   scientificWorks?: Prisma.ScientificWorkOrderByRelationAggregateInput
   equipment?: Prisma.DoctorOnEquipmentOrderByRelationAggregateInput
+  accountLinks?: Prisma.UserDoctorLinkOrderByRelationAggregateInput
+  entityMatches?: Prisma.CooperationEntityMatchOrderByRelationAggregateInput
+  authAuditEvents?: Prisma.AuthAuditEventOrderByRelationAggregateInput
+  eventSpeakers?: Prisma.EventSpeakerOrderByRelationAggregateInput
 }
 
 export type DoctorWhereUniqueInput = Prisma.AtLeast<{
@@ -389,6 +397,10 @@ export type DoctorWhereUniqueInput = Prisma.AtLeast<{
   publications?: Prisma.PublicationListRelationFilter
   scientificWorks?: Prisma.ScientificWorkListRelationFilter
   equipment?: Prisma.DoctorOnEquipmentListRelationFilter
+  accountLinks?: Prisma.UserDoctorLinkListRelationFilter
+  entityMatches?: Prisma.CooperationEntityMatchListRelationFilter
+  authAuditEvents?: Prisma.AuthAuditEventListRelationFilter
+  eventSpeakers?: Prisma.EventSpeakerListRelationFilter
 }, "id" | "slug">
 
 export type DoctorOrderByWithAggregationInput = {
@@ -467,6 +479,10 @@ export type DoctorCreateInput = {
   publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorUncheckedCreateInput = {
@@ -495,6 +511,10 @@ export type DoctorUncheckedCreateInput = {
   publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorUpdateInput = {
@@ -523,6 +543,10 @@ export type DoctorUpdateInput = {
   publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorUncheckedUpdateInput = {
@@ -551,6 +575,10 @@ export type DoctorUncheckedUpdateInput = {
   publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorCreateManyInput = {
@@ -856,6 +884,68 @@ export type DoctorUpdateOneRequiredWithoutEquipmentNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DoctorUpdateToOneWithWhereWithoutEquipmentInput, Prisma.DoctorUpdateWithoutEquipmentInput>, Prisma.DoctorUncheckedUpdateWithoutEquipmentInput>
 }
 
+export type DoctorCreateNestedOneWithoutEntityMatchesInput = {
+  create?: Prisma.XOR<Prisma.DoctorCreateWithoutEntityMatchesInput, Prisma.DoctorUncheckedCreateWithoutEntityMatchesInput>
+  connectOrCreate?: Prisma.DoctorCreateOrConnectWithoutEntityMatchesInput
+  connect?: Prisma.DoctorWhereUniqueInput
+}
+
+export type DoctorUpdateOneWithoutEntityMatchesNestedInput = {
+  create?: Prisma.XOR<Prisma.DoctorCreateWithoutEntityMatchesInput, Prisma.DoctorUncheckedCreateWithoutEntityMatchesInput>
+  connectOrCreate?: Prisma.DoctorCreateOrConnectWithoutEntityMatchesInput
+  upsert?: Prisma.DoctorUpsertWithoutEntityMatchesInput
+  disconnect?: Prisma.DoctorWhereInput | boolean
+  delete?: Prisma.DoctorWhereInput | boolean
+  connect?: Prisma.DoctorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DoctorUpdateToOneWithWhereWithoutEntityMatchesInput, Prisma.DoctorUpdateWithoutEntityMatchesInput>, Prisma.DoctorUncheckedUpdateWithoutEntityMatchesInput>
+}
+
+export type DoctorCreateNestedOneWithoutAccountLinksInput = {
+  create?: Prisma.XOR<Prisma.DoctorCreateWithoutAccountLinksInput, Prisma.DoctorUncheckedCreateWithoutAccountLinksInput>
+  connectOrCreate?: Prisma.DoctorCreateOrConnectWithoutAccountLinksInput
+  connect?: Prisma.DoctorWhereUniqueInput
+}
+
+export type DoctorUpdateOneRequiredWithoutAccountLinksNestedInput = {
+  create?: Prisma.XOR<Prisma.DoctorCreateWithoutAccountLinksInput, Prisma.DoctorUncheckedCreateWithoutAccountLinksInput>
+  connectOrCreate?: Prisma.DoctorCreateOrConnectWithoutAccountLinksInput
+  upsert?: Prisma.DoctorUpsertWithoutAccountLinksInput
+  connect?: Prisma.DoctorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DoctorUpdateToOneWithWhereWithoutAccountLinksInput, Prisma.DoctorUpdateWithoutAccountLinksInput>, Prisma.DoctorUncheckedUpdateWithoutAccountLinksInput>
+}
+
+export type DoctorCreateNestedOneWithoutAuthAuditEventsInput = {
+  create?: Prisma.XOR<Prisma.DoctorCreateWithoutAuthAuditEventsInput, Prisma.DoctorUncheckedCreateWithoutAuthAuditEventsInput>
+  connectOrCreate?: Prisma.DoctorCreateOrConnectWithoutAuthAuditEventsInput
+  connect?: Prisma.DoctorWhereUniqueInput
+}
+
+export type DoctorUpdateOneWithoutAuthAuditEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.DoctorCreateWithoutAuthAuditEventsInput, Prisma.DoctorUncheckedCreateWithoutAuthAuditEventsInput>
+  connectOrCreate?: Prisma.DoctorCreateOrConnectWithoutAuthAuditEventsInput
+  upsert?: Prisma.DoctorUpsertWithoutAuthAuditEventsInput
+  disconnect?: Prisma.DoctorWhereInput | boolean
+  delete?: Prisma.DoctorWhereInput | boolean
+  connect?: Prisma.DoctorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DoctorUpdateToOneWithWhereWithoutAuthAuditEventsInput, Prisma.DoctorUpdateWithoutAuthAuditEventsInput>, Prisma.DoctorUncheckedUpdateWithoutAuthAuditEventsInput>
+}
+
+export type DoctorCreateNestedOneWithoutEventSpeakersInput = {
+  create?: Prisma.XOR<Prisma.DoctorCreateWithoutEventSpeakersInput, Prisma.DoctorUncheckedCreateWithoutEventSpeakersInput>
+  connectOrCreate?: Prisma.DoctorCreateOrConnectWithoutEventSpeakersInput
+  connect?: Prisma.DoctorWhereUniqueInput
+}
+
+export type DoctorUpdateOneWithoutEventSpeakersNestedInput = {
+  create?: Prisma.XOR<Prisma.DoctorCreateWithoutEventSpeakersInput, Prisma.DoctorUncheckedCreateWithoutEventSpeakersInput>
+  connectOrCreate?: Prisma.DoctorCreateOrConnectWithoutEventSpeakersInput
+  upsert?: Prisma.DoctorUpsertWithoutEventSpeakersInput
+  disconnect?: Prisma.DoctorWhereInput | boolean
+  delete?: Prisma.DoctorWhereInput | boolean
+  connect?: Prisma.DoctorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DoctorUpdateToOneWithWhereWithoutEventSpeakersInput, Prisma.DoctorUpdateWithoutEventSpeakersInput>, Prisma.DoctorUncheckedUpdateWithoutEventSpeakersInput>
+}
+
 export type DoctorCreateWithoutScientificWorksInput = {
   id?: string
   slug: string
@@ -881,6 +971,10 @@ export type DoctorCreateWithoutScientificWorksInput = {
   procedures?: Prisma.DoctorOnProcedureCreateNestedManyWithoutDoctorInput
   publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorUncheckedCreateWithoutScientificWorksInput = {
@@ -908,6 +1002,10 @@ export type DoctorUncheckedCreateWithoutScientificWorksInput = {
   procedures?: Prisma.DoctorOnProcedureUncheckedCreateNestedManyWithoutDoctorInput
   publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorCreateOrConnectWithoutScientificWorksInput = {
@@ -951,6 +1049,10 @@ export type DoctorUpdateWithoutScientificWorksInput = {
   procedures?: Prisma.DoctorOnProcedureUpdateManyWithoutDoctorNestedInput
   publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorUncheckedUpdateWithoutScientificWorksInput = {
@@ -978,6 +1080,10 @@ export type DoctorUncheckedUpdateWithoutScientificWorksInput = {
   procedures?: Prisma.DoctorOnProcedureUncheckedUpdateManyWithoutDoctorNestedInput
   publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorCreateWithoutPublicationsInput = {
@@ -1005,6 +1111,10 @@ export type DoctorCreateWithoutPublicationsInput = {
   procedures?: Prisma.DoctorOnProcedureCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorUncheckedCreateWithoutPublicationsInput = {
@@ -1032,6 +1142,10 @@ export type DoctorUncheckedCreateWithoutPublicationsInput = {
   procedures?: Prisma.DoctorOnProcedureUncheckedCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorCreateOrConnectWithoutPublicationsInput = {
@@ -1075,6 +1189,10 @@ export type DoctorUpdateWithoutPublicationsInput = {
   procedures?: Prisma.DoctorOnProcedureUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorUncheckedUpdateWithoutPublicationsInput = {
@@ -1102,6 +1220,10 @@ export type DoctorUncheckedUpdateWithoutPublicationsInput = {
   procedures?: Prisma.DoctorOnProcedureUncheckedUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorCreateWithoutRegionEntityInput = {
@@ -1129,6 +1251,10 @@ export type DoctorCreateWithoutRegionEntityInput = {
   publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorUncheckedCreateWithoutRegionEntityInput = {
@@ -1156,6 +1282,10 @@ export type DoctorUncheckedCreateWithoutRegionEntityInput = {
   publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorCreateOrConnectWithoutRegionEntityInput = {
@@ -1233,6 +1363,10 @@ export type DoctorCreateWithoutDiseasesInput = {
   publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorUncheckedCreateWithoutDiseasesInput = {
@@ -1260,6 +1394,10 @@ export type DoctorUncheckedCreateWithoutDiseasesInput = {
   publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorCreateOrConnectWithoutDiseasesInput = {
@@ -1303,6 +1441,10 @@ export type DoctorUpdateWithoutDiseasesInput = {
   publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorUncheckedUpdateWithoutDiseasesInput = {
@@ -1330,6 +1472,10 @@ export type DoctorUncheckedUpdateWithoutDiseasesInput = {
   publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorCreateWithoutProceduresInput = {
@@ -1357,6 +1503,10 @@ export type DoctorCreateWithoutProceduresInput = {
   publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorUncheckedCreateWithoutProceduresInput = {
@@ -1384,6 +1534,10 @@ export type DoctorUncheckedCreateWithoutProceduresInput = {
   publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorCreateOrConnectWithoutProceduresInput = {
@@ -1427,6 +1581,10 @@ export type DoctorUpdateWithoutProceduresInput = {
   publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorUncheckedUpdateWithoutProceduresInput = {
@@ -1454,6 +1612,10 @@ export type DoctorUncheckedUpdateWithoutProceduresInput = {
   publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorCreateWithoutSpecialtiesInput = {
@@ -1481,6 +1643,10 @@ export type DoctorCreateWithoutSpecialtiesInput = {
   publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorUncheckedCreateWithoutSpecialtiesInput = {
@@ -1508,6 +1674,10 @@ export type DoctorUncheckedCreateWithoutSpecialtiesInput = {
   publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorCreateOrConnectWithoutSpecialtiesInput = {
@@ -1551,6 +1721,10 @@ export type DoctorUpdateWithoutSpecialtiesInput = {
   publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorUncheckedUpdateWithoutSpecialtiesInput = {
@@ -1578,6 +1752,10 @@ export type DoctorUncheckedUpdateWithoutSpecialtiesInput = {
   publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorCreateWithoutClinicsInput = {
@@ -1605,6 +1783,10 @@ export type DoctorCreateWithoutClinicsInput = {
   publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorUncheckedCreateWithoutClinicsInput = {
@@ -1632,6 +1814,10 @@ export type DoctorUncheckedCreateWithoutClinicsInput = {
   publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorCreateOrConnectWithoutClinicsInput = {
@@ -1675,6 +1861,10 @@ export type DoctorUpdateWithoutClinicsInput = {
   publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorUncheckedUpdateWithoutClinicsInput = {
@@ -1702,6 +1892,10 @@ export type DoctorUncheckedUpdateWithoutClinicsInput = {
   publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorCreateWithoutEquipmentInput = {
@@ -1729,6 +1923,10 @@ export type DoctorCreateWithoutEquipmentInput = {
   procedures?: Prisma.DoctorOnProcedureCreateNestedManyWithoutDoctorInput
   publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorUncheckedCreateWithoutEquipmentInput = {
@@ -1756,6 +1954,10 @@ export type DoctorUncheckedCreateWithoutEquipmentInput = {
   procedures?: Prisma.DoctorOnProcedureUncheckedCreateNestedManyWithoutDoctorInput
   publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
   scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
 }
 
 export type DoctorCreateOrConnectWithoutEquipmentInput = {
@@ -1799,6 +2001,10 @@ export type DoctorUpdateWithoutEquipmentInput = {
   procedures?: Prisma.DoctorOnProcedureUpdateManyWithoutDoctorNestedInput
   publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorUncheckedUpdateWithoutEquipmentInput = {
@@ -1826,6 +2032,570 @@ export type DoctorUncheckedUpdateWithoutEquipmentInput = {
   procedures?: Prisma.DoctorOnProcedureUncheckedUpdateManyWithoutDoctorNestedInput
   publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
+}
+
+export type DoctorCreateWithoutEntityMatchesInput = {
+  id?: string
+  slug: string
+  firstName: string
+  lastName: string
+  middleName?: string | null
+  photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
+  bio?: string | null
+  career?: string | null
+  experienceYears?: number | null
+  region?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutDoctorsInput
+  specialties?: Prisma.DoctorOnSpecialtyCreateNestedManyWithoutDoctorInput
+  clinics?: Prisma.DoctorOnClinicCreateNestedManyWithoutDoctorInput
+  diseases?: Prisma.DoctorOnDiseaseCreateNestedManyWithoutDoctorInput
+  procedures?: Prisma.DoctorOnProcedureCreateNestedManyWithoutDoctorInput
+  publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
+  scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
+  equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
+}
+
+export type DoctorUncheckedCreateWithoutEntityMatchesInput = {
+  id?: string
+  slug: string
+  firstName: string
+  lastName: string
+  middleName?: string | null
+  photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
+  bio?: string | null
+  career?: string | null
+  experienceYears?: number | null
+  region?: string | null
+  regionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.DoctorOnSpecialtyUncheckedCreateNestedManyWithoutDoctorInput
+  clinics?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutDoctorInput
+  diseases?: Prisma.DoctorOnDiseaseUncheckedCreateNestedManyWithoutDoctorInput
+  procedures?: Prisma.DoctorOnProcedureUncheckedCreateNestedManyWithoutDoctorInput
+  publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
+  scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
+  equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
+}
+
+export type DoctorCreateOrConnectWithoutEntityMatchesInput = {
+  where: Prisma.DoctorWhereUniqueInput
+  create: Prisma.XOR<Prisma.DoctorCreateWithoutEntityMatchesInput, Prisma.DoctorUncheckedCreateWithoutEntityMatchesInput>
+}
+
+export type DoctorUpsertWithoutEntityMatchesInput = {
+  update: Prisma.XOR<Prisma.DoctorUpdateWithoutEntityMatchesInput, Prisma.DoctorUncheckedUpdateWithoutEntityMatchesInput>
+  create: Prisma.XOR<Prisma.DoctorCreateWithoutEntityMatchesInput, Prisma.DoctorUncheckedCreateWithoutEntityMatchesInput>
+  where?: Prisma.DoctorWhereInput
+}
+
+export type DoctorUpdateToOneWithWhereWithoutEntityMatchesInput = {
+  where?: Prisma.DoctorWhereInput
+  data: Prisma.XOR<Prisma.DoctorUpdateWithoutEntityMatchesInput, Prisma.DoctorUncheckedUpdateWithoutEntityMatchesInput>
+}
+
+export type DoctorUpdateWithoutEntityMatchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutDoctorsNestedInput
+  specialties?: Prisma.DoctorOnSpecialtyUpdateManyWithoutDoctorNestedInput
+  clinics?: Prisma.DoctorOnClinicUpdateManyWithoutDoctorNestedInput
+  diseases?: Prisma.DoctorOnDiseaseUpdateManyWithoutDoctorNestedInput
+  procedures?: Prisma.DoctorOnProcedureUpdateManyWithoutDoctorNestedInput
+  publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
+  scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
+  equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
+}
+
+export type DoctorUncheckedUpdateWithoutEntityMatchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.DoctorOnSpecialtyUncheckedUpdateManyWithoutDoctorNestedInput
+  clinics?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutDoctorNestedInput
+  diseases?: Prisma.DoctorOnDiseaseUncheckedUpdateManyWithoutDoctorNestedInput
+  procedures?: Prisma.DoctorOnProcedureUncheckedUpdateManyWithoutDoctorNestedInput
+  publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
+  scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
+  equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
+}
+
+export type DoctorCreateWithoutAccountLinksInput = {
+  id?: string
+  slug: string
+  firstName: string
+  lastName: string
+  middleName?: string | null
+  photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
+  bio?: string | null
+  career?: string | null
+  experienceYears?: number | null
+  region?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutDoctorsInput
+  specialties?: Prisma.DoctorOnSpecialtyCreateNestedManyWithoutDoctorInput
+  clinics?: Prisma.DoctorOnClinicCreateNestedManyWithoutDoctorInput
+  diseases?: Prisma.DoctorOnDiseaseCreateNestedManyWithoutDoctorInput
+  procedures?: Prisma.DoctorOnProcedureCreateNestedManyWithoutDoctorInput
+  publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
+  scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
+  equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
+}
+
+export type DoctorUncheckedCreateWithoutAccountLinksInput = {
+  id?: string
+  slug: string
+  firstName: string
+  lastName: string
+  middleName?: string | null
+  photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
+  bio?: string | null
+  career?: string | null
+  experienceYears?: number | null
+  region?: string | null
+  regionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.DoctorOnSpecialtyUncheckedCreateNestedManyWithoutDoctorInput
+  clinics?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutDoctorInput
+  diseases?: Prisma.DoctorOnDiseaseUncheckedCreateNestedManyWithoutDoctorInput
+  procedures?: Prisma.DoctorOnProcedureUncheckedCreateNestedManyWithoutDoctorInput
+  publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
+  scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
+  equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
+}
+
+export type DoctorCreateOrConnectWithoutAccountLinksInput = {
+  where: Prisma.DoctorWhereUniqueInput
+  create: Prisma.XOR<Prisma.DoctorCreateWithoutAccountLinksInput, Prisma.DoctorUncheckedCreateWithoutAccountLinksInput>
+}
+
+export type DoctorUpsertWithoutAccountLinksInput = {
+  update: Prisma.XOR<Prisma.DoctorUpdateWithoutAccountLinksInput, Prisma.DoctorUncheckedUpdateWithoutAccountLinksInput>
+  create: Prisma.XOR<Prisma.DoctorCreateWithoutAccountLinksInput, Prisma.DoctorUncheckedCreateWithoutAccountLinksInput>
+  where?: Prisma.DoctorWhereInput
+}
+
+export type DoctorUpdateToOneWithWhereWithoutAccountLinksInput = {
+  where?: Prisma.DoctorWhereInput
+  data: Prisma.XOR<Prisma.DoctorUpdateWithoutAccountLinksInput, Prisma.DoctorUncheckedUpdateWithoutAccountLinksInput>
+}
+
+export type DoctorUpdateWithoutAccountLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutDoctorsNestedInput
+  specialties?: Prisma.DoctorOnSpecialtyUpdateManyWithoutDoctorNestedInput
+  clinics?: Prisma.DoctorOnClinicUpdateManyWithoutDoctorNestedInput
+  diseases?: Prisma.DoctorOnDiseaseUpdateManyWithoutDoctorNestedInput
+  procedures?: Prisma.DoctorOnProcedureUpdateManyWithoutDoctorNestedInput
+  publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
+  scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
+  equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
+}
+
+export type DoctorUncheckedUpdateWithoutAccountLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.DoctorOnSpecialtyUncheckedUpdateManyWithoutDoctorNestedInput
+  clinics?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutDoctorNestedInput
+  diseases?: Prisma.DoctorOnDiseaseUncheckedUpdateManyWithoutDoctorNestedInput
+  procedures?: Prisma.DoctorOnProcedureUncheckedUpdateManyWithoutDoctorNestedInput
+  publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
+  scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
+  equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
+}
+
+export type DoctorCreateWithoutAuthAuditEventsInput = {
+  id?: string
+  slug: string
+  firstName: string
+  lastName: string
+  middleName?: string | null
+  photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
+  bio?: string | null
+  career?: string | null
+  experienceYears?: number | null
+  region?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutDoctorsInput
+  specialties?: Prisma.DoctorOnSpecialtyCreateNestedManyWithoutDoctorInput
+  clinics?: Prisma.DoctorOnClinicCreateNestedManyWithoutDoctorInput
+  diseases?: Prisma.DoctorOnDiseaseCreateNestedManyWithoutDoctorInput
+  procedures?: Prisma.DoctorOnProcedureCreateNestedManyWithoutDoctorInput
+  publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
+  scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
+  equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerCreateNestedManyWithoutDoctorInput
+}
+
+export type DoctorUncheckedCreateWithoutAuthAuditEventsInput = {
+  id?: string
+  slug: string
+  firstName: string
+  lastName: string
+  middleName?: string | null
+  photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
+  bio?: string | null
+  career?: string | null
+  experienceYears?: number | null
+  region?: string | null
+  regionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.DoctorOnSpecialtyUncheckedCreateNestedManyWithoutDoctorInput
+  clinics?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutDoctorInput
+  diseases?: Prisma.DoctorOnDiseaseUncheckedCreateNestedManyWithoutDoctorInput
+  procedures?: Prisma.DoctorOnProcedureUncheckedCreateNestedManyWithoutDoctorInput
+  publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
+  scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
+  equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedCreateNestedManyWithoutDoctorInput
+}
+
+export type DoctorCreateOrConnectWithoutAuthAuditEventsInput = {
+  where: Prisma.DoctorWhereUniqueInput
+  create: Prisma.XOR<Prisma.DoctorCreateWithoutAuthAuditEventsInput, Prisma.DoctorUncheckedCreateWithoutAuthAuditEventsInput>
+}
+
+export type DoctorUpsertWithoutAuthAuditEventsInput = {
+  update: Prisma.XOR<Prisma.DoctorUpdateWithoutAuthAuditEventsInput, Prisma.DoctorUncheckedUpdateWithoutAuthAuditEventsInput>
+  create: Prisma.XOR<Prisma.DoctorCreateWithoutAuthAuditEventsInput, Prisma.DoctorUncheckedCreateWithoutAuthAuditEventsInput>
+  where?: Prisma.DoctorWhereInput
+}
+
+export type DoctorUpdateToOneWithWhereWithoutAuthAuditEventsInput = {
+  where?: Prisma.DoctorWhereInput
+  data: Prisma.XOR<Prisma.DoctorUpdateWithoutAuthAuditEventsInput, Prisma.DoctorUncheckedUpdateWithoutAuthAuditEventsInput>
+}
+
+export type DoctorUpdateWithoutAuthAuditEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutDoctorsNestedInput
+  specialties?: Prisma.DoctorOnSpecialtyUpdateManyWithoutDoctorNestedInput
+  clinics?: Prisma.DoctorOnClinicUpdateManyWithoutDoctorNestedInput
+  diseases?: Prisma.DoctorOnDiseaseUpdateManyWithoutDoctorNestedInput
+  procedures?: Prisma.DoctorOnProcedureUpdateManyWithoutDoctorNestedInput
+  publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
+  scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
+  equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
+}
+
+export type DoctorUncheckedUpdateWithoutAuthAuditEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.DoctorOnSpecialtyUncheckedUpdateManyWithoutDoctorNestedInput
+  clinics?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutDoctorNestedInput
+  diseases?: Prisma.DoctorOnDiseaseUncheckedUpdateManyWithoutDoctorNestedInput
+  procedures?: Prisma.DoctorOnProcedureUncheckedUpdateManyWithoutDoctorNestedInput
+  publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
+  scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
+  equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
+}
+
+export type DoctorCreateWithoutEventSpeakersInput = {
+  id?: string
+  slug: string
+  firstName: string
+  lastName: string
+  middleName?: string | null
+  photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
+  bio?: string | null
+  career?: string | null
+  experienceYears?: number | null
+  region?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  regionEntity?: Prisma.RegionCreateNestedOneWithoutDoctorsInput
+  specialties?: Prisma.DoctorOnSpecialtyCreateNestedManyWithoutDoctorInput
+  clinics?: Prisma.DoctorOnClinicCreateNestedManyWithoutDoctorInput
+  diseases?: Prisma.DoctorOnDiseaseCreateNestedManyWithoutDoctorInput
+  procedures?: Prisma.DoctorOnProcedureCreateNestedManyWithoutDoctorInput
+  publications?: Prisma.PublicationCreateNestedManyWithoutDoctorInput
+  scientificWorks?: Prisma.ScientificWorkCreateNestedManyWithoutDoctorInput
+  equipment?: Prisma.DoctorOnEquipmentCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventCreateNestedManyWithoutDoctorInput
+}
+
+export type DoctorUncheckedCreateWithoutEventSpeakersInput = {
+  id?: string
+  slug: string
+  firstName: string
+  lastName: string
+  middleName?: string | null
+  photoUrl?: string | null
+  position?: string | null
+  category?: string | null
+  credo?: string | null
+  prodoctorovUrl?: string | null
+  siteUrl?: string | null
+  bio?: string | null
+  career?: string | null
+  experienceYears?: number | null
+  region?: string | null
+  regionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  specialties?: Prisma.DoctorOnSpecialtyUncheckedCreateNestedManyWithoutDoctorInput
+  clinics?: Prisma.DoctorOnClinicUncheckedCreateNestedManyWithoutDoctorInput
+  diseases?: Prisma.DoctorOnDiseaseUncheckedCreateNestedManyWithoutDoctorInput
+  procedures?: Prisma.DoctorOnProcedureUncheckedCreateNestedManyWithoutDoctorInput
+  publications?: Prisma.PublicationUncheckedCreateNestedManyWithoutDoctorInput
+  scientificWorks?: Prisma.ScientificWorkUncheckedCreateNestedManyWithoutDoctorInput
+  equipment?: Prisma.DoctorOnEquipmentUncheckedCreateNestedManyWithoutDoctorInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedCreateNestedManyWithoutDoctorInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedCreateNestedManyWithoutDoctorInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedCreateNestedManyWithoutDoctorInput
+}
+
+export type DoctorCreateOrConnectWithoutEventSpeakersInput = {
+  where: Prisma.DoctorWhereUniqueInput
+  create: Prisma.XOR<Prisma.DoctorCreateWithoutEventSpeakersInput, Prisma.DoctorUncheckedCreateWithoutEventSpeakersInput>
+}
+
+export type DoctorUpsertWithoutEventSpeakersInput = {
+  update: Prisma.XOR<Prisma.DoctorUpdateWithoutEventSpeakersInput, Prisma.DoctorUncheckedUpdateWithoutEventSpeakersInput>
+  create: Prisma.XOR<Prisma.DoctorCreateWithoutEventSpeakersInput, Prisma.DoctorUncheckedCreateWithoutEventSpeakersInput>
+  where?: Prisma.DoctorWhereInput
+}
+
+export type DoctorUpdateToOneWithWhereWithoutEventSpeakersInput = {
+  where?: Prisma.DoctorWhereInput
+  data: Prisma.XOR<Prisma.DoctorUpdateWithoutEventSpeakersInput, Prisma.DoctorUncheckedUpdateWithoutEventSpeakersInput>
+}
+
+export type DoctorUpdateWithoutEventSpeakersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  regionEntity?: Prisma.RegionUpdateOneWithoutDoctorsNestedInput
+  specialties?: Prisma.DoctorOnSpecialtyUpdateManyWithoutDoctorNestedInput
+  clinics?: Prisma.DoctorOnClinicUpdateManyWithoutDoctorNestedInput
+  diseases?: Prisma.DoctorOnDiseaseUpdateManyWithoutDoctorNestedInput
+  procedures?: Prisma.DoctorOnProcedureUpdateManyWithoutDoctorNestedInput
+  publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
+  scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
+  equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+}
+
+export type DoctorUncheckedUpdateWithoutEventSpeakersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prodoctorovUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  career?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experienceYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  specialties?: Prisma.DoctorOnSpecialtyUncheckedUpdateManyWithoutDoctorNestedInput
+  clinics?: Prisma.DoctorOnClinicUncheckedUpdateManyWithoutDoctorNestedInput
+  diseases?: Prisma.DoctorOnDiseaseUncheckedUpdateManyWithoutDoctorNestedInput
+  procedures?: Prisma.DoctorOnProcedureUncheckedUpdateManyWithoutDoctorNestedInput
+  publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
+  scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
+  equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorCreateManyRegionEntityInput = {
@@ -1873,6 +2643,10 @@ export type DoctorUpdateWithoutRegionEntityInput = {
   publications?: Prisma.PublicationUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorUncheckedUpdateWithoutRegionEntityInput = {
@@ -1900,6 +2674,10 @@ export type DoctorUncheckedUpdateWithoutRegionEntityInput = {
   publications?: Prisma.PublicationUncheckedUpdateManyWithoutDoctorNestedInput
   scientificWorks?: Prisma.ScientificWorkUncheckedUpdateManyWithoutDoctorNestedInput
   equipment?: Prisma.DoctorOnEquipmentUncheckedUpdateManyWithoutDoctorNestedInput
+  accountLinks?: Prisma.UserDoctorLinkUncheckedUpdateManyWithoutDoctorNestedInput
+  entityMatches?: Prisma.CooperationEntityMatchUncheckedUpdateManyWithoutDoctorNestedInput
+  authAuditEvents?: Prisma.AuthAuditEventUncheckedUpdateManyWithoutDoctorNestedInput
+  eventSpeakers?: Prisma.EventSpeakerUncheckedUpdateManyWithoutDoctorNestedInput
 }
 
 export type DoctorUncheckedUpdateManyWithoutRegionEntityInput = {
@@ -1935,6 +2713,10 @@ export type DoctorCountOutputType = {
   publications: number
   scientificWorks: number
   equipment: number
+  accountLinks: number
+  entityMatches: number
+  authAuditEvents: number
+  eventSpeakers: number
 }
 
 export type DoctorCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1945,6 +2727,10 @@ export type DoctorCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   publications?: boolean | DoctorCountOutputTypeCountPublicationsArgs
   scientificWorks?: boolean | DoctorCountOutputTypeCountScientificWorksArgs
   equipment?: boolean | DoctorCountOutputTypeCountEquipmentArgs
+  accountLinks?: boolean | DoctorCountOutputTypeCountAccountLinksArgs
+  entityMatches?: boolean | DoctorCountOutputTypeCountEntityMatchesArgs
+  authAuditEvents?: boolean | DoctorCountOutputTypeCountAuthAuditEventsArgs
+  eventSpeakers?: boolean | DoctorCountOutputTypeCountEventSpeakersArgs
 }
 
 /**
@@ -2006,6 +2792,34 @@ export type DoctorCountOutputTypeCountEquipmentArgs<ExtArgs extends runtime.Type
   where?: Prisma.DoctorOnEquipmentWhereInput
 }
 
+/**
+ * DoctorCountOutputType without action
+ */
+export type DoctorCountOutputTypeCountAccountLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserDoctorLinkWhereInput
+}
+
+/**
+ * DoctorCountOutputType without action
+ */
+export type DoctorCountOutputTypeCountEntityMatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CooperationEntityMatchWhereInput
+}
+
+/**
+ * DoctorCountOutputType without action
+ */
+export type DoctorCountOutputTypeCountAuthAuditEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuthAuditEventWhereInput
+}
+
+/**
+ * DoctorCountOutputType without action
+ */
+export type DoctorCountOutputTypeCountEventSpeakersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EventSpeakerWhereInput
+}
+
 
 export type DoctorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2034,6 +2848,10 @@ export type DoctorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   publications?: boolean | Prisma.Doctor$publicationsArgs<ExtArgs>
   scientificWorks?: boolean | Prisma.Doctor$scientificWorksArgs<ExtArgs>
   equipment?: boolean | Prisma.Doctor$equipmentArgs<ExtArgs>
+  accountLinks?: boolean | Prisma.Doctor$accountLinksArgs<ExtArgs>
+  entityMatches?: boolean | Prisma.Doctor$entityMatchesArgs<ExtArgs>
+  authAuditEvents?: boolean | Prisma.Doctor$authAuditEventsArgs<ExtArgs>
+  eventSpeakers?: boolean | Prisma.Doctor$eventSpeakersArgs<ExtArgs>
   _count?: boolean | Prisma.DoctorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["doctor"]>
 
@@ -2112,6 +2930,10 @@ export type DoctorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   publications?: boolean | Prisma.Doctor$publicationsArgs<ExtArgs>
   scientificWorks?: boolean | Prisma.Doctor$scientificWorksArgs<ExtArgs>
   equipment?: boolean | Prisma.Doctor$equipmentArgs<ExtArgs>
+  accountLinks?: boolean | Prisma.Doctor$accountLinksArgs<ExtArgs>
+  entityMatches?: boolean | Prisma.Doctor$entityMatchesArgs<ExtArgs>
+  authAuditEvents?: boolean | Prisma.Doctor$authAuditEventsArgs<ExtArgs>
+  eventSpeakers?: boolean | Prisma.Doctor$eventSpeakersArgs<ExtArgs>
   _count?: boolean | Prisma.DoctorCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DoctorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2132,6 +2954,10 @@ export type $DoctorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     publications: Prisma.$PublicationPayload<ExtArgs>[]
     scientificWorks: Prisma.$ScientificWorkPayload<ExtArgs>[]
     equipment: Prisma.$DoctorOnEquipmentPayload<ExtArgs>[]
+    accountLinks: Prisma.$UserDoctorLinkPayload<ExtArgs>[]
+    entityMatches: Prisma.$CooperationEntityMatchPayload<ExtArgs>[]
+    authAuditEvents: Prisma.$AuthAuditEventPayload<ExtArgs>[]
+    eventSpeakers: Prisma.$EventSpeakerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2554,6 +3380,10 @@ export interface Prisma__DoctorClient<T, Null = never, ExtArgs extends runtime.T
   publications<T extends Prisma.Doctor$publicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Doctor$publicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   scientificWorks<T extends Prisma.Doctor$scientificWorksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Doctor$scientificWorksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScientificWorkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   equipment<T extends Prisma.Doctor$equipmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Doctor$equipmentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DoctorOnEquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  accountLinks<T extends Prisma.Doctor$accountLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Doctor$accountLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserDoctorLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  entityMatches<T extends Prisma.Doctor$entityMatchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Doctor$entityMatchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CooperationEntityMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  authAuditEvents<T extends Prisma.Doctor$authAuditEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Doctor$authAuditEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuthAuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  eventSpeakers<T extends Prisma.Doctor$eventSpeakersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Doctor$eventSpeakersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventSpeakerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3186,6 +4016,102 @@ export type Doctor$equipmentArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.DoctorOnEquipmentScalarFieldEnum | Prisma.DoctorOnEquipmentScalarFieldEnum[]
+}
+
+/**
+ * Doctor.accountLinks
+ */
+export type Doctor$accountLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserDoctorLink
+   */
+  select?: Prisma.UserDoctorLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserDoctorLink
+   */
+  omit?: Prisma.UserDoctorLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDoctorLinkInclude<ExtArgs> | null
+  where?: Prisma.UserDoctorLinkWhereInput
+  orderBy?: Prisma.UserDoctorLinkOrderByWithRelationInput | Prisma.UserDoctorLinkOrderByWithRelationInput[]
+  cursor?: Prisma.UserDoctorLinkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserDoctorLinkScalarFieldEnum | Prisma.UserDoctorLinkScalarFieldEnum[]
+}
+
+/**
+ * Doctor.entityMatches
+ */
+export type Doctor$entityMatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CooperationEntityMatch
+   */
+  select?: Prisma.CooperationEntityMatchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CooperationEntityMatch
+   */
+  omit?: Prisma.CooperationEntityMatchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CooperationEntityMatchInclude<ExtArgs> | null
+  where?: Prisma.CooperationEntityMatchWhereInput
+  orderBy?: Prisma.CooperationEntityMatchOrderByWithRelationInput | Prisma.CooperationEntityMatchOrderByWithRelationInput[]
+  cursor?: Prisma.CooperationEntityMatchWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CooperationEntityMatchScalarFieldEnum | Prisma.CooperationEntityMatchScalarFieldEnum[]
+}
+
+/**
+ * Doctor.authAuditEvents
+ */
+export type Doctor$authAuditEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuthAuditEvent
+   */
+  select?: Prisma.AuthAuditEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuthAuditEvent
+   */
+  omit?: Prisma.AuthAuditEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuthAuditEventInclude<ExtArgs> | null
+  where?: Prisma.AuthAuditEventWhereInput
+  orderBy?: Prisma.AuthAuditEventOrderByWithRelationInput | Prisma.AuthAuditEventOrderByWithRelationInput[]
+  cursor?: Prisma.AuthAuditEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuthAuditEventScalarFieldEnum | Prisma.AuthAuditEventScalarFieldEnum[]
+}
+
+/**
+ * Doctor.eventSpeakers
+ */
+export type Doctor$eventSpeakersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EventSpeaker
+   */
+  select?: Prisma.EventSpeakerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EventSpeaker
+   */
+  omit?: Prisma.EventSpeakerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EventSpeakerInclude<ExtArgs> | null
+  where?: Prisma.EventSpeakerWhereInput
+  orderBy?: Prisma.EventSpeakerOrderByWithRelationInput | Prisma.EventSpeakerOrderByWithRelationInput[]
+  cursor?: Prisma.EventSpeakerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EventSpeakerScalarFieldEnum | Prisma.EventSpeakerScalarFieldEnum[]
 }
 
 /**
