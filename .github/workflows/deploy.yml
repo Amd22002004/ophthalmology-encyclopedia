@@ -1,0 +1,94 @@
+name: Deploy oftalmologia.pro
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Git ref to deploy (branch/tag/sha). Leave empty to use the trigger ref.'
+        required: false
+        default: ''
+
+concurrency:
+  group: oftalmologia-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: deploy to VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    steps:
+      - name: Validate target ref
+        id: ref
+        env:
+          INPUT_REF: ${{ inputs.ref }}
+          EVENT_REF: ${{ github.ref }}
+        run: |
+          if [ -n "$INPUT_REF" ]; then
+            echo "ref=$INPUT_REF" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${EVENT_REF#refs/heads/}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run deploy on VPS
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_REF: ${{ steps.ref.outputs.ref }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${VPS_SSH_KEY:-}" ] || [ -z "${VPS_HOST:-}" ] || [ -z "${VPS_USER:-}" ]; then
+            echo "::error::Missing one of VPS_SSH_KEY / VPS_HOST / VPS_USER secrets" >&2
+            exit 1
+          fi
+
+          mkdir -p ~/.ssh
+          printf '%s' "$VPS_SSH_KEY" > ~/.ssh/id_deploy
+          chmod 0600 ~/.ssh/id_deploy
+          # The host key is pinned by VPS_KNOWN_HOSTS; fall back to managed github-known hosts if not set.
+          if [ -n "${VPS_KNOWN_HOSTS:-}" ]; then
+            printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+          fi
+          chmod 0644 ~/.ssh/known_hosts
+
+          echo "deploying ref: ${DEPLOY_REF}"
+          ssh -i ~/.ssh/id_deploy \
+              -o StrictHostKeyChecking=yes \
+              -o UserKnownHostsFile=~/.ssh/known_hosts \
+              -o ConnectTimeout=15 \
+              "${VPS_USER}@${VPS_HOST}" \
+              "/opt/ophthalmology-deploy/deploy.sh --ref '${DEPLOY_REF}'"
+
+      - name: Smoke-test the live site
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: |
+          for url in \
+            "https://oftalmologia.pro/" \
+            "https://www.oftalmologia.pro/" \
+            "https://oftalmologia.pro/sitemap.xml" \
+            "https://oftalmologia.pro/robots.txt" \
+            "https://oftalmologia.pro/appeal" \
+            "https://oftalmologia.pro/events/sovremennye-tehnologii-v-oftalmologii-2026" \
+            "https://oftalmologia.pro/admin/login" ; do
+            code=$(curl -sk -o /dev/null -w '%{http_code}' --max-time 10 "$url" || echo 000)
+            printf '  %-3s  %s\n' "$code" "$url"
+            if [ "$code" != "200" ] && [ "$code" != "307" ]; then
+              echo "::warning::${url} returned ${code}"
+            fi
+          done
+
+      - name: Cleanup deploy key
+        if: always()
+        run: |
+          rm -f ~/.ssh/id_deploy
