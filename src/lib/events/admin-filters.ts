@@ -7,6 +7,7 @@ export type EventRegistrationFilters = {
   specialty?: string;
   organization?: string;
   source?: string;
+  utmSource?: string;
   utmCampaign?: string;
   from?: string;
   to?: string;
@@ -59,6 +60,7 @@ export function buildEventRegistrationWhere(filters: EventRegistrationFilters): 
   if (filters.specialty?.trim()) where.specialty = { contains: filters.specialty.trim(), mode: "insensitive" };
   if (filters.organization?.trim()) where.organization = { contains: filters.organization.trim(), mode: "insensitive" };
   if (filters.source?.trim()) where.source = filters.source.trim();
+  if (filters.utmSource?.trim()) where.utmSource = { equals: filters.utmSource.trim(), mode: "insensitive" };
   if (filters.utmCampaign?.trim()) where.utmCampaign = { contains: filters.utmCampaign.trim(), mode: "insensitive" };
   if (filters.from || filters.to) {
     where.createdAt = {

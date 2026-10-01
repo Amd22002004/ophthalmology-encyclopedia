@@ -8,6 +8,7 @@ import {
   EVENT_REGISTRATION_STATUS_VALUES,
   type EventRegistrationStatusValue,
 } from "@/lib/events/admin-filters";
+import { getEventRegistrationAttribution } from "@/lib/events/admin-attribution";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -44,6 +45,7 @@ export default async function AdminEventsPage({
     specialty: first(params.specialty),
     organization: first(params.organization),
     source: first(params.source),
+    utmSource: first(params.utmSource),
     utmCampaign: first(params.utmCampaign),
     from: first(params.from),
     to: first(params.to),
@@ -87,11 +89,19 @@ export default async function AdminEventsPage({
             organization: true,
             status: true,
             source: true,
+            utmSource: true,
+            utmMedium: true,
             utmCampaign: true,
+            utmContent: true,
             createdAt: true,
           },
         }),
         db.eventRegistration.count({ where }),
+        db.eventRegistration.count({
+          where: {
+            utmSource: { equals: "natalia", mode: "insensitive" },
+          },
+        }),
       ]);
     } catch {
       return null;
@@ -104,7 +114,7 @@ export default async function AdminEventsPage({
       </p>
     );
   }
-  const [events, registrations, total] = data;
+  const [events, registrations, total, nataliaCount] = data;
   const pages = Math.max(1, Math.ceil(total / pageSize));
   const queryEntries = Object.entries(filters).filter(([, value]) => value);
   return (
@@ -116,14 +126,26 @@ export default async function AdminEventsPage({
             Операционные события и приватные регистрации · найдено {total}
           </p>
         </div>
-        {events[0] ? (
+        <div className="flex flex-wrap gap-2">
           <Link
-            className="rounded border bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-            href={`/admin/events/${events[0].id}`}
+            className={`rounded border px-3 py-2 text-sm font-medium ${
+              filters.utmSource.toLowerCase() === "natalia"
+                ? "border-primary/40 bg-primary/10 text-primary"
+                : "bg-white text-gray-700 hover:bg-gray-50"
+            }`}
+            href="/admin/events?utmSource=natalia"
           >
-            Открыть редактор
+            От Натальи: {nataliaCount}
           </Link>
-        ) : null}
+          {events[0] ? (
+            <Link
+              className="rounded border bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              href={`/admin/events/${events[0].id}`}
+            >
+              Открыть редактор
+            </Link>
+          ) : null}
+        </div>
       </div>
       <div className="grid gap-3 md:grid-cols-3">
         {events.map((event) => (
@@ -195,7 +217,14 @@ export default async function AdminEventsPage({
             className={inputClass}
             defaultValue={filters.source}
             name="source"
-            placeholder="Источник"
+            placeholder="Технический source"
+          />
+          <input
+            aria-label="UTM source"
+            className={inputClass}
+            defaultValue={filters.utmSource}
+            name="utmSource"
+            placeholder="UTM source, например natalia"
           />
           <input
             aria-label="UTM campaign"
@@ -267,67 +296,81 @@ export default async function AdminEventsPage({
             </tr>
           </thead>
           <tbody className="divide-y">
-            {registrations.map((registration) => (
-              <tr
-                className="align-top hover:bg-gray-50/60"
-                key={registration.id}
-              >
-                <td className="px-4 py-3">
-                  <Link
-                    className="font-mono text-xs font-semibold text-slate-800 hover:underline"
-                    href={`/admin/events/${registration.eventId}?registration=${registration.id}`}
-                  >
-                    {registration.publicNumber}
-                  </Link>
-                  <span className="mt-1 block text-xs text-gray-400">
-                    {date(registration.createdAt)}
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  <span className="block font-medium text-gray-900">
-                    {registration.fullName}
-                  </span>
-                  <span className="mt-1 block text-xs text-gray-500">
-                    {registration.organization || "—"}
-                  </span>
-                  <span className="mt-1 block text-xs text-gray-500">
-                    {registration.specialty || "—"}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-xs leading-5 text-gray-600">
-                  <span className="block">{registration.phone}</span>
-                  <span className="block">{registration.email}</span>
-                </td>
-                <td className="px-4 py-3 text-xs text-gray-600">
-                  {registration.city || "—"}
-                  <span className="mt-1 block text-gray-400">
-                    {registration.source || "WEB"}
-                  </span>
-                  {registration.utmCampaign ? (
-                    <span className="block text-gray-400">
-                      {registration.utmCampaign}
+            {registrations.map((registration) => {
+              const attribution = getEventRegistrationAttribution(registration);
+              return (
+                <tr
+                  className="align-top hover:bg-gray-50/60"
+                  key={registration.id}
+                >
+                  <td className="px-4 py-3">
+                    <Link
+                      className="font-mono text-xs font-semibold text-slate-800 hover:underline"
+                      href={`/admin/events/${registration.eventId}?registration=${registration.id}`}
+                    >
+                      {registration.publicNumber}
+                    </Link>
+                    <span className="mt-1 block text-xs text-gray-400">
+                      {date(registration.createdAt)}
                     </span>
-                  ) : null}
-                </td>
-                <td className="px-4 py-3">
-                  <span className="rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700">
-                    {
-                      EVENT_REGISTRATION_STATUS_LABELS[
-                        registration.status as EventRegistrationStatusValue
-                      ]
-                    }
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <Link
-                    className="font-medium text-slate-700 hover:underline"
-                    href={`/admin/events/${registration.eventId}?registration=${registration.id}`}
-                  >
-                    Открыть →
-                  </Link>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="block font-medium text-gray-900">
+                      {registration.fullName}
+                    </span>
+                    <span className="mt-1 block text-xs text-gray-500">
+                      {registration.organization || "—"}
+                    </span>
+                    <span className="mt-1 block text-xs text-gray-500">
+                      {registration.specialty || "—"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-xs leading-5 text-gray-600">
+                    <span className="block">{registration.phone}</span>
+                    <span className="block">{registration.email}</span>
+                  </td>
+                  <td className="px-4 py-3 text-xs text-gray-600">
+                    {registration.city || "—"}
+                    <span
+                      className={`mt-2 block w-fit rounded px-2 py-1 font-medium ${
+                        attribution.isNatalia
+                          ? "bg-primary/10 text-primary"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {attribution.label}
+                    </span>
+                    {attribution.medium ? (
+                      <span className="mt-1 block text-gray-400">
+                        Канал: {attribution.medium}
+                      </span>
+                    ) : null}
+                    {attribution.campaign ? (
+                      <span className="mt-1 block break-all font-mono text-[11px] text-gray-400">
+                        {attribution.campaign}
+                      </span>
+                    ) : null}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700">
+                      {
+                        EVENT_REGISTRATION_STATUS_LABELS[
+                          registration.status as EventRegistrationStatusValue
+                        ]
+                      }
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <Link
+                      className="font-medium text-slate-700 hover:underline"
+                      href={`/admin/events/${registration.eventId}?registration=${registration.id}`}
+                    >
+                      Открыть →
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
             {registrations.length === 0 && (
               <tr>
                 <td

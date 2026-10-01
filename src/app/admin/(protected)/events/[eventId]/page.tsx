@@ -16,6 +16,7 @@ import {
   updateEventTalkAction,
 } from "./actions";
 import { parseGoogleSheetsConfig } from "@/lib/events/google-sheets";
+import { getEventRegistrationAttribution } from "@/lib/events/admin-attribution";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -144,6 +145,9 @@ export default async function AdminEventDetailPage({
       })
     : null;
   const googleSheetsEnabled = parseGoogleSheetsConfig().enabled;
+  const registrationAttribution = registration
+    ? getEventRegistrationAttribution(registration)
+    : null;
 
   return (
     <div className="space-y-5">
@@ -362,6 +366,29 @@ export default async function AdminEventDetailPage({
                   </Row>
                   <Row label="Должность">{value(registration.position)}</Row>
                   <Row label="Комментарий">{value(registration.comment)}</Row>
+                  {registrationAttribution ? (
+                    <Row label="Источник регистрации">
+                      <span
+                        className={`inline-flex rounded px-2 py-1 text-xs font-medium ${
+                          registrationAttribution.isNatalia
+                            ? "bg-primary/10 text-primary"
+                            : "bg-gray-100 text-gray-600"
+                        }`}
+                      >
+                        {registrationAttribution.label}
+                      </span>
+                      {registrationAttribution.medium ? (
+                        <span className="mt-2 block text-xs text-gray-500">
+                          Канал: {registrationAttribution.medium}
+                        </span>
+                      ) : null}
+                      {registrationAttribution.campaign ? (
+                        <span className="mt-1 block break-all font-mono text-xs text-gray-500">
+                          {registrationAttribution.campaign}
+                        </span>
+                      ) : null}
+                    </Row>
+                  ) : null}
                   <Row label="Согласие">
                     {registration.consent.version} ·{" "}
                     {date(registration.consentAcceptedAt)}

@@ -9,6 +9,7 @@ test("event admin filters combine status, location, source and UTM", () => {
     specialty: "ophthalmologist",
     organization: "Клиника",
     source: "event_page",
+    utmSource: "natalia",
     utmCampaign: "conference_invitation_2026",
   });
   assert.equal(where.status, "CONFIRMED");
@@ -16,6 +17,7 @@ test("event admin filters combine status, location, source and UTM", () => {
   assert.deepEqual(where.specialty, { contains: "ophthalmologist", mode: "insensitive" });
   assert.deepEqual(where.organization, { contains: "Клиника", mode: "insensitive" });
   assert.equal(where.source, "event_page");
+  assert.deepEqual(where.utmSource, { equals: "natalia", mode: "insensitive" });
   assert.deepEqual(where.utmCampaign, { contains: "conference_invitation_2026", mode: "insensitive" });
 });
 

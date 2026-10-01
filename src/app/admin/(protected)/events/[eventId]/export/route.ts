@@ -26,6 +26,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ even
       specialty: url.searchParams.get("specialty") || "",
       organization: url.searchParams.get("organization") || "",
       source: url.searchParams.get("source") || "",
+      utmSource: url.searchParams.get("utmSource") || "",
       utmCampaign: url.searchParams.get("utmCampaign") || "",
       from: url.searchParams.get("from") || "",
       to: url.searchParams.get("to") || "",
