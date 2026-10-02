@@ -9,6 +9,8 @@ import {
   type EventRegistrationStatusValue,
 } from "@/lib/events/admin-filters";
 import { getEventRegistrationAttribution } from "@/lib/events/admin-attribution";
+import { deleteEventRegistrationAction } from "./[eventId]/actions";
+import { DeleteRegistrationButton } from "./delete-registration-button";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -360,13 +362,24 @@ export default async function AdminEventsPage({
                       }
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <Link
-                      className="font-medium text-slate-700 hover:underline"
-                      href={`/admin/events/${registration.eventId}?registration=${registration.id}`}
-                    >
-                      Открыть →
-                    </Link>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link
+                        className="font-medium text-slate-700 hover:underline"
+                        href={`/admin/events/${registration.eventId}?registration=${registration.id}`}
+                      >
+                        Открыть →
+                      </Link>
+                      <DeleteRegistrationButton
+                        action={deleteEventRegistrationAction.bind(
+                          null,
+                          registration.id,
+                          registration.eventId,
+                        )}
+                        fullName={registration.fullName}
+                        publicNumber={registration.publicNumber}
+                      />
+                    </div>
                   </td>
                 </tr>
               );

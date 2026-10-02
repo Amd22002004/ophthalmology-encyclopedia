@@ -101,6 +101,18 @@ export async function addEventRegistrationNoteAction(registrationId: string, eve
   revalidatePath(`/admin/events/${eventId}`);
 }
 
+export async function deleteEventRegistrationAction(registrationId: string, eventId: string) {
+  await assertSameOrigin();
+  await requireAdminSession();
+  const db = getPrisma();
+  if (!db) throw new Error("Нет подключения к базе данных");
+  // Notes, status history and outbox rows cascade; telegram audit keeps its row with a null link.
+  const deleted = await db.eventRegistration.deleteMany({ where: { id: registrationId, eventId } });
+  if (deleted.count !== 1) throw new Error("Регистрация не найдена");
+  revalidatePath("/admin/events");
+  revalidatePath(`/admin/events/${eventId}`);
+}
+
 export async function retryEventRegistrationNotificationAction(notificationId: string, eventId: string) {
   await assertSameOrigin();
   await requireAdminSession();
