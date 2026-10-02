@@ -51,8 +51,13 @@ jobs:
           fi
 
           mkdir -p ~/.ssh
-          printf '%s' "$VPS_SSH_KEY" > ~/.ssh/id_deploy
+          # Strip CR so a key pasted from a Windows editor still parses; ensure the trailing LF OpenSSH requires.
+          printf '%s\n' "$VPS_SSH_KEY" | tr -d '\r' > ~/.ssh/id_deploy
           chmod 0600 ~/.ssh/id_deploy
+          if ! ssh-keygen -l -f ~/.ssh/id_deploy; then
+            echo "::error::VPS_SSH_KEY is not a valid unencrypted OpenSSH private key" >&2
+            exit 1
+          fi
           # The host key is pinned by VPS_KNOWN_HOSTS; fall back to managed github-known hosts if not set.
           if [ -n "${VPS_KNOWN_HOSTS:-}" ]; then
             printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
