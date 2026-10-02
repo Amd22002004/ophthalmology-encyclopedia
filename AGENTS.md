@@ -46,7 +46,7 @@ Skills содержат алгоритм, а не вторую копию арх
 | Пользовательская функция или изменение сценария | `product-owner` + применимые технические Skills |
 | Производительность страницы или загрузчиков | `performance-review` |
 | Production-инфраструктура, сервер, PM2, nginx, SSL, PostgreSQL, env или rollback | `project-infrastructure` |
-| Подготовка или выполнение production-деплоя | `project-infrastructure` + `production-deployment` + `performance-review` |
+| Push в репозиторий, подготовка или выполнение production-деплоя | workflow [`deploy-production`](./.agents/workflows/deploy-production.md) + `project-infrastructure` + `production-deployment` + `performance-review` |
 | Аудит после успешного production-деплоя | `release-audit` |
 | Финальная проверка перед публикацией | `release-audit` или workflow `review-before-deploy` |
 | Проверка необходимости обновить документацию | `documentation-maintenance` |
