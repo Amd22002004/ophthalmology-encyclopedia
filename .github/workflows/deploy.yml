@@ -54,8 +54,11 @@ jobs:
           # Strip CR so a key pasted from a Windows editor still parses; ensure the trailing LF OpenSSH requires.
           printf '%s\n' "$VPS_SSH_KEY" | tr -d '\r' > ~/.ssh/id_deploy
           chmod 0600 ~/.ssh/id_deploy
-          if ! ssh-keygen -l -f ~/.ssh/id_deploy; then
-            echo "::error::VPS_SSH_KEY is not a valid unencrypted OpenSSH private key" >&2
+          # -y derives the public half, which needs the private part decrypted: catches both
+          # a malformed key and a passphrase-protected one, which CI can never unlock.
+          if ! ssh-keygen -y -f ~/.ssh/id_deploy -P '' > /dev/null 2>&1; then
+            echo "::error::VPS_SSH_KEY is malformed or passphrase-protected; CI needs an unencrypted key" >&2
+            ssh-keygen -l -f ~/.ssh/id_deploy || true
             exit 1
           fi
           # The host key is pinned by VPS_KNOWN_HOSTS; fall back to managed github-known hosts if not set.
