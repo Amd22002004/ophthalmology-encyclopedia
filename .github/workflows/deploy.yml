@@ -31,10 +31,20 @@ jobs:
           EVENT_REF: ${{ github.ref }}
         run: |
           if [ -n "$INPUT_REF" ]; then
-            echo "ref=$INPUT_REF" >> "$GITHUB_OUTPUT"
+            ref="$INPUT_REF"
           else
-            echo "ref=${EVENT_REF#refs/heads/}" >> "$GITHUB_OUTPUT"
+            ref="${EVENT_REF#refs/heads/}"
           fi
+
+          # The ref reaches the VPS unquoted through SSH_ORIGINAL_COMMAND, so keep it to ref-name characters.
+          case "$ref" in
+            *[!A-Za-z0-9._/-]*|'')
+              echo "::error::Refusing ref '$ref': only A-Za-z0-9 . _ / - are allowed" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
 
       - name: Run deploy on VPS
         env:
@@ -75,7 +85,7 @@ jobs:
               -o UserKnownHostsFile=~/.ssh/known_hosts \
               -o ConnectTimeout=15 \
               -- "${VPS_USER}@${VPS_HOST}" \
-              "--ref '${DEPLOY_REF}'"
+              "--ref ${DEPLOY_REF}"
 
       - name: Smoke-test the live site
         env:
