@@ -1,7 +1,7 @@
 # Production infrastructure
 
 > Статус: SSOT для production-инфраструктуры проекта.
-> Последняя проверка: 2026-09-15.
+> Последняя проверка: 2026-10-02.
 >
 > Этот документ описывает фактическое production-окружение. Перед деплоем и
 > инфраструктурными задачами агенты должны читать его вместо повторного поиска
@@ -18,6 +18,7 @@
 | VPS-провайдер | Timeweb Cloud, определено по hostname `twc1.net`; для биллинга и сетевых изменений подтверждать в панели провайдера |
 | ОС | Ubuntu 24.04.4 LTS |
 | Kernel | `6.8.0-117-generic` |
+| RAM | 3.8 GB + swap 4 GB (`/swapfile`, закреплён в `/etc/fstab`) |
 | Рабочий пользователь | `root` |
 | SSH-доступ | `ssh root@62.113.36.163` |
 | Авторизация | SSH-ключ оператора/агента; ключи не хранятся в репозитории |
@@ -79,6 +80,9 @@ nginx alias/static и не копировать в `public/`.
 | pnpm | Не используется |
 | Установка зависимостей | `npm ci` |
 | Production build | `NODE_OPTIONS='--max-old-space-size=1536' npm run build -- --webpack` |
+
+Swap обязателен: при 3.8 GB RAM и нулевом swap `npm ci` убивался OOM-killer'ом
+(SIGKILL, exit 137) до завершения установки.
 
 `npm ci` может показывать `npm audit` warnings. Они не являются автоматическим
 основанием для `npm audit fix --force`: обновление зависимостей выполняется отдельной
@@ -196,14 +200,6 @@ upstream ophthalmology_app {
 server_name oftalmologia.pro www.oftalmologia.pro;
 ```
 
-Бывший домен `vysotsky.pro` не является production-доменом и не используется
-приложением. На VPS для него включён отдельный retired-host guard
-`/etc/nginx/sites-available/vysotsky.pro.retired.conf`, который возвращает `410 Gone`,
-чтобы старый host не попадал в default-конфигурацию другого сервиса. Фактический
-внешний ответ DNS/провайдера на момент проверки 2026-09-15 — `302` на страницу
-Timeweb `noactive`; это не маршрут приложения. Старый Nginx-конфиг, каталог, PM2 и
-сертификат не удалять до отдельного аудита зависимостей и трафика.
-
 Для multipart-обращений требуется явный лимит тела запроса не ниже приложения:
 
 ```nginx
@@ -231,9 +227,6 @@ nginx -t
 | Certificate Path | `/etc/letsencrypt/live/oftalmologia.pro/fullchain.pem` |
 | Private Key Path | `/etc/letsencrypt/live/oftalmologia.pro/privkey.pem` |
 | Проверенная дата истечения | 2026-11-15 08:33:56 UTC |
-
-Сертификат `/etc/letsencrypt/live/vysotsky.pro/` сохранён только для retired-host
-guard, который отвечает `410 Gone`; он не используется production-приложением.
 
 Команды чтения:
 
