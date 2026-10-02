@@ -75,7 +75,7 @@ jobs:
               -o UserKnownHostsFile=~/.ssh/known_hosts \
               -o ConnectTimeout=15 \
               "${VPS_USER}@${VPS_HOST}" \
-              "/opt/ophthalmology-deploy/deploy.sh --ref '${DEPLOY_REF}'"
+              "--ref '${DEPLOY_REF}'"
 
       - name: Smoke-test the live site
         env:
