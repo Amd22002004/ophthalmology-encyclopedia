@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { ClinicCardData, DoctorDetail } from "@/lib/loaders";
+import type { ClinicCardData } from "@/lib/loaders";
 import { associationAboutContent as content } from "@/lib/association-content";
 import {
   AboutAnchorNav,
@@ -44,7 +44,6 @@ type AboutCounts = {
 type AssociationAboutPageProps = {
   counts: AboutCounts | null;
   clinics: ClinicCardData[];
-  doctor: DoctorDetail | null;
 };
 
 type AboutLeader = {
@@ -52,7 +51,6 @@ type AboutLeader = {
   role?: string;
   credential?: string;
   initials: string;
-  profileSlug?: string;
   photoUrl?: string;
 };
 
@@ -161,14 +159,12 @@ function Stat({ label, value }: { label: string; value: number }) {
   );
 }
 
-export function AssociationAboutPage({ counts, clinics, doctor }: AssociationAboutPageProps) {
+export function AssociationAboutPage({ counts, clinics }: AssociationAboutPageProps) {
   const cities = [...new Set(clinics.map((clinic) => clinic.city).filter(Boolean) as string[])].sort((a, b) =>
     a.localeCompare(b, "ru"),
   );
   const leaders = content.leaders as readonly AboutLeader[];
   const infrastructure = content.infrastructure as readonly AboutInfrastructureItem[];
-  const doctorLeader = leaders.find((leader) => leader.profileSlug);
-  const publicDoctorSpecialties = doctor?.specialties.map((item) => item.specialty.title).slice(0, 3) ?? [];
 
   return (
     <div className="space-y-6 overflow-x-clip pb-8">
@@ -445,8 +441,7 @@ export function AssociationAboutPage({ counts, clinics, doctor }: AssociationAbo
       <Section id="people" title="Люди Ассоциации">
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {leaders.map((leader) => {
-            const isDoctor = leader.profileSlug === doctorLeader?.profileSlug;
-            const photoUrl = leader.photoUrl || (isDoctor ? doctor?.photoUrl : undefined);
+            const photoUrl = leader.photoUrl;
             return (
               <Card className="h-full overflow-hidden" key={leader.name}>
                 <div className="relative bg-muted/30 p-3">
@@ -457,7 +452,6 @@ export function AssociationAboutPage({ counts, clinics, doctor }: AssociationAbo
                       height={800}
                       loading="lazy"
                       sizes="(min-width: 1280px) 320px, (min-width: 640px) 50vw, 100vw"
-                      unoptimized={!leader.photoUrl}
                       src={photoUrl}
                       width={640}
                     />
@@ -469,23 +463,6 @@ export function AssociationAboutPage({ counts, clinics, doctor }: AssociationAbo
                   <h3 className="font-semibold leading-6">{leader.name}</h3>
                   {leader.role && <p className="mt-2 text-sm leading-5 text-primary">{leader.role}</p>}
                   {leader.credential && <p className="mt-2 text-sm leading-5 text-muted-foreground">{leader.credential}</p>}
-                  {isDoctor && publicDoctorSpecialties.length > 0 && (
-                    <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                      Направления профиля: {publicDoctorSpecialties.join(", ")}
-                    </p>
-                  )}
-                  {leader.profileSlug && (
-                    <AboutTrackedLink
-                      className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
-                      event="about_participant_profile_opened"
-                      href={`/doctors/${leader.profileSlug}`}
-                      participantId={leader.profileSlug}
-                      section="people"
-                      targetType="doctor"
-                    >
-                      Открыть профиль <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                    </AboutTrackedLink>
-                  )}
                 </CardContent>
               </Card>
             );
