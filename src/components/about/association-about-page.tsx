@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { doctorFullName, type ClinicCardData, type DoctorDetail } from "@/lib/loaders";
+import type { ClinicCardData, DoctorDetail } from "@/lib/loaders";
 import { associationAboutContent as content } from "@/lib/association-content";
 import {
   AboutAnchorNav,
@@ -168,8 +168,6 @@ export function AssociationAboutPage({ counts, clinics, doctor }: AssociationAbo
   const leaders = content.leaders as readonly AboutLeader[];
   const infrastructure = content.infrastructure as readonly AboutInfrastructureItem[];
   const doctorLeader = leaders.find((leader) => leader.profileSlug);
-  const publicDoctorName = doctor ? doctorFullName(doctor) : doctorLeader?.name;
-  const publicDoctorPhoto = doctor?.photoUrl || doctorLeader?.photoUrl;
   const publicDoctorSpecialties = doctor?.specialties.map((item) => item.specialty.title).slice(0, 3) ?? [];
 
   return (
@@ -444,26 +442,24 @@ export function AssociationAboutPage({ counts, clinics, doctor }: AssociationAbo
         </div>
       </Section>
 
-      <Section
-        description="Публично показываются только подтверждённые роли и существующие профессиональные профили. Для отсутствующих портретов используются инициалы, а не вымышленные лица."
-        id="people"
-        title="Люди Ассоциации"
-      >
+      <Section id="people" title="Люди Ассоциации">
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {leaders.map((leader) => {
             const isDoctor = leader.profileSlug === doctorLeader?.profileSlug;
-            const photoUrl = isDoctor ? publicDoctorPhoto : undefined;
+            const photoUrl = leader.photoUrl || (isDoctor ? doctor?.photoUrl : undefined);
             return (
               <Card className="h-full overflow-hidden" key={leader.name}>
                 <div className="relative bg-muted/30 p-3">
                   {photoUrl ? (
                     <Image
-                      alt={`Портрет ${publicDoctorName ?? leader.name}`}
-                      className="aspect-[4/5] rounded-lg object-cover"
-                      height={560}
-                      unoptimized
+                      alt={leader.name}
+                      className="aspect-[4/5] h-auto w-full rounded-lg object-cover"
+                      height={800}
+                      loading="lazy"
+                      sizes="(min-width: 1280px) 320px, (min-width: 640px) 50vw, 100vw"
+                      unoptimized={!leader.photoUrl}
                       src={photoUrl}
-                      width={448}
+                      width={640}
                     />
                   ) : (
                     <InitialsPlaceholder initials={leader.initials} />
