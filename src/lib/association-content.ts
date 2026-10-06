@@ -143,10 +143,10 @@ export const associationAboutContent = {
     { title: "Право на ответ", body: "Заинтересованная сторона может представить собственную позицию отдельно." },
   ],
   leaders: [
-    { name: "Черных Алла Сергеевна", role: "Президент Ассоциации офтальмологических клиник", initials: "ЧАС", photoUrl: "/images/association-people/chernykh-alla-sergeevna.webp" },
-    { name: "Элбакян Лиана Мартиновна", role: "Заместитель Президента Ассоциации офтальмологических клиник", initials: "ЭЛМ", photoUrl: "/images/association-people/elbakyan-liana-martinovna.webp" },
-    { name: "Островерхов Александр Иванович", role: "Главный специалист Ассоциации офтальмологических клиник", credential: "К.м.н., врач-офтальмолог, офтальмохирург", initials: "ОАИ", profileSlug: "ostroverhov-aleksandr-ivanovich", photoUrl: "/images/association-people/ostroverhov-aleksandr-ivanovich.webp" },
-    { name: "Чураков Тимур Касимович", credential: "К.м.н., офтальмохирург", initials: "ЧТК", photoUrl: "/images/association-people/churakov-timur-kasimovich.webp" },
+    { name: "Черных Алла Сергеевна", role: "Президент Ассоциации офтальмологических клиник", initials: "ЧАС", photoUrl: "/images/association-people/chernykh-alla-sergeevna-mint-bokeh.webp" },
+    { name: "Элбакян Лиана Мартиновна", role: "Заместитель Президента Ассоциации офтальмологических клиник", initials: "ЭЛМ", photoUrl: "/images/association-people/elbakyan-liana-martinovna-mint-bokeh.webp" },
+    { name: "Островерхов Александр Иванович", role: "Главный специалист Ассоциации офтальмологических клиник", credential: "К.м.н., врач-офтальмолог, офтальмохирург", initials: "ОАИ", profileSlug: "ostroverhov-aleksandr-ivanovich", photoUrl: "/images/association-people/ostroverhov-aleksandr-ivanovich-mint-bokeh.webp" },
+    { name: "Чураков Тимур Касимович", credential: "К.м.н., офтальмохирург", initials: "ЧТК", photoUrl: "/images/association-people/churakov-timur-kasimovich-mint-bokeh.webp" },
   ],
   contactEmail: "aok@oftalmologia.pro",
   projects: [

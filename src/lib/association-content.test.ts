@@ -33,6 +33,6 @@ test("association leader uses the approved Ostroverhov portrait asset", () => {
 
   assert.equal(
     leader && "photoUrl" in leader ? leader.photoUrl : undefined,
-    "/images/association-people/ostroverhov-aleksandr-ivanovich.webp",
+    "/images/association-people/ostroverhov-aleksandr-ivanovich-mint-bokeh.webp",
   );
 });
