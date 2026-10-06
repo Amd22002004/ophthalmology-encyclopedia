@@ -277,7 +277,7 @@ export function CooperationApplicationForm({ participantType, tracking, clinics 
   if (successNumber) return <SuccessState applicationNumber={successNumber} />;
 
   return (
-    <form ref={formRef} aria-labelledby="cooperation-wizard-title" className="space-y-7" data-cooperation-wizard onFocus={trackStart} onSubmit={submit}>
+    <form ref={formRef} aria-labelledby="cooperation-wizard-title" className="ym-hide-content space-y-7" data-cooperation-wizard onFocus={trackStart} onSubmit={submit}>
       <input name="source" type="hidden" value={tracking.source || ""} readOnly />
       <input name="landingUrl" type="hidden" value={tracking.landingUrl} readOnly />
       <input name="pageTitle" type="hidden" value={tracking.pageTitle || ""} readOnly />

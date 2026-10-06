@@ -1,0 +1,1 @@
+export const YANDEX_METRIKA_ID = 113463052;

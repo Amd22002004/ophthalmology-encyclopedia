@@ -121,7 +121,7 @@ export function AppealForm({
   }
 
   return (
-    <form className="space-y-5" encType="multipart/form-data" onSubmit={handleSubmit}>
+    <form className="ym-hide-content space-y-5" encType="multipart/form-data" onSubmit={handleSubmit}>
       <input name="consentTemplateId" type="hidden" value={consent.id} />
       <div aria-hidden className="hidden">
         <label htmlFor="appeal-website">Сайт</label>

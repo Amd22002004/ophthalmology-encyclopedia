@@ -80,7 +80,7 @@ export function EventRegistrationForm({ eventSlug = STO_2026_EVENT_SLUG }: Props
   }
 
   return (
-    <form className="space-y-5" onSubmit={submit}>
+    <form className="ym-hide-content space-y-5" onSubmit={submit}>
       <div className="rounded-lg border bg-muted/30 p-4 text-sm leading-6 text-muted-foreground">
         Участие бесплатное. Обязательные поля отмечены <span className="text-destructive">*</span>.
       </div>

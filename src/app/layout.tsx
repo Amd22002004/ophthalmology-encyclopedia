@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
+import { YandexMetrika } from "@/components/analytics/yandex-metrika";
+import { YANDEX_METRIKA_ID } from "@/lib/yandex-metrika";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -36,7 +39,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="min-h-screen antialiased">{children}</body>
+      <body className="min-h-screen antialiased">
+        {children}
+        <Suspense fallback={null}>
+          <YandexMetrika />
+        </Suspense>
+        {process.env.NODE_ENV === "production" && (
+          <noscript>
+            <div>
+              {/* eslint-disable-next-line @next/next/no-img-element -- Metrika's no-JavaScript tracking pixel. */}
+              <img
+                src={`https://mc.yandex.ru/watch/${YANDEX_METRIKA_ID}`}
+                style={{ position: "absolute", left: "-9999px" }}
+                referrerPolicy="origin"
+                alt=""
+              />
+            </div>
+          </noscript>
+        )}
+      </body>
     </html>
   );
 }
