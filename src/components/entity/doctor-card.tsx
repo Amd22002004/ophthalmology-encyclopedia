@@ -58,7 +58,7 @@ export function DoctorCard({ doctor }: { doctor: DoctorCatalogItem }) {
       {specialties.length > 0 && (
         <div className="px-[17px] mt-[12px]">
           <p className="mb-[6px] text-[10.5px] font-bold text-muted-foreground">
-            Направления · в энциклопедии
+            Направления
           </p>
           <div className="flex flex-wrap gap-[6px]">
             {visibleSpecialties.map((s) => (

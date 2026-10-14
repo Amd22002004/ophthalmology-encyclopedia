@@ -32,7 +32,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <EntityHeader
         description="Полнотекстовый поиск по заболеваниям, врачам, клиникам, поставщикам, оборудованию, публикациям, клиническим рекомендациям, нормативным материалам, истории и инновациям."
         eyebrow="Поиск по справочнику"
-        title="Поиск по офтальмологической энциклопедии"
+        title="Поиск по сайту"
       />
       <form className="grid gap-3 rounded-lg border bg-card p-4 md:grid-cols-[1fr_auto]">
         <Input

@@ -5,7 +5,7 @@ import { SchemaOrg } from "@/components/seo/schema-org";
 import { TemplateShell } from "@/components/templates/template-shell";
 import type { ClinicDbDetail } from "@/lib/loaders";
 import { getPublicInvestigationDocumentTitle } from "@/lib/investigation-documents";
-import { absoluteUrl, breadcrumbJsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, siteName } from "@/lib/seo";
 
 export type ClinicResourceKind = "equipment" | "documents" | "license";
 
@@ -318,7 +318,7 @@ export function ClinicResourceTemplate({ data, kind }: { data: ClinicDbDetail; k
           name: copy.title,
           description: copy.description,
           url: absoluteUrl(pagePath),
-          isPartOf: { "@type": "WebSite", name: "Офтальмологическая энциклопедия" },
+          isPartOf: { "@type": "WebSite", name: siteName, url: absoluteUrl("/") },
           about: { "@type": "MedicalOrganization", name: data.title, url: absoluteUrl(`/clinics/${data.slug}`) },
         }}
       />

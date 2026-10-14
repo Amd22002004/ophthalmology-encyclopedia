@@ -1,6 +1,6 @@
 import { AssociationAboutPage } from "@/components/about/association-about-page";
 import { SchemaOrg } from "@/components/seo/schema-org";
-import { getClinicsCatalog, getEntityCounts } from "@/lib/loaders";
+import { getClinicsCatalog } from "@/lib/loaders";
 import { absoluteUrl, breadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -18,17 +18,11 @@ export const metadata = createPageMetadata({
 
 export default async function AboutPage() {
   const hasDatabase = Boolean(process.env.DATABASE_URL?.trim());
-  const [countsResult, clinicsResult] = await Promise.allSettled([
-    hasDatabase ? getEntityCounts() : Promise.resolve(null),
-    hasDatabase ? getClinicsCatalog() : Promise.resolve([]),
-  ]);
-
-  const counts = countsResult.status === "fulfilled" ? countsResult.value : null;
-  const clinics = clinicsResult.status === "fulfilled" ? clinicsResult.value : [];
+  const clinics = hasDatabase ? await getClinicsCatalog().catch(() => []) : [];
 
   return (
     <>
-      <AssociationAboutPage counts={counts} clinics={clinics} />
+      <AssociationAboutPage clinics={clinics} />
       <SchemaOrg
         data={breadcrumbJsonLd([
           { href: "/", label: "Главная" },

@@ -183,7 +183,7 @@ export function ScientificWorkTemplate({ data }: { data: ScientificWorkDetail })
                 <p className="font-semibold">{publicationAuthors.join(", ")}</p>
               </InfoField>
 
-              <InfoField label="Автор в энциклопедии">
+              <InfoField label="Автор в справочных разделах">
                 <Link
                   className="font-semibold hover:text-primary"
                   href={`/doctors/${data.doctor.slug}`}

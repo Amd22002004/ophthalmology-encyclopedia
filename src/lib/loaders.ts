@@ -1880,7 +1880,7 @@ export async function getPublicationsCatalog(): Promise<PublicationCatalogItem[]
       title: publication.title,
       authorName:
         publication.authorName ??
-        (publication.doctor ? doctorFullName(publication.doctor) : "Редакция энциклопедии"),
+        (publication.doctor ? doctorFullName(publication.doctor) : "Редакция"),
       authorSlug: publication.doctor?.slug ?? null,
       year: publication.publishedAt?.getFullYear() ?? null,
       organization: null,

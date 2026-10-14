@@ -61,7 +61,7 @@ function Section({
   );
 }
 
-/** Пилюля-ссылка в энциклопедию: фон #e6f4f5, текст #0a5d65, стрелка ↗ */
+/** Пилюля-ссылка в справочные разделы: фон #e6f4f5, текст #0a5d65, стрелка ↗ */
 function EncyclopediaPill({ href, title }: { href: string; title: string }) {
   return (
     <Link
@@ -518,7 +518,7 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
             {/* Основные направления: Врач → Заболевания */}
             {diseases.length > 0 && (
               <Section
-                annotation="Врач → Заболевания: ссылки ведут в энциклопедию."
+                annotation="Врач → Заболевания: ссылки ведут в справочные разделы."
                 title="Основные направления"
               >
                 <div className="flex flex-wrap gap-[8px]">
@@ -535,7 +535,7 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
                 модели Doctor нет), — иначе список дублировался бы. */}
             {procedures.length > 0 && (
               <Section
-                annotation="Врач → Процедуры: ссылки ведут в энциклопедию."
+                annotation="Врач → Процедуры: ссылки ведут в справочные разделы."
                 title="Выполняемые операции и процедуры"
               >
                 <div className="space-y-[8px]">
@@ -719,9 +719,9 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
               </Section>
             )}
 
-            {/* Связанные страницы энциклопедии */}
+            {/* Связанные страницы */}
             {relatedPages.length > 0 && (
-              <Section title="Связанные страницы энциклопедии">
+              <Section title="Связанные страницы">
                 <div className="flex flex-wrap gap-[6px]">
                   {relatedPages.map((p) => (
                     <EncyclopediaPill href={p.href} key={p.href} title={p.title} />
@@ -733,9 +733,9 @@ export function DoctorTemplate({ data }: { data: DoctorDetail }) {
           )}
         </div>
 
-        {/* ── СВЯЗИ В ЭНЦИКЛОПЕДИИ (граф) ── */}
+        {/* ── СВЯЗАННЫЕ РАЗДЕЛЫ (граф) ── */}
         {hasGraph && (
-          <Section title="Связи в энциклопедии">
+          <Section title="Связанные разделы">
             <div className="grid grid-cols-2 gap-[10px] sm:grid-cols-3 lg:grid-cols-5">
               {/* Врач */}
               <div className="flex flex-col gap-[8px]">

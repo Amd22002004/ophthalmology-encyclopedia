@@ -71,7 +71,7 @@ export const equipmentEditorial: Record<string, EquipmentEditorialContent> = {
       {
         question: "Что такое Lightmed Lightlas SLT/YAG?",
         answer:
-          "В энциклопедии это карточка комбинированной Lightmed YAG/SLT-платформы, связанная с научной статьёй Островерхова А. И. Технические параметры взяты из официальных материалов LIGHTMED по LIGHTLas SLT Deux-V и YAG-V.",
+          "Это карточка комбинированной Lightmed YAG/SLT-платформы, связанная с научной статьёй Островерхова А. И. Технические параметры взяты из официальных материалов LIGHTMED по LIGHTLas SLT Deux-V и YAG-V.",
       },
       {
         question: "Какая часть аппарата использовалась в клиническом случае?",
@@ -125,7 +125,7 @@ export const equipmentEditorial: Record<string, EquipmentEditorialContent> = {
   "volk-super-quad-160": {
     history: {
       paragraphs: [
-        "VOLK SUPER QUAD 160 включён в энциклопедию как оборудование, прямо названное в научной статье Островерхова А. И. о YAG лазерной гиалоидопунктуре при ретинопатии Вальсальвы.",
+        "VOLK SUPER QUAD 160 включён в справочные разделы как оборудование, прямо названное в научной статье Островерхова А. И. о YAG лазерной гиалоидопунктуре при ретинопатии Вальсальвы.",
         "Официальная страница Volk называет модель Super Quad® 160 PRP Laser Lens и описывает её как линзу для wide field visualization сетчатки, панретинального осмотра и лазерных вмешательств. Каталог Volk 2025 фиксирует ключевые параметры: поле зрения 160°/165°, image magnification 0,50× и laser spot magnification 2,0×.",
         "Связь с заболеванием и процедурой в проекте создаётся на основании статьи; техническая часть карточки заполняется по официальной странице, каталогу и руководству по уходу Volk.",
       ],
@@ -347,7 +347,7 @@ export function getEquipmentImageMeta(slug: string, url: string, title: string) 
   return (
     equipmentEditorial[slug]?.imageMeta?.[file] ?? {
       alt: `${title}: изображение оборудования`,
-      caption: "Изображение из локальной медиатеки энциклопедии.",
+      caption: "Изображение из локальной медиатеки сайта.",
     }
   );
 }

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { EntityBlock } from "@/components/entity/entity-block";
 import { RelatedBlock } from "@/components/entity/related-block";
+import { IllustrationNote } from "@/components/entity/illustration-note";
 import { DiseaseFaq } from "@/components/disease/disease-faq";
 import { DiseaseSourceList } from "@/components/disease/disease-source-list";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
@@ -170,9 +171,6 @@ function DiseaseRichTemplate({ data, editorial }: { data: DiseaseDetail; editori
               className="h-full w-full object-cover"
               preload
             />
-            <figcaption className="absolute inset-x-0 bottom-0 bg-background/85 px-3 py-2 text-xs text-muted-foreground">
-              Схематичная иллюстрация; не заменяет диагностику.
-            </figcaption>
           </figure>
         </div>
       </header>
@@ -221,6 +219,8 @@ function DiseaseRichTemplate({ data, editorial }: { data: DiseaseDetail; editori
           />
 
           <DiseaseFaq items={editorial.faq} />
+
+          {editorial.image ? <IllustrationNote /> : null}
 
           {data.relatedDiseases.length > 0 ? (
             <section className="space-y-4" aria-labelledby="related-diseases-title">

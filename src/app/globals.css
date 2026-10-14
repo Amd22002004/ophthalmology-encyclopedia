@@ -104,6 +104,147 @@ a {
   }
 }
 
+/* Карта клиник на /about (ТЗ карты v1.0): светлая суша, тонкие границы субъектов,
+   точки-кнопки с белым кольцом и постоянные подписи городов. */
+.clinic-map-land {
+  fill: var(--muted);
+}
+
+.clinic-map-borders {
+  fill: none;
+  stroke: color-mix(in oklab, var(--muted-foreground) 38%, var(--muted));
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.clinic-map-point {
+  position: absolute;
+  display: flex;
+  width: 26px;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+.clinic-map-point:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.clinic-map-dot {
+  display: flex;
+  width: 12px;
+  height: 12px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 0 0 2px #fff, 0 1px 3px rgb(20 33 31 / 0.35);
+}
+
+.clinic-map-dot[data-multi] {
+  width: 20px;
+  height: 20px;
+}
+
+.clinic-map-point:hover .clinic-map-dot,
+.clinic-map-point[data-highlighted] .clinic-map-dot {
+  transform: scale(1.2);
+}
+
+.clinic-map-point[aria-pressed="true"] .clinic-map-dot {
+  transform: scale(1.35);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 7px rgb(15 118 110 / 0.22), 0 1px 3px rgb(20 33 31 / 0.35);
+}
+
+.clinic-map-label {
+  --clinic-map-gap: 10px;
+  position: absolute;
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  pointer-events: none;
+  text-shadow: 0 0 2px #fff, 0 0 2px #fff, 0 0 3px #fff;
+  white-space: nowrap;
+  transform: translate(var(--clinic-map-tx), var(--clinic-map-ty));
+}
+
+.clinic-map-label[data-multi] {
+  --clinic-map-gap: 16px;
+}
+
+.clinic-map-label[data-side="right"] {
+  --clinic-map-tx: calc(var(--clinic-map-gap) + var(--clinic-map-dx, 0px));
+  --clinic-map-ty: calc(-50% + var(--clinic-map-dy, 0px));
+}
+
+.clinic-map-label[data-side="left"] {
+  --clinic-map-tx: calc(-100% - var(--clinic-map-gap) + var(--clinic-map-dx, 0px));
+  --clinic-map-ty: calc(-50% + var(--clinic-map-dy, 0px));
+}
+
+.clinic-map-label[data-side="top"] {
+  --clinic-map-tx: calc(-50% + var(--clinic-map-dx, 0px));
+  --clinic-map-ty: calc(-100% - var(--clinic-map-gap) + var(--clinic-map-dy, 0px));
+}
+
+.clinic-map-label[data-side="bottom"] {
+  --clinic-map-tx: calc(-50% + var(--clinic-map-dx, 0px));
+  --clinic-map-ty: calc(var(--clinic-map-gap) + var(--clinic-map-dy, 0px));
+}
+
+.clinic-map-label[data-selected] {
+  font-weight: 700;
+}
+
+/* Появление один раз при прокрутке к блоку: всё укладывается в 400 мс,
+   анимируется только прозрачность. Скрытое состояние ставит клиент. */
+@keyframes clinic-map-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .clinic-map-dot {
+    transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+  }
+
+  .clinic-map[data-reveal="pending"] :is(.clinic-map-contour, .clinic-map-point, .clinic-map-label) {
+    opacity: 0;
+  }
+
+  .clinic-map[data-reveal="play"] .clinic-map-contour {
+    animation: clinic-map-fade 160ms ease-out both;
+  }
+
+  .clinic-map[data-reveal="play"] :is(.clinic-map-point, .clinic-map-label) {
+    animation: clinic-map-fade 130ms ease-out calc(var(--clinic-map-i, 0) * 30ms) both;
+  }
+}
+
+/* Без JavaScript все города списка раскрыты, подсказка о выборе не нужна. */
+@media (scripting: none) {
+  .clinic-geo-panel {
+    display: block;
+  }
+
+  .clinic-geo-hint {
+    display: none;
+  }
+}
+
 /* Без JavaScript панель «Справочника» раскрывается фокусом или наведением, чтобы
    её ссылки, которые всегда есть в серверном HTML, оставались доступны. */
 @media (scripting: none) {

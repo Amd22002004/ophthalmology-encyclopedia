@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { EntityBlock } from "@/components/entity/entity-block";
 import { RelatedBlock } from "@/components/entity/related-block";
+import { IllustrationNote } from "@/components/entity/illustration-note";
 import { DiseaseFaq } from "@/components/disease/disease-faq";
 import { ProcedureSourceList } from "@/components/procedure/procedure-source-list";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
@@ -192,7 +193,7 @@ function ProcedureDirectDiseaseLinks({ data }: { data: ProcedureDetail }) {
         ))}
       </div>
       <p className="mt-3 text-xs leading-5 text-muted-foreground">
-        Показаны только заболевания, связанные с процедурой напрямую в графе энциклопедии.
+        Показаны только заболевания, связанные с процедурой напрямую.
       </p>
     </section>
   );
@@ -238,9 +239,6 @@ function ProcedureRichTemplate({ data, editorial }: { data: ProcedureDetail; edi
               className="h-full w-full object-cover"
               preload
             />
-            <figcaption className="absolute inset-x-0 bottom-0 bg-background/85 px-3 py-2 text-xs text-muted-foreground">
-              Схематичная иллюстрация принципа метода; не заменяет консультацию и диагностику.
-            </figcaption>
           </figure>
         </div>
       </header>
@@ -271,6 +269,7 @@ function ProcedureRichTemplate({ data, editorial }: { data: ProcedureDetail; edi
           <ProcedureSection id="risks" title="Возможные риски и осложнения" items={editorial.risks} />
           {editorial.showComparison ? <ProcedureComparison /> : null}
           <DiseaseFaq items={editorial.faq} />
+          {editorial.image ? <IllustrationNote /> : null}
           <ProcedureSourceList sources={editorial.sources} />
         </article>
         <ProcedureGraphSidebar data={data} />
