@@ -21,6 +21,7 @@ import {
   Users,
   Wrench,
 } from "lucide-react";
+import { associationPrincipleIcons } from "@/components/association/principle-icons";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ClinicCardData } from "@/lib/loaders";
@@ -414,6 +415,23 @@ export function AssociationAboutPage({ counts, clinics }: AssociationAboutPagePr
               </AboutTrackedLink>
             </CardContent>
           </Card>
+        </div>
+      </Section>
+
+      <Section id="association-principles" title={content.ourPrinciples.title}>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {content.ourPrinciples.items.map((principle, index) => {
+            const Icon = associationPrincipleIcons[index];
+            return (
+              <Card className="h-full" key={principle.title}>
+                <CardContent className="p-5">
+                  <Icon aria-hidden="true" className="h-5 w-5 text-primary" />
+                  <h3 className="mt-4 font-semibold">{principle.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{principle.body}</p>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </Section>
 

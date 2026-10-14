@@ -11,6 +11,10 @@ export const legalOperator = {
     "620092, Свердловская область, г. о. город Екатеринбург, г. Екатеринбург, ул. Владимира Высоцкого, д. 5, офис этаж 1, 2",
   email: "aok@oftalmologia.pro",
   site: "https://oftalmologia.pro",
+  // Краткие подписи для футера утверждены в ТЗ главной v1.1. Телефон оператор
+  // сознательно не публикует.
+  siteLabel: "oftalmologia.pro",
+  displayAddress: "г. Екатеринбург, ул. Владимира Высоцкого, 5",
 } as const;
 
 export const legalApprovalNotice =

@@ -34,7 +34,9 @@ export function AssociationBrand({ variant = "sidebar" }: { variant?: "sidebar" 
         className="flex min-w-0 shrink items-center gap-1.5 max-[359px]:gap-1"
       >
         <AssociationLogo className="h-9 w-9 shrink-0 max-[359px]:h-[34px] max-[359px]:w-[34px]" size="compact" />
-        <span className="min-w-0 max-w-[230px] text-center text-[14px] font-semibold leading-[1.05] text-foreground min-[400px]:text-[15px] max-[374px]:max-w-[195px] max-[374px]:text-[13px] max-[374px]:tracking-[-0.015em] max-[359px]:max-w-[171px] max-[359px]:text-[12.5px] max-[359px]:tracking-[-0.04em]">
+        {/* Ступени кегля рассчитаны на шапку с тремя кнопками-иконками (меню,
+            лупа, кабинет): название остаётся в две строки и не обрезается. */}
+        <span className="min-w-0 max-w-[230px] text-center text-[14px] font-semibold leading-[1.05] text-foreground min-[420px]:text-[15px] max-[399px]:max-w-[195px] max-[399px]:text-[13px] max-[399px]:tracking-[-0.015em] max-[374px]:max-w-[171px] max-[374px]:text-[12.5px] max-[374px]:tracking-[-0.04em] max-[359px]:max-w-[164px] max-[359px]:text-[12px]">
           <span className="block whitespace-nowrap">Ассоциация</span>
           <span className="block whitespace-nowrap">офтальмологических клиник</span>
         </span>

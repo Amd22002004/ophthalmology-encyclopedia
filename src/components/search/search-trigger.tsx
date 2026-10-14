@@ -17,3 +17,18 @@ export function SearchTrigger() {
     />
   );
 }
+
+/** Лупа в шапке до 1024 px: открывает тот же поиск по сайту на весь экран. */
+export function MobileSearchTrigger({ className }: { className?: string }) {
+  return (
+    <SearchDialog
+      fullScreen
+      trigger={
+        <Button className={className} size="icon" variant="ghost">
+          <Search aria-hidden="true" className="h-5 w-5" />
+          <span className="sr-only">Поиск</span>
+        </Button>
+      }
+    />
+  );
+}

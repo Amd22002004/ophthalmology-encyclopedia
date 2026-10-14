@@ -78,18 +78,38 @@ a {
   background-image: url("/images/association-home-hero-background.png");
 }
 
-.home-hero-art {
-  background-image:
-    linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.88) 24%, rgba(255, 255, 255, 0) 54%),
-    url("/images/association-home-hero-background.png");
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 @media (max-width: 767px) {
   .home-hero {
     background-image: none;
+  }
+}
+
+/* Появление hero главной выполняет CSS, а не JavaScript: текст виден в серверном
+   HTML с первого кадра, не ждёт гидратации (LCP) и остаётся видимым без JS.
+   Шаг 80 мс задаётся переменной --hero-reveal-delay; всё укладывается в 400 мс. */
+@keyframes home-hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-hero-reveal {
+    animation: home-hero-reveal 240ms ease-out var(--hero-reveal-delay, 0ms) both;
+  }
+}
+
+/* Без JavaScript панель «Справочника» раскрывается фокусом или наведением, чтобы
+   её ссылки, которые всегда есть в серверном HTML, оставались доступны. */
+@media (scripting: none) {
+  .reference-menu:focus-within .reference-menu-panel,
+  .reference-menu:hover .reference-menu-panel {
+    display: block;
   }
 }
 

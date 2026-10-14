@@ -1,21 +1,3 @@
-import {
-  Activity,
-  BookOpen,
-  Building2,
-  ClipboardList,
-  FileCheck,
-  FileText,
-  FlaskConical,
-  History,
-  Microscope,
-  MessageSquareText,
-  ShieldCheck,
-  Stethoscope,
-  Store,
-  Syringe,
-  Users,
-} from "lucide-react";
-
 export type EntityKind =
   | "diseases"
   | "procedures"
@@ -187,78 +169,97 @@ export const catalogConfigs: Record<EntityKind, CatalogConfig> = {
   },
 };
 
-export const topNavItems = [
-  { href: "/about", label: "О нас" },
-  { href: "/doctors", label: "Врачи" },
-  { href: "/clinics", label: "Клиники" },
-  { href: "/cooperation", label: "Сотрудничество" },
-  { href: "/news", label: "Новости" },
-  { href: "/questions", label: "Вопросы" },
-  { href: "/appeal", label: "Подать обращение" },
+/** Якорь блока «Клиники-участники» на главной: им пользуются hero и шапка. */
+export const homeMembersAnchorId = "members";
+
+export type HeaderNavItem =
+  | { kind: "link"; href: string; label: string }
+  | { kind: "reference"; label: string };
+
+/**
+ * Единственное меню сайта (ТЗ главной v1.2, §7.1): пять пунктов в этом порядке.
+ * «Справочник» раскрывает `referenceSections`; новые пункты не добавляются.
+ */
+export const headerNavItems: readonly HeaderNavItem[] = [
+  { kind: "link", href: "/about", label: "Об Ассоциации" },
+  { kind: "link", href: "/cooperation", label: "Членство" },
+  { kind: "link", href: `/#${homeMembersAnchorId}`, label: "Клиники-участники" },
+  { kind: "reference", label: "Справочник" },
+  { kind: "link", href: "/news", label: "Новости" },
 ];
 
-export const sidebarSections = [
-  {
-    title: "Для пациентов",
-    icon: Stethoscope,
-    links: [
-      { href: "/diseases", label: "Заболевания", icon: Activity },
-      { href: "/procedures", label: "Лечение и коррекция", icon: Syringe },
-      { href: "/innovations", label: "Инновации", icon: FlaskConical },
-      { href: "/appeal", label: "Подать обращение", icon: MessageSquareText },
-    ],
-  },
-  {
-    title: "Для врачей",
-    icon: Users,
-    links: [
-      { href: "/doctors", label: "Врачи и специалисты", icon: Stethoscope },
-      { href: "/guidelines", label: "Клинические рекомендации", icon: ClipboardList },
-      { href: "/publications", label: "Научные работы", icon: BookOpen },
-      { href: "/cooperation/doctor", label: "Регистрация врача", icon: Users },
-      { href: "/history", label: "История офтальмологии", icon: History },
-    ],
-  },
-  {
-    title: "Для клиник",
-    icon: Building2,
-    links: [
-      { href: "/clinics", label: "Каталог клиник", icon: Building2 },
-      { href: "/clinics/oms", label: "Клиники по ОМС", icon: ShieldCheck },
-      { href: "/clinics/contract", label: "Договорные клиники", icon: FileCheck },
-      { href: "/regulations", label: "Законодательство", icon: FileText },
-      { href: "/independent-control", label: "Независимая оценка", icon: ClipboardList },
-      { href: "/investigations", label: "Расследования", icon: ShieldCheck },
-    ],
-  },
-  {
-    title: "Для поставщиков",
-    icon: Store,
-    links: [
-      { href: "/suppliers", label: "Каталог поставщиков", icon: Store },
-      { href: "/equipment", label: "Оборудование", icon: Microscope },
-    ],
-  },
-];
+export const headerJoinLink = { href: "/cooperation", label: "Вступить" } as const;
 
-export const audienceHubs = [
+/**
+ * Состав «Справочника» (§7.2) — бывшее боковое меню: 4 группы и 17 ссылок.
+ * Названия, порядок и адреса ссылок не меняются; «Расследования» остаются
+ * последней ссылкой группы «Клиникам» (§8).
+ */
+export const referenceSections = [
   {
     title: "Пациентам",
+    links: [
+      { href: "/diseases", label: "Заболевания" },
+      { href: "/procedures", label: "Лечение и коррекция" },
+      { href: "/innovations", label: "Инновации" },
+      { href: "/appeal", label: "Подать обращение" },
+    ],
+  },
+  {
+    title: "Врачам",
+    links: [
+      { href: "/doctors", label: "Врачи и специалисты" },
+      { href: "/guidelines", label: "Клинические рекомендации" },
+      { href: "/publications", label: "Научные работы" },
+      { href: "/cooperation/doctor", label: "Регистрация врача" },
+      { href: "/history", label: "История офтальмологии" },
+    ],
+  },
+  {
+    title: "Клиникам",
+    links: [
+      { href: "/clinics", label: "Каталог клиник" },
+      { href: "/clinics/oms", label: "Клиники по ОМС" },
+      { href: "/clinics/contract", label: "Договорные клиники" },
+      { href: "/regulations", label: "Законодательство" },
+      { href: "/independent-control", label: "Независимая оценка" },
+      { href: "/investigations", label: "Расследования" },
+    ],
+  },
+  {
+    title: "Поставщикам",
+    links: [
+      { href: "/suppliers", label: "Каталог поставщиков" },
+      { href: "/equipment", label: "Оборудование" },
+    ],
+  },
+] as const;
+
+/** Активен ли пункт навигации на текущем пути (якорные ссылки не подсвечиваются). */
+export function isNavHrefActive(pathname: string, href: string) {
+  if (href.includes("#")) return false;
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+// Заголовки карточек «Справочные разделы» совпадают с группами «Справочника».
+export const audienceHubs = [
+  {
+    title: referenceSections[0].title,
     href: "/diseases",
     description: "Заболевания, симптомы, диагностика, лечение, рекомендации и инновации.",
   },
   {
-    title: "Врачам",
+    title: referenceSections[1].title,
     href: "/doctors",
     description: "Профили врачей, научные публикации и история офтальмологии.",
   },
   {
-    title: "Клиникам",
+    title: referenceSections[2].title,
     href: "/clinics",
     description: "Нормативная база, каталог клиник и информация по ОМС.",
   },
   {
-    title: "Поставщикам",
+    title: referenceSections[3].title,
     href: "/suppliers",
     description: "Поставщики и оборудование — отраслевой справочник.",
   },
