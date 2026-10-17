@@ -35,6 +35,12 @@ export type NewsMinAggregateOutputType = {
   publishedAt: Date | null
   seoTitle: string | null
   seoDescription: string | null
+  coverImageUrl: string | null
+  coverImageAlt: string | null
+  videoUrl: string | null
+  videoPosterUrl: string | null
+  showMembershipCta: boolean | null
+  eventSlug: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -49,6 +55,12 @@ export type NewsMaxAggregateOutputType = {
   publishedAt: Date | null
   seoTitle: string | null
   seoDescription: string | null
+  coverImageUrl: string | null
+  coverImageAlt: string | null
+  videoUrl: string | null
+  videoPosterUrl: string | null
+  showMembershipCta: boolean | null
+  eventSlug: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -63,6 +75,16 @@ export type NewsCountAggregateOutputType = {
   publishedAt: number
   seoTitle: number
   seoDescription: number
+  coverImageUrl: number
+  coverImageAlt: number
+  videoUrl: number
+  videoPosterUrl: number
+  badges: number
+  videoChapters: number
+  gallery: number
+  highlights: number
+  showMembershipCta: number
+  eventSlug: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -79,6 +101,12 @@ export type NewsMinAggregateInputType = {
   publishedAt?: true
   seoTitle?: true
   seoDescription?: true
+  coverImageUrl?: true
+  coverImageAlt?: true
+  videoUrl?: true
+  videoPosterUrl?: true
+  showMembershipCta?: true
+  eventSlug?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -93,6 +121,12 @@ export type NewsMaxAggregateInputType = {
   publishedAt?: true
   seoTitle?: true
   seoDescription?: true
+  coverImageUrl?: true
+  coverImageAlt?: true
+  videoUrl?: true
+  videoPosterUrl?: true
+  showMembershipCta?: true
+  eventSlug?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -107,6 +141,16 @@ export type NewsCountAggregateInputType = {
   publishedAt?: true
   seoTitle?: true
   seoDescription?: true
+  coverImageUrl?: true
+  coverImageAlt?: true
+  videoUrl?: true
+  videoPosterUrl?: true
+  badges?: true
+  videoChapters?: true
+  gallery?: true
+  highlights?: true
+  showMembershipCta?: true
+  eventSlug?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -194,6 +238,16 @@ export type NewsGroupByOutputType = {
   publishedAt: Date | null
   seoTitle: string | null
   seoDescription: string | null
+  coverImageUrl: string | null
+  coverImageAlt: string | null
+  videoUrl: string | null
+  videoPosterUrl: string | null
+  badges: string[]
+  videoChapters: runtime.JsonValue | null
+  gallery: runtime.JsonValue | null
+  highlights: runtime.JsonValue | null
+  showMembershipCta: boolean
+  eventSlug: string | null
   createdAt: Date
   updatedAt: Date
   _count: NewsCountAggregateOutputType | null
@@ -229,6 +283,16 @@ export type NewsWhereInput = {
   publishedAt?: Prisma.DateTimeNullableFilter<"News"> | Date | string | null
   seoTitle?: Prisma.StringNullableFilter<"News"> | string | null
   seoDescription?: Prisma.StringNullableFilter<"News"> | string | null
+  coverImageUrl?: Prisma.StringNullableFilter<"News"> | string | null
+  coverImageAlt?: Prisma.StringNullableFilter<"News"> | string | null
+  videoUrl?: Prisma.StringNullableFilter<"News"> | string | null
+  videoPosterUrl?: Prisma.StringNullableFilter<"News"> | string | null
+  badges?: Prisma.StringNullableListFilter<"News">
+  videoChapters?: Prisma.JsonNullableFilter<"News">
+  gallery?: Prisma.JsonNullableFilter<"News">
+  highlights?: Prisma.JsonNullableFilter<"News">
+  showMembershipCta?: Prisma.BoolFilter<"News"> | boolean
+  eventSlug?: Prisma.StringNullableFilter<"News"> | string | null
   createdAt?: Prisma.DateTimeFilter<"News"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"News"> | Date | string
   investigations?: Prisma.NewsOnInvestigationListRelationFilter
@@ -244,6 +308,16 @@ export type NewsOrderByWithRelationInput = {
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   seoTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   seoDescription?: Prisma.SortOrderInput | Prisma.SortOrder
+  coverImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  coverImageAlt?: Prisma.SortOrderInput | Prisma.SortOrder
+  videoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  videoPosterUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  badges?: Prisma.SortOrder
+  videoChapters?: Prisma.SortOrderInput | Prisma.SortOrder
+  gallery?: Prisma.SortOrderInput | Prisma.SortOrder
+  highlights?: Prisma.SortOrderInput | Prisma.SortOrder
+  showMembershipCta?: Prisma.SortOrder
+  eventSlug?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   investigations?: Prisma.NewsOnInvestigationOrderByRelationAggregateInput
@@ -262,6 +336,16 @@ export type NewsWhereUniqueInput = Prisma.AtLeast<{
   publishedAt?: Prisma.DateTimeNullableFilter<"News"> | Date | string | null
   seoTitle?: Prisma.StringNullableFilter<"News"> | string | null
   seoDescription?: Prisma.StringNullableFilter<"News"> | string | null
+  coverImageUrl?: Prisma.StringNullableFilter<"News"> | string | null
+  coverImageAlt?: Prisma.StringNullableFilter<"News"> | string | null
+  videoUrl?: Prisma.StringNullableFilter<"News"> | string | null
+  videoPosterUrl?: Prisma.StringNullableFilter<"News"> | string | null
+  badges?: Prisma.StringNullableListFilter<"News">
+  videoChapters?: Prisma.JsonNullableFilter<"News">
+  gallery?: Prisma.JsonNullableFilter<"News">
+  highlights?: Prisma.JsonNullableFilter<"News">
+  showMembershipCta?: Prisma.BoolFilter<"News"> | boolean
+  eventSlug?: Prisma.StringNullableFilter<"News"> | string | null
   createdAt?: Prisma.DateTimeFilter<"News"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"News"> | Date | string
   investigations?: Prisma.NewsOnInvestigationListRelationFilter
@@ -277,6 +361,16 @@ export type NewsOrderByWithAggregationInput = {
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   seoTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   seoDescription?: Prisma.SortOrderInput | Prisma.SortOrder
+  coverImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  coverImageAlt?: Prisma.SortOrderInput | Prisma.SortOrder
+  videoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  videoPosterUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  badges?: Prisma.SortOrder
+  videoChapters?: Prisma.SortOrderInput | Prisma.SortOrder
+  gallery?: Prisma.SortOrderInput | Prisma.SortOrder
+  highlights?: Prisma.SortOrderInput | Prisma.SortOrder
+  showMembershipCta?: Prisma.SortOrder
+  eventSlug?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.NewsCountOrderByAggregateInput
@@ -297,6 +391,16 @@ export type NewsScalarWhereWithAggregatesInput = {
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"News"> | Date | string | null
   seoTitle?: Prisma.StringNullableWithAggregatesFilter<"News"> | string | null
   seoDescription?: Prisma.StringNullableWithAggregatesFilter<"News"> | string | null
+  coverImageUrl?: Prisma.StringNullableWithAggregatesFilter<"News"> | string | null
+  coverImageAlt?: Prisma.StringNullableWithAggregatesFilter<"News"> | string | null
+  videoUrl?: Prisma.StringNullableWithAggregatesFilter<"News"> | string | null
+  videoPosterUrl?: Prisma.StringNullableWithAggregatesFilter<"News"> | string | null
+  badges?: Prisma.StringNullableListFilter<"News">
+  videoChapters?: Prisma.JsonNullableWithAggregatesFilter<"News">
+  gallery?: Prisma.JsonNullableWithAggregatesFilter<"News">
+  highlights?: Prisma.JsonNullableWithAggregatesFilter<"News">
+  showMembershipCta?: Prisma.BoolWithAggregatesFilter<"News"> | boolean
+  eventSlug?: Prisma.StringNullableWithAggregatesFilter<"News"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"News"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"News"> | Date | string
 }
@@ -311,6 +415,16 @@ export type NewsCreateInput = {
   publishedAt?: Date | string | null
   seoTitle?: string | null
   seoDescription?: string | null
+  coverImageUrl?: string | null
+  coverImageAlt?: string | null
+  videoUrl?: string | null
+  videoPosterUrl?: string | null
+  badges?: Prisma.NewsCreatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: boolean
+  eventSlug?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   investigations?: Prisma.NewsOnInvestigationCreateNestedManyWithoutNewsInput
@@ -326,6 +440,16 @@ export type NewsUncheckedCreateInput = {
   publishedAt?: Date | string | null
   seoTitle?: string | null
   seoDescription?: string | null
+  coverImageUrl?: string | null
+  coverImageAlt?: string | null
+  videoUrl?: string | null
+  videoPosterUrl?: string | null
+  badges?: Prisma.NewsCreatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: boolean
+  eventSlug?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   investigations?: Prisma.NewsOnInvestigationUncheckedCreateNestedManyWithoutNewsInput
@@ -341,6 +465,16 @@ export type NewsUpdateInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageAlt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoPosterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  badges?: Prisma.NewsUpdatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  eventSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   investigations?: Prisma.NewsOnInvestigationUpdateManyWithoutNewsNestedInput
@@ -356,6 +490,16 @@ export type NewsUncheckedUpdateInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageAlt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoPosterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  badges?: Prisma.NewsUpdatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  eventSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   investigations?: Prisma.NewsOnInvestigationUncheckedUpdateManyWithoutNewsNestedInput
@@ -371,6 +515,16 @@ export type NewsCreateManyInput = {
   publishedAt?: Date | string | null
   seoTitle?: string | null
   seoDescription?: string | null
+  coverImageUrl?: string | null
+  coverImageAlt?: string | null
+  videoUrl?: string | null
+  videoPosterUrl?: string | null
+  badges?: Prisma.NewsCreatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: boolean
+  eventSlug?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -385,6 +539,16 @@ export type NewsUpdateManyMutationInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageAlt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoPosterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  badges?: Prisma.NewsUpdatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  eventSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -399,6 +563,16 @@ export type NewsUncheckedUpdateManyInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageAlt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoPosterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  badges?: Prisma.NewsUpdatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  eventSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -413,6 +587,16 @@ export type NewsCountOrderByAggregateInput = {
   publishedAt?: Prisma.SortOrder
   seoTitle?: Prisma.SortOrder
   seoDescription?: Prisma.SortOrder
+  coverImageUrl?: Prisma.SortOrder
+  coverImageAlt?: Prisma.SortOrder
+  videoUrl?: Prisma.SortOrder
+  videoPosterUrl?: Prisma.SortOrder
+  badges?: Prisma.SortOrder
+  videoChapters?: Prisma.SortOrder
+  gallery?: Prisma.SortOrder
+  highlights?: Prisma.SortOrder
+  showMembershipCta?: Prisma.SortOrder
+  eventSlug?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -427,6 +611,12 @@ export type NewsMaxOrderByAggregateInput = {
   publishedAt?: Prisma.SortOrder
   seoTitle?: Prisma.SortOrder
   seoDescription?: Prisma.SortOrder
+  coverImageUrl?: Prisma.SortOrder
+  coverImageAlt?: Prisma.SortOrder
+  videoUrl?: Prisma.SortOrder
+  videoPosterUrl?: Prisma.SortOrder
+  showMembershipCta?: Prisma.SortOrder
+  eventSlug?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -441,6 +631,12 @@ export type NewsMinOrderByAggregateInput = {
   publishedAt?: Prisma.SortOrder
   seoTitle?: Prisma.SortOrder
   seoDescription?: Prisma.SortOrder
+  coverImageUrl?: Prisma.SortOrder
+  coverImageAlt?: Prisma.SortOrder
+  videoUrl?: Prisma.SortOrder
+  videoPosterUrl?: Prisma.SortOrder
+  showMembershipCta?: Prisma.SortOrder
+  eventSlug?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -448,6 +644,15 @@ export type NewsMinOrderByAggregateInput = {
 export type NewsScalarRelationFilter = {
   is?: Prisma.NewsWhereInput
   isNot?: Prisma.NewsWhereInput
+}
+
+export type NewsCreatebadgesInput = {
+  set: string[]
+}
+
+export type NewsUpdatebadgesInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type NewsCreateNestedOneWithoutInvestigationsInput = {
@@ -474,6 +679,16 @@ export type NewsCreateWithoutInvestigationsInput = {
   publishedAt?: Date | string | null
   seoTitle?: string | null
   seoDescription?: string | null
+  coverImageUrl?: string | null
+  coverImageAlt?: string | null
+  videoUrl?: string | null
+  videoPosterUrl?: string | null
+  badges?: Prisma.NewsCreatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: boolean
+  eventSlug?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -488,6 +703,16 @@ export type NewsUncheckedCreateWithoutInvestigationsInput = {
   publishedAt?: Date | string | null
   seoTitle?: string | null
   seoDescription?: string | null
+  coverImageUrl?: string | null
+  coverImageAlt?: string | null
+  videoUrl?: string | null
+  videoPosterUrl?: string | null
+  badges?: Prisma.NewsCreatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: boolean
+  eventSlug?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -518,6 +743,16 @@ export type NewsUpdateWithoutInvestigationsInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageAlt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoPosterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  badges?: Prisma.NewsUpdatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  eventSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -532,6 +767,16 @@ export type NewsUncheckedUpdateWithoutInvestigationsInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageAlt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoPosterUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  badges?: Prisma.NewsUpdatebadgesInput | string[]
+  videoChapters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gallery?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  highlights?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  showMembershipCta?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  eventSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -577,6 +822,16 @@ export type NewsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   publishedAt?: boolean
   seoTitle?: boolean
   seoDescription?: boolean
+  coverImageUrl?: boolean
+  coverImageAlt?: boolean
+  videoUrl?: boolean
+  videoPosterUrl?: boolean
+  badges?: boolean
+  videoChapters?: boolean
+  gallery?: boolean
+  highlights?: boolean
+  showMembershipCta?: boolean
+  eventSlug?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   investigations?: boolean | Prisma.News$investigationsArgs<ExtArgs>
@@ -593,6 +848,16 @@ export type NewsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   publishedAt?: boolean
   seoTitle?: boolean
   seoDescription?: boolean
+  coverImageUrl?: boolean
+  coverImageAlt?: boolean
+  videoUrl?: boolean
+  videoPosterUrl?: boolean
+  badges?: boolean
+  videoChapters?: boolean
+  gallery?: boolean
+  highlights?: boolean
+  showMembershipCta?: boolean
+  eventSlug?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["news"]>
@@ -607,6 +872,16 @@ export type NewsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   publishedAt?: boolean
   seoTitle?: boolean
   seoDescription?: boolean
+  coverImageUrl?: boolean
+  coverImageAlt?: boolean
+  videoUrl?: boolean
+  videoPosterUrl?: boolean
+  badges?: boolean
+  videoChapters?: boolean
+  gallery?: boolean
+  highlights?: boolean
+  showMembershipCta?: boolean
+  eventSlug?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["news"]>
@@ -621,11 +896,21 @@ export type NewsSelectScalar = {
   publishedAt?: boolean
   seoTitle?: boolean
   seoDescription?: boolean
+  coverImageUrl?: boolean
+  coverImageAlt?: boolean
+  videoUrl?: boolean
+  videoPosterUrl?: boolean
+  badges?: boolean
+  videoChapters?: boolean
+  gallery?: boolean
+  highlights?: boolean
+  showMembershipCta?: boolean
+  eventSlug?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type NewsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "summary" | "content" | "isPublished" | "publishedAt" | "seoTitle" | "seoDescription" | "createdAt" | "updatedAt", ExtArgs["result"]["news"]>
+export type NewsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "summary" | "content" | "isPublished" | "publishedAt" | "seoTitle" | "seoDescription" | "coverImageUrl" | "coverImageAlt" | "videoUrl" | "videoPosterUrl" | "badges" | "videoChapters" | "gallery" | "highlights" | "showMembershipCta" | "eventSlug" | "createdAt" | "updatedAt", ExtArgs["result"]["news"]>
 export type NewsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   investigations?: boolean | Prisma.News$investigationsArgs<ExtArgs>
   _count?: boolean | Prisma.NewsCountOutputTypeDefaultArgs<ExtArgs>
@@ -648,6 +933,31 @@ export type $NewsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     publishedAt: Date | null
     seoTitle: string | null
     seoDescription: string | null
+    /**
+     * Превью карточки и og:image. Пустое поле не заменяется заглушкой.
+     */
+    coverImageUrl: string | null
+    coverImageAlt: string | null
+    videoUrl: string | null
+    videoPosterUrl: string | null
+    badges: string[]
+    /**
+     * Главы ролика: [{ "seconds": number, "label": string }]
+     */
+    videoChapters: runtime.JsonValue | null
+    /**
+     * Кадры галереи: [{ "src": string, "alt": string }]
+     */
+    gallery: runtime.JsonValue | null
+    /**
+     * Карточки под лидом: [{ "title": string, "text": string }]
+     */
+    highlights: runtime.JsonValue | null
+    showMembershipCta: boolean
+    /**
+     * Публичный slug Event. Площадка и страница мероприятия остаются у Event.
+     */
+    eventSlug: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["news"]>
@@ -1083,6 +1393,16 @@ export interface NewsFieldRefs {
   readonly publishedAt: Prisma.FieldRef<"News", 'DateTime'>
   readonly seoTitle: Prisma.FieldRef<"News", 'String'>
   readonly seoDescription: Prisma.FieldRef<"News", 'String'>
+  readonly coverImageUrl: Prisma.FieldRef<"News", 'String'>
+  readonly coverImageAlt: Prisma.FieldRef<"News", 'String'>
+  readonly videoUrl: Prisma.FieldRef<"News", 'String'>
+  readonly videoPosterUrl: Prisma.FieldRef<"News", 'String'>
+  readonly badges: Prisma.FieldRef<"News", 'String[]'>
+  readonly videoChapters: Prisma.FieldRef<"News", 'Json'>
+  readonly gallery: Prisma.FieldRef<"News", 'Json'>
+  readonly highlights: Prisma.FieldRef<"News", 'Json'>
+  readonly showMembershipCta: Prisma.FieldRef<"News", 'Boolean'>
+  readonly eventSlug: Prisma.FieldRef<"News", 'String'>
   readonly createdAt: Prisma.FieldRef<"News", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"News", 'DateTime'>
 }

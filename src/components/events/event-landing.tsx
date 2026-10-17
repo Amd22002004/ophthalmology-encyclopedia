@@ -22,6 +22,7 @@ import {
   STO_2026_REGISTER_PATH,
 } from "@/lib/events/sto-2026";
 import { getPublicEventView } from "@/lib/events/event-loader";
+import { getPublishedNewsByEventSlug } from "@/lib/loaders";
 import { eventJsonLd } from "@/lib/events/event-web";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { SchemaOrg } from "@/components/seo/schema-org";
@@ -65,6 +66,7 @@ const conferenceBenefits = [
 export async function EventLanding({ tracking = {} }: { tracking?: Tracking }) {
   const view = await getPublicEventView();
   const event = view.event;
+  const reportage = await getPublishedNewsByEventSlug(event.slug);
   const speakers = view.speakers;
   const context = {
     eventSlug: event.slug,
@@ -119,6 +121,29 @@ export async function EventLanding({ tracking = {} }: { tracking?: Tracking }) {
           </div>
 
           {event.speakersPublished && <EventSpeakers context={context} speakers={speakers} />}
+        </section>
+      )}
+
+      {reportage.length > 0 && (
+        <section aria-labelledby="conference-reportage-title" className="event-reveal space-y-4">
+          <div className="max-w-3xl">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Материалы</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl" id="conference-reportage-title">
+              Репортаж с конференции
+            </h2>
+          </div>
+          <div className="grid gap-4">
+            {reportage.map((item) => (
+              <Link
+                className="block rounded-2xl border border-border/80 bg-card p-5 shadow-sm transition-colors hover:border-primary/50"
+                href={`/news/${item.slug}`}
+                key={item.slug}
+              >
+                <span className="font-semibold text-primary">{item.title}</span>
+                <span className="mt-2 block text-sm leading-6 text-muted-foreground">{item.summary}</span>
+              </Link>
+            ))}
+          </div>
         </section>
       )}
 

@@ -176,7 +176,8 @@ test("October 2026 congress news follows the approved draft and sourced photos",
     section.blocks.flatMap((block) => {
       if (block.type === "paragraph") return block.inlines;
       if (block.type === "figure") return block.caption;
-      return block.items.flat();
+      if (block.type === "list") return block.items.flat();
+      return [];
     }),
   ).flatMap((inline) => (inline.type === "link" ? [inline.href] : []));
 
@@ -203,4 +204,28 @@ test("October 2026 congress news follows the approved draft and sourced photos",
     assert.equal(news.summary.includes(phrase), false, phrase);
   }
   assert.equal(existsSync(resolve(process.cwd(), "public/images/news/kongressy-oktyabr-2026/katarakta-2026.webp")), false);
+});
+
+test("callout and quote stay inside the article order", () => {
+  const sections = parseNewsContent(`## Раздел
+
+Абзац.
+
+:::callout Из клинической практики конференции
+- Кейс 1. Описание
+:::
+
+:::quote
+Юрий Тахтаев
+д.м.н., профессор
+«Цитата».
+:::`);
+
+  assert.equal(sections[0].blocks[1]?.type, "callout");
+  assert.equal(sections[0].blocks[2]?.type, "quote");
+  if (sections[0].blocks[2]?.type === "quote") {
+    assert.equal(sections[0].blocks[2].name, "Юрий Тахтаев");
+    assert.equal(sections[0].blocks[2].credentials, "д.м.н., профессор");
+    assert.equal(sections[0].blocks[2].text, "«Цитата».");
+  }
 });

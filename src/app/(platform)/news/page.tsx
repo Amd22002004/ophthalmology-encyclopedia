@@ -1,7 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import { EntityHeader } from "@/components/entity/entity-header";
 import { SchemaOrg } from "@/components/seo/schema-org";
 import { getNews } from "@/lib/loaders";
+import { NEWS_CONFERENCE_FRAME_HEIGHT, NEWS_CONFERENCE_FRAME_WIDTH } from "@/lib/news-media";
 import { absoluteUrl, breadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -34,8 +36,19 @@ export default async function NewsPage() {
 
       {news.length > 0 ? (
         <div className="space-y-4">
-          {news.map((item) => (
+          {news.map((item, index) => (
             <article className="rounded-lg border bg-card p-5" key={item.slug}>
+              {item.coverImageUrl && (
+                <Image
+                  alt={item.coverImageAlt ?? ""}
+                  className="mb-4 aspect-[1046/576] w-full rounded-md object-cover"
+                  height={NEWS_CONFERENCE_FRAME_HEIGHT}
+                  priority={index === 0}
+                  sizes="(min-width: 768px) 720px, 100vw"
+                  src={item.coverImageUrl}
+                  width={NEWS_CONFERENCE_FRAME_WIDTH}
+                />
+              )}
               {item.publishedAt && (
                 <p className="text-xs font-semibold uppercase tracking-wide text-primary">{formatDate(item.publishedAt)}</p>
               )}

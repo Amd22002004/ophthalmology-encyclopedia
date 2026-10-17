@@ -8362,6 +8362,16 @@ export const NewsScalarFieldEnum = {
   publishedAt: 'publishedAt',
   seoTitle: 'seoTitle',
   seoDescription: 'seoDescription',
+  coverImageUrl: 'coverImageUrl',
+  coverImageAlt: 'coverImageAlt',
+  videoUrl: 'videoUrl',
+  videoPosterUrl: 'videoPosterUrl',
+  badges: 'badges',
+  videoChapters: 'videoChapters',
+  gallery: 'gallery',
+  highlights: 'highlights',
+  showMembershipCta: 'showMembershipCta',
+  eventSlug: 'eventSlug',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -9858,6 +9868,20 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
  * Reference to a field of type 'RegulationLegalStatus'
  */
 export type EnumRegulationLegalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RegulationLegalStatus'>
@@ -10176,20 +10200,6 @@ export type EnumAuthAuditEventTypeFieldRefInput<$PrismaModel> = FieldRefInputTyp
  * Reference to a field of type 'AuthAuditEventType[]'
  */
 export type ListEnumAuthAuditEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthAuditEventType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 

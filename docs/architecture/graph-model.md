@@ -363,6 +363,7 @@ document, assessment и связи Investigation с clinic/equipment/disease/pro
 | `Investigation ↔ Disease` | `InvestigationOnDisease` + собственный publication/evidence gate связи |
 | `Investigation ↔ Procedure` | `InvestigationOnProcedure` + собственный publication/evidence gate связи |
 | `Investigation ↔ News` | `NewsOnInvestigation` |
+| `News -> Event` | `News.eventSlug` совпадает с `Event.slug`; не FK и не медицинское ребро. Страница мероприятия читает опубликованные новости с этим slug |
 | `Investigation -> EquipmentInstance` | `InvestigationEquipmentInstance.investigationId` |
 | `Investigation -> RegulatoryAssessment` | `InvestigationRegulatoryAssessment.investigationId` |
 | `Investigation -> IndependentControlAssessment` | `InvestigationIndependentControlAssessment.investigationId` |
