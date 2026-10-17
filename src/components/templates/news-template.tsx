@@ -5,7 +5,13 @@ import { SchemaOrg } from "@/components/seo/schema-org";
 import { TemplateShell } from "@/components/templates/template-shell";
 import { getPublicInvestigationDocumentTitle } from "@/lib/investigation-documents";
 import type { NewsDetail } from "@/lib/loaders";
-import { type NewsInline, newsOpenGraphImage, parseNewsContent } from "@/lib/news-content";
+import {
+  groupNewsBlocks,
+  type NewsFigure,
+  type NewsInline,
+  newsOpenGraphImage,
+  parseNewsContent,
+} from "@/lib/news-content";
 import { absoluteUrl, breadcrumbJsonLd } from "@/lib/seo";
 
 type RelatedLink = { href: string; title: string; meta?: string | null };
@@ -63,8 +69,69 @@ function RelatedEntityList({ title, items }: { title: string; items: RelatedLink
   );
 }
 
+function NewsFigureView({
+  figure,
+  loading,
+  className,
+}: {
+  figure: NewsFigure;
+  loading: "eager" | "lazy";
+  className?: string;
+}) {
+  return (
+    <figure className={className ? `space-y-2 ${className}` : "space-y-2"}>
+      {/* Local editorial images stay sized by the caption notation to avoid CLS. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        alt={figure.alt}
+        className="h-auto w-full rounded-md border bg-muted object-contain"
+        decoding="async"
+        height={figure.height}
+        loading={loading}
+        src={figure.src}
+        width={figure.width}
+      />
+      {figure.caption.length > 0 && (
+        <figcaption className="text-xs leading-5 text-muted-foreground">
+          <NewsInlines inlines={figure.caption} />
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
+function NewsFigureGroup({ figures, eagerLead }: { figures: NewsFigure[]; eagerLead: boolean }) {
+  const [lead, ...rest] = figures;
+  if (!lead) return null;
+
+  return (
+    <div className="space-y-3">
+      <NewsFigureView figure={lead} loading={eagerLead ? "eager" : "lazy"} />
+      {rest.length > 0 && (
+        <div className="grid grid-cols-1 items-start gap-3 sm:grid-cols-2">
+          {rest.map((figure, index) => {
+            const spansRow = rest.length % 2 === 1 && index === rest.length - 1;
+            return (
+              <NewsFigureView
+                className={spansRow ? "sm:col-span-2" : undefined}
+                figure={figure}
+                key={`${figure.src}-${index}`}
+                loading="lazy"
+              />
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function NewsArticle({ content }: { content: string }) {
-  const sections = parseNewsContent(content);
+  const sections = parseNewsContent(content).map((section) => ({
+    title: section.title,
+    blocks: groupNewsBlocks(section.blocks),
+  }));
+  const firstFigureSection = sections.findIndex((section) => section.blocks.some((block) => block.type === "figures"));
 
   return (
     <article className="space-y-8" aria-label="Текст новости">
@@ -92,26 +159,8 @@ function NewsArticle({ content }: { content: string }) {
               );
             }
 
-            return (
-              <figure className="space-y-2" key={blockIndex}>
-                {/* Local editorial images stay sized by the caption notation to avoid CLS. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={block.alt}
-                  className="h-auto w-full rounded-md border bg-muted object-contain"
-                  decoding="async"
-                  height={block.height}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  src={block.src}
-                  width={block.width}
-                />
-                {block.caption.length > 0 && (
-                  <figcaption className="text-xs leading-5 text-muted-foreground">
-                    <NewsInlines inlines={block.caption} />
-                  </figcaption>
-                )}
-              </figure>
-            );
+            const eagerLead = index === firstFigureSection && blockIndex === section.blocks.findIndex((item) => item.type === "figures");
+            return <NewsFigureGroup eagerLead={eagerLead} figures={block.figures} key={blockIndex} />;
           })}
         </section>
       ))}

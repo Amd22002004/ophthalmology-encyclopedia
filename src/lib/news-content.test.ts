@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 import { OCTOBER_2026_CONGRESSES_NEWS } from "../../prisma/data/news/kongressy-oktyabr-2026";
-import { newsFigureSources, newsOpenGraphImage, parseNewsContent, parseNewsInlines, safeNewsHref } from "./news-content";
+import { groupNewsBlocks, newsFigureSources, newsOpenGraphImage, parseNewsContent, parseNewsInlines, safeNewsHref } from "./news-content";
 
 const VMEDA =
   "https://www.vmeda.org/segodnya-v-rossijskom-oftalmologicheskom-soobshhestve-sostoyalos-znachimoe-sobytie-otkrytie-konferenczii-oftalmotravmatologiya-priurochennoj-k-105-letiyu-so-dnya-rozhdeniya-v-v/";
@@ -78,6 +78,35 @@ test("news notation does not publish an unsafe image or link", () => {
   assert.equal(inlines.some((inline) => inline.type === "link"), false);
 });
 
+test("consecutive news figures stay one group until text breaks the run", () => {
+  const sections = parseNewsContent(`![Первое](/images/news/a.webp){800x400}
+Подпись.
+
+![Второе](/images/news/b.webp){800x400}
+Подпись.
+
+![Третье](/images/news/c.webp){600x800}
+Подпись.
+
+Абзац между группами.
+
+- Пункт между группами
+
+![Четвёртое](/images/news/d.webp){900x500}
+Подпись.`);
+
+  const flows = groupNewsBlocks(sections[0]?.blocks ?? []);
+  assert.deepEqual(
+    flows.map((block) => (block.type === "figures" ? block.figures.map((figure) => figure.src) : block.type)),
+    [
+      ["/images/news/a.webp", "/images/news/b.webp", "/images/news/c.webp"],
+      "paragraph",
+      "list",
+      ["/images/news/d.webp"],
+    ],
+  );
+});
+
 test("October 2026 congress news follows the approved draft and sourced photos", () => {
   const news = OCTOBER_2026_CONGRESSES_NEWS;
   assert.equal(news.slug, "kongressy-oktyabr-2026");
@@ -119,6 +148,19 @@ test("October 2026 congress news follows the approved draft and sourced photos",
     ],
   );
   assert.equal(newsOpenGraphImage(news.content)?.src, "/images/news/kongressy-oktyabr-2026/roof-1.webp");
+
+  for (const title of [
+    "Всероссийская научная конференция «Офтальмотравматология»",
+    "Научно-практическая конференция «Инновационные технологии в офтальмологии — 2026»",
+    "XIX Российский общенациональный офтальмологический форум (РООФ-2026)",
+    "Другие важные новости для клиник и врачей",
+  ]) {
+    const groups = groupNewsBlocks(sections.find((section) => section.title === title)?.blocks ?? []).filter(
+      (block) => block.type === "figures",
+    );
+    assert.equal(groups.length, 1, title);
+    assert.equal(groups[0]?.type === "figures" ? groups[0].figures.length : 0, 3, title);
+  }
 
   for (const figure of figures) {
     assert.equal(existsSync(resolve(process.cwd(), "public", figure.src.slice(1))), true);

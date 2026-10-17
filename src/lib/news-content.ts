@@ -2,17 +2,23 @@ export type NewsInline =
   | { type: "text"; text: string }
   | { type: "link"; href: string; text: string };
 
+export type NewsFigure = {
+  type: "figure";
+  alt: string;
+  src: string;
+  width: number;
+  height: number;
+  caption: NewsInline[];
+};
+
 export type NewsBlock =
   | { type: "paragraph"; inlines: NewsInline[] }
   | { type: "list"; items: NewsInline[][] }
-  | {
-      type: "figure";
-      alt: string;
-      src: string;
-      width: number;
-      height: number;
-      caption: NewsInline[];
-    };
+  | NewsFigure;
+
+export type NewsFlowBlock =
+  | Exclude<NewsBlock, NewsFigure>
+  | { type: "figures"; figures: NewsFigure[] };
 
 export type NewsSection = { title: string | null; blocks: NewsBlock[] };
 
@@ -31,6 +37,9 @@ const FIGURE_PATTERN = /^!\[([^\]]+)\]\((\/[^)\s]+)\)\{(\d+)x(\d+)\}$/;
  *
  * ![Подпись для чтения с экрана](/images/example.webp){1200x800}
  * Подпись. Источник: [example.com](https://example.com/).
+ *
+ * Figures separated only by blank lines stay one group. The template keeps the
+ * first figure full width and places the rest in a two-column grid.
  */
 export function parseNewsContent(content: string): NewsSection[] {
   const sections: NewsSection[] = [];
@@ -111,6 +120,24 @@ export function newsFigureSources(content: string) {
   return parseNewsContent(content).flatMap((section) =>
     section.blocks.flatMap((block) => (block.type === "figure" ? [block] : [])),
   );
+}
+
+/** Consecutive figures are one group. A paragraph or list starts the next group. */
+export function groupNewsBlocks(blocks: NewsBlock[]): NewsFlowBlock[] {
+  const grouped: NewsFlowBlock[] = [];
+
+  for (const block of blocks) {
+    if (block.type !== "figure") {
+      grouped.push(block);
+      continue;
+    }
+
+    const previous = grouped.at(-1);
+    if (previous?.type === "figures") previous.figures.push(block);
+    else grouped.push({ type: "figures", figures: [block] });
+  }
+
+  return grouped;
 }
 
 /** First ROOF-2026 photo, when the article includes it; otherwise the first figure. */
