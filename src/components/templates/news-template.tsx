@@ -5,7 +5,7 @@ import { SchemaOrg } from "@/components/seo/schema-org";
 import { TemplateShell } from "@/components/templates/template-shell";
 import { getPublicInvestigationDocumentTitle } from "@/lib/investigation-documents";
 import type { NewsDetail } from "@/lib/loaders";
-import { type NewsInline, newsFigureSources, parseNewsContent } from "@/lib/news-content";
+import { type NewsInline, newsOpenGraphImage, parseNewsContent } from "@/lib/news-content";
 import { absoluteUrl, breadcrumbJsonLd } from "@/lib/seo";
 
 type RelatedLink = { href: string; title: string; meta?: string | null };
@@ -187,7 +187,7 @@ export function NewsTemplate({ data }: { data: NewsDetail }) {
     procedures.length > 0 ||
     diseases.length > 0 ||
     clinicResources.length > 0;
-  const leadImage = data.content ? newsFigureSources(data.content)[0] : undefined;
+  const leadImage = data.content ? newsOpenGraphImage(data.content) : undefined;
 
   return (
     <TemplateShell

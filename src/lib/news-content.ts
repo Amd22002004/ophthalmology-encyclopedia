@@ -99,7 +99,7 @@ export function safeNewsHref(href: string) {
 
   try {
     const url = new URL(href);
-    if (url.protocol === "https:") return url.toString();
+    if (url.protocol === "https:" || url.protocol === "http:") return url.toString();
   } catch {
     return null;
   }
@@ -111,6 +111,12 @@ export function newsFigureSources(content: string) {
   return parseNewsContent(content).flatMap((section) =>
     section.blocks.flatMap((block) => (block.type === "figure" ? [block] : [])),
   );
+}
+
+/** First ROOF-2026 photo, when the article includes it; otherwise the first figure. */
+export function newsOpenGraphImage(content: string) {
+  const figures = newsFigureSources(content);
+  return figures.find((figure) => figure.src.endsWith("/roof-1.webp")) ?? figures[0];
 }
 
 function parseFigure(lines: string[]): NewsBlock | null {

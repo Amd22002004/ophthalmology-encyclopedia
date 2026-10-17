@@ -3,16 +3,31 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 import { OCTOBER_2026_CONGRESSES_NEWS } from "../../prisma/data/news/kongressy-oktyabr-2026";
-import { newsFigureSources, parseNewsContent, parseNewsInlines, safeNewsHref } from "./news-content";
+import { newsFigureSources, newsOpenGraphImage, parseNewsContent, parseNewsInlines, safeNewsHref } from "./news-content";
+
+const VMEDA =
+  "https://www.vmeda.org/segodnya-v-rossijskom-oftalmologicheskom-soobshhestve-sostoyalos-znachimoe-sobytie-otkrytie-konferenczii-oftalmotravmatologiya-priurochennoj-k-105-letiyu-so-dnya-rozhdeniya-v-v/";
+const TOMSK =
+  "https://mntk-nsk.ru/o-klinike/news/718-konferentsiya-v-tomske-v-chest-135-letiya-kafedry-oftalmologii";
+const ROOF = "https://igb.ru/news/news-list/itogi-roof-2026/";
+const KRYM = "https://roszdravnadzor.gov.ru/news/49737";
 
 const ALLOWED_HREFS = new Set([
-  "https://don-conf.ru/",
-  "https://don-conf.ru/program_2026",
-  "/events/sovremennye-tehnologii-v-oftalmologii-2026",
-  "https://eastwestufa.ru/conference/diskussionnye-voprosy-klinicheskoy-oftalmologii/",
-  "https://cataract-congress.ru/",
-  "https://www.mntk.ru/news/spec_news/view/1932/",
-  "https://mntk.ru/news/patients_news/view/1977/",
+  "https://camopht.org/",
+  VMEDA,
+  TOMSK,
+  ROOF,
+  "https://www.avo-portal.ru/images/roof/programma_roof_2026_20260921.pdf",
+  "https://edu.rosminzdrav.ru/news/novosti/news/retinopatija-i-makuljarnyi-otek-pri-sakharnom-diabete-u-v/",
+  "https://www.consultant.ru/legalnews/32736/",
+  "https://www.consultant.ru/document/cons_doc_LAW_519754/",
+  "https://pharmpeople.ru/obstanovka/v-rossii-zapatentovali-avtomatizirovannuyu-sistemu-dlya-lazernogo-lecheniya-glaz/",
+  KRYM,
+  "https://vospalenie.oor.ru/",
+  "https://pirogoveyeforum.ru/",
+  "https://igb.ru/news/news-list/nauchno-prakticheskaya-konferentsiya-s-mezhdunarodnym-uchastiem-aktualnye-voprosy-oftalmoonkologii-i/",
+  "https://eyeboc.ru/",
+  "http://eyenews.ru/congress/178/",
 ]);
 
 test("news notation keeps headings, paragraphs and lists", () => {
@@ -63,29 +78,56 @@ test("news notation does not publish an unsafe image or link", () => {
   assert.equal(inlines.some((inline) => inline.type === "link"), false);
 });
 
-test("October 2026 congress news cites only checked organizer pages", () => {
+test("October 2026 congress news follows the approved draft and sourced photos", () => {
   const news = OCTOBER_2026_CONGRESSES_NEWS;
   assert.equal(news.slug, "kongressy-oktyabr-2026");
-  assert.ok(news.seoDescription.length <= 180);
+  assert.equal(
+    news.title,
+    "Офтальмологические конгрессы России: итоги второй половины сентября — середины октября 2026 года и ближайшие события",
+  );
+  assert.equal(news.seoTitle, news.title);
 
   const sections = parseNewsContent(news.content);
   assert.deepEqual(
     sections.map((section) => section.title),
     [
-      "Какие даты подтверждены",
-      "2 октября, Ростов-на-Дону",
-      "15 октября, Тюмень",
-      "23 октября, Уфа",
-      "Конгресс, перенесённый с октября",
-      "Граница обзора",
+      "Прошедшие конгрессы",
+      "Всероссийская научная конференция «Офтальмотравматология»",
+      "Научно-практическая конференция «Инновационные технологии в офтальмологии — 2026»",
+      "XIX Российский общенациональный офтальмологический форум (РООФ-2026)",
+      "Другие важные новости для клиник и врачей",
+      "Ближайшие конгрессы",
     ],
   );
 
   const figures = newsFigureSources(news.content);
-  assert.equal(figures.length, 2);
+  assert.deepEqual(
+    figures.map((figure) => [figure.src, figure.width, figure.height, figure.alt]),
+    [
+      ["/images/news/kongressy-oktyabr-2026/oftalmotravma-1.webp", 1280, 961, "Президиум конференции «Офтальмотравматология» и участники в зале"],
+      ["/images/news/kongressy-oktyabr-2026/oftalmotravma-2.webp", 1280, 961, "Доклад на конференции «Офтальмотравматология»: на экране слайд, слушатели в зале"],
+      ["/images/news/kongressy-oktyabr-2026/oftalmotravma-3.webp", 1280, 961, "Участники конференции «Офтальмотравматология» в зале"],
+      ["/images/news/kongressy-oktyabr-2026/tomsk-1.webp", 1080, 720, "Сцена конференции в Томске: президиум и докладчик у трибуны"],
+      ["/images/news/kongressy-oktyabr-2026/tomsk-2.webp", 810, 1080, "Докладчица у трибуны на фоне слайда о кистозных макулярных отёках"],
+      ["/images/news/kongressy-oktyabr-2026/tomsk-3.webp", 782, 1080, "Докладчица у трибуны на фоне слайда со статистикой операций на стекловидном теле"],
+      ["/images/news/kongressy-oktyabr-2026/roof-1.webp", 800, 533, "Полный зал участников РООФ-2026"],
+      ["/images/news/kongressy-oktyabr-2026/roof-2.webp", 800, 533, "Пленарный доклад на сцене РООФ-2026"],
+      ["/images/news/kongressy-oktyabr-2026/roof-3.webp", 800, 533, "Заседание экспертного совета в рамках РООФ-2026"],
+      ["/images/news/kongressy-oktyabr-2026/krym-1.webp", 1600, 1067, "Хирург-офтальмолог работает с операционным микроскопом"],
+      ["/images/news/kongressy-oktyabr-2026/krym-2.webp", 1600, 1067, "Команда офтальмологов у операционного микроскопа и лазерной установки"],
+      ["/images/news/kongressy-oktyabr-2026/krym-3.webp", 1600, 1067, "Экран лазерной системы во время офтальмологической операции"],
+    ],
+  );
+  assert.equal(newsOpenGraphImage(news.content)?.src, "/images/news/kongressy-oktyabr-2026/roof-1.webp");
+
   for (const figure of figures) {
-    assert.ok(figure.caption.some((part) => part.type === "link"));
     assert.equal(existsSync(resolve(process.cwd(), "public", figure.src.slice(1))), true);
+    assert.equal(
+      figure.caption.map((part) => (part.type === "text" ? part.text : part.text)).join(""),
+      figure.caption[0]?.type === "text" ? `Источник: ${figure.caption.slice(1).map((part) => part.type === "text" ? part.text : part.text).join("")}` : "",
+    );
+    assert.equal(figure.caption[0]?.type === "text" && figure.caption[0].text.startsWith("Источник:"), true);
+    assert.equal(figure.caption.some((part) => part.type === "link"), true);
   }
 
   const hrefs = sections.flatMap((section) =>
@@ -97,7 +139,26 @@ test("October 2026 congress news cites only checked organizer pages", () => {
   ).flatMap((inline) => (inline.type === "link" ? [inline.href] : []));
 
   assert.deepEqual(new Set(hrefs), ALLOWED_HREFS);
-  for (const phrase of ["Макаровские чтения", "Ставрополь", "EURETINA", "Стукалов", "совет НМО", "РЖД-Медицина"]) {
+  for (const phrase of [
+    "Донск",
+    "ДонЭкспо",
+    "don-conf",
+    "Уфим",
+    "eastwestufa",
+    "Вчера, сегодня, завтра",
+    "Тюменский офтальмологический форум",
+    "30 октября",
+    "6 ноября",
+    "11 декабря",
+    "Менеджмент качества",
+    "2025",
+    "нужно проверить",
+    "katarakta",
+    "Сильвер Холл",
+    "15 октября",
+  ]) {
     assert.equal(news.content.includes(phrase), false, phrase);
+    assert.equal(news.summary.includes(phrase), false, phrase);
   }
+  assert.equal(existsSync(resolve(process.cwd(), "public/images/news/kongressy-oktyabr-2026/katarakta-2026.webp")), false);
 });
