@@ -24,6 +24,7 @@ import {
   STO_2026_PROGRAM,
   STO_2026_SPEAKERS,
 } from "../src/lib/events/sto-2026";
+import { OCTOBER_2026_CONGRESSES_NEWS } from "./data/news/kongressy-oktyabr-2026";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
@@ -2884,6 +2885,27 @@ async function seedSto2026Event() {
   console.log(`✓ Event: ${event.slug} (6 speakers, ${STO_2026_PROGRAM.length} talks, registration open)`);
 }
 
+async function seedOctober2026CongressNews() {
+  const publishedAt = new Date(OCTOBER_2026_CONGRESSES_NEWS.publishedAt);
+  const data = {
+    title: OCTOBER_2026_CONGRESSES_NEWS.title,
+    summary: OCTOBER_2026_CONGRESSES_NEWS.summary,
+    content: OCTOBER_2026_CONGRESSES_NEWS.content,
+    isPublished: true,
+    publishedAt,
+    seoTitle: OCTOBER_2026_CONGRESSES_NEWS.seoTitle,
+    seoDescription: OCTOBER_2026_CONGRESSES_NEWS.seoDescription,
+  };
+
+  await db.news.upsert({
+    where: { slug: OCTOBER_2026_CONGRESSES_NEWS.slug },
+    create: { slug: OCTOBER_2026_CONGRESSES_NEWS.slug, ...data },
+    update: data,
+  });
+
+  console.log(`✓ News: ${OCTOBER_2026_CONGRESSES_NEWS.slug}`);
+}
+
 async function main() {
   validateSeedCorpora();
   console.log("Seeding taxonomy...");
@@ -3333,6 +3355,7 @@ async function main() {
 
   console.log("Seeding Association investigations and news...");
   await seedGlazcentrInvestigation();
+  await seedOctober2026CongressNews();
   await seedIndependentControlCorpus();
 
   // ─── Конфигурация формы обращений ─────────────────────────────────────────

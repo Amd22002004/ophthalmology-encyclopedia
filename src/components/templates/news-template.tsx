@@ -5,10 +5,9 @@ import { SchemaOrg } from "@/components/seo/schema-org";
 import { TemplateShell } from "@/components/templates/template-shell";
 import { getPublicInvestigationDocumentTitle } from "@/lib/investigation-documents";
 import type { NewsDetail } from "@/lib/loaders";
+import { type NewsInline, newsFigureSources, parseNewsContent } from "@/lib/news-content";
 import { absoluteUrl, breadcrumbJsonLd } from "@/lib/seo";
 
-type ContentBlock = { type: "paragraph"; text: string } | { type: "list"; items: string[] };
-type ContentSection = { title: string | null; blocks: ContentBlock[] };
 type RelatedLink = { href: string; title: string; meta?: string | null };
 
 function formatDate(value: Date | null) {
@@ -20,47 +19,23 @@ function formatDate(value: Date | null) {
   }).format(value);
 }
 
-/**
- * `News.content` remains the single editor-owned text field. The lightweight
- * notation below makes headings and lists readable without introducing a
- * second data format or a case-specific template:
- *
- * ## Раздел
- * Абзац
- *
- * - Пункт
- */
-function parseNewsContent(content: string): ContentSection[] {
-  const sections: ContentSection[] = [];
-  let current: ContentSection = { title: null, blocks: [] };
-
-  const commit = () => {
-    if (current.title || current.blocks.length > 0) sections.push(current);
-  };
-
-  for (const rawBlock of content.trim().split(/\n\s*\n/)) {
-    const block = rawBlock.trim();
-    if (!block) continue;
-
-    const heading = block.match(/^##\s+(.+)$/m);
-    if (heading && block === heading[0]) {
-      commit();
-      current = { title: heading[1], blocks: [] };
-      continue;
-    }
-
-    const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
-    const listItems = lines.map((line) => line.match(/^[-•]\s+(.+)$/)?.[1] ?? null);
-    if (listItems.length > 0 && listItems.every(Boolean)) {
-      current.blocks.push({ type: "list", items: listItems as string[] });
-      continue;
-    }
-
-    current.blocks.push({ type: "paragraph", text: lines.join(" ") });
-  }
-
-  commit();
-  return sections;
+function NewsInlines({ inlines }: { inlines: NewsInline[] }) {
+  return inlines.map((inline, index) =>
+    inline.type === "text" ? (
+      <span key={index}>{inline.text}</span>
+    ) : (
+      <a
+        className="font-medium text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
+        href={inline.href}
+        key={index}
+        {...(inline.href.startsWith("https://")
+          ? { rel: "noopener noreferrer", target: "_blank" }
+          : {})}
+      >
+        {inline.text}
+      </a>
+    ),
+  );
 }
 
 function uniqueLinks(items: RelatedLink[]) {
@@ -96,21 +71,48 @@ function NewsArticle({ content }: { content: string }) {
       {sections.map((section, index) => (
         <section className="space-y-3" key={`${section.title ?? "intro"}-${index}`}>
           {section.title && <h2 className="text-xl font-semibold tracking-tight text-foreground">{section.title}</h2>}
-          {section.blocks.map((block, blockIndex) =>
-            block.type === "paragraph" ? (
-              <p className="text-[15px] leading-7 text-foreground/80" key={blockIndex}>
-                {block.text}
-              </p>
-            ) : (
-              <ul className="space-y-2 text-[15px] leading-7 text-foreground/80" key={blockIndex}>
-                {block.items.map((item) => (
-                  <li className="relative pl-5 before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-primary" key={item}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            ),
-          )}
+          {section.blocks.map((block, blockIndex) => {
+            if (block.type === "paragraph") {
+              return (
+                <p className="text-[15px] leading-7 text-foreground/80" key={blockIndex}>
+                  <NewsInlines inlines={block.inlines} />
+                </p>
+              );
+            }
+
+            if (block.type === "list") {
+              return (
+                <ul className="space-y-2 text-[15px] leading-7 text-foreground/80" key={blockIndex}>
+                  {block.items.map((item, itemIndex) => (
+                    <li className="relative pl-5 before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-primary" key={itemIndex}>
+                      <NewsInlines inlines={item} />
+                    </li>
+                  ))}
+                </ul>
+              );
+            }
+
+            return (
+              <figure className="space-y-2" key={blockIndex}>
+                {/* Local editorial images stay sized by the caption notation to avoid CLS. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={block.alt}
+                  className="h-auto w-full rounded-md border bg-muted object-contain"
+                  decoding="async"
+                  height={block.height}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  src={block.src}
+                  width={block.width}
+                />
+                {block.caption.length > 0 && (
+                  <figcaption className="text-xs leading-5 text-muted-foreground">
+                    <NewsInlines inlines={block.caption} />
+                  </figcaption>
+                )}
+              </figure>
+            );
+          })}
         </section>
       ))}
     </article>
@@ -177,6 +179,15 @@ export function NewsTemplate({ data }: { data: NewsDetail }) {
       ]),
     ),
   );
+  const hasRelatedMaterials =
+    investigations.length > 0 ||
+    evidenceDocuments.length > 0 ||
+    clinics.length > 0 ||
+    equipment.length > 0 ||
+    procedures.length > 0 ||
+    diseases.length > 0 ||
+    clinicResources.length > 0;
+  const leadImage = data.content ? newsFigureSources(data.content)[0] : undefined;
 
   return (
     <TemplateShell
@@ -186,18 +197,20 @@ export function NewsTemplate({ data }: { data: NewsDetail }) {
       eyebrow="Новости Ассоциации"
       title={data.title}
     >
-      <div className="grid items-start gap-8 xl:grid-cols-[minmax(0,1fr)_360px]">
+      <div className={hasRelatedMaterials ? "grid items-start gap-8 xl:grid-cols-[minmax(0,1fr)_360px]" : "min-w-0"}>
         <div className="min-w-0">
           {data.content && <NewsArticle content={data.content} />}
 
-          <div className="mt-8">
-            <AppealInvitation
-              compact
-              description="Если опубликованные материалы относятся к вашей ситуации, вы можете сообщить об этом Ассоциации."
-              investigationSlug={investigations.length === 1 ? investigations[0].slug : undefined}
-              title="Столкнулись с аналогичной ситуацией?"
-            />
-          </div>
+          {investigations.length > 0 && (
+            <div className="mt-8">
+              <AppealInvitation
+                compact
+                description="Если опубликованные материалы относятся к вашей ситуации, вы можете сообщить об этом Ассоциации."
+                investigationSlug={investigations.length === 1 ? investigations[0].slug : undefined}
+                title="Столкнулись с аналогичной ситуацией?"
+              />
+            </div>
+          )}
 
           {investigations.length > 0 && (
             <section className="mt-10 rounded-lg border border-primary/20 bg-primary/5 p-5" aria-label="Полное расследование">
@@ -222,7 +235,7 @@ export function NewsTemplate({ data }: { data: NewsDetail }) {
           )}
         </div>
 
-        <aside className="space-y-5">
+        {hasRelatedMaterials && <aside className="space-y-5">
           {evidenceDocuments.length > 0 && (
             <EntityBlock title="Опубликованные документы">
               <div className="space-y-2">
@@ -266,7 +279,7 @@ export function NewsTemplate({ data }: { data: NewsDetail }) {
               title="Нормативный контекст"
             />
           )}
-        </aside>
+        </aside>}
       </div>
 
       <SchemaOrg
@@ -282,6 +295,7 @@ export function NewsTemplate({ data }: { data: NewsDetail }) {
           "@type": "NewsArticle",
           headline: data.title,
           description: data.summary,
+          ...(leadImage ? { image: absoluteUrl(leadImage.src) } : {}),
           url: absoluteUrl("/news/" + data.slug),
           mainEntityOfPage: absoluteUrl("/news/" + data.slug),
           ...(data.publishedAt ? { datePublished: data.publishedAt.toISOString() } : {}),
