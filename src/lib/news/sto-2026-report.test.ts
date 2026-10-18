@@ -5,29 +5,27 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { NewsMembershipCta } from "@/components/news/news-membership-cta";
 import { NewsVideo } from "@/components/news/news-video";
 import { associationHomeContent } from "@/lib/association-content";
-import { STO_2026_SPEAKERS } from "@/lib/events/sto-2026";
 import { resolveNewsEvent } from "@/lib/news-event";
 import { parseNewsContent } from "@/lib/news-content";
 import {
+  CHURAKOV_NEWS_CREDENTIALS,
+  CHURAKOV_NEWS_NAME,
   STO_2026_CONFERENCE_NEWS,
   TAKHTAEV_NEWS_CREDENTIALS,
 } from "@/lib/news/sto-2026-report";
-
-const churakov = STO_2026_SPEAKERS.find((speaker) => speaker.doctorSlug === "churakov-timur-kasimovich");
 
 test("conference report keeps the approved quotes and speaker credentials", () => {
   const sections = parseNewsContent(STO_2026_CONFERENCE_NEWS.content);
   const quotes = sections.flatMap((section) => section.blocks).filter((block) => block.type === "quote");
   assert.equal(quotes.length, 3);
-  assert.ok(churakov);
 
   assert.equal(quotes[0].type === "quote" && quotes[0].name, "Юрий Тахтаев");
   assert.equal(quotes[0].type === "quote" && quotes[0].credentials, TAKHTAEV_NEWS_CREDENTIALS);
   assert.match(STO_2026_CONFERENCE_NEWS.content, new RegExp(TAKHTAEV_NEWS_CREDENTIALS.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.doesNotMatch(STO_2026_CONFERENCE_NEWS.content, /Европейского общества|Американской Академии|Американского общества/);
 
-  assert.equal(quotes[1].type === "quote" && quotes[1].name, churakov?.fullName);
-  assert.equal(quotes[1].type === "quote" && quotes[1].credentials, churakov?.credentials);
+  assert.equal(quotes[1].type === "quote" && quotes[1].name, CHURAKOV_NEWS_NAME);
+  assert.equal(quotes[1].type === "quote" && quotes[1].credentials, CHURAKOV_NEWS_CREDENTIALS);
   assert.equal(quotes[2].type === "quote" && quotes[2].name, "Участница конференции");
   assert.equal(quotes[2].type === "quote" && quotes[2].credentials, "врач-офтальмолог");
   assert.match(quotes[2].type === "quote" ? quotes[2].text : "", /Конференции несомненно важны/);

@@ -5,7 +5,7 @@ import test from "node:test";
 import { EventSpeakers } from "./event-speakers";
 import { STO_2026_SPEAKERS } from "@/lib/events/sto-2026";
 
-test("event speakers keeps six editorial cards and one grouped topic list per speaker", () => {
+test("event speakers keeps seven editorial cards and hides profiles without a doctor page", () => {
   const html = renderToStaticMarkup(
     React.createElement(EventSpeakers, {
       context: { eventSlug: "sovremennye-tehnologii-v-oftalmologii-2026" },
@@ -14,12 +14,12 @@ test("event speakers keeps six editorial cards and one grouped topic list per sp
   );
 
   assert.match(html, /data-mobile-accordion="speakers"/);
-  assert.equal((html.match(/data-speaker-card=/g) ?? []).length, 6);
+  assert.equal((html.match(/data-speaker-card=/g) ?? []).length, 7);
   assert.equal((html.match(/data-speaker-topic=/g) ?? []).length, 12);
-  assert.equal((html.match(/aria-controls=/g) ?? []).length, 6);
-  assert.match(
-    html,
-    /Возможности коррекции зрения с помощью современных интраокулярных линз компании Alcon/,
-  );
-  assert.doesNotMatch(html, /Макулярный разрыв\. Катаракта/);
+  assert.equal((html.match(/aria-controls=/g) ?? []).length, 7);
+  assert.equal((html.match(/Профессиональный профиль/g) ?? []).length, 5);
+  assert.match(html, /система Navilas/);
+  assert.match(html, /Дубровина Анна Валерьевна/);
+  assert.doesNotMatch(html, /Евдокимов|Витреолизис|интраокулярных линз компании Alcon|Макулярный разрыв/);
+  assert.doesNotMatch(html, /href="\/doctors\/null"|href="\/doctors\/undefined"/);
 });

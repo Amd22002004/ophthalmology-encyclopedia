@@ -13,6 +13,7 @@ import {
 import { AssociationLogo } from "@/components/layout/association-brand";
 import { EventHero } from "@/components/events/event-hero";
 import { EventPageAnalytics, EventTrackedLink } from "@/components/events/event-analytics";
+import { EventProgram } from "@/components/events/event-program";
 import { EventSpeakers } from "@/components/events/event-speakers";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -68,6 +69,7 @@ export async function EventLanding({ tracking = {} }: { tracking?: Tracking }) {
   const event = view.event;
   const reportage = await getPublishedNewsByEventSlug(event.slug);
   const speakers = view.speakers;
+  const talks = view.program.filter((item) => item.kind === "talk");
   const context = {
     eventSlug: event.slug,
     ...trackingDefaults,
@@ -116,10 +118,11 @@ export async function EventLanding({ tracking = {} }: { tracking?: Tracking }) {
               Программа и спикеры
             </h2>
             <p className="mt-3 text-sm leading-7 text-muted-foreground sm:text-base">
-              6 спикеров · 12 тем о рефракционной хирургии, лазерных методиках, хирургии катаракты, глаукомы, сетчатки и стекловидного тела.
+              {speakers.length} спикеров · {talks.length} докладов в трёх секциях. Регистрация и кофе-брейк с 14:00, обсуждение после каждой секции, фуршет в 19:00.
             </p>
           </div>
 
+          <EventProgram program={view.program} speakers={speakers} />
           {event.speakersPublished && <EventSpeakers context={context} speakers={speakers} />}
         </section>
       )}

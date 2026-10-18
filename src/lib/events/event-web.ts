@@ -70,7 +70,7 @@ export function eventJsonLd(options: {
       "@type": "Person",
       name: speaker.fullName,
       jobTitle: speaker.credentials,
-      image: absoluteUrl(speaker.photoUrl),
+      ...(speaker.photoUrl ? { image: absoluteUrl(speaker.photoUrl) } : {}),
       ...(speaker.doctorSlug ? { url: absoluteUrl(`/doctors/${speaker.doctorSlug}`) } : {}),
       ...(speaker.organizationRole ? { description: speaker.organizationRole } : {}),
     })),
