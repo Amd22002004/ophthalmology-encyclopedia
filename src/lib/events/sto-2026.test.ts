@@ -17,7 +17,7 @@ test("STO-2026 keeps the approved local event times", () => {
   assert.equal(STO_2026_EVENT.slug, "sovremennye-tehnologii-v-oftalmologii-2026");
   assert.equal(STO_2026_EVENT.registrationStartsAt, "2026-10-15T14:00:00+05:00");
   assert.equal(STO_2026_EVENT.startsAt, "2026-10-15T15:00:00+05:00");
-  assert.equal(STO_2026_EVENT.registrationOpen, true);
+  assert.equal(STO_2026_EVENT.registrationOpen, false);
   assert.equal(STO_2026_EVENT.programPublished, true);
   assert.equal(STO_2026_EVENT.speakersPublished, true);
   assert.equal(STO_2026_EVENT_PATH, "/events/sovremennye-tehnologii-v-oftalmologii-2026");

@@ -16,7 +16,7 @@ test("event metadata uses the approved title and description", () => {
 });
 
 test("open event JSON-LD lists the approved speakers and a free registration offer", () => {
-  const jsonLd = eventJsonLd();
+  const jsonLd = eventJsonLd({ registrationOpen: true });
   assert.equal(jsonLd["@type"], "Event");
   assert.equal(jsonLd.eventStatus, "https://schema.org/EventScheduled");
   assert.equal(jsonLd.eventAttendanceMode, "https://schema.org/OfflineEventAttendanceMode");

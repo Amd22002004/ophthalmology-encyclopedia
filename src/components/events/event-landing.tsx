@@ -13,6 +13,7 @@ import {
 import { AssociationLogo } from "@/components/layout/association-brand";
 import { EventHero } from "@/components/events/event-hero";
 import { EventPageAnalytics, EventTrackedLink } from "@/components/events/event-analytics";
+import { EventConferenceFinished } from "@/components/events/event-registration-closed";
 import { EventProgram } from "@/components/events/event-program";
 import { EventSpeakers } from "@/components/events/event-speakers";
 import { Button } from "@/components/ui/button";
@@ -215,19 +216,25 @@ export async function EventLanding({ tracking = {} }: { tracking?: Tracking }) {
         </div>
       </section>
 
-      <section className="event-reveal relative isolate overflow-hidden rounded-2xl bg-[#06182e] px-5 py-8 text-center text-white shadow-[0_20px_60px_rgba(6,24,46,0.16)] sm:px-8 sm:py-10" data-final-cta="true">
-        <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full border border-cyan-200/25" />
-        <div aria-hidden className="pointer-events-none absolute -bottom-32 left-1/4 h-64 w-96 rounded-[50%] border-t border-cyan-200/20" />
-        <h2 className="relative text-2xl font-semibold tracking-tight sm:text-3xl">До встречи в Тюмени</h2>
-        <p className="relative mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-200">
-          Участие бесплатное. Предварительная регистрация обязательна.
-        </p>
-        <Button asChild className="relative mt-6 min-h-12 border-white/30 bg-white text-[#06182e] hover:bg-cyan-50" size="lg">
-          <EventTrackedLink context={context} event="event_registration_started" href={registrationHref}>
-            Зарегистрироваться <ArrowRight aria-hidden className="h-4 w-4" />
-          </EventTrackedLink>
-        </Button>
-      </section>
+      {event.registrationOpen ? (
+        <section className="event-reveal relative isolate overflow-hidden rounded-2xl bg-[#06182e] px-5 py-8 text-center text-white shadow-[0_20px_60px_rgba(6,24,46,0.16)] sm:px-8 sm:py-10" data-final-cta="true">
+          <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full border border-cyan-200/25" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-32 left-1/4 h-64 w-96 rounded-[50%] border-t border-cyan-200/20" />
+          <h2 className="relative text-2xl font-semibold tracking-tight sm:text-3xl">До встречи в Тюмени</h2>
+          <p className="relative mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-200">
+            Участие бесплатное. Предварительная регистрация обязательна.
+          </p>
+          <Button asChild className="relative mt-6 min-h-12 border-white/30 bg-white text-[#06182e] hover:bg-cyan-50" size="lg">
+            <EventTrackedLink context={context} event="event_registration_started" href={registrationHref}>
+              Зарегистрироваться <ArrowRight aria-hidden className="h-4 w-4" />
+            </EventTrackedLink>
+          </Button>
+        </section>
+      ) : (
+        <section className="event-reveal rounded-2xl border border-border bg-card px-5 py-6 sm:px-8" aria-label="Регистрация закрыта">
+          <EventConferenceFinished />
+        </section>
+      )}
 
       {event.registrationOpen && (
         <aside className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 shadow-lg backdrop-blur md:hidden" aria-label="Регистрация на конференцию">

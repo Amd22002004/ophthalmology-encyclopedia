@@ -28,7 +28,7 @@ export const STO_2026_EVENT = {
   venueFloor: "2 этаж",
   city: "Тюмень",
   isFree: true,
-  registrationOpen: true,
+  registrationOpen: false,
   programPublished: true,
   speakersPublished: true,
   organizerName: "Ассоциация офтальмологических клиник",

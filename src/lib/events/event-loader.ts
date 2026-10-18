@@ -73,7 +73,7 @@ export async function getPublicEventView(slug = STO_2026_EVENT_SLUG): Promise<Pu
         venueName: event.venueName,
         venueAddress: event.venueAddress,
         city: event.city,
-        registrationOpen: event.registrationOpen,
+        registrationOpen: STO_2026_EVENT.registrationOpen && event.registrationOpen,
         programPublished: event.programPublished,
         speakersPublished: event.speakersPublished,
       },

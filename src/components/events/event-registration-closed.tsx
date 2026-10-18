@@ -3,6 +3,18 @@ import { ArrowLeft, BellRing, CalendarDays, Clock3, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { STO_2026_EVENT, STO_2026_EVENT_PATH } from "@/lib/events/sto-2026";
+import { STO_2026_CONFERENCE_NEWS_SLUG } from "@/lib/news/sto-2026-report";
+
+export function EventConferenceFinished({ className }: { className?: string }) {
+  return (
+    <p className={className ?? "max-w-xl text-sm leading-6 text-[#315451]"}>
+      Регистрация закрыта. Конференция состоялась 15 октября 2026 года.{" "}
+      <Link className="font-medium text-primary underline-offset-4 hover:underline" href={`/news/${STO_2026_CONFERENCE_NEWS_SLUG}`}>
+        Читать отчёт о конференции
+      </Link>
+    </p>
+  );
+}
 
 export function EventRegistrationClosed() {
   return (
