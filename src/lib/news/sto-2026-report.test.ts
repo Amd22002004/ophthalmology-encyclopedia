@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import test from "node:test";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -6,7 +8,7 @@ import { NewsMembershipCta } from "@/components/news/news-membership-cta";
 import { NewsVideo } from "@/components/news/news-video";
 import { associationHomeContent } from "@/lib/association-content";
 import { resolveNewsEvent } from "@/lib/news-event";
-import { parseNewsContent } from "@/lib/news-content";
+import { groupNewsBlocks, parseNewsContent } from "@/lib/news-content";
 import {
   CHURAKOV_NEWS_CREDENTIALS,
   CHURAKOV_NEWS_NAME,
@@ -72,4 +74,22 @@ test("video player exposes controls, poster and chapter seek buttons", () => {
   assert.match(html, /00:00/);
   assert.match(html, /01:47/);
   assert.match(html, /Навигация по видеосюжету/);
+});
+
+test("conference photos form one group led by the presidium and exist in public", () => {
+  const section = parseNewsContent(STO_2026_CONFERENCE_NEWS.content).find(
+    (item) => item.title === "Фотографии с конференции",
+  );
+  assert.ok(section);
+  const groups = groupNewsBlocks(section.blocks);
+  assert.equal(groups.length, 1);
+  const group = groups[0];
+  assert.equal(group.type, "figures");
+  if (group.type !== "figures") return;
+  assert.equal(group.figures.length, 4);
+  assert.match(group.figures[0].src, /prezidium-15-oktyabrya\.webp$/);
+  for (const figure of group.figures) {
+    assert.ok(figure.alt.length > 0);
+    assert.ok(existsSync(join(process.cwd(), "public", figure.src)), figure.src);
+  }
 });
