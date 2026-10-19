@@ -1725,8 +1725,26 @@ export type NewsCatalogItem = {
   title: string;
   summary: string;
   publishedAt: Date | null;
+  coverImageUrl: string | null;
+  coverImageAlt: string | null;
   investigationSlugs: string[];
 };
+
+export async function getPublishedNewsByEventSlug(eventSlug: string) {
+  const db = getPrisma();
+  if (!db) return [];
+  try {
+    return await db.news.findMany({
+      where: { eventSlug, ...publishedContentWhere() },
+      orderBy: [{ publishedAt: "desc" }, { updatedAt: "desc" }],
+      select: { slug: true, title: true, summary: true },
+    });
+  } catch {
+    // До migration колонки eventSlug публичная страница мероприятия остаётся
+    // на snapshot и не показывает техническую ошибку.
+    return [];
+  }
+}
 
 export async function getNews(opts?: { take?: number; skip?: number }): Promise<NewsCatalogItem[]> {
   const db = getPrisma();
@@ -1748,6 +1766,8 @@ export async function getNews(opts?: { take?: number; skip?: number }): Promise<
     title: row.title,
     summary: row.summary,
     publishedAt: row.publishedAt,
+    coverImageUrl: row.coverImageUrl,
+    coverImageAlt: row.coverImageAlt,
     investigationSlugs: row.investigations.map((relation) => relation.investigation.slug),
   }));
 }

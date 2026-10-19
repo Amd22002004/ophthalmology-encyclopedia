@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import {
   ArrowDown,
@@ -8,6 +7,7 @@ import {
   Clock3,
   MapPin,
 } from "lucide-react";
+import { EventConferenceFinished } from "@/components/events/event-registration-closed";
 import { Button } from "@/components/ui/button";
 import { EventTrackedLink } from "@/components/events/event-analytics";
 import { cn } from "@/lib/utils";
@@ -108,9 +108,7 @@ export function EventHero({
                 </EventTrackedLink>
               </Button>
             ) : (
-              <Button asChild className="hidden min-h-12 w-full px-6 md:inline-flex md:w-auto" size="lg" variant="outline">
-                <Link href={registrationHref}>Регистрация скоро откроется</Link>
-              </Button>
+              <EventConferenceFinished className="w-full text-sm leading-6 text-[#315451] sm:max-w-xl" />
             )}
             <Button
               asChild

@@ -28,7 +28,7 @@ export const STO_2026_EVENT = {
   venueFloor: "2 этаж",
   city: "Тюмень",
   isFree: true,
-  registrationOpen: true,
+  registrationOpen: false,
   programPublished: true,
   speakersPublished: true,
   organizerName: "Ассоциация офтальмологических клиник",
@@ -36,115 +36,233 @@ export const STO_2026_EVENT = {
   mapUrl: "https://yandex.ru/maps/?text=DoubleTree%20by%20Hilton%20Tyumen%2C%20%D0%A2%D1%8E%D0%BC%D0%B5%D0%BD%D1%8C%2C%20%D1%83%D0%BB.%20%D0%9E%D1%80%D0%B4%D0%B6%D0%BE%D0%BD%D0%B8%D0%BA%D0%B8%D0%B4%D0%B7%D0%B5%2C%2046",
 } as const;
 
-const STO_2026_PUBLIC_TOPIC_OVERRIDES: Readonly<Record<string, string>> = {
-  "Макулярный разрыв. Катаракта":
-    "Возможности коррекции зрения с помощью современных интраокулярных линз компании Alcon",
-};
-
-/**
- * The public programme follows the approved DOCX editorial source. This small
- * override deliberately affects presentation only; it does not mutate EventTalk.
- */
-export function getSTO2026PublicTopicTitle(title: string) {
-  return STO_2026_PUBLIC_TOPIC_OVERRIDES[title] ?? title;
-}
-
-export type STO2026Speaker = {
-  order: number;
-  doctorSlug: string;
-  fullName: string;
-  credentials: string;
-  organizationRole?: string;
-  photoUrl: string;
-  topics: readonly string[];
-};
-
-export const STO_2026_SPEAKERS: readonly STO2026Speaker[] = [
-  {
-    order: 1,
-    doctorSlug: "kunitskiy-konstantin-vladislavovich",
-    fullName: "Куницкий Константин Владиславович",
-    credentials: "Заведующий рефракционным отделением, врач-офтальмолог, офтальмохирург",
-    photoUrl: "/doctors/kunitskiy.png",
-    topics: [
-      "Лечение кератоконуса: преимущества имплантации роговичных сегментов",
-      "Лазерное лечение сетчатки в навигационном режиме — система NAVILAS",
-      "Преимущества метода SMILE Pro: первый год использования ZEISS VisuMax 800",
-    ],
-  },
-  {
-    order: 2,
-    doctorSlug: "churakov-timur-kasimovich",
-    fullName: "Чураков Тимур Касимович",
-    credentials: "Кандидат медицинских наук, врач-офтальмолог, офтальмохирург, рефракционный хирург",
-    photoUrl: "/doctors/churakov-timur-kasimovich.webp",
-    topics: [
-      "Лазерная коррекция зрения после кросслинкинга роговичного коллагена при кератоконусе",
-      "Кератотопография Pentacam в диагностике кератоконуса",
-      "Кросслинкинг в лечении кератоконуса у детей",
-    ],
-  },
-  {
-    order: 3,
-    doctorSlug: "ostroverhov-aleksandr-ivanovich",
-    fullName: "Островерхов Александр Иванович",
-    credentials: "Кандидат медицинских наук, врач-офтальмолог, офтальмохирург",
-    organizationRole: "Главный специалист Ассоциации офтальмологических клиник",
-    photoUrl: "/doctors/ostroverkhov.png",
-    topics: [
-      "Клинический случай YAG-лазерной гиалоидопунктуры с консервативным лечением ретинопатии Вальсальвы",
-      "Результаты комплексного лечения содружественного косоглазия у взрослых в амбулаторных условиях",
-      "Клинический случай имплантации клапана Ahmed при оперированной рефрактерной глаукоме",
-    ],
-  },
-  {
-    order: 4,
-    doctorSlug: "evdokimov-georgiy-vyacheslavovich",
-    fullName: "Евдокимов Георгий Вячеславович",
-    credentials: "Заведующий микрохирургическим отделением, врач-офтальмолог, офтальмохирург",
-    photoUrl: "/doctors/evdokimov.png",
-    topics: [
-      "Возможности коррекции зрения с помощью современных интраокулярных линз компании Alcon",
-    ],
-  },
-  {
-    order: 5,
-    doctorSlug: "chichenkova-anna-vasilevna",
-    fullName: "Чиченкова Анна Васильевна",
-    credentials: "Врач-офтальмолог первой категории, офтальмохирург, лазерный хирург",
-    photoUrl: "/doctors/chichenkova.png",
-    topics: ["Деструкция стекловидного тела. Витреолизис"],
-  },
-  {
-    order: 6,
-    doctorSlug: "hubonov-murid-hubonovich",
-    fullName: "Хубонов Мурид Хубонович",
-    credentials: "Врач-офтальмолог, офтальмохирург",
-    photoUrl: "/doctors/khubonov.jpg",
-    topics: ["Лазерная экстракция катаракты. Преимущества системы «Ракот»"],
-  },
-] as const;
+export type STO2026ProgramKind =
+  | "registration"
+  | "opening"
+  | "section"
+  | "talk"
+  | "discussion"
+  | "closing"
+  | "reception";
 
 export type STO2026ProgramItem = {
   order: number;
-  speakerOrder: number;
+  kind: STO2026ProgramKind;
   title: string;
-  startTime: string | null;
+  detail?: string;
+  speakerOrder: number | null;
+  startTime: string;
   endTime: string | null;
   published: true;
 };
 
-export const STO_2026_PROGRAM: readonly STO2026ProgramItem[] = STO_2026_SPEAKERS.flatMap(
-  (speaker) =>
-    speaker.topics.map((title, topicIndex) => ({
-      order: STO_2026_SPEAKERS.slice(0, speaker.order - 1).reduce((sum, item) => sum + item.topics.length, 0) + topicIndex + 1,
-      speakerOrder: speaker.order,
-      title,
-      startTime: null,
-      endTime: null,
-      published: true as const,
-    })),
-);
+const TAKHTAEV_OPENING_CREDENTIALS =
+  "д.м.н., профессор, врач-офтальмолог высшей категории, член правления Российского офтальмологического общества, член Европейского общества катарактальной и рефракционной хирургии, Американского общества катарактальных и рефракционных хирургов, Американской Академии Офтальмологии";
+
+function programItem(
+  order: number,
+  kind: STO2026ProgramKind,
+  title: string,
+  startTime: string,
+  endTime: string | null,
+  speakerOrder: number | null = null,
+  detail?: string,
+): STO2026ProgramItem {
+  return {
+    order,
+    kind,
+    title,
+    ...(detail ? { detail } : {}),
+    speakerOrder,
+    startTime,
+    endTime,
+    published: true,
+  };
+}
+
+/**
+ * Утверждённая программа из официального docx. Время — местное, Asia/Yekaterinburg.
+ * У секций и фуршета в документе нет времени окончания, поэтому endTime остаётся null.
+ */
+export const STO_2026_PROGRAM: readonly STO2026ProgramItem[] = [
+  programItem(1, "registration", "Регистрация участников, кофе-брейк", "14:00", "15:00"),
+  programItem(
+    2,
+    "opening",
+    "Официальное открытие конференции",
+    "15:00",
+    "15:15",
+    null,
+    `Приветственные слова Президента Ассоциации офтальмологических клиник Черных Аллы Сергеевны и Тахтаева Юрия Викторовича — ${TAKHTAEV_OPENING_CREDENTIALS}.`,
+  ),
+  programItem(3, "section", "Секция 1.", "15:15", null),
+  programItem(
+    4,
+    "talk",
+    "Клинический случай YAG лазерной гиалоидопунктуры с консервативным лечением ретинопатии Вальсальвы",
+    "15:15",
+    "15:30",
+    1,
+  ),
+  programItem(
+    5,
+    "talk",
+    "Лазерное лечение сетчатки в навигационном режиме (система Navilas)",
+    "15:30",
+    "15:45",
+    2,
+  ),
+  programItem(
+    6,
+    "talk",
+    "Лечение кератоконуса, преимущества имплантации роговичных сегментов",
+    "15:45",
+    "16:00",
+    3,
+  ),
+  programItem(7, "talk", "Кератотопография Pentacam в диагностике кератоконуса", "16:00", "16:15", 4),
+  programItem(8, "discussion", "Обсуждение, ответы на вопросы", "16:15", "16:30"),
+  programItem(9, "section", "Секция 2.", "16:30", null),
+  programItem(
+    10,
+    "talk",
+    "Преимущества метода Smile Pro, первый год использования VisuMax800 компании ZEISS",
+    "16:30",
+    "16:45",
+    3,
+  ),
+  programItem(
+    11,
+    "talk",
+    "Лазерная коррекция зрения после кросслинкинга роговичного коллагена при кератоконусе",
+    "16:45",
+    "17:00",
+    4,
+  ),
+  programItem(
+    12,
+    "talk",
+    "Результаты комплексного лечения содружественного косоглазия у взрослых в амбулаторных условиях",
+    "17:00",
+    "17:10",
+    1,
+  ),
+  programItem(13, "talk", "Фемто лазерная коррекция зрения", "17:10", "17:25", 5),
+  programItem(14, "discussion", "Обсуждение, ответы на вопросы", "17:25", "17:40"),
+  programItem(15, "section", "Секция 3.", "17:40", null),
+  programItem(
+    16,
+    "talk",
+    "Важность диагностики синдрома сухого глаза на приеме офтальмолога",
+    "17:40",
+    "17:55",
+    6,
+  ),
+  programItem(
+    17,
+    "talk",
+    "Лазерная экстракция катаракты. Преимущество системы «Ракот»",
+    "17:55",
+    "18:05",
+    7,
+  ),
+  programItem(
+    18,
+    "talk",
+    "Клинический случай имплантации клапана Ahmed при оперированной рефрактерной глаукоме",
+    "18:05",
+    "18:20",
+    1,
+  ),
+  programItem(19, "talk", "Кросслинкинг в лечении кератоконуса у детей", "18:20", "18:35", 4),
+  programItem(20, "discussion", "Обсуждение, ответы на вопросы", "18:35", "18:45"),
+  programItem(
+    21,
+    "closing",
+    "Подведение итогов, подарки от партнеров, завершение конференции",
+    "18:45",
+    "19:00",
+  ),
+  programItem(22, "reception", "Легкий фуршет, неформальное общение", "19:00", null),
+];
+
+export type STO2026Speaker = {
+  order: number;
+  doctorSlug: string | null;
+  fullName: string;
+  credentials: string;
+  organizationRole?: string;
+  photoUrl: string | null;
+  topics: readonly string[];
+};
+
+const STO_2026_SPEAKER_SOURCES = [
+  {
+    order: 1,
+    doctorSlug: "ostroverhov-aleksandr-ivanovich",
+    fullName: "Островерхов Александр Иванович",
+    credentials: "к.м.н., врач-офтальмолог, офтальмохирург",
+    photoUrl: "/doctors/ostroverkhov.png",
+  },
+  {
+    order: 2,
+    doctorSlug: "chichenkova-anna-vasilevna",
+    fullName: "Чиченкова Анна Васильевна",
+    credentials: "врач-офтальмолог, офтальмохирург",
+    photoUrl: "/doctors/chichenkova.png",
+  },
+  {
+    order: 3,
+    doctorSlug: "kunitskiy-konstantin-vladislavovich",
+    fullName: "Куницкий Константин Владиславович",
+    credentials: "врач-офтальмолог, офтальмохирург",
+    photoUrl: "/doctors/kunitskiy.png",
+  },
+  {
+    order: 4,
+    doctorSlug: "churakov-timur-kasimovich",
+    fullName: "Чураков Тимур Касимович",
+    credentials: "к.м.н., врач-офтальмолог, офтальмохирург, рефракционный хирург, г. Санкт-Петербург",
+    photoUrl: "/doctors/churakov-timur-kasimovich.webp",
+  },
+  {
+    order: 5,
+    doctorSlug: null,
+    fullName: "Дубровина Анна Валерьевна",
+    credentials: "врач-офтальмолог, офтальмохирург, лазерный хирург",
+    photoUrl: null,
+  },
+  {
+    order: 6,
+    doctorSlug: null,
+    fullName: "Степанова Ольга Павловна",
+    credentials: "специалист по клинической поддержке компании Alcon",
+    photoUrl: null,
+  },
+  {
+    order: 7,
+    doctorSlug: "hubonov-murid-hubonovich",
+    fullName: "Хубонов Мурид Хубонович",
+    credentials: "врач-офтальмолог, офтальмохирург",
+    photoUrl: "/doctors/khubonov.jpg",
+  },
+] as const;
+
+export const STO_2026_SPEAKERS: readonly STO2026Speaker[] = STO_2026_SPEAKER_SOURCES.map((speaker) => ({
+  ...speaker,
+  topics: STO_2026_PROGRAM.filter((item) => item.kind === "talk" && item.speakerOrder === speaker.order).map(
+    (item) => item.title,
+  ),
+}));
+
+/** Местное время пункта программы как момент 15 октября 2026 года, Asia/Yekaterinburg. */
+export function sto2026ClockInstant(clock: string) {
+  return new Date(`2026-10-15T${clock}:00+05:00`);
+}
+
+export function formatSto2026Interval(item: Pick<STO2026ProgramItem, "startTime" | "endTime">) {
+  return item.endTime ? `${item.startTime}–${item.endTime}` : item.startTime;
+}
 
 export const STO_2026_AUDIENCE = [
   "Врачи-офтальмологи",

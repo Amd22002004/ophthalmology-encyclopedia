@@ -23,7 +23,11 @@ import {
   STO_2026_EVENT_SLUG,
   STO_2026_PROGRAM,
   STO_2026_SPEAKERS,
+  sto2026ClockInstant,
 } from "../src/lib/events/sto-2026";
+import { OCTOBER_2026_CONGRESSES_NEWS } from "./data/news/kongressy-oktyabr-2026";
+import { WEEK_12_18_OCTOBER_2026_NEWS } from "./data/news/kongressy-12-18-oktyabrya-2026";
+import { STO_2026_CONFERENCE_NEWS } from "../src/lib/news/sto-2026-report";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
@@ -2767,68 +2771,83 @@ async function seedSto2026Event() {
     },
   });
 
-  const speakersByOrder = new Map<number, string>();
-  for (const speaker of STO_2026_SPEAKERS) {
-    const doctor = await db.doctor.findUnique({
-      where: { slug: speaker.doctorSlug },
-      select: { id: true },
+  const existingSpeakers = await db.eventSpeaker.findMany({
+    where: { eventId: event.id },
+    orderBy: { order: "asc" },
+  });
+  for (const [index, row] of existingSpeakers.entries()) {
+    await db.eventSpeaker.update({
+      where: { id: row.id },
+      data: { order: 1000 + index, published: false },
     });
-    if (!doctor) {
+  }
+
+  await db.eventTalk.deleteMany({ where: { eventId: event.id } });
+
+  const speakersByOrder = new Map<number, string>();
+  const keptSpeakerIds: string[] = [];
+  for (const speaker of STO_2026_SPEAKERS) {
+    const doctor = speaker.doctorSlug
+      ? await db.doctor.findUnique({
+          where: { slug: speaker.doctorSlug },
+          select: { id: true },
+        })
+      : null;
+    if (speaker.doctorSlug && !doctor) {
       throw new Error(`STO-2026 speaker Doctor not found: ${speaker.doctorSlug}`);
     }
 
-    const eventSpeaker = await db.eventSpeaker.upsert({
-      where: { eventId_doctorId: { eventId: event.id, doctorId: doctor.id } },
-      create: {
-        eventId: event.id,
-        doctorId: doctor.id,
-        order: speaker.order,
-        fullNameSnapshot: speaker.fullName,
-        credentialsSnapshot: speaker.credentials,
-        organizationRole: speaker.organizationRole ?? null,
-        photoUrlSnapshot: speaker.photoUrl,
-        published: true,
-      },
-      update: {
-        order: speaker.order,
-        fullNameSnapshot: speaker.fullName,
-        credentialsSnapshot: speaker.credentials,
-        organizationRole: speaker.organizationRole ?? null,
-        photoUrlSnapshot: speaker.photoUrl,
-        published: true,
-      },
-    });
+    const shared = {
+      order: speaker.order,
+      fullNameSnapshot: speaker.fullName,
+      credentialsSnapshot: speaker.credentials,
+      organizationRole: speaker.organizationRole ?? null,
+      photoUrlSnapshot: speaker.photoUrl,
+      published: true,
+      doctorId: doctor?.id ?? null,
+    };
+    const eventSpeaker = doctor
+      ? await db.eventSpeaker.upsert({
+          where: { eventId_doctorId: { eventId: event.id, doctorId: doctor.id } },
+          create: { eventId: event.id, ...shared },
+          update: shared,
+        })
+      : await (async () => {
+          const found = existingSpeakers.find(
+            (row) => row.doctorId === null && row.fullNameSnapshot === speaker.fullName,
+          );
+          if (found) {
+            return db.eventSpeaker.update({ where: { id: found.id }, data: shared });
+          }
+          return db.eventSpeaker.create({ data: { eventId: event.id, ...shared } });
+        })();
     speakersByOrder.set(speaker.order, eventSpeaker.id);
+    keptSpeakerIds.push(eventSpeaker.id);
   }
 
+  await db.eventSpeaker.deleteMany({
+    where: { eventId: event.id, id: { notIn: keptSpeakerIds } },
+  });
+
   for (const item of STO_2026_PROGRAM) {
-    const speakerId = speakersByOrder.get(item.speakerOrder);
-    const speaker = STO_2026_SPEAKERS.find((candidate) => candidate.order === item.speakerOrder);
-    if (!speakerId || !speaker) {
+    const speaker = item.speakerOrder
+      ? STO_2026_SPEAKERS.find((candidate) => candidate.order === item.speakerOrder)
+      : undefined;
+    if (item.speakerOrder && !speaker) {
       throw new Error(`STO-2026 program speaker not found: ${item.speakerOrder}`);
     }
 
-    await db.eventTalk.upsert({
-      where: { eventId_sortOrder: { eventId: event.id, sortOrder: item.order } },
-      create: {
+    await db.eventTalk.create({
+      data: {
         eventId: event.id,
-        speakerId,
-        kind: "TALK",
+        speakerId: item.speakerOrder ? speakersByOrder.get(item.speakerOrder) ?? null : null,
+        kind: item.kind === "talk" ? "TALK" : "BREAK",
         title: item.title,
-        speakerNameSnapshot: speaker.fullName,
+        description: item.detail ?? null,
+        speakerNameSnapshot: speaker?.fullName ?? null,
         moderatorSnapshot: null,
-        startAt: null,
-        endAt: null,
-        published: item.published,
-        sortOrder: item.order,
-      },
-      update: {
-        speakerId,
-        kind: "TALK",
-        title: item.title,
-        speakerNameSnapshot: speaker.fullName,
-        startAt: null,
-        endAt: null,
+        startAt: sto2026ClockInstant(item.startTime),
+        endAt: item.endTime ? sto2026ClockInstant(item.endTime) : null,
         published: item.published,
         sortOrder: item.order,
       },
@@ -2881,7 +2900,84 @@ async function seedSto2026Event() {
     },
   });
 
-  console.log(`✓ Event: ${event.slug} (6 speakers, ${STO_2026_PROGRAM.length} talks, registration open)`);
+  console.log(
+    `✓ Event: ${event.slug} (${STO_2026_SPEAKERS.length} speakers, ${STO_2026_PROGRAM.length} programme rows, registration open)`,
+  );
+}
+
+async function seedOctober2026CongressNews() {
+  const publishedAt = new Date(OCTOBER_2026_CONGRESSES_NEWS.publishedAt);
+  const data = {
+    title: OCTOBER_2026_CONGRESSES_NEWS.title,
+    summary: OCTOBER_2026_CONGRESSES_NEWS.summary,
+    content: OCTOBER_2026_CONGRESSES_NEWS.content,
+    isPublished: true,
+    publishedAt,
+    seoTitle: OCTOBER_2026_CONGRESSES_NEWS.seoTitle,
+    seoDescription: OCTOBER_2026_CONGRESSES_NEWS.seoDescription,
+  };
+
+  await db.news.upsert({
+    where: { slug: OCTOBER_2026_CONGRESSES_NEWS.slug },
+    create: { slug: OCTOBER_2026_CONGRESSES_NEWS.slug, ...data },
+    update: data,
+  });
+
+  console.log(`✓ News: ${OCTOBER_2026_CONGRESSES_NEWS.slug}`);
+}
+
+async function seedWeek12to18October2026News() {
+  const news = WEEK_12_18_OCTOBER_2026_NEWS;
+  const data = {
+    title: news.title,
+    summary: news.summary,
+    content: news.content,
+    isPublished: true,
+    publishedAt: new Date(news.publishedAt),
+    seoTitle: news.seoTitle,
+    seoDescription: news.seoDescription,
+    coverImageUrl: news.coverImageUrl,
+    coverImageAlt: news.coverImageAlt,
+  };
+
+  await db.news.upsert({
+    where: { slug: news.slug },
+    create: { slug: news.slug, ...data },
+    update: data,
+  });
+
+  console.log(`✓ News: ${news.slug}`);
+}
+
+async function seedSto2026ConferenceNews() {
+  const news = STO_2026_CONFERENCE_NEWS;
+  const data = {
+    title: news.title,
+    summary: news.summary,
+    content: news.content,
+    seoTitle: news.seoTitle,
+    seoDescription: news.seoDescription,
+    coverImageUrl: news.coverImageUrl,
+    coverImageAlt: news.coverImageAlt,
+    videoUrl: news.videoUrl,
+    videoPosterUrl: news.videoPosterUrl,
+    badges: [...news.badges],
+    videoChapters: news.videoChapters.map((chapter) => ({ seconds: chapter.seconds, label: chapter.label })),
+    gallery: news.gallery.map((item) => ({ src: item.src, alt: item.alt })),
+    highlights: news.highlights.map((item) => ({ title: item.title, text: item.text })),
+    showMembershipCta: news.showMembershipCta,
+    eventSlug: news.eventSlug,
+    isPublished: true,
+    publishedAt: news.publishedAt,
+  };
+
+  await db.news.upsert({
+    where: { slug: news.slug },
+    create: { slug: news.slug, ...data },
+    update: data,
+  });
+
+  console.log("✓ News: " + news.slug);
 }
 
 async function main() {
@@ -3333,6 +3429,9 @@ async function main() {
 
   console.log("Seeding Association investigations and news...");
   await seedGlazcentrInvestigation();
+  await seedOctober2026CongressNews();
+  await seedWeek12to18October2026News();
+  await seedSto2026ConferenceNews();
   await seedIndependentControlCorpus();
 
   // ─── Конфигурация формы обращений ─────────────────────────────────────────

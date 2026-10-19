@@ -15,15 +15,23 @@ test("event metadata uses the approved title and description", () => {
   assert.deepEqual(metadata.robots, { index: false, follow: false });
 });
 
-test("open event JSON-LD has six performers and a free registration offer", () => {
-  const jsonLd = eventJsonLd();
+test("open event JSON-LD lists the approved speakers and a free registration offer", () => {
+  const jsonLd = eventJsonLd({ registrationOpen: true });
   assert.equal(jsonLd["@type"], "Event");
   assert.equal(jsonLd.eventStatus, "https://schema.org/EventScheduled");
   assert.equal(jsonLd.eventAttendanceMode, "https://schema.org/OfflineEventAttendanceMode");
   assert.equal(jsonLd.isAccessibleForFree, true);
   assert.equal(jsonLd.startDate, "2026-10-15T15:00:00+05:00");
   assert.equal(jsonLd.location.address.streetAddress, "г. Тюмень, ул. Орджоникидзе, 46");
-  assert.equal(jsonLd.performer.length, 6);
+  assert.equal(jsonLd.performer.length, 7);
+  assert.equal(
+    jsonLd.performer.some((person) => String(person.name).includes("Евдокимов") || String(person.name).includes("Тахтаев")),
+    false,
+  );
+  const stepanova = jsonLd.performer.find((person) => person.name === "Степанова Ольга Павловна");
+  assert.equal(stepanova?.jobTitle, "специалист по клинической поддержке компании Alcon");
+  assert.equal(stepanova?.image, undefined);
+  assert.equal(stepanova?.url, undefined);
   assert.equal(jsonLd.offers?.price, "0");
   assert.match(String(jsonLd.offers?.url), /\/register$/);
 });

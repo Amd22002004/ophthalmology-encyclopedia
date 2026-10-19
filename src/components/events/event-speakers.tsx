@@ -39,14 +39,24 @@ export function EventSpeakers({
           >
             <div className="p-4 sm:p-5">
               <div className="grid grid-cols-[92px_minmax(0,1fr)] gap-4 sm:grid-cols-[112px_minmax(0,1fr)]">
-                <Image
-                  alt={`Фотография ${speaker.fullName}`}
-                  className="aspect-[4/5] h-auto w-full rounded-xl object-cover object-top"
-                  height={400}
-                  sizes="(max-width: 639px) 92px, 112px"
-                  src={speaker.photoUrl}
-                  width={320}
-                />
+                {speaker.photoUrl ? (
+                  <Image
+                    alt={`Фотография ${speaker.fullName}`}
+                    className="aspect-[4/5] h-auto w-full rounded-xl object-cover object-top"
+                    height={400}
+                    sizes="(max-width: 639px) 92px, 112px"
+                    src={speaker.photoUrl}
+                    width={320}
+                  />
+                ) : (
+                  <div
+                    aria-label={`Портрет ${speaker.fullName} пока не добавлен`}
+                    className="flex aspect-[4/5] items-center justify-center rounded-xl border border-border bg-muted text-lg font-semibold tracking-[0.14em] text-primary"
+                    role="img"
+                  >
+                    {speakerInitials(speaker.fullName)}
+                  </div>
+                )}
                 <div className="min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
@@ -100,19 +110,26 @@ export function EventSpeakers({
                 </ul>
               </div>
 
-              <EventTrackedLink
-                className="mt-5 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                context={context}
-                event="event_speaker_opened"
-                href={`/doctors/${speaker.doctorSlug}`}
-                speakerOrder={speaker.order}
-              >
-                Профессиональный профиль <ExternalLink aria-hidden className="h-3.5 w-3.5" />
-              </EventTrackedLink>
+              {speaker.doctorSlug && (
+                <EventTrackedLink
+                  className="mt-5 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  context={context}
+                  event="event_speaker_opened"
+                  href={`/doctors/${speaker.doctorSlug}`}
+                  speakerOrder={speaker.order}
+                >
+                  Профессиональный профиль <ExternalLink aria-hidden className="h-3.5 w-3.5" />
+                </EventTrackedLink>
+              )}
             </div>
           </article>
         );
       })}
     </div>
   );
+}
+
+function speakerInitials(fullName: string) {
+  const [surname, given] = fullName.split(/\s+/);
+  return `${surname?.[0] ?? ""}${given?.[0] ?? ""}`;
 }

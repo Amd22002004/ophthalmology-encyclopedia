@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EventRegistrationClosed } from "@/components/events/event-registration-closed";
+import { EventConferenceFinished, EventRegistrationClosed } from "@/components/events/event-registration-closed";
 import { EventRegistrationForm } from "@/components/events/event-registration-form";
 import { getPrisma } from "@/lib/prisma";
 import { STO_2026_EVENT, STO_2026_EVENT_SLUG } from "@/lib/events/sto-2026";
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 async function registrationIsOpen() {
+  if (!STO_2026_EVENT.registrationOpen) return false;
   const db = getPrisma();
   if (!db) return false;
   try {
@@ -44,7 +45,13 @@ export default async function ConferenceRegistrationPage() {
         <h1 className="mt-2 text-2xl font-semibold tracking-tight">{STO_2026_EVENT.title}</h1>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">Регистрация участников</p>
       </div>
-      {open ? <EventRegistrationForm eventSlug={STO_2026_EVENT_SLUG} /> : <EventRegistrationClosed />}
+      {!STO_2026_EVENT.registrationOpen ? (
+        <EventConferenceFinished className="max-w-2xl text-sm leading-6 text-muted-foreground" />
+      ) : open ? (
+        <EventRegistrationForm eventSlug={STO_2026_EVENT_SLUG} />
+      ) : (
+        <EventRegistrationClosed />
+      )}
     </div>
   );
 }

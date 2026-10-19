@@ -515,6 +515,16 @@ export const NewsScalarFieldEnum = {
   publishedAt: 'publishedAt',
   seoTitle: 'seoTitle',
   seoDescription: 'seoDescription',
+  coverImageUrl: 'coverImageUrl',
+  coverImageAlt: 'coverImageAlt',
+  videoUrl: 'videoUrl',
+  videoPosterUrl: 'videoPosterUrl',
+  badges: 'badges',
+  videoChapters: 'videoChapters',
+  gallery: 'gallery',
+  highlights: 'highlights',
+  showMembershipCta: 'showMembershipCta',
+  eventSlug: 'eventSlug',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

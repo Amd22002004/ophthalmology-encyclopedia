@@ -2,6 +2,7 @@ import "server-only";
 
 import { createHmac, randomUUID } from "node:crypto";
 import { getPrisma } from "@/lib/prisma";
+import { STO_2026_EVENT } from "@/lib/events/sto-2026";
 import { getEventAssociationNotificationRecipients } from "@/lib/email/recipients";
 import type { ValidatedEventRegistration } from "./registration-validation";
 import { formatEventRegistrationNumber } from "./registration-reference";
@@ -48,7 +49,8 @@ export async function getEventRegistrationGate(eventSlug: string) {
     },
   });
   if (!event) throw new EventSubmissionError("Мероприятие не найдено", 404);
-  return { open: event.registrationOpen && event.consentTemplates.length > 0 };
+  const snapshotOpen = eventSlug === STO_2026_EVENT.slug ? STO_2026_EVENT.registrationOpen : true;
+  return { open: snapshotOpen && event.registrationOpen && event.consentTemplates.length > 0 };
 }
 
 function isPrismaUniqueError(error: unknown) {
@@ -75,7 +77,8 @@ export async function createEventRegistration(params: {
     },
   });
   if (!event) throw new EventSubmissionError("Мероприятие не найдено", 404);
-  if (!event.registrationOpen || event.consentTemplates.length === 0) {
+  const snapshotOpen = params.eventSlug === STO_2026_EVENT.slug ? STO_2026_EVENT.registrationOpen : true;
+  if (!snapshotOpen || !event.registrationOpen || event.consentTemplates.length === 0) {
     throw new EventSubmissionError("Регистрация скоро откроется", 409);
   }
 
