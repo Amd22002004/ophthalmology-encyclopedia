@@ -93,3 +93,9 @@ test("conference photos form one group led by the presidium and exist in public"
     assert.ok(existsSync(join(process.cwd(), "public", figure.src)), figure.src);
   }
 });
+
+test("conference report has no separate video-stills gallery; the poster stays", () => {
+  assert.equal(STO_2026_CONFERENCE_NEWS.gallery.length, 0);
+  assert.equal(STO_2026_CONFERENCE_NEWS.videoPosterUrl, "/images/events/konferenciya-aok-tyumen-15-10/00-29-banner.webp");
+  assert.ok(existsSync(join(process.cwd(), "public", STO_2026_CONFERENCE_NEWS.videoPosterUrl)));
+});
