@@ -14,6 +14,7 @@ import type { NewsDetail } from "@/lib/loaders";
 import { resolveNewsEvent } from "@/lib/news-event";
 import {
   groupNewsBlocks,
+  newsFigureSources,
   newsOpenGraphImage,
   parseNewsContent,
   type NewsFigure,
@@ -89,13 +90,18 @@ function NewsFigureView({
   figure,
   loading,
   className,
+  intrinsic = false,
 }: {
   figure: NewsFigure;
   loading: "eager" | "lazy";
   className?: string;
+  intrinsic?: boolean;
 }) {
   return (
-    <figure className={className ? `space-y-2 ${className}` : "space-y-2"}>
+    <figure
+      className={intrinsic ? "w-full max-w-full space-y-2" : className ? `space-y-2 ${className}` : "space-y-2"}
+      style={intrinsic ? { maxWidth: figure.width } : undefined}
+    >
       {/* Local editorial images stay sized by the caption notation to avoid CLS. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -119,6 +125,22 @@ function NewsFigureView({
 function NewsFigureGroup({ figures, eagerLead }: { figures: NewsFigure[]; eagerLead: boolean }) {
   const [lead, ...rest] = figures;
   if (!lead) return null;
+
+  // Один или два кадра остаются в своём размере: без растягивания на колонку и без пустой ячейки.
+  if (figures.length <= 2) {
+    return (
+      <div className="flex flex-wrap items-start gap-3">
+        {figures.map((figure, index) => (
+          <NewsFigureView
+            figure={figure}
+            intrinsic
+            key={`${figure.src}-${index}`}
+            loading="eager"
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-3">
@@ -360,6 +382,9 @@ function NewsSidebar({
 
 function NewsStructuredData({ data }: { data: NewsDetail }) {
   const figure = !data.coverImageUrl && data.content ? newsOpenGraphImage(data.content) : undefined;
+  const coverSize = data.coverImageUrl && data.content
+    ? newsFigureSources(data.content).find((item) => item.src === data.coverImageUrl)
+    : undefined;
   return (
     <>
       <SchemaOrg
@@ -382,6 +407,7 @@ function NewsStructuredData({ data }: { data: NewsDetail }) {
                 image: {
                   "@type": "ImageObject",
                   url: absoluteUrl(data.coverImageUrl),
+                  ...(coverSize ? { width: coverSize.width, height: coverSize.height } : {}),
                   ...(data.coverImageAlt ? { caption: data.coverImageAlt } : {}),
                 },
               }
@@ -459,9 +485,10 @@ function InvestigationContinuation({ data, showAppeal }: { data: NewsDetail; sho
 }
 
 function isMultimediaNews(data: NewsDetail) {
+  // Обложка карточки не переключает шаблон: сводка остаётся обычной статьёй.
+  // Мультимедийный вид — у записи с видео, галереей, рубриками или мероприятием.
   return Boolean(
     data.videoUrl ||
-      data.coverImageUrl ||
       data.badges.length > 0 ||
       data.showMembershipCta ||
       data.eventSlug ||

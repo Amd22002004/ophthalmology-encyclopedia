@@ -26,6 +26,7 @@ import {
   sto2026ClockInstant,
 } from "../src/lib/events/sto-2026";
 import { OCTOBER_2026_CONGRESSES_NEWS } from "./data/news/kongressy-oktyabr-2026";
+import { WEEK_12_18_OCTOBER_2026_NEWS } from "./data/news/kongressy-12-18-oktyabrya-2026";
 import { STO_2026_CONFERENCE_NEWS } from "../src/lib/news/sto-2026-report";
 
 const connectionString = process.env.DATABASE_URL;
@@ -2925,6 +2926,29 @@ async function seedOctober2026CongressNews() {
   console.log(`✓ News: ${OCTOBER_2026_CONGRESSES_NEWS.slug}`);
 }
 
+async function seedWeek12to18October2026News() {
+  const news = WEEK_12_18_OCTOBER_2026_NEWS;
+  const data = {
+    title: news.title,
+    summary: news.summary,
+    content: news.content,
+    isPublished: true,
+    publishedAt: new Date(news.publishedAt),
+    seoTitle: news.seoTitle,
+    seoDescription: news.seoDescription,
+    coverImageUrl: news.coverImageUrl,
+    coverImageAlt: news.coverImageAlt,
+  };
+
+  await db.news.upsert({
+    where: { slug: news.slug },
+    create: { slug: news.slug, ...data },
+    update: data,
+  });
+
+  console.log(`✓ News: ${news.slug}`);
+}
+
 async function seedSto2026ConferenceNews() {
   const news = STO_2026_CONFERENCE_NEWS;
   const data = {
@@ -3406,6 +3430,7 @@ async function main() {
   console.log("Seeding Association investigations and news...");
   await seedGlazcentrInvestigation();
   await seedOctober2026CongressNews();
+  await seedWeek12to18October2026News();
   await seedSto2026ConferenceNews();
   await seedIndependentControlCorpus();
 
